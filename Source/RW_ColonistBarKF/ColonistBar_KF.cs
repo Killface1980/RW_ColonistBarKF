@@ -3,7 +3,6 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static RW_ColonistBarKF.MapComponent_ColonistBarKF;
 
 namespace RW_ColonistBarKF
 {
@@ -61,7 +60,7 @@ namespace RW_ColonistBarKF
 
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
 
-        private static readonly Vector2 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
+        private static readonly Vector2 BaseSize = new Vector2(MapComponent_ColonistBarKF.BaseSizeFloat, MapComponent_ColonistBarKF.BaseSizeFloat);
 
   //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
         public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, BaseSize.y*1.5f);
