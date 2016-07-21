@@ -60,10 +60,10 @@ namespace RW_ColonistBarKF
 
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
 
-        private static readonly Vector2 BaseSize = new Vector2(MapComponent_ColonistBarKF.BaseSizeFloat, MapComponent_ColonistBarKF.BaseSizeFloat);
+        private static Vector2 BaseSize = new Vector2(ColonistBarSettings.BaseSizeFloat, ColonistBarSettings.BaseSizeFloat);
 
-  //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, BaseSize.y*1.5f);
+        //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
+        public static Vector2 PawnTextureSize = new Vector2(ColonistBarSettings.BaseSizeFloat - 2f, ColonistBarSettings.BaseSizeFloat * 1.5f);
 
         private static readonly Vector3 PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
 
@@ -147,7 +147,7 @@ namespace RW_ColonistBarKF
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
 
-        private static int ColonistsPerRowAssumingScale(float scale)
+        public static int ColonistsPerRowAssumingScale(float scale)
         {
             return Mathf.FloorToInt((MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
         }
@@ -162,7 +162,7 @@ namespace RW_ColonistBarKF
             return 32f * scale;
         }
 
-        private static int GetAllowedRowsCountForScale(float scale)
+        public static int GetAllowedRowsCountForScale(float scale)
         {
             if (scale > 0.58f)
             {
@@ -186,6 +186,9 @@ namespace RW_ColonistBarKF
             {
                 return;
             }
+            BaseSize = new Vector2(ColonistBarSettings.BaseSizeFloat, ColonistBarSettings.BaseSizeFloat);
+            PawnTextureSize = new Vector2(ColonistBarSettings.BaseSizeFloat - 2f, ColonistBarSettings.BaseSizeFloat * 1.5f);
+
             if (Event.current.type == EventType.Layout)
             {
                 RecacheDrawLocs();
@@ -334,7 +337,7 @@ namespace RW_ColonistBarKF
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
             }
-            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, 1.28205f));
+            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, PawnTextureCameraZoom));
             GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
             DrawIcons(rect, colonist);
             GUI.color = color;

@@ -3,6 +3,7 @@ using CommunityCoreLibrary.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -125,7 +126,8 @@ namespace RW_ColonistBarKF
             DoHeading(listing, "PSI.Settings.Visibility.Header");
 
             listing.Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
-            MapComponent_ColonistBarKF.BaseSizeFloat = listing.Slider(MapComponent_ColonistBarKF.BaseSizeFloat, 24f, 96f);
+            ColonistBarSettings.BaseSizeFloat = listing.Slider(ColonistBarSettings.BaseSizeFloat, 24f, 96f);
+         //   TextFieldNumeric(ref ColonistBarSettings.ColonistsPerRow,ref string "test", 0f,20f);
 
 
         }
@@ -133,7 +135,7 @@ namespace RW_ColonistBarKF
         public override void ExposeData()
         {
 
-            Scribe_Values.LookValue(ref MapComponent_ColonistBarKF.BaseSizeFloat, "BaseSizeFloat", 48f, true);
+            Scribe_Values.LookValue(ref ColonistBarSettings.BaseSizeFloat, "BaseSizeFloat");
 
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
