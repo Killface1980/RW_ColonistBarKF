@@ -4,5 +4,11 @@
     <defName>RW_ColonistBarKF</defName>
     <ModName>RW_ColonistBarKF</ModName>
     <minCCLversion>0.14.0</minCCLversion>
+    <ModConfigurationMenus>
+      <li>
+        <label>RW_ColonistBarKF</label>
+        <mcmClass>RW_ColonistBarKF.ModConfigMenu</mcmClass>
+      </li>
+    </ModConfigurationMenus>
   </CommunityCoreLibrary.ModHelperDef>
 </Defs>

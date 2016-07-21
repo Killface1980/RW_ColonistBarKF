@@ -51,9 +51,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColonistBarSettings.cs" />
     <Compile Include="ColonistBar_KF.cs" />
+    <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\About\About.xml">
+      <Link>About.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
+      <Link>ModHelper.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
+      <Link>Initializer.xml</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

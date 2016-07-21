@@ -9,6 +9,8 @@ namespace RW_ColonistBarKF
     [StaticConstructorOnStartup]
     public class ColonistBarKF
     {
+        public static ColonistBarSettings Settings = new ColonistBarSettings();
+
         private const float PawnTextureCameraZoom = 1.28205f;
 
         private const float PawnTextureHorizontalPadding = 1f;
@@ -59,9 +61,10 @@ namespace RW_ColonistBarKF
 
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
 
-        private static readonly Vector2 BaseSize = new Vector2(48f, 48f);
+        private static readonly Vector2 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
 
-        public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
+  //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
+        public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, BaseSize.y*1.5f);
 
         private static readonly Vector3 PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
 
@@ -180,8 +183,6 @@ namespace RW_ColonistBarKF
 
         public void ColonistBarOnGUI()
         {
-            return;
-            // TESTING PURPOSE ONLY
             if (!Find.PlaySettings.showColonistBar)
             {
                 return;
@@ -468,4 +469,5 @@ namespace RW_ColonistBarKF
             }
         }
     }
+
 }
