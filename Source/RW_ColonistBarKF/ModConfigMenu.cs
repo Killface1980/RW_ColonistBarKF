@@ -125,14 +125,15 @@ namespace RW_ColonistBarKF
             DoHeading(listing, "PSI.Settings.Visibility.Header");
 
             listing.Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
-            ColonistBarKF.Settings.BaseSizeFloat = listing.Slider(ColonistBarKF.Settings.BaseSizeFloat, 24f, 96f);
+            MapComponent_ColonistBarKF.Settings.BaseSizeFloat = listing.Slider(MapComponent_ColonistBarKF.Settings.BaseSizeFloat, 24f, 96f);
+
 
         }
 
         public override void ExposeData()
         {
 
-            Scribe_Values.LookValue(ref ColonistBarKF.Settings.BaseSizeFloat, "BaseSizeFloat");
+            Scribe_Values.LookValue(ref MapComponent_ColonistBarKF.Settings.BaseSizeFloat, "BaseSizeFloat", 48f, true);
 
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {

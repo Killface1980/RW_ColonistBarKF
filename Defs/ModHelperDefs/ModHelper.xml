@@ -4,6 +4,9 @@
     <defName>RW_ColonistBarKF</defName>
     <ModName>RW_ColonistBarKF</ModName>
     <minCCLversion>0.14.0</minCCLversion>
+    <MapComponents>
+      <li>RW_ColonistBarKF.MapComponent_ColonistBarKF</li>
+    </MapComponents>
     <ModConfigurationMenus>
       <li>
         <label>RW_ColonistBarKF</label>

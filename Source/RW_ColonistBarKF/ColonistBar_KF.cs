@@ -3,13 +3,13 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static RW_ColonistBarKF.MapComponent_ColonistBarKF;
 
 namespace RW_ColonistBarKF
 {
     [StaticConstructorOnStartup]
     public class ColonistBarKF
     {
-        public static ColonistBarSettings Settings = new ColonistBarSettings();
 
         private const float PawnTextureCameraZoom = 1.28205f;
 
