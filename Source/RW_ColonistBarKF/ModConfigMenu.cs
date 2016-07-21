@@ -60,8 +60,8 @@ namespace RW_ColonistBarKF
 
             var listing2 = new Listing_Standard(contentRect);
 
-                FillPageShowHide(listing2, contentRect.width);
-                curY += 27 * 30f;
+            FillPageShowHide(listing2, contentRect.width);
+            curY += 27 * 30f;
 
             listing2.End();
 
@@ -115,7 +115,7 @@ namespace RW_ColonistBarKF
         {
 
             listing.ColumnWidth = listing.ColumnWidth;
-                Page = "showhide";
+            Page = "showhide";
         }
 
         private void FillPageShowHide(Listing_Standard listing, float columnwidth)
@@ -123,8 +123,10 @@ namespace RW_ColonistBarKF
 
             listing.ColumnWidth = columnwidth;
             DoHeading(listing, "PSI.Settings.Visibility.Header");
-            
-            listing.Slider(ColonistBarKF.Settings.BaseSizeFloat, 5f,80f);
+
+            listing.Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
+            ColonistBarKF.Settings.BaseSizeFloat = listing.Slider(ColonistBarKF.Settings.BaseSizeFloat, 24f, 96f);
+
         }
 
         public override void ExposeData()
