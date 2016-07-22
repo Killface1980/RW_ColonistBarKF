@@ -131,6 +131,9 @@ namespace RW_ColonistBarKF
             listing.Label("PSI.Settings.PawnTextureCameraZoom".Translate());
             Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.6f, 2.56f);
 
+            listing.Label("PSI.Settings.MaxColonistBarWidth".Translate());
+            Settings.MaxColonistBarWidth = listing.Slider(Settings.MaxColonistBarWidth, Screen.width/4, Screen.width);
+
 
             //   TextFieldNumeric(ref Settings.ColonistsPerRow,ref string "test", 0f,20f);
 
@@ -143,6 +146,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.BaseSizeFloat, "BaseSizeFloat", 48f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
+            Scribe_Values.LookValue(ref Settings.MaxColonistBarWidth, "MaxColonistBarWidth", Screen.width - 320f, false);
 
             Settings.reloadsettings = false;
 

@@ -148,7 +148,7 @@ namespace RW_ColonistBarKF
 
         public static int ColonistsPerRowAssumingScale(float scale)
         {
-            return Mathf.FloorToInt((MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
+            return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
         }
 
         private static float SpacingHorizontalAssumingScale(float scale)

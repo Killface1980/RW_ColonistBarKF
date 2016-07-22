@@ -1,4 +1,6 @@
-﻿namespace RW_ColonistBarKF
+﻿using UnityEngine;
+
+namespace RW_ColonistBarKF
 {
     public class Settings 
     {
@@ -8,5 +10,8 @@
         public static float BaseSizeFloat = 48f;
         public static float PawnTextureCameraVerticalOffset = 0.3f;
         public static float PawnTextureCameraZoom = 1.28205f;
+
+        public static float MaxColonistBarWidth = Screen.width - 320f;
+
     }
 }
