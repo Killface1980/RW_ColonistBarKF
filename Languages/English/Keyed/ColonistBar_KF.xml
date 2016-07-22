@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <RW_ColonistBarKF.Settings.RevertSettings>Revert settings</RW_ColonistBarKF.Settings.RevertSettings>
+  <RW_ColonistBarKF.Settings.MarginTop>Top margin</RW_ColonistBarKF.Settings.MarginTop>
+  <RW_ColonistBarKF.Settings.BaseSpacingHorizontal>Horizontal spacing</RW_ColonistBarKF.Settings.BaseSpacingHorizontal>
+  <RW_ColonistBarKF.Settings.BaseSpacingVertical>Vertical spacing</RW_ColonistBarKF.Settings.BaseSpacingVertical>
+  <RW_ColonistBarKF.Settings.BasicSize>Use fixed icon size</RW_ColonistBarKF.Settings.BasicSize>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Camera zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
+  <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
+
+</LanguageData>

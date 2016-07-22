@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <RW_ColonistBarKF.Settings.RevertSettings>Einstellungen zurücksetzen</RW_ColonistBarKF.Settings.RevertSettings>
+  <RW_ColonistBarKF.Settings.MarginTop>Oberer Rand</RW_ColonistBarKF.Settings.MarginTop>
+  <RW_ColonistBarKF.Settings.BaseSpacingHorizontal>Horizontaler Abstand</RW_ColonistBarKF.Settings.BaseSpacingHorizontal>
+  <RW_ColonistBarKF.Settings.BaseSpacingVertical>Vertikaler Abstand</RW_ColonistBarKF.Settings.BaseSpacingVertical>
+  <RW_ColonistBarKF.Settings.BasicSize>Benutze feste Icon-Größe</RW_ColonistBarKF.Settings.BasicSize>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Kamera Offset vertikal</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Kamera Zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
+  <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximale Breite</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
+
+</LanguageData>

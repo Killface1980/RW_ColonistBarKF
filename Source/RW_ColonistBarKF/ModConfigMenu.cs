@@ -22,118 +22,115 @@ namespace RW_ColonistBarKF
             inRect.xMin += 15f;
             inRect.width -= 15f;
 
-            Rect headerRect = inRect;
-            Rect headerRect2 = inRect;
-
-            var headerListing = new Listing_Standard(headerRect);
-
-            //       DoHeading(listing, "Pawn State Icons", false);
-
-            headerListing.ColumnWidth = inRect.width;
-            //    headerListing.ColumnWidth = inRect.width / 2 - 10f;
-
-            FillPageMain(headerListing);
-
-            headerListing.End();
-
-            curY += headerListing.CurHeight;
-
-
-            headerRect2.yMin += curY;
-            var listinghead = new Listing_Standard(headerRect2);
-
-            listinghead.ColumnWidth = headerListing.ColumnWidth / 2 - 10f;
-            FillPageMain(listinghead);
-
-            listinghead.End();
-
-            curY += listinghead.CurHeight;
-
-            curY += 15f;
-
             Rect contentRect = inRect;
             contentRect.yMin += curY;
 
             var listing2 = new Listing_Standard(contentRect);
 
             FillPageShowHide(listing2, contentRect.width);
-            curY += 27 * 30f;
+            curY += 650f;
 
             listing2.End();
 
             return curY;
         }
 
-        public static void DoCheckbox(Rect rect, ref bool value, string labelKey, string tipKey)
-        {
-            GameFont font = Text.Font;
-            TextAnchor anchor = Text.Anchor;
-            Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.MiddleLeft;
-            string text = Translator.Translate(labelKey);
-            Vector2 vector = new Vector2(rect.x, rect.y + (rect.height - 24f) / 2f);
-            float x = Text.CalcSize(text).x;
-            Rect rect2 = new Rect(rect.x + 24f + 4f, rect.y, x, rect.height);
-            Widgets.Checkbox(vector, ref value, 24f, false);
-            DoLabel(rect2, text, Translator.Translate(tipKey));
-            Text.Anchor = anchor;
-            Text.Font = font;
-        }
-
-        public static void DoLabel(Rect rect, string label, string tipText = "")
-        {
-            GameFont font = Text.Font;
-            TextAnchor anchor = Text.Anchor;
-            Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.MiddleLeft;
-            if (!GenText.NullOrEmpty(tipText))
-            {
-                Widgets.DrawHighlightIfMouseover(rect);
-                if (Mouse.IsOver(rect))
-                {
-                    GUI.DrawTexture(rect, TexUI.HighlightTex);
-                }
-                TooltipHandler.TipRegion(rect, tipText);
-            }
-            Widgets.Label(rect, label);
-            Text.Anchor = anchor;
-            Text.Font = font;
-        }
-
-        private void DoHeading(Listing_Standard listing, string translatorKey, bool translate = true)
-        {
-            Text.Font = GameFont.Medium;
-            listing.Label(translate ? translatorKey.Translate() : translatorKey);
-            Text.Font = GameFont.Small;
-        }
-
-        private void FillPageMain(Listing_Standard listing)
-        {
-
-            listing.ColumnWidth = listing.ColumnWidth;
-            Page = "showhide";
-        }
-
         private void FillPageShowHide(Listing_Standard listing, float columnwidth)
         {
-            // forces the mod to update the calues from the sliders. is deactivated by saving the values.
+            // forces the mod to update the values from the sliders. is deactivated by saving the values.
             Settings.reloadsettings = true;
 
+            listing.ColumnWidth = columnwidth/2;
+
+            if (listing.ButtonText("RW_ColonistBarKF.Settings.RevertSettings".Translate()))
+            {
+   //             Settings.useCustomScale = false;
+                Settings.useCustomMarginTop = false;
+                Settings.useCustomBaseSpacingHorizontal = false;
+                Settings.useCustomBaseSpacingVertical = false;
+                Settings.useCustomBaseSizeFloat = false;
+                Settings.useCustomPawnTextureCameraVerticalOffset = false;
+                Settings.useCustomPawnTextureCameraZoom = false;
+                Settings.useCustomMaxColonistBarWidth = false;
+
+                Settings.MarginTop = 21f;
+                Settings.BaseSpacingHorizontal = 24f;
+                Settings.BaseSpacingVertical = 32f;
+                Settings.BaseSizeFloat = 48f;
+                Settings.PawnTextureCameraVerticalOffset = 0.3f;
+                Settings.PawnTextureCameraZoom = 1.28205f;
+                Settings.MaxColonistBarWidth = Screen.width - 320f;
+            }
             listing.ColumnWidth = columnwidth;
-            DoHeading(listing, "PSI.Settings.Visibility.Header");
+            listing.Gap();
+            
+        //  listing.CheckboxLabeled("RW_ColonistBarKF.Settings.CustomScale".Translate(), ref Settings.useCustomScale, null);
+        //  if (Settings.useCustomScale)
+        //      Settings.Scale = listing.Slider(Settings.Scale, 0.1f, 1f);
+        //
+        //
+        //  listing.ColumnWidth = columnwidth;
+        //  listing.Gap();
 
-            listing.Label("PSI.Settings.BasicSize".Translate());
-            Settings.BaseSizeFloat = listing.Slider(Settings.BaseSizeFloat, 24f, 96f);
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref Settings.useCustomBaseSizeFloat, null);
 
-            listing.Label("PSI.Settings.PawnTextureCameraVerticalOffset".Translate());
-            Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0.15f, 0.6f);
+            if (Settings.useCustomBaseSizeFloat)
+            { 
+                Settings.BaseSizeFloat = listing.Slider(Settings.BaseSizeFloat, 24f, 96f);
+            }
+            else
+            {
+                Settings.BaseSizeFloat = 48f;
+            }
 
-            listing.Label("PSI.Settings.PawnTextureCameraZoom".Translate());
-            Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.6f, 2.56f);
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginTop".Translate(), ref Settings.useCustomMarginTop, null);
+            if (Settings.useCustomMarginTop)
+                Settings.MarginTop = listing.Slider(Settings.MarginTop, 10.5f, 42f);
+            else
+            {
+                Settings.MarginTop = 21f;
+            }
 
-            listing.Label("PSI.Settings.MaxColonistBarWidth".Translate());
-            Settings.MaxColonistBarWidth = listing.Slider(Settings.MaxColonistBarWidth, Screen.width/4, Screen.width);
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BaseSpacingHorizontal".Translate(), ref Settings.useCustomBaseSpacingHorizontal, null);
+            if (Settings.useCustomBaseSpacingHorizontal)
+                Settings.BaseSpacingHorizontal = listing.Slider(Settings.BaseSpacingHorizontal, 12f, 48f);
+            else
+            {
+                Settings.BaseSpacingHorizontal = 24f;
+            }
 
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BaseSpacingVertical".Translate(), ref Settings.useCustomBaseSpacingVertical, null);
+            if (Settings.useCustomBaseSpacingVertical)
+                Settings.BaseSpacingVertical = listing.Slider(Settings.BaseSpacingVertical, 16f, 64f);
+            else
+            {
+                Settings.BaseSpacingVertical = 32f;
+            }
+            listing.Gap();
+
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset".Translate(), ref Settings.useCustomPawnTextureCameraVerticalOffset, null);
+            if (Settings.useCustomPawnTextureCameraVerticalOffset)
+                Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0.15f, 0.6f);
+            else
+            {
+                Settings.PawnTextureCameraVerticalOffset = 0.3f;
+            }
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraZoom".Translate(), ref Settings.useCustomPawnTextureCameraZoom, null);
+            if (Settings.useCustomPawnTextureCameraZoom)
+                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.6f, 2.56f);
+            else
+            {
+                Settings.PawnTextureCameraZoom = 1.28205f;
+            }
+            listing.Gap();
+
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MaxColonistBarWidth".Translate(), ref Settings.useCustomMaxColonistBarWidth, null);
+            if (Settings.useCustomMaxColonistBarWidth)
+                Settings.MaxColonistBarWidth = listing.Slider(Settings.MaxColonistBarWidth, Screen.width / 6, Screen.width);
+            else
+            {
+                Settings.MaxColonistBarWidth = Screen.width - 320f;
+            }
 
             //   TextFieldNumeric(ref Settings.ColonistsPerRow,ref string "test", 0f,20f);
 
@@ -143,10 +140,23 @@ namespace RW_ColonistBarKF
         public override void ExposeData()
         {
 
+       //     Scribe_Values.LookValue(ref Settings.useCustomScale, "useCustomScale", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomMarginTop, "useCustomMarginTop", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomBaseSpacingHorizontal, "useCustomBaseSpacingHorizontal", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomBaseSizeFloat, "useCustomBaseSizeFloat", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomMaxColonistBarWidth, "useCustomMaxColonistBarWidth", false, false);
+
+            Scribe_Values.LookValue(ref Settings.MarginTop, "MarginTop", 21f, false);
+            Scribe_Values.LookValue(ref Settings.BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
+            Scribe_Values.LookValue(ref Settings.BaseSpacingVertical, "BaseSpacingVertical", 32f, false);
             Scribe_Values.LookValue(ref Settings.BaseSizeFloat, "BaseSizeFloat", 48f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
             Scribe_Values.LookValue(ref Settings.MaxColonistBarWidth, "MaxColonistBarWidth", Screen.width - 320f, false);
+
 
             Settings.reloadsettings = false;
 

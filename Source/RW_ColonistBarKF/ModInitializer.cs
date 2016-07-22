@@ -32,7 +32,7 @@ namespace RW_ColonistBarKF
         public void Start()
         {
             MethodInfo method = typeof(RimWorld.ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo method2 = typeof(ColonistBarKF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo method2 = typeof(ColonistBar_KF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
 
             try
             {

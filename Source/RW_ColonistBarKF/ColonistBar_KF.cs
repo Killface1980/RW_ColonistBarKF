@@ -6,18 +6,18 @@ using Verse;
 namespace RW_ColonistBarKF
 {
     [StaticConstructorOnStartup]
-    public class ColonistBarKF
+    public class ColonistBar_KF
     {
 
-        private static float PawnTextureCameraZoom = 1.28205f;
+//        private static float PawnTextureCameraZoom = 1.28205f;
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-        private const float MarginTop = 21f;
+//        private const float MarginTop = 21f;
 
-        private const float BaseSpacingHorizontal = 24f;
+//        private const float BaseSpacingHorizontal = 24f;
 
-        private const float BaseSpacingVertical = 32f;
+//        private const float BaseSpacingVertical = 32f;
 
         private const float BaseSelectedTexJump = 20f;
 
@@ -81,6 +81,11 @@ namespace RW_ColonistBarKF
         {
             get
             {
+                if (Settings.useCustomBaseSizeFloat)
+                {
+                    return 1f;
+                }
+
                 float num = 1f;
                 while (true)
                 {
@@ -96,13 +101,13 @@ namespace RW_ColonistBarKF
             }
         }
 
-        private static float MaxColonistBarWidth
-        {
-            get
-            {
-                return Screen.width - 320f;
-            }
-        }
+//      private static float MaxColonistBarWidth
+//      {
+//          get
+//          {
+//              return Screen.width - 320f;
+//          }
+//      }
 
         private Vector2 Size
         {
@@ -146,22 +151,22 @@ namespace RW_ColonistBarKF
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
 
-        public static int ColonistsPerRowAssumingScale(float scale)
+        private static int ColonistsPerRowAssumingScale(float scale)
         {
             return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
         }
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
-            return BaseSpacingHorizontal * scale;
+            return Settings.BaseSpacingHorizontal * scale;
         }
 
         private static float SpacingVerticalAssumingScale(float scale)
         {
-            return BaseSpacingVertical * scale;
+            return Settings.BaseSpacingVertical * scale;
         }
 
-        public static int GetAllowedRowsCountForScale(float scale)
+        private static int GetAllowedRowsCountForScale(float scale)
         {
             if (scale > 0.58f)
             {
@@ -189,9 +194,8 @@ namespace RW_ColonistBarKF
             {
                 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
                 PawnTextureSize = new Vector2(Settings.BaseSizeFloat - 2f, Settings.BaseSizeFloat * 1.5f);
-                PawnTextureCameraZoom = Settings.PawnTextureCameraZoom;
-                float PawnTextureCameraOffsetNew = PawnTextureCameraZoom / 1.28205f;
-                PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / PawnTextureCameraOffsetNew);
+                float pawnTextureCameraOffsetNew = Settings.PawnTextureCameraZoom / 1.28205f;
+                PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
                 Settings.firstload = false;
                 Settings.reloadsettings = false;
             }
@@ -277,7 +281,7 @@ namespace RW_ColonistBarKF
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
             float num = 0f;
-            float num2 = MarginTop;
+            float num2 = Settings.MarginTop;
             cachedDrawLocs.Clear();
             for (int i = 0; i < cachedColonists.Count; i++)
             {
@@ -344,7 +348,7 @@ namespace RW_ColonistBarKF
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
             }
-            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, PawnTextureCameraZoom));
+            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, Settings.PawnTextureCameraZoom));
             GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
             DrawIcons(rect, colonist);
             GUI.color = color;

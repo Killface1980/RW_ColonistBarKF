@@ -59,13 +59,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
-      <Link>About.xml</Link>
+      <Link>Defs\About.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
-      <Link>ModHelper.xml</Link>
+      <Link>Defs\ModHelper.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
-      <Link>Initializer.xml</Link>
+      <Link>Defs\Initializer.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Languages\English\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\English\ColonistBar_KF.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\German\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
