@@ -1,9 +1,4 @@
 ﻿using CommunityCoreLibrary;
-using CommunityCoreLibrary.UI;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -125,9 +120,17 @@ namespace RW_ColonistBarKF
             listing.ColumnWidth = columnwidth;
             DoHeading(listing, "PSI.Settings.Visibility.Header");
 
-            listing.Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
-            ColonistBarSettings.BaseSizeFloat = listing.Slider(ColonistBarSettings.BaseSizeFloat, 24f, 96f);
-         //   TextFieldNumeric(ref ColonistBarSettings.ColonistsPerRow,ref string "test", 0f,20f);
+            listing.Label("PSI.Settings.BasicSize".Translate());
+            CBS.BaseSizeFloat = listing.Slider(CBS.BaseSizeFloat, 24f, 96f);
+
+            listing.Label("PSI.Settings.PawnTextureCameraVerticalOffset".Translate());
+            CBS.PawnTextureCameraVerticalOffset = listing.Slider(CBS.PawnTextureCameraVerticalOffset, 0.15f, 0.6f);
+
+            listing.Label("PSI.Settings.PawnTextureCameraZoom".Translate());
+            CBS.PawnTextureCameraZoom = listing.Slider(CBS.PawnTextureCameraZoom, 0.6f, 2.56f);
+
+
+            //   TextFieldNumeric(ref CBS.ColonistsPerRow,ref string "test", 0f,20f);
 
 
         }
@@ -135,7 +138,9 @@ namespace RW_ColonistBarKF
         public override void ExposeData()
         {
 
-            Scribe_Values.LookValue(ref ColonistBarSettings.BaseSizeFloat, "BaseSizeFloat");
+            Scribe_Values.LookValue(ref CBS.BaseSizeFloat, "BaseSizeFloat", 48f, false);
+            Scribe_Values.LookValue(ref CBS.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
+            Scribe_Values.LookValue(ref CBS.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
 
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
