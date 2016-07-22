@@ -44,7 +44,7 @@ namespace RW_ColonistBarKF
                 Log.Error("Could not detour RW_ColonistBarKF");
                 throw;
             }
-
+            Settings.firstload = true;
         }
 
 

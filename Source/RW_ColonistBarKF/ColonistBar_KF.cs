@@ -59,10 +59,10 @@ namespace RW_ColonistBarKF
 
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
 
-        private static Vector2 BaseSize = new Vector2(CBS.BaseSizeFloat, CBS.BaseSizeFloat);
+        private static Vector2 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
 
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static Vector2 PawnTextureSize = new Vector2(CBS.BaseSizeFloat - 2f, CBS.BaseSizeFloat * 1.5f);
+        public static Vector2 PawnTextureSize = new Vector2(Settings.BaseSizeFloat - 2f, Settings.BaseSizeFloat * 1.5f);
 
         private static  Vector3 PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
 
@@ -185,11 +185,16 @@ namespace RW_ColonistBarKF
             {
                 return;
             }
-            BaseSize = new Vector2(CBS.BaseSizeFloat, CBS.BaseSizeFloat);
-            PawnTextureSize = new Vector2(CBS.BaseSizeFloat - 2f, CBS.BaseSizeFloat * 1.5f);
-            PawnTextureCameraZoom = CBS.PawnTextureCameraZoom;
-            float PawnTextureCameraOffsetNew = PawnTextureCameraZoom/1.28205f;
-            PawnTextureCameraOffset = new Vector3(0f, 0f, CBS.PawnTextureCameraVerticalOffset / PawnTextureCameraOffsetNew);
+            if (Settings.reloadsettings || Settings.firstload)
+            {
+                BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
+                PawnTextureSize = new Vector2(Settings.BaseSizeFloat - 2f, Settings.BaseSizeFloat * 1.5f);
+                PawnTextureCameraZoom = Settings.PawnTextureCameraZoom;
+                float PawnTextureCameraOffsetNew = PawnTextureCameraZoom / 1.28205f;
+                PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / PawnTextureCameraOffsetNew);
+                Settings.firstload = false;
+                Settings.reloadsettings = false;
+            }
 
             if (Event.current.type == EventType.Layout)
             {
