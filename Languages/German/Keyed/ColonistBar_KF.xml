@@ -10,5 +10,8 @@
   <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximale Breite</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
   <RW_ColonistBarKF.Settings.DoubleClickTime>Doppelklick-Zeit (Standard 0,5 s)</RW_ColonistBarKF.Settings.DoubleClickTime>
   <RW_ColonistBarKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</RW_ColonistBarKF.Settings.useGender>
+  <RW_ColonistBarKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</RW_ColonistBarKF.Settings.FemaleColor>
+  <RW_ColonistBarKF.Settings.MaleColor>Farbe für männliche Kolonisten</RW_ColonistBarKF.Settings.MaleColor>
+  <RW_ColonistBarKF.Settings.ResetColors>Farben zurücksetzen</RW_ColonistBarKF.Settings.ResetColors>
 
 </LanguageData>

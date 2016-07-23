@@ -29,6 +29,9 @@ namespace RW_ColonistBarKF
         public static float MaxColonistBarWidth = Screen.width - 320f;
         public static float DoubleClickTime = 0.5f;
 
+        public static Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+        public static Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+
 
 
 

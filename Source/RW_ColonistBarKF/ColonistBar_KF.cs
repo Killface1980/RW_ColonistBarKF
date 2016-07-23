@@ -333,16 +333,17 @@ namespace RW_ColonistBarKF
             GUI.color = color;
             if (Settings.useGender)
             {
-                Color32 BGColor = new Color();
+                Color BGColor = new Color();
                 if (colonist.gender == Gender.Male)
                 {
-                    BGColor = new Color(0.52f, 0.75f, 0.92f, colonistRectAlpha);
+                    BGColor = Settings.MaleColor;
                 }
                 if (colonist.gender == Gender.Female)
                 {
-                    BGColor = new Color(1f, 0.64f, 0.8f, colonistRectAlpha);
+                    BGColor = Settings.FemaleColor;
                 }
-                    GUI.color = BGColor;
+                BGColor.a = colonistRectAlpha;
+                GUI.color = BGColor;
             }
 
             // adding color overlay
