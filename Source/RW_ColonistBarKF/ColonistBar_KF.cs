@@ -9,19 +9,9 @@ namespace RW_ColonistBarKF
     public class ColonistBar_KF
     {
 
-//        private static float PawnTextureCameraZoom = 1.28205f;
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-//        private const float MarginTop = 21f;
-
-//        private const float BaseSpacingHorizontal = 24f;
-
-//        private const float BaseSpacingVertical = 32f;
-
-        private const float BaseSelectedTexJump = 20f;
-
-        private const float BaseIconSize = 20f;
 
         private const float DoubleClickTime = 0.5f;
 
@@ -64,24 +54,13 @@ namespace RW_ColonistBarKF
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
         public static Vector2 PawnTextureSize = new Vector2(Settings.BaseSizeFloat - 2f, Settings.BaseSizeFloat * 1.5f);
 
-        private static  Vector3 PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
-
-        private static List<Thing> tmpColonists = new List<Thing>();
-
-        public List<Pawn> ColonistsInOrder
-        {
-            get
-            {
-                CheckRecacheColonistsRaw();
-                return cachedColonists;
-            }
-        }
+        private static Vector3 PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
 
         private float Scale
         {
             get
             {
-                if (Settings.useCustomBaseSizeFloat)
+                if (Settings.useCustomIconSize)
                 {
                     return 1f;
                 }
@@ -100,14 +79,6 @@ namespace RW_ColonistBarKF
                 return num;
             }
         }
-
-//      private static float MaxColonistBarWidth
-//      {
-//          get
-//          {
-//              return Screen.width - 320f;
-//          }
-//      }
 
         private Vector2 Size
         {
@@ -143,6 +114,8 @@ namespace RW_ColonistBarKF
 
         private static Vector2 SizeAssumingScale(float scale)
         {
+            BaseSize.x = Settings.BaseSizeFloat;
+            BaseSize.y = Settings.BaseSizeFloat;
             return BaseSize * scale;
         }
 
@@ -158,16 +131,24 @@ namespace RW_ColonistBarKF
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
+            if (Settings.useCustomIconSize)
+                return Settings.BaseSpacingHorizontal;
+
             return Settings.BaseSpacingHorizontal * scale;
         }
 
         private static float SpacingVerticalAssumingScale(float scale)
         {
+            if (Settings.useCustomIconSize)
+                return Settings.BaseSpacingVertical;
             return Settings.BaseSpacingVertical * scale;
         }
 
         private static int GetAllowedRowsCountForScale(float scale)
         {
+            if (Settings.useCustomIconSize)
+                return 4;
+
             if (scale > 0.58f)
             {
                 return 1;
@@ -179,10 +160,7 @@ namespace RW_ColonistBarKF
             return 3;
         }
 
-        public void MarkColonistsListDirty()
-        {
-            colonistsDirty = true;
-        }
+        private static List<Thing> tmpColonists = new List<Thing>();
 
         public void ColonistBarOnGUI()
         {
@@ -192,8 +170,10 @@ namespace RW_ColonistBarKF
             }
             if (Settings.reloadsettings || Settings.firstload)
             {
-                BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
-                PawnTextureSize = new Vector2(Settings.BaseSizeFloat - 2f, Settings.BaseSizeFloat * 1.5f);
+                BaseSize.x = Settings.BaseSizeFloat;
+                BaseSize.y = Settings.BaseSizeFloat;
+                PawnTextureSize.x = Settings.BaseSizeFloat - 2f;
+                PawnTextureSize.y = Settings.BaseSizeFloat * 1.5f;
                 float pawnTextureCameraOffsetNew = Settings.PawnTextureCameraZoom / 1.28205f;
                 PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
                 Settings.firstload = false;
@@ -219,6 +199,7 @@ namespace RW_ColonistBarKF
             }
         }
 
+        // RimWorld.ColonistBar
         public List<Thing> ColonistsInScreenRect(Rect rect)
         {
             tmpColonists.Clear();
@@ -245,33 +226,6 @@ namespace RW_ColonistBarKF
             return tmpColonists;
         }
 
-        public Thing ColonistAt(Vector2 pos)
-        {
-            Pawn pawn = null;
-            RecacheDrawLocs();
-            for (int i = 0; i < cachedDrawLocs.Count; i++)
-            {
-                Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
-                if (rect.Contains(pos))
-                {
-                    pawn = cachedColonists[i];
-                }
-            }
-            Thing thing;
-            if (pawn != null && pawn.Dead)
-            {
-                thing = pawn.corpse;
-            }
-            else
-            {
-                thing = pawn;
-            }
-            if (thing != null && thing.Spawned)
-            {
-                return thing;
-            }
-            return null;
-        }
 
         private void RecacheDrawLocs()
         {
@@ -280,26 +234,26 @@ namespace RW_ColonistBarKF
             int colonistsPerRow = ColonistsPerRow;
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
-            float num = 0f;
-            float num2 = Settings.MarginTop;
+            float cachedDrawLocs_x = 0f;
+            float cachedDrawLocs_y = Settings.MarginTop;
             cachedDrawLocs.Clear();
             for (int i = 0; i < cachedColonists.Count; i++)
             {
                 if (i % colonistsPerRow == 0)
                 {
-                    int num3 = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
-                    float num4 = num3 * size.x + (num3 - 1) * spacingHorizontal;
-                    num = (Screen.width - num4) / 2f;
+                    int maxColInRow = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
+                    float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
+                    cachedDrawLocs_x = (Screen.width - num4) / 2f;
                     if (i != 0)
                     {
-                        num2 += size.y + spacingVertical;
+                        cachedDrawLocs_y += size.y + spacingVertical;
                     }
                 }
                 else
                 {
-                    num += size.x + spacingHorizontal;
+                    cachedDrawLocs_x += size.x + spacingHorizontal;
                 }
-                cachedDrawLocs.Add(new Vector2(num, num2));
+                cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
             }
         }
 
@@ -340,7 +294,7 @@ namespace RW_ColonistBarKF
         private void DrawColonist(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
-            bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
+            bool flag = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
             GUI.DrawTexture(rect, BGTex);
@@ -384,7 +338,7 @@ namespace RW_ColonistBarKF
             {
                 return;
             }
-            float num = BaseIconSize * Scale;
+            float num = Settings.BaseIconSize * Scale;
             Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - num - 1f);
             bool flag = false;
             if (colonist.CurJob != null)
@@ -439,7 +393,7 @@ namespace RW_ColonistBarKF
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            float num = BaseIconSize * Scale;
+            float num = Settings.BaseIconSize * Scale;
             Rect rect = new Rect(pos.x, pos.y, num, num);
             GUI.DrawTexture(rect, icon);
             TooltipHandler.TipRegion(rect, tooltip);
@@ -448,6 +402,7 @@ namespace RW_ColonistBarKF
 
         private void HandleColonistClicks(Rect rect, Pawn colonist)
         {
+
             if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
                 if (clickedColonist == colonist && Time.time - clickedAt < DoubleClickTime)
@@ -458,6 +413,7 @@ namespace RW_ColonistBarKF
                 }
                 else
                 {
+                    Find.Selector.Select(colonist);
                     clickedColonist = colonist;
                     clickedAt = Time.time;
                 }
@@ -473,7 +429,7 @@ namespace RW_ColonistBarKF
             }
             float num = 0.4f * Scale;
             Vector2 textureSize = new Vector2(SelectedTex.width * num, SelectedTex.height * num);
-            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, BaseIconSize * Scale);
+            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, Settings.BaseIconSize * Scale);
             int num2 = 90;
             for (int i = 0; i < 4; i++)
             {

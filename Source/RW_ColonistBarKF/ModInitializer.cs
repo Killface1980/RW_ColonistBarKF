@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using CommunityCoreLibrary;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
@@ -27,17 +29,22 @@ namespace RW_ColonistBarKF
     {
         public void FixedUpdate()
         {
+
         }
 
         public void Start()
         {
-            MethodInfo method = typeof(RimWorld.ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
+
+            MethodInfo method = typeof(ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo method2 = typeof(ColonistBar_KF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
+
+            MethodInfo method3 = typeof(ColonistBar).GetMethod("ColonistsInScreenRect", BindingFlags.CreateInstance | BindingFlags.Public);
+            MethodInfo method4 = typeof(ColonistBar_KF).GetMethod("ColonistsInScreenRect", BindingFlags.CreateInstance | BindingFlags.Public);
 
             try
             {
                 Detours.TryDetourFromTo(method, method2);
-
+                Detours.TryDetourFromTo(method3, method4);
             }
             catch (Exception)
             {

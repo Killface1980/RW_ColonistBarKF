@@ -1,4 +1,5 @@
-﻿using CommunityCoreLibrary;
+﻿using System.Collections.Generic;
+using CommunityCoreLibrary;
 using UnityEngine;
 using Verse;
 
@@ -27,7 +28,7 @@ namespace RW_ColonistBarKF
 
             var listing2 = new Listing_Standard(contentRect);
 
-            FillPageShowHide(listing2, contentRect.width);
+            FillPageMain(listing2, contentRect.width);
             curY += 650f;
 
             listing2.End();
@@ -35,7 +36,7 @@ namespace RW_ColonistBarKF
             return curY;
         }
 
-        private void FillPageShowHide(Listing_Standard listing, float columnwidth)
+        private void FillPageMain(Listing_Standard listing, float columnwidth)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
             Settings.reloadsettings = true;
@@ -44,11 +45,10 @@ namespace RW_ColonistBarKF
 
             if (listing.ButtonText("RW_ColonistBarKF.Settings.RevertSettings".Translate()))
             {
-   //             Settings.useCustomScale = false;
                 Settings.useCustomMarginTop = false;
                 Settings.useCustomBaseSpacingHorizontal = false;
                 Settings.useCustomBaseSpacingVertical = false;
-                Settings.useCustomBaseSizeFloat = false;
+                Settings.useCustomIconSize = false;
                 Settings.useCustomPawnTextureCameraVerticalOffset = false;
                 Settings.useCustomPawnTextureCameraZoom = false;
                 Settings.useCustomMaxColonistBarWidth = false;
@@ -72,20 +72,22 @@ namespace RW_ColonistBarKF
         //  listing.ColumnWidth = columnwidth;
         //  listing.Gap();
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref Settings.useCustomBaseSizeFloat, null);
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref Settings.useCustomIconSize, null);
 
-            if (Settings.useCustomBaseSizeFloat)
+            if (Settings.useCustomIconSize)
             { 
-                Settings.BaseSizeFloat = listing.Slider(Settings.BaseSizeFloat, 24f, 96f);
+                Settings.BaseSizeFloat = listing.Slider(Settings.BaseSizeFloat, 16f, 128f);
+                Settings.BaseIconSize = Settings.BaseSizeFloat/2f - 4f;
             }
             else
             {
                 Settings.BaseSizeFloat = 48f;
+                Settings.BaseIconSize = 20f;
             }
 
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginTop".Translate(), ref Settings.useCustomMarginTop, null);
             if (Settings.useCustomMarginTop)
-                Settings.MarginTop = listing.Slider(Settings.MarginTop, 10.5f, 42f);
+                Settings.MarginTop = listing.Slider(Settings.MarginTop, 8f, 64f);
             else
             {
                 Settings.MarginTop = 21f;
@@ -110,14 +112,15 @@ namespace RW_ColonistBarKF
 
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset".Translate(), ref Settings.useCustomPawnTextureCameraVerticalOffset, null);
             if (Settings.useCustomPawnTextureCameraVerticalOffset)
-                Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0.15f, 0.6f);
+                Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0f, 1f);
             else
             {
                 Settings.PawnTextureCameraVerticalOffset = 0.3f;
             }
+
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraZoom".Translate(), ref Settings.useCustomPawnTextureCameraZoom, null);
             if (Settings.useCustomPawnTextureCameraZoom)
-                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.6f, 2.56f);
+                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.3f, 3f);
             else
             {
                 Settings.PawnTextureCameraZoom = 1.28205f;
@@ -140,11 +143,10 @@ namespace RW_ColonistBarKF
         public override void ExposeData()
         {
 
-       //     Scribe_Values.LookValue(ref Settings.useCustomScale, "useCustomScale", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomMarginTop, "useCustomMarginTop", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomBaseSpacingHorizontal, "useCustomBaseSpacingHorizontal", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false, false);
-            Scribe_Values.LookValue(ref Settings.useCustomBaseSizeFloat, "useCustomBaseSizeFloat", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomIconSize, "useCustomIconSize", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomMaxColonistBarWidth, "useCustomMaxColonistBarWidth", false, false);
@@ -153,6 +155,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
             Scribe_Values.LookValue(ref Settings.BaseSpacingVertical, "BaseSpacingVertical", 32f, false);
             Scribe_Values.LookValue(ref Settings.BaseSizeFloat, "BaseSizeFloat", 48f, false);
+            Scribe_Values.LookValue(ref Settings.BaseIconSize, "BaseIconSize", 20f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
             Scribe_Values.LookValue(ref Settings.MaxColonistBarWidth, "MaxColonistBarWidth", Screen.width - 320f, false);

@@ -4,6 +4,8 @@
     <defName>RW_ColonistBarKF</defName>
     <ModName>RW_ColonistBarKF</ModName>
     <minCCLversion>0.14.0</minCCLversion>
+    <SpecialInjectors>
+    </SpecialInjectors>
     <ModConfigurationMenus>
       <li>
         <label>RW_ColonistBarKF</label>
