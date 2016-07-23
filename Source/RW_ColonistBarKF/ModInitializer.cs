@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using CommunityCoreLibrary;
 using RimWorld;
@@ -38,13 +37,17 @@ namespace RW_ColonistBarKF
             MethodInfo method = typeof(ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo method2 = typeof(ColonistBar_KF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
 
-            MethodInfo method3 = typeof(ColonistBar).GetMethod("ColonistsInScreenRect", BindingFlags.CreateInstance | BindingFlags.Public);
-            MethodInfo method4 = typeof(ColonistBar_KF).GetMethod("ColonistsInScreenRect", BindingFlags.CreateInstance | BindingFlags.Public);
+            MethodInfo method3 = typeof(ColonistBar).GetMethod("ColonistsInScreenRect", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo method4 = typeof(ColonistBar_KF).GetMethod("ColonistsInScreenRect", BindingFlags.Instance | BindingFlags.Public);
+
+            MethodInfo method5 = typeof(ColonistBar).GetMethod("ColonistAt", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo method6 = typeof(ColonistBar_KF).GetMethod("ColonistAt", BindingFlags.Instance | BindingFlags.Public);
 
             try
             {
                 Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(method3, method4);
+                Detours.TryDetourFromTo(method5, method6);
             }
             catch (Exception)
             {

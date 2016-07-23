@@ -202,6 +202,7 @@ namespace RW_ColonistBarKF
         // RimWorld.ColonistBar
         public List<Thing> ColonistsInScreenRect(Rect rect)
         {
+
             tmpColonists.Clear();
             RecacheDrawLocs();
             for (int i = 0; i < cachedDrawLocs.Count; i++)
@@ -224,6 +225,35 @@ namespace RW_ColonistBarKF
                 }
             }
             return tmpColonists;
+        }
+
+        // RimWorld.ColonistBar
+        public Thing ColonistAt(Vector2 pos)
+        {
+            Pawn pawn = null;
+            RecacheDrawLocs();
+            for (int i = 0; i < cachedDrawLocs.Count; i++)
+            {
+                Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
+                if (rect.Contains(pos))
+                {
+                    pawn = cachedColonists[i];
+                }
+            }
+            Thing thing;
+            if (pawn != null && pawn.Dead)
+            {
+                thing = pawn.corpse;
+            }
+            else
+            {
+                thing = pawn;
+            }
+            if (thing != null && thing.Spawned)
+            {
+                return thing;
+            }
+            return null;
         }
 
 
@@ -413,7 +443,6 @@ namespace RW_ColonistBarKF
                 }
                 else
                 {
-                    Find.Selector.Select(colonist);
                     clickedColonist = colonist;
                     clickedAt = Time.time;
                 }
