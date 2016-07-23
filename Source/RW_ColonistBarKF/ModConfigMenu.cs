@@ -44,6 +44,7 @@ namespace RW_ColonistBarKF
 
             if (listing.ButtonText("RW_ColonistBarKF.Settings.RevertSettings".Translate()))
             {
+                Settings.useGender = false;
                 Settings.useCustomMarginTop = false;
                 Settings.useCustomBaseSpacingHorizontal = false;
                 Settings.useCustomBaseSpacingVertical = false;
@@ -62,14 +63,17 @@ namespace RW_ColonistBarKF
             }
             listing.ColumnWidth = columnwidth;
             listing.Gap();
-            
-        //  listing.CheckboxLabeled("RW_ColonistBarKF.Settings.CustomScale".Translate(), ref Settings.useCustomScale, null);
-        //  if (Settings.useCustomScale)
-        //      Settings.Scale = listing.Slider(Settings.Scale, 0.1f, 1f);
-        //
-        //
-        //  listing.ColumnWidth = columnwidth;
-        //  listing.Gap();
+
+            //  listing.CheckboxLabeled("RW_ColonistBarKF.Settings.CustomScale".Translate(), ref Settings.useCustomScale, null);
+            //  if (Settings.useCustomScale)
+            //      Settings.Scale = listing.Slider(Settings.Scale, 0.1f, 1f);
+            //
+            //
+            //  listing.ColumnWidth = columnwidth;
+            //  listing.Gap();
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.useGender".Translate(), ref Settings.useGender, null);
+
+            listing.Gap();
 
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref Settings.useCustomIconSize, null);
 
@@ -109,6 +113,14 @@ namespace RW_ColonistBarKF
             }
             listing.Gap();
 
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraZoom".Translate(), ref Settings.useCustomPawnTextureCameraZoom, null);
+            if (Settings.useCustomPawnTextureCameraZoom)
+                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.3f, 3f);
+            else
+            {
+                Settings.PawnTextureCameraZoom = 1.28205f;
+            }
+
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset".Translate(), ref Settings.useCustomPawnTextureCameraVerticalOffset, null);
             if (Settings.useCustomPawnTextureCameraVerticalOffset)
                 Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0f, 1f);
@@ -117,13 +129,6 @@ namespace RW_ColonistBarKF
                 Settings.PawnTextureCameraVerticalOffset = 0.3f;
             }
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraZoom".Translate(), ref Settings.useCustomPawnTextureCameraZoom, null);
-            if (Settings.useCustomPawnTextureCameraZoom)
-                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.3f, 3f);
-            else
-            {
-                Settings.PawnTextureCameraZoom = 1.28205f;
-            }
             listing.Gap();
 
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MaxColonistBarWidth".Translate(), ref Settings.useCustomMaxColonistBarWidth, null);
@@ -134,8 +139,13 @@ namespace RW_ColonistBarKF
                 Settings.MaxColonistBarWidth = Screen.width - 320f;
             }
 
-            //   TextFieldNumeric(ref Settings.ColonistsPerRow,ref string "test", 0f,20f);
-
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.DoubleClickTime".Translate(), ref Settings.useCustomDoubleClickTime, null);
+            if (Settings.useCustomDoubleClickTime)
+                Settings.DoubleClickTime = listing.Slider(Settings.DoubleClickTime, 0.1f, 1.5f);
+            else
+            {
+                Settings.DoubleClickTime = 0.5f;
+            }
 
         }
 
@@ -149,6 +159,8 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomMaxColonistBarWidth, "useCustomMaxColonistBarWidth", false, false);
+            Scribe_Values.LookValue(ref Settings.useCustomDoubleClickTime, "useCustomDoubleClick", false, false);
+            Scribe_Values.LookValue(ref Settings.useGender, "useGender", false, false);
 
             Scribe_Values.LookValue(ref Settings.MarginTop, "MarginTop", 21f, false);
             Scribe_Values.LookValue(ref Settings.BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
@@ -158,6 +170,8 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref Settings.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
             Scribe_Values.LookValue(ref Settings.MaxColonistBarWidth, "MaxColonistBarWidth", Screen.width - 320f, false);
+
+            Scribe_Values.LookValue(ref Settings.DoubleClickTime, "DoubleClickTime", 0.5f, false);
 
 
             Settings.reloadsettings = false;

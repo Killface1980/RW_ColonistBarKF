@@ -8,5 +8,7 @@
   <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
   <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Camera zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
   <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
+  <RW_ColonistBarKF.Settings.DoubleClickTime>Double Click Time (standard 0.5 s)</RW_ColonistBarKF.Settings.DoubleClickTime>
+  <RW_ColonistBarKF.Settings.useGender>Use background color by gender</RW_ColonistBarKF.Settings.useGender>
 
 </LanguageData>

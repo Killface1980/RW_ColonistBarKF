@@ -12,9 +12,6 @@ namespace RW_ColonistBarKF
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-
-        private const float DoubleClickTime = 0.5f;
-
         private List<Pawn> cachedColonists = new List<Pawn>();
 
         private List<Vector2> cachedDrawLocs = new List<Vector2>();
@@ -27,7 +24,8 @@ namespace RW_ColonistBarKF
 
         private float clickedAt;
 
-        private static readonly Texture2D BGTex = Command.BGTex;
+        private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
+        //   private static readonly Texture2D BGTex = Command.BGTex;
 
         private static readonly Texture2D SelectedTex = ContentFinder<Texture2D>.Get("UI/Overlays/SelectionBracketGUI", true);
 
@@ -178,6 +176,12 @@ namespace RW_ColonistBarKF
                 PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
                 Settings.firstload = false;
                 Settings.reloadsettings = false;
+                if (Settings.useGender)
+                    BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_grey", true);
+                else
+                {
+                    BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
+                }
             }
 
             if (Event.current.type == EventType.Layout)
@@ -327,7 +331,25 @@ namespace RW_ColonistBarKF
             bool flag = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
+            if (Settings.useGender)
+            {
+                Color32 BGColor = new Color();
+                if (colonist.gender == Gender.Male)
+                {
+                    BGColor = new Color(0.52f, 0.75f, 0.92f, colonistRectAlpha);
+                }
+                if (colonist.gender == Gender.Female)
+                {
+                    BGColor = new Color(1f, 0.64f, 0.8f, colonistRectAlpha);
+                }
+                    GUI.color = BGColor;
+            }
+
+            // adding color overlay
+
             GUI.DrawTexture(rect, BGTex);
+            GUI.color = color;
+
             if (flag)
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
@@ -435,7 +457,7 @@ namespace RW_ColonistBarKF
 
             if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
-                if (clickedColonist == colonist && Time.time - clickedAt < DoubleClickTime)
+                if (clickedColonist == colonist && Time.time - clickedAt < Settings.DoubleClickTime)
                 {
                     Event.current.Use();
                     JumpToTargetUtility.TryJump(colonist);

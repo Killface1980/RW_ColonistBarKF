@@ -15,6 +15,8 @@ namespace RW_ColonistBarKF
         public static bool useCustomPawnTextureCameraVerticalOffset = false;
         public static bool useCustomPawnTextureCameraZoom = false;
         public static bool useCustomMaxColonistBarWidth = false;
+        public static bool useCustomDoubleClickTime = false;
+        public static bool useGender = true;
 
 
         public static float MarginTop = 21f;
@@ -25,6 +27,7 @@ namespace RW_ColonistBarKF
         public static float PawnTextureCameraVerticalOffset = 0.3f;
         public static float PawnTextureCameraZoom = 1.28205f;
         public static float MaxColonistBarWidth = Screen.width - 320f;
+        public static float DoubleClickTime = 0.5f;
 
 
 
