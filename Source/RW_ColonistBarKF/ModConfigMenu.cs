@@ -17,27 +17,23 @@ namespace RW_ColonistBarKF
 
         #region Methods
 
-        public override float DoWindowContents(Rect inRect)
+        public override float DoWindowContents(Rect rect)
         {
             float curY = 0f;
 
-            inRect.xMin += 15f;
-            inRect.width -= 15f;
+            rect.xMin += 15f;
+            rect.width -= 15f;
 
-            Rect contentRect = inRect;
-            contentRect.yMin += curY;
+            var listing = new Listing_Standard(rect);
+            {
+                FillPageMain(listing, rect.width, ref curY);
+            }
 
-            var listing2 = new Listing_Standard(contentRect);
-
-            FillPageMain(listing2, contentRect.width);
-            curY += 650f;
-
-            listing2.End();
-
-            return curY;
+            return 680f;
+            //return curY;
         }
 
-        private void FillPageMain(Listing_Standard listing, float columnwidth)
+        private void FillPageMain(Listing_Standard listing, float columnwidth, ref float curY)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
             Settings.reloadsettings = true;
@@ -85,6 +81,8 @@ namespace RW_ColonistBarKF
                 listing.ColumnWidth = columnwidth;
                 listing.Gap();
             }
+
+            curY += listing.CurHeight;
 
 
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref Settings.useCustomIconSize, null);
@@ -158,6 +156,8 @@ namespace RW_ColonistBarKF
             {
                 Settings.DoubleClickTime = 0.5f;
             }
+            listing.End();
+            curY += listing.CurHeight;
 
         }
 

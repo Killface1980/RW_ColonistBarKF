@@ -357,6 +357,7 @@ namespace RW_ColonistBarKF
             }
             GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, Settings.PawnTextureCameraZoom));
             GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
+     //       colonist.Drawer.renderer.graphics.headGraphic = colonist.Drawer.renderer.graphics.skullGraphic;
             DrawIcons(rect, colonist);
             GUI.color = color;
             if (colonist.Dead)
