@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -23,6 +26,8 @@ namespace RW_ColonistBarKF
         private Pawn clickedColonist;
 
         private float clickedAt;
+
+        private float clickedSecondTimeAt;
 
         private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
         //   private static readonly Texture2D BGTex = Command.BGTex;
@@ -197,7 +202,13 @@ namespace RW_ColonistBarKF
                     HandleColonistClicks(rect, colonist);
                     if (Event.current.type == EventType.Repaint)
                     {
+
                         DrawColonist(rect, colonist);
+
+                      //WidgetRow row = new WidgetRow(rect.x, rect.yMax - 36f, UIDirection.RightThenUp, 99999f, 4f);
+                      //DrawMoodbar(row, rect, colonist);
+                      //WidgetRow row2 = new WidgetRow(rect.x, rect.yMax - 18f, UIDirection.RightThenUp, 99999f, 4f);
+                      //DrawHealthbar(row2, rect, colonist);
                     }
                 }
             }
@@ -331,9 +342,10 @@ namespace RW_ColonistBarKF
             bool flag = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
+
+            Color BGColor = new Color();
             if (Settings.useGender)
             {
-                Color BGColor = new Color();
                 if (colonist.gender == Gender.Male)
                 {
                     BGColor = Settings.MaleColor;
@@ -342,9 +354,17 @@ namespace RW_ColonistBarKF
                 {
                     BGColor = Settings.FemaleColor;
                 }
-                BGColor.a = colonistRectAlpha;
-                GUI.color = BGColor;
             }
+            if (colonist.Dead)
+                BGColor = BGColor * Color.gray;
+
+            // else if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
+            // {
+            //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
+            // }
+            BGColor.a = colonistRectAlpha;
+            GUI.color = BGColor;
+
 
             // adding color overlay
 
@@ -357,7 +377,6 @@ namespace RW_ColonistBarKF
             }
             GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, Settings.PawnTextureCameraZoom));
             GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
-     //       colonist.Drawer.renderer.graphics.headGraphic = colonist.Drawer.renderer.graphics.skullGraphic;
             DrawIcons(rect, colonist);
             GUI.color = color;
             if (colonist.Dead)
@@ -368,6 +387,45 @@ namespace RW_ColonistBarKF
             Vector2 pos = new Vector2(rect.center.x, rect.yMax - num);
             GenWorldUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
+        }
+        private static readonly Texture2D MoodTex;
+        private static readonly Texture2D HealthTex;
+        private static readonly Texture2D BarBGTex;
+        static ColonistBar_KF()
+        {
+            // Note: this type is marked as 'beforefieldinit'.
+            Color colorInt = Color.cyan;
+            MoodTex = SolidColorMaterials.NewSolidColorTexture(colorInt);
+            Color32 colorInt2 = new Color32(10, 10, 10,112);
+            BarBGTex = SolidColorMaterials.NewSolidColorTexture(colorInt2);
+            Color colorInt3 = Color.green;
+            HealthTex = SolidColorMaterials.NewSolidColorTexture(colorInt3);
+        }
+        private void DrawHealthbar(WidgetRow row, Rect rect, Pawn colonist)
+        {
+            float fillPct;
+            string label;
+
+
+            GUI.color = Color.white;
+            fillPct = colonist.health.summaryHealth.SummaryHealthPercent;
+            label = HealthUtility.GetGeneralConditionLabel(colonist);
+            row.FillableBar(rect.width-2f, 16f, fillPct, label, HealthTex, BarBGTex);
+            GUI.color = Color.white;
+
+            // else if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
+            // {
+            //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
+            // }
+        }
+        private static void DrawMoodbar(WidgetRow row, Rect rect,  Pawn pawn)
+        {
+            if (pawn.needs == null || pawn.needs.mood == null)
+            {
+                return;
+            }
+            row.FillableBar(rect.width-2f, 16f, pawn.needs.mood.CurLevelPercentage, pawn.needs.mood.MoodString.CapitalizeFirst(), MoodTex, BarBGTex);
+
         }
 
         private float GetColonistRectAlpha(Rect rect)
@@ -454,9 +512,10 @@ namespace RW_ColonistBarKF
             pos.x += num;
         }
 
+
+
         private void HandleColonistClicks(Rect rect, Pawn colonist)
         {
-
             if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
                 if (clickedColonist == colonist && Time.time - clickedAt < Settings.DoubleClickTime)
@@ -470,6 +529,10 @@ namespace RW_ColonistBarKF
                     clickedColonist = colonist;
                     clickedAt = Time.time;
                 }
+            }
+            if (Mouse.IsOver(rect) && Event.current.button == 2)
+            {
+                Find.WindowStack.Add(new Dialog_InfoCard(colonist));
             }
         }
 
