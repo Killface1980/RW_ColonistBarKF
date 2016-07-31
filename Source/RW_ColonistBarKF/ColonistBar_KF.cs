@@ -53,8 +53,6 @@ namespace RW_ColonistBarKF
 
         // custom test
 
-        private static Texture2D Icon_Sad = new Texture2D(1,1);
-
 
 
 
@@ -472,16 +470,16 @@ namespace RW_ColonistBarKF
             }
             // custom 
 
-            if (Settings.useExtraIcons)
-            {
-                if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
-                {
-                    GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
-                    Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
-                    DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
-                    GUI.color = Color.white;
-                } 
-            }
+   //       if (Settings.useExtraIcons)
+   //       {
+   //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
+   //           {
+   //               GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
+   //               Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
+   //               DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
+   //               GUI.color = Color.white;
+   //           } 
+   //       }
 
         }
 

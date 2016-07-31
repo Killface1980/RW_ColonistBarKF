@@ -17,7 +17,7 @@ namespace RW_ColonistBarKF
         public static bool useCustomMaxColonistBarWidth = false;
         public static bool useCustomDoubleClickTime = false;
         public static bool useGender = true;
-        public static bool useExtraIcons = false;
+    //    public static bool useExtraIcons = false;
 
 
         public static float MarginTop = 21f;
