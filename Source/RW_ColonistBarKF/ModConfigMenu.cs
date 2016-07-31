@@ -156,6 +156,9 @@ namespace RW_ColonistBarKF
             {
                 Settings.DoubleClickTime = 0.5f;
             }
+
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.useExtraIcons".Translate(), ref Settings.useExtraIcons, null);
+
             listing.End();
             curY += listing.CurHeight;
 
@@ -189,6 +192,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.useCustomMaxColonistBarWidth, "useCustomMaxColonistBarWidth", false, false);
             Scribe_Values.LookValue(ref Settings.useCustomDoubleClickTime, "useCustomDoubleClick", false, false);
             Scribe_Values.LookValue(ref Settings.useGender, "useGender", false, false);
+            Scribe_Values.LookValue(ref Settings.useExtraIcons, "useExtraIcons", false, false);
 
             Scribe_Values.LookValue(ref Settings.MarginTop, "MarginTop", 21f, false);
             Scribe_Values.LookValue(ref Settings.BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);

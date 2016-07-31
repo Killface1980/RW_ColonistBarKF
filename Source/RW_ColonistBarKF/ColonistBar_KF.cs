@@ -27,7 +27,6 @@ namespace RW_ColonistBarKF
 
         private float clickedAt;
 
-        private float clickedSecondTimeAt;
 
         private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
         //   private static readonly Texture2D BGTex = Command.BGTex;
@@ -51,6 +50,14 @@ namespace RW_ColonistBarKF
         private static readonly Texture2D Icon_Idle = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Idle", true);
 
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
+
+        // custom test
+
+        private static Texture2D Icon_Sad = new Texture2D(1,1);
+
+
+
+
 
         private static Vector2 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
 
@@ -388,45 +395,7 @@ namespace RW_ColonistBarKF
             GenWorldUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
         }
-        private static readonly Texture2D MoodTex;
-        private static readonly Texture2D HealthTex;
-        private static readonly Texture2D BarBGTex;
-        static ColonistBar_KF()
-        {
-            // Note: this type is marked as 'beforefieldinit'.
-            Color colorInt = Color.cyan;
-            MoodTex = SolidColorMaterials.NewSolidColorTexture(colorInt);
-            Color32 colorInt2 = new Color32(10, 10, 10,112);
-            BarBGTex = SolidColorMaterials.NewSolidColorTexture(colorInt2);
-            Color colorInt3 = Color.green;
-            HealthTex = SolidColorMaterials.NewSolidColorTexture(colorInt3);
-        }
-        private void DrawHealthbar(WidgetRow row, Rect rect, Pawn colonist)
-        {
-            float fillPct;
-            string label;
 
-
-            GUI.color = Color.white;
-            fillPct = colonist.health.summaryHealth.SummaryHealthPercent;
-            label = HealthUtility.GetGeneralConditionLabel(colonist);
-            row.FillableBar(rect.width-2f, 16f, fillPct, label, HealthTex, BarBGTex);
-            GUI.color = Color.white;
-
-            // else if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
-            // {
-            //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
-            // }
-        }
-        private static void DrawMoodbar(WidgetRow row, Rect rect,  Pawn pawn)
-        {
-            if (pawn.needs == null || pawn.needs.mood == null)
-            {
-                return;
-            }
-            row.FillableBar(rect.width-2f, 16f, pawn.needs.mood.CurLevelPercentage, pawn.needs.mood.MoodString.CapitalizeFirst(), MoodTex, BarBGTex);
-
-        }
 
         private float GetColonistRectAlpha(Rect rect)
         {
@@ -501,6 +470,19 @@ namespace RW_ColonistBarKF
             {
                 DrawIcon(Icon_Burning, ref vector, "ActivityIconBurning".Translate());
             }
+            // custom 
+
+            if (Settings.useExtraIcons)
+            {
+                if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
+                {
+                    GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
+                    Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
+                    DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
+                    GUI.color = Color.white;
+                } 
+            }
+
         }
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
