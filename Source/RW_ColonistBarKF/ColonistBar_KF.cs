@@ -120,6 +120,14 @@ namespace RW_ColonistBarKF
             }
         }
 
+        private int ColonistsPerColumn
+        {
+            get
+            {
+                return ColonistsPerColumnAssumingScale(Scale);
+            }
+        }
+
         private static Vector2 SizeAssumingScale(float scale)
         {
             BaseSize.x = Settings.BaseSizeFloat;
@@ -134,13 +142,18 @@ namespace RW_ColonistBarKF
 
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
+            return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale) ) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
+        }
+
+        private static int ColonistsPerColumnAssumingScale(float scale)
+        {
+            return Mathf.FloorToInt((Settings.MaxColonistBarHeight + SpacingVerticalAssumingScale(scale)) / (SizeAssumingScale(scale).y + SpacingVerticalAssumingScale(scale)));
         }
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
             if (Settings.useCustomIconSize)
-                return Settings.BaseSpacingHorizontal;
+                return Settings.BaseSpacingHorizontal * Settings.BaseIconSize / 20f;
 
             return Settings.BaseSpacingHorizontal * scale;
         }
@@ -148,7 +161,7 @@ namespace RW_ColonistBarKF
         private static float SpacingVerticalAssumingScale(float scale)
         {
             if (Settings.useCustomIconSize)
-                return Settings.BaseSpacingVertical;
+                return Settings.BaseSpacingVertical * Settings.BaseIconSize / 20f;
             return Settings.BaseSpacingVertical * scale;
         }
 
@@ -190,7 +203,7 @@ namespace RW_ColonistBarKF
                     BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_grey", true);
                 else
                 {
-                    BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
+                    BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_vanilla", true);
                 }
             }
 
@@ -210,10 +223,10 @@ namespace RW_ColonistBarKF
 
                         DrawColonist(rect, colonist);
 
-                      //WidgetRow row = new WidgetRow(rect.x, rect.yMax - 36f, UIDirection.RightThenUp, 99999f, 4f);
-                      //DrawMoodbar(row, rect, colonist);
-                      //WidgetRow row2 = new WidgetRow(rect.x, rect.yMax - 18f, UIDirection.RightThenUp, 99999f, 4f);
-                      //DrawHealthbar(row2, rect, colonist);
+                        //WidgetRow row = new WidgetRow(rect.x, rect.yMax - 36f, UIDirection.RightThenUp, 99999f, 4f);
+                        //DrawMoodbar(row, rect, colonist);
+                        //WidgetRow row2 = new WidgetRow(rect.x, rect.yMax - 18f, UIDirection.RightThenUp, 99999f, 4f);
+                        //DrawHealthbar(row2, rect, colonist);
                     }
                 }
             }
@@ -282,28 +295,73 @@ namespace RW_ColonistBarKF
             CheckRecacheColonistsRaw();
             Vector2 size = Size;
             int colonistsPerRow = ColonistsPerRow;
+            int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
-            float cachedDrawLocs_x = 0f;
+            float cachedDrawLocs_x = 0f+Settings.MarginHorizontal;
+            if (Settings.useRightAlignment)
+                cachedDrawLocs_x = Screen.width - size.x - Settings.MarginHorizontal;
             float cachedDrawLocs_y = Settings.MarginTop;
             cachedDrawLocs.Clear();
-            for (int i = 0; i < cachedColonists.Count; i++)
+            if (Settings.useVerticalAlignment)
             {
-                if (i % colonistsPerRow == 0)
+                for (int i = 0; i < cachedColonists.Count; i++)
                 {
-                    int maxColInRow = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
-                    float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
-                    cachedDrawLocs_x = (Screen.width - num4) / 2f;
-                    if (i != 0)
+                    //         Debug.Log("Colonists count: " + i);
+                    if (i % colonistsPerColumn == 0)
+                    {
+                        int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedColonists.Count - i);
+                        float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * spacingVertical;
+                        cachedDrawLocs_y = (Screen.height - num4) / 2f + Settings.VerticalOffset;
+                        if (i != 0)
+                        {
+                            if (Settings.useRightAlignment)
+                            {
+                                cachedDrawLocs_x -= size.x + spacingHorizontal;
+                            }
+                            else
+                            {
+                                cachedDrawLocs_x += size.x + spacingHorizontal;
+                            }
+                        }
+                        //         Debug.Log("maxColInColumn " + maxColInColumn);
+                    }
+                    else
                     {
                         cachedDrawLocs_y += size.y + spacingVertical;
                     }
+                    cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
+
+                    //      Debug.Log("MaxColonistBarHeight:" + Settings.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
+                    //
+                    //      Debug.Log("colonistsPerRow " + colonistsPerRow);
+                    //      Debug.Log("colonistsPerColumn " + colonistsPerColumn);
+                    //      Debug.Log("cachedDrawLocs_x: " + cachedDrawLocs_x);
+                    //      Debug.Log("cachedDrawLocs_y: " + cachedDrawLocs_y);
+                    //      Debug.Log("cachedColonists: " + i);
+
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < cachedColonists.Count; i++)
                 {
-                    cachedDrawLocs_x += size.x + spacingHorizontal;
+                    if (i % colonistsPerRow == 0)
+                    {
+                        int maxColInRow = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
+                        float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
+                        cachedDrawLocs_x = (Screen.width - num4) / 2f + Settings.HorizontalOffset;
+                        if (i != 0)
+                        {
+                            cachedDrawLocs_y += size.y + spacingVertical;
+                        }
+                    }
+                    else
+                    {
+                        cachedDrawLocs_x += size.x + spacingHorizontal;
+                    }
+                    cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
                 }
-                cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
             }
         }
 
@@ -368,7 +426,10 @@ namespace RW_ColonistBarKF
             //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
             // }
             BGColor.a = colonistRectAlpha;
-            GUI.color = BGColor;
+            if (Settings.useGender)
+            {
+                GUI.color = BGColor;
+            }
 
 
             // adding color overlay
@@ -470,16 +531,16 @@ namespace RW_ColonistBarKF
             }
             // custom 
 
-   //       if (Settings.useExtraIcons)
-   //       {
-   //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
-   //           {
-   //               GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
-   //               Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
-   //               DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
-   //               GUI.color = Color.white;
-   //           } 
-   //       }
+            //       if (Settings.useExtraIcons)
+            //       {
+            //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
+            //           {
+            //               GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
+            //               Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
+            //               DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
+            //               GUI.color = Color.white;
+            //           } 
+            //       }
 
         }
 
