@@ -13,5 +13,11 @@
   <RW_ColonistBarKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</RW_ColonistBarKF.Settings.FemaleColor>
   <RW_ColonistBarKF.Settings.MaleColor>Farbe für männliche Kolonisten</RW_ColonistBarKF.Settings.MaleColor>
   <RW_ColonistBarKF.Settings.ResetColors>Farben zurücksetzen</RW_ColonistBarKF.Settings.ResetColors>
+  <RW_ColonistBarKF.Settings.useVerticalAlignment>Icons vertikal ausrichten</RW_ColonistBarKF.Settings.useVerticalAlignment>
+  <RW_ColonistBarKF.Settings.useRightAlignment>Icons rechts ausrichten</RW_ColonistBarKF.Settings.useRightAlignment>
+  <RW_ColonistBarKF.Settings.VerticalOffset>Vertikaler Versatz</RW_ColonistBarKF.Settings.VerticalOffset>
+  <RW_ColonistBarKF.Settings.HorizontalOffset>Horizontaler Versatz</RW_ColonistBarKF.Settings.HorizontalOffset>
+  <RW_ColonistBarKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</RW_ColonistBarKF.Settings.MaxColonistBarHeight>
+  <RW_ColonistBarKF.Settings.MarginHorizontal>Horizontaler Rand</RW_ColonistBarKF.Settings.MarginHorizontal>
 
 </LanguageData>

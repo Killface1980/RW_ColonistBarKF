@@ -71,6 +71,7 @@ namespace RW_ColonistBarKF
                 Settings.MarginHorizontal = 21f;
                 Settings.VerticalOffset = 0f;
                 Settings.MaxColonistBarHeight = Screen.height - 200f;
+                Settings.useRightAlignment= true;
             }
 
             listing.ColumnWidth = columnwidth;
