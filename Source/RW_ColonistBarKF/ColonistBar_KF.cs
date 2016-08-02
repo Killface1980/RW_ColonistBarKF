@@ -68,12 +68,29 @@ namespace RW_ColonistBarKF
         {
             get
             {
+                float num = 1f;
+
                 if (Settings.useCustomIconSize)
                 {
-                    return 1f;
+                    if (Settings.useFixedIconScale)
+                    {
+                        return 1f;
+                    }
+
+                    while (true)
+                    {
+                        int allowedRowsCountForScale = GetAllowedRowsCountForScale(num);
+                        int num2 = RowsCountAssumingScale(num);
+                        if (num2 <= allowedRowsCountForScale)
+                        {
+                            break;
+                        }
+                        num *= 0.95f;
+                    }
+                    return num;
                 }
 
-                float num = 1f;
+
                 while (true)
                 {
                     int allowedRowsCountForScale = GetAllowedRowsCountForScale(num);
@@ -142,7 +159,7 @@ namespace RW_ColonistBarKF
 
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale) ) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
+            return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
         }
 
         private static int ColonistsPerColumnAssumingScale(float scale)
@@ -152,22 +169,18 @@ namespace RW_ColonistBarKF
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
-            if (Settings.useCustomIconSize)
-                return Settings.BaseSpacingHorizontal * Settings.BaseIconSize / 20f;
 
             return Settings.BaseSpacingHorizontal * scale;
         }
 
         private static float SpacingVerticalAssumingScale(float scale)
         {
-            if (Settings.useCustomIconSize)
-                return Settings.BaseSpacingVertical * Settings.BaseIconSize / 20f;
             return Settings.BaseSpacingVertical * scale;
         }
 
         private static int GetAllowedRowsCountForScale(float scale)
         {
-            if (Settings.useCustomIconSize)
+            if (Settings.useFixedIconScale)
                 return 4;
 
             if (scale > 0.58f)
@@ -223,10 +236,6 @@ namespace RW_ColonistBarKF
 
                         DrawColonist(rect, colonist);
 
-                        //WidgetRow row = new WidgetRow(rect.x, rect.yMax - 36f, UIDirection.RightThenUp, 99999f, 4f);
-                        //DrawMoodbar(row, rect, colonist);
-                        //WidgetRow row2 = new WidgetRow(rect.x, rect.yMax - 18f, UIDirection.RightThenUp, 99999f, 4f);
-                        //DrawHealthbar(row2, rect, colonist);
                     }
                 }
             }
@@ -298,13 +307,22 @@ namespace RW_ColonistBarKF
             int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
-            float cachedDrawLocs_x = 0f+Settings.MarginHorizontal;
-            if (Settings.useRightAlignment)
-                cachedDrawLocs_x = Screen.width - size.x - Settings.MarginHorizontal;
-            float cachedDrawLocs_y = Settings.MarginTop;
+            float cachedDrawLocs_x = 0f + Settings.MarginLeftHor;
+            float cachedDrawLocs_y = Settings.MarginTopBottomHor;
+            if (Settings.useVerticalAlignment)
+            {
+                cachedDrawLocs_x = 0f + Settings.MarginLeftRightVer;
+                if (Settings.useRightAlignment)
+                    cachedDrawLocs_x = Screen.width - size.x - Settings.MarginLeftRightVer;
+            }
+            else if (Settings.useBottomAlignment)
+            {
+                cachedDrawLocs_y = Screen.height - size.y - Settings.MarginTopBottomHor - 30f -12f;
+            }
             cachedDrawLocs.Clear();
             if (Settings.useVerticalAlignment)
             {
+
                 for (int i = 0; i < cachedColonists.Count; i++)
                 {
                     //         Debug.Log("Colonists count: " + i);
@@ -353,7 +371,14 @@ namespace RW_ColonistBarKF
                         cachedDrawLocs_x = (Screen.width - num4) / 2f + Settings.HorizontalOffset;
                         if (i != 0)
                         {
-                            cachedDrawLocs_y += size.y + spacingVertical;
+                            if (Settings.useBottomAlignment)
+                            {
+                                cachedDrawLocs_y -= size.y + spacingVertical;
+                            }
+                            else
+                            {
+                                cachedDrawLocs_y += size.y + spacingVertical;
+                            }
                         }
                     }
                     else

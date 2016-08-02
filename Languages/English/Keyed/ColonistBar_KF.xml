@@ -1,24 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RW_ColonistBarKF.Settings.RevertSettings>Revert settings</RW_ColonistBarKF.Settings.RevertSettings>
-  <RW_ColonistBarKF.Settings.MarginTop>Top margin</RW_ColonistBarKF.Settings.MarginTop>
+  <RW_ColonistBarKF.Settings.BarPosition>Colonist Bar Position</RW_ColonistBarKF.Settings.BarPosition>
   <RW_ColonistBarKF.Settings.BaseSpacingHorizontal>Horizontal spacing</RW_ColonistBarKF.Settings.BaseSpacingHorizontal>
   <RW_ColonistBarKF.Settings.BaseSpacingVertical>Vertical spacing</RW_ColonistBarKF.Settings.BaseSpacingVertical>
-  <RW_ColonistBarKF.Settings.BasicSize>Use fixed icon size</RW_ColonistBarKF.Settings.BasicSize>
+  <RW_ColonistBarKF.Settings.BasicSize>Basic icon size</RW_ColonistBarKF.Settings.BasicSize>
+  <RW_ColonistBarKF.Settings.DoubleClickTime>Double Click Time (standard 0.5 s)</RW_ColonistBarKF.Settings.DoubleClickTime>
+  <RW_ColonistBarKF.Settings.FemaleColor>Color for female colonists</RW_ColonistBarKF.Settings.FemaleColor>
+  <RW_ColonistBarKF.Settings.FixedScale>No scaling</RW_ColonistBarKF.Settings.FixedScale>
+  <RW_ColonistBarKF.Settings.MaleColor>Color for male colonists</RW_ColonistBarKF.Settings.MaleColor>
+  <RW_ColonistBarKF.Settings.MarginEdge>Margin from screen edge</RW_ColonistBarKF.Settings.MarginEdge>
+  <RW_ColonistBarKF.Settings.MarginLeft>Left margin</RW_ColonistBarKF.Settings.MarginLeft>
+  <RW_ColonistBarKF.Settings.MarcginRight>Right margin</RW_ColonistBarKF.Settings.MarcginRight>
+  <RW_ColonistBarKF.Settings.MarginTop>Top margin</RW_ColonistBarKF.Settings.MarginTop>
+  <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
   <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
   <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Camera zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
-  <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
-  <RW_ColonistBarKF.Settings.DoubleClickTime>Double Click Time (standard 0.5 s)</RW_ColonistBarKF.Settings.DoubleClickTime>
-  <RW_ColonistBarKF.Settings.useGender>Use background color by gender</RW_ColonistBarKF.Settings.useGender>
-  <RW_ColonistBarKF.Settings.FemaleColor>Color for female colonists</RW_ColonistBarKF.Settings.FemaleColor>
-  <RW_ColonistBarKF.Settings.MaleColor>Color for male colonists</RW_ColonistBarKF.Settings.MaleColor>
   <RW_ColonistBarKF.Settings.ResetColors>Reset Colors</RW_ColonistBarKF.Settings.ResetColors>
-  <RW_ColonistBarKF.Settings.useVerticalAlignment>Vertical icon alignment</RW_ColonistBarKF.Settings.useVerticalAlignment>
-  <RW_ColonistBarKF.Settings.useRightAlignment>Align icons on the right side</RW_ColonistBarKF.Settings.useRightAlignment>
-  <RW_ColonistBarKF.Settings.VerticalOffset>Vertical offset</RW_ColonistBarKF.Settings.VerticalOffset>
-  <RW_ColonistBarKF.Settings.HorizontalOffset>Horizontal offset</RW_ColonistBarKF.Settings.HorizontalOffset>
-  <RW_ColonistBarKF.Settings.MaxColonistBarHeight>Maximum bar height</RW_ColonistBarKF.Settings.MaxColonistBarHeight>
-  <RW_ColonistBarKF.Settings.MarginHorizontal>Horizontal margin</RW_ColonistBarKF.Settings.MarginHorizontal>
+  <RW_ColonistBarKF.Settings.RevertSettings>Revert settings</RW_ColonistBarKF.Settings.RevertSettings>
+  <RW_ColonistBarKF.Settings.useBottom>Bottom</RW_ColonistBarKF.Settings.useBottom>
+  <RW_ColonistBarKF.Settings.useGender>Use background color by gender</RW_ColonistBarKF.Settings.useGender>
+  <RW_ColonistBarKF.Settings.useLeft>Left</RW_ColonistBarKF.Settings.useLeft>
+  <RW_ColonistBarKF.Settings.useRight>Right</RW_ColonistBarKF.Settings.useRight>
+  <RW_ColonistBarKF.Settings.useTop>Top</RW_ColonistBarKF.Settings.useTop>
+
 
 
 </LanguageData>
