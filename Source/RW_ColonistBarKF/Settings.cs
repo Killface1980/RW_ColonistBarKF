@@ -23,8 +23,6 @@ namespace RW_ColonistBarKF
         public static bool useFixedIconScale = false;
         public static bool useCustomPawnTextureCameraVerticalOffset = false;
         public static bool useCustomPawnTextureCameraZoom = false;
-        public static bool useCustomMaxColonistBarWidth = false;
-        public static bool useCustomMaxColonistBarHeight = false;
         public static bool useCustomDoubleClickTime = false;
         public static bool useGender = true;
         public static bool useVerticalAlignment = false;

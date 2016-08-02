@@ -8,9 +8,10 @@
   <RW_ColonistBarKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</RW_ColonistBarKF.Settings.FemaleColor>
   <RW_ColonistBarKF.Settings.FixedScale>Keine Skalierung</RW_ColonistBarKF.Settings.FixedScale>
   <RW_ColonistBarKF.Settings.MaleColor>Farbe für männliche Kolonisten</RW_ColonistBarKF.Settings.MaleColor>
+  <RW_ColonistBarKF.Settings.MarginBottom>Unterer Abstand</RW_ColonistBarKF.Settings.MarginBottom>
   <RW_ColonistBarKF.Settings.MarginEdge>Abstand Rand</RW_ColonistBarKF.Settings.MarginEdge>
   <RW_ColonistBarKF.Settings.MarginLeft>Linker Abstand</RW_ColonistBarKF.Settings.MarginLeft>
-  <RW_ColonistBarKF.Settings.MarcginRight>Rechter Abstand</RW_ColonistBarKF.Settings.MarcginRight>
+  <RW_ColonistBarKF.Settings.MarginRight>Rechter Abstand</RW_ColonistBarKF.Settings.MarginRight>
   <RW_ColonistBarKF.Settings.MarginTop>Oberer Abstand</RW_ColonistBarKF.Settings.MarginTop>
   <RW_ColonistBarKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</RW_ColonistBarKF.Settings.MaxColonistBarHeight>
   <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Kamera Offset vertikal</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>

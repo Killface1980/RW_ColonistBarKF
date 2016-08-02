@@ -33,6 +33,7 @@ namespace RW_ColonistBarKF
 
         public void Start()
         {
+            Settings.firstload = true;
 
             MethodInfo method = typeof(ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo method2 = typeof(ColonistBar_KF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
@@ -54,7 +55,6 @@ namespace RW_ColonistBarKF
                 Log.Error("Could not detour RW_ColonistBarKF");
                 throw;
             }
-            Settings.firstload = true;
         }
 
 

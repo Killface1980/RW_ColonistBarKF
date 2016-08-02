@@ -67,7 +67,6 @@ namespace RW_ColonistBarKF
                 useCustomIconSize = false;
                 useCustomPawnTextureCameraVerticalOffset = false;
                 useCustomPawnTextureCameraZoom = false;
-                useCustomMaxColonistBarWidth = false;
                 useCustomMarginLeftHor = false;
                 useCustomMarginRightHor = false;
                 useBottomAlignment = false;
@@ -85,12 +84,11 @@ namespace RW_ColonistBarKF
                 femaleColorField.Value = new Color(1f, 0.64f, 0.8f, 1f);
                 maleColorField.Value = new Color(0.52f, 0.75f, 0.92f, 1f);
 
+                HorizontalOffset = 0f;
                 VerticalOffset = 0f;
                 useCustomBaseSpacingVertical = false;
                 useVerticalAlignment = false;
-                useCustomMaxColonistBarHeight = false;
                 BaseSpacingVertical = 32f;
-                VerticalOffset = 0f;
                 MaxColonistBarHeight = Screen.height - 240f;
                 useRightAlignment = false;
                 MarginLeftHor = 180f;
@@ -436,8 +434,6 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref useFixedIconScale, "useFixedIconScale", false, false);
             Scribe_Values.LookValue(ref useCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
             Scribe_Values.LookValue(ref useCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
-            Scribe_Values.LookValue(ref useCustomMaxColonistBarWidth, "useCustomMaxColonistBarWidth", false, false);
-            Scribe_Values.LookValue(ref useCustomMaxColonistBarHeight, "useCustomMaxColonistBarHeight", false, false);
             Scribe_Values.LookValue(ref useCustomDoubleClickTime, "useCustomDoubleClick", false, false);
             Scribe_Values.LookValue(ref useGender, "useGender", false, false);
             Scribe_Values.LookValue(ref useVerticalAlignment, "useVerticalAlignment", false, false);
@@ -453,7 +449,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref MarginBottomVer, "MarginBottomVer", 120f, false);
 
             Scribe_Values.LookValue(ref HorizontalOffset, "HorizontalOffset", 0f, false);
-            Scribe_Values.LookValue(ref VerticalOffset, "MarginBottomVer", 0f, false);
+            Scribe_Values.LookValue(ref VerticalOffset, "VerticalOffset", 0f, false);
 
 
             Scribe_Values.LookValue(ref BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
@@ -463,13 +459,13 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
             Scribe_Values.LookValue(ref MaxColonistBarWidth, "MaxColonistBarWidth");
+            Scribe_Values.LookValue(ref MaxColonistBarHeight, "MaxColonistBarHeight");
 
 
             Scribe_Values.LookValue(ref DoubleClickTime, "DoubleClickTime", 0.5f, false);
 
             Scribe_Values.LookValue(ref FemaleColor, "FemaleColor");
             Scribe_Values.LookValue(ref MaleColor, "MaleColor");
-
 
             reloadsettings = false;
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

@@ -8,9 +8,10 @@
   <RW_ColonistBarKF.Settings.FemaleColor>Color for female colonists</RW_ColonistBarKF.Settings.FemaleColor>
   <RW_ColonistBarKF.Settings.FixedScale>No scaling</RW_ColonistBarKF.Settings.FixedScale>
   <RW_ColonistBarKF.Settings.MaleColor>Color for male colonists</RW_ColonistBarKF.Settings.MaleColor>
+  <RW_ColonistBarKF.Settings.MarginBottom>Bottom margin</RW_ColonistBarKF.Settings.MarginBottom>
   <RW_ColonistBarKF.Settings.MarginEdge>Margin from screen edge</RW_ColonistBarKF.Settings.MarginEdge>
   <RW_ColonistBarKF.Settings.MarginLeft>Left margin</RW_ColonistBarKF.Settings.MarginLeft>
-  <RW_ColonistBarKF.Settings.MarcginRight>Right margin</RW_ColonistBarKF.Settings.MarcginRight>
+  <RW_ColonistBarKF.Settings.MarginRight>Right margin</RW_ColonistBarKF.Settings.MarginRight>
   <RW_ColonistBarKF.Settings.MarginTop>Top margin</RW_ColonistBarKF.Settings.MarginTop>
   <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
   <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
