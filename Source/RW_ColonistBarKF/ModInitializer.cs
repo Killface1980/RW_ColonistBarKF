@@ -33,7 +33,7 @@ namespace RW_ColonistBarKF
 
         public void Start()
         {
-            Settings.firstload = true;
+            Settings.Firstload = true;
 
             MethodInfo method = typeof(ColonistBar).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo method2 = typeof(ColonistBar_KF).GetMethod("ColonistBarOnGUI", BindingFlags.Instance | BindingFlags.Public);

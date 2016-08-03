@@ -70,9 +70,9 @@ namespace RW_ColonistBarKF
             {
                 float num = 1f;
 
-                if (Settings.useCustomIconSize)
+                if (Settings.UseCustomIconSize)
                 {
-                    if (Settings.useFixedIconScale)
+                    if (Settings.UseFixedIconScale)
                     {
                         return 1f;
                     }
@@ -180,7 +180,7 @@ namespace RW_ColonistBarKF
 
         private static int GetAllowedRowsCountForScale(float scale)
         {
-            if (Settings.useFixedIconScale)
+            if (Settings.UseFixedIconScale)
                 return 4;
 
             if (scale > 0.58f)
@@ -202,7 +202,7 @@ namespace RW_ColonistBarKF
             {
                 return;
             }
-            if (Settings.reloadsettings || Settings.firstload)
+            if (Settings.Reloadsettings || Settings.Firstload)
             {
                 BaseSize.x = Settings.BaseSizeFloat;
                 BaseSize.y = Settings.BaseSizeFloat;
@@ -210,9 +210,9 @@ namespace RW_ColonistBarKF
                 PawnTextureSize.y = Settings.BaseSizeFloat * 1.5f;
                 float pawnTextureCameraOffsetNew = Settings.PawnTextureCameraZoom / 1.28205f;
                 PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
-                Settings.firstload = false;
-                Settings.reloadsettings = false;
-                if (Settings.useGender)
+                Settings.Firstload = false;
+                Settings.Reloadsettings = false;
+                if (Settings.UseGender)
                     BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_grey", true);
                 else
                 {
@@ -307,20 +307,20 @@ namespace RW_ColonistBarKF
             int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
-            float cachedDrawLocs_x = 0f + Settings.MarginLeftHor;
-            float cachedDrawLocs_y = Settings.MarginTopBottomHor;
-            if (Settings.useVerticalAlignment)
+            float cachedDrawLocs_x = 0f + Settings.MarginLeftHorTop;
+            float cachedDrawLocs_y = Settings.MarginTopHor;
+            if (Settings.UseVerticalAlignment)
             {
-                cachedDrawLocs_x = 0f + Settings.MarginLeftRightVer;
-                if (Settings.useRightAlignment)
-                    cachedDrawLocs_x = Screen.width - size.x - Settings.MarginLeftRightVer;
+                cachedDrawLocs_x = 0f + Settings.MarginLeftVer;
+                if (Settings.UseRightAlignment)
+                    cachedDrawLocs_x = Screen.width - size.x - Settings.MarginRightVer;
             }
-            else if (Settings.useBottomAlignment)
+            else if (Settings.UseBottomAlignment)
             {
-                cachedDrawLocs_y = Screen.height - size.y - Settings.MarginTopBottomHor - 30f -12f;
+                cachedDrawLocs_y = Screen.height - size.y - Settings.MarginBottomHor - 30f -12f;
             }
             cachedDrawLocs.Clear();
-            if (Settings.useVerticalAlignment)
+            if (Settings.UseVerticalAlignment)
             {
 
                 for (int i = 0; i < cachedColonists.Count; i++)
@@ -333,7 +333,7 @@ namespace RW_ColonistBarKF
                         cachedDrawLocs_y = (Screen.height - num4) / 2f + Settings.VerticalOffset;
                         if (i != 0)
                         {
-                            if (Settings.useRightAlignment)
+                            if (Settings.UseRightAlignment)
                             {
                                 cachedDrawLocs_x -= size.x + spacingHorizontal;
                             }
@@ -371,7 +371,7 @@ namespace RW_ColonistBarKF
                         cachedDrawLocs_x = (Screen.width - num4) / 2f + Settings.HorizontalOffset;
                         if (i != 0)
                         {
-                            if (Settings.useBottomAlignment)
+                            if (Settings.UseBottomAlignment)
                             {
                                 cachedDrawLocs_y -= size.y + spacingVertical;
                             }
@@ -432,7 +432,7 @@ namespace RW_ColonistBarKF
             GUI.color = color;
 
             Color BGColor = new Color();
-            if (Settings.useGender)
+            if (Settings.UseGender)
             {
                 if (colonist.gender == Gender.Male)
                 {
@@ -451,7 +451,7 @@ namespace RW_ColonistBarKF
             //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
             // }
             BGColor.a = colonistRectAlpha;
-            if (Settings.useGender)
+            if (Settings.UseGender)
             {
                 GUI.color = BGColor;
             }
