@@ -277,6 +277,7 @@ namespace RW_ColonistBarKF
             {
                 listing.Indent();
 
+
                 if (UseBottomAlignment)
                 {
                     listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginEdge".Translate(), ref UseCustomMarginBottomHor, null);
@@ -605,6 +606,9 @@ namespace RW_ColonistBarKF
 
             Scribe_Values.LookValue(ref FemaleColor, "FemaleColor");
             Scribe_Values.LookValue(ref MaleColor, "MaleColor");
+
+            Scribe_Values.LookValue(ref MaxRows, "MaxRows");
+
 
             Reloadsettings = false;
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

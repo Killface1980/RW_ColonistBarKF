@@ -27,9 +27,9 @@ namespace RW_ColonistBarKF
         private float clickedAt;
 
 
-     //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
+        //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
         //   private static readonly Texture2D BGTex = Command.BGTex;
-           private static Texture2D BGTex = Command.BGTex;
+        private static Texture2D BGTex = Command.BGTex;
 
         private static readonly Texture2D SelectedTex = ContentFinder<Texture2D>.Get("UI/Overlays/SelectionBracketGUI", true);
 
@@ -91,20 +91,20 @@ namespace RW_ColonistBarKF
                 }
 
                 if (Settings.UseCustomIconSize)
-              {
+                {
 
                     while (true)
-                  {
-                      int allowedRowsCountForScale = GetAllowedRowsCountForScaleModded(num);
-                      int num2 = RowsCountAssumingScale(num);
-                      if (num2 <= allowedRowsCountForScale)
-                      {
-                          break;
-                      }
-                      num *= 0.95f;
-                  }
-                  return num;
-              }
+                    {
+                        int allowedRowsCountForScale = GetAllowedRowsCountForScaleModded(num);
+                        int num2 = RowsCountAssumingScale(num);
+                        if (num2 <= allowedRowsCountForScale)
+                        {
+                            break;
+                        }
+                        num *= 0.95f;
+                    }
+                    return num;
+                }
 
 
                 while (true)
@@ -197,59 +197,41 @@ namespace RW_ColonistBarKF
             return Settings.BaseSpacingVertical * scale;
         }
 
-       private static int GetAllowedRowsCountForScale(float scale)
-                {
-                    if (Settings.UseFixedIconScale)
-                        return 4;
-
-                    if (scale > 0.58f)
-                    {
-                        return 1;
-                    }
-                    if (scale > 0.42f)
-                    {
-                        return 2;
-                    }
-                    return 3;
-                }
+        private static int GetAllowedRowsCountForScale(float scale)
+        {
+            if (scale > 0.58f)
+            {
+                return 1;
+            }
+            if (scale > 0.42f)
+            {
+                return 2;
+            }
+            return 3;
+        }
 
         private static int GetAllowedColumnsCountForScale(float scale)
         {
-            if (Settings.UseFixedIconScale)
-                return 8;
 
-            if (scale > 0.9f)
+            if (scale > 0.7f)
             {
                 return 4;
             }
-            if (scale > 0.8f)
+            if (scale > 0.6f)
             {
                 return 5;
             }
-            if (scale > 0.7f)
+            if (scale > 0.5f)
             {
                 return 6;
             }
-            if (scale > 0.6f)
-            {
-                return 7;
-            }
-            if (scale > 0.5f)
-            {
-                return 8;
-            }
-            if (scale > 0.4f)
-            {
-                return 9;
-            }
-            return 10;
+
+            return 7;
+
         }
 
         private static int GetAllowedRowsCountForScaleModded(float scale)
         {
-            if (Settings.UseFixedIconScale)
-                return 4;
-
             if (scale > 0.67f)
             {
                 return 2;
@@ -384,7 +366,7 @@ namespace RW_ColonistBarKF
             }
             else if (Settings.UseBottomAlignment)
             {
-                cachedDrawLocs_y = Screen.height - size.y - Settings.MarginBottomHor - 30f -12f;
+                cachedDrawLocs_y = Screen.height - size.y - Settings.MarginBottomHor - 30f - 12f;
             }
             cachedDrawLocs.Clear();
             if (Settings.UseVerticalAlignment)

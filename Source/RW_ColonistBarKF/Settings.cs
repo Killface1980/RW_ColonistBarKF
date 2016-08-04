@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Verse;
 
 namespace RW_ColonistBarKF
 {
@@ -21,6 +22,7 @@ namespace RW_ColonistBarKF
         public static bool UseCustomMarginRightVer = false;
         public static bool UseCustomMarginBottomVerLeft = false;
         public static bool UseCustomMarginBottomVerRight = false;
+
 
 
         public static bool UseCustomBaseSpacingHorizontal = false;
@@ -66,5 +68,7 @@ namespace RW_ColonistBarKF
 
         public static Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
         public static Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+
+        public static int MaxRows;
     }
 }
