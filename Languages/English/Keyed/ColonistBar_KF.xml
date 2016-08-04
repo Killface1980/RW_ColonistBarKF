@@ -3,7 +3,7 @@
   <RW_ColonistBarKF.Settings.BarPosition>Colonist Bar Position</RW_ColonistBarKF.Settings.BarPosition>
   <RW_ColonistBarKF.Settings.BaseSpacingHorizontal>Horizontal spacing</RW_ColonistBarKF.Settings.BaseSpacingHorizontal>
   <RW_ColonistBarKF.Settings.BaseSpacingVertical>Vertical spacing</RW_ColonistBarKF.Settings.BaseSpacingVertical>
-  <RW_ColonistBarKF.Settings.BasicSize>Basic icon size</RW_ColonistBarKF.Settings.BasicSize>
+  <RW_ColonistBarKF.Settings.BasicSize>Maximum icon size</RW_ColonistBarKF.Settings.BasicSize>
   <RW_ColonistBarKF.Settings.DoubleClickTime>Double Click Time (standard 0.5 s)</RW_ColonistBarKF.Settings.DoubleClickTime>
   <RW_ColonistBarKF.Settings.FemaleColor>Color for female colonists</RW_ColonistBarKF.Settings.FemaleColor>
   <RW_ColonistBarKF.Settings.FixedScale>No scaling</RW_ColonistBarKF.Settings.FixedScale>

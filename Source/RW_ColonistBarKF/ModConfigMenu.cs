@@ -395,7 +395,7 @@ namespace RW_ColonistBarKF
             if (UseCustomBaseSpacingHorizontal)
             {
                 listing.Gap(3f);
-                BaseSpacingHorizontal = listing.Slider(BaseSpacingHorizontal, 1f, 36f);
+                BaseSpacingHorizontal = listing.Slider(BaseSpacingHorizontal, 1f, 72f);
             }
             else
             {
@@ -407,7 +407,7 @@ namespace RW_ColonistBarKF
             if (UseCustomBaseSpacingVertical)
             {
                 listing.Gap(3f);
-                BaseSpacingVertical = listing.Slider(BaseSpacingVertical, 1f, 48f);
+                BaseSpacingVertical = listing.Slider(BaseSpacingVertical, 1f, 96f);
             }
             else
             {

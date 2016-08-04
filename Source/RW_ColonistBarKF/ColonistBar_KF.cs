@@ -12,7 +12,6 @@ namespace RW_ColonistBarKF
     public class ColonistBar_KF
     {
 
-
         private const float PawnTextureHorizontalPadding = 1f;
 
         private List<Pawn> cachedColonists = new List<Pawn>();
@@ -28,8 +27,9 @@ namespace RW_ColonistBarKF
         private float clickedAt;
 
 
-        private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
+     //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
         //   private static readonly Texture2D BGTex = Command.BGTex;
+           private static Texture2D BGTex = Command.BGTex;
 
         private static readonly Texture2D SelectedTex = ContentFinder<Texture2D>.Get("UI/Overlays/SelectionBracketGUI", true);
 
@@ -70,18 +70,18 @@ namespace RW_ColonistBarKF
             {
                 float num = 1f;
 
-                if (Settings.UseCustomIconSize)
+                if (Settings.UseFixedIconScale)
                 {
-                    if (Settings.UseFixedIconScale)
-                    {
-                        return 1f;
-                    }
+                    return 1f;
+                }
 
+                if (Settings.UseVerticalAlignment)
+                {
                     while (true)
                     {
-                        int allowedRowsCountForScale = GetAllowedRowsCountForScale(num);
-                        int num2 = RowsCountAssumingScale(num);
-                        if (num2 <= allowedRowsCountForScale)
+                        int allowedColumnsCountForScale = GetAllowedColumnsCountForScale(num);
+                        int num2 = ColumnsCountAssumingScale(num);
+                        if (num2 <= allowedColumnsCountForScale)
                         {
                             break;
                         }
@@ -89,6 +89,22 @@ namespace RW_ColonistBarKF
                     }
                     return num;
                 }
+
+                if (Settings.UseCustomIconSize)
+              {
+
+                    while (true)
+                  {
+                      int allowedRowsCountForScale = GetAllowedRowsCountForScaleModded(num);
+                      int num2 = RowsCountAssumingScale(num);
+                      if (num2 <= allowedRowsCountForScale)
+                      {
+                          break;
+                      }
+                      num *= 0.95f;
+                  }
+                  return num;
+              }
 
 
                 while (true)
@@ -156,7 +172,10 @@ namespace RW_ColonistBarKF
         {
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
-
+        private int ColumnsCountAssumingScale(float scale)
+        {
+            return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerColumnAssumingScale(scale));
+        }
         private static int ColonistsPerRowAssumingScale(float scale)
         {
             return Mathf.FloorToInt((Settings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
@@ -178,20 +197,68 @@ namespace RW_ColonistBarKF
             return Settings.BaseSpacingVertical * scale;
         }
 
-        private static int GetAllowedRowsCountForScale(float scale)
+       private static int GetAllowedRowsCountForScale(float scale)
+                {
+                    if (Settings.UseFixedIconScale)
+                        return 4;
+
+                    if (scale > 0.58f)
+                    {
+                        return 1;
+                    }
+                    if (scale > 0.42f)
+                    {
+                        return 2;
+                    }
+                    return 3;
+                }
+
+        private static int GetAllowedColumnsCountForScale(float scale)
+        {
+            if (Settings.UseFixedIconScale)
+                return 8;
+
+            if (scale > 0.9f)
+            {
+                return 4;
+            }
+            if (scale > 0.8f)
+            {
+                return 5;
+            }
+            if (scale > 0.7f)
+            {
+                return 6;
+            }
+            if (scale > 0.6f)
+            {
+                return 7;
+            }
+            if (scale > 0.5f)
+            {
+                return 8;
+            }
+            if (scale > 0.4f)
+            {
+                return 9;
+            }
+            return 10;
+        }
+
+        private static int GetAllowedRowsCountForScaleModded(float scale)
         {
             if (Settings.UseFixedIconScale)
                 return 4;
 
-            if (scale > 0.58f)
-            {
-                return 1;
-            }
-            if (scale > 0.42f)
+            if (scale > 0.67f)
             {
                 return 2;
             }
-            return 3;
+            if (scale > 0.34f)
+            {
+                return 3;
+            }
+            return 4;
         }
 
         private static List<Thing> tmpColonists = new List<Thing>();
