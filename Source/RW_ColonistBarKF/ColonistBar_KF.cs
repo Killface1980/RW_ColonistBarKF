@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -25,6 +22,15 @@ namespace RW_ColonistBarKF
         private Pawn clickedColonist;
 
         private float clickedAt;
+
+        private static readonly Texture2D MoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.8f, 0.85f, 0.5f));
+        private static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.85f, 0.85f, 0.2f, 0.5f));
+        private static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.55f, 0.05f, 0.75f));
+        private static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.15f, 0.00f, 0.8f));
+        private static readonly Texture2D MoodExtremeCrossedBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.1f, 0.00f, 0.45f));
+
+        private static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.9f, 0.95f, 0.7f));
+        private static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.2f, 0.22f, 0.8f));
 
 
         //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
@@ -481,6 +487,30 @@ namespace RW_ColonistBarKF
             GUI.color = color;
 
             Color BGColor = new Color();
+
+                Need_Mood mood = (!colonist.Dead) ? colonist.needs.mood : null;
+                MentalBreaker mb = (!colonist.Dead) ? colonist.mindState.mentalBreaker : null;
+
+            if (Settings.UseMoodColors)
+            {
+			Rect moodBorderRect = rect.ContractedBy(-1f);
+
+                if (mood != null && mb != null)
+                {
+                    if (mood.CurLevelPercentage <= mb.BreakThresholdExtreme)
+                    {
+                        GUI.DrawTexture(moodBorderRect, MoodExtremeCrossedTex);
+                    }
+                    else if (mood.CurLevelPercentage <= mb.BreakThresholdMajor)
+                    {
+                        GUI.DrawTexture(moodBorderRect, MoodMajorCrossedTex);
+                    }
+                    else if (mood.CurLevelPercentage <= mb.BreakThresholdMinor)
+                    {
+                        GUI.DrawTexture(moodBorderRect, MoodMinorCrossedTex);
+                    }
+                }
+            }
             if (Settings.UseGender)
             {
                 if (colonist.gender == Gender.Male)
@@ -510,7 +540,41 @@ namespace RW_ColonistBarKF
 
             GUI.DrawTexture(rect, BGTex);
             GUI.color = color;
+            if (Settings.UseMoodColors)
+            {
+                // draw mood thingie
+                Rect moodRect = rect.ContractedBy(2.0f);
 
+                if (mood != null && mb != null)
+                {
+                    if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
+                    {
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodTex);
+                    }
+                    else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
+                    {
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodMinorCrossedTex);
+                    }
+                    else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
+                    {
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodMajorCrossedTex);
+                    }
+                    else
+                    {
+                        GUI.DrawTexture(moodRect, MoodExtremeCrossedBGTex);
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodExtremeCrossedTex);
+                    }
+
+                    DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
+                    DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
+                    DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
+
+                    GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), MoodTargetTex);
+
+                    GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), MoodTargetTex);
+                }
+
+            }
             if (flag)
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
@@ -529,6 +593,14 @@ namespace RW_ColonistBarKF
             GUI.color = Color.white;
         }
 
+        internal static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
+        {
+            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), MoodBreakTex);
+            /*if (currentMood <= threshold)
+			{
+				GUI.DrawTexture(new Rect(moodRect.xMax-4, moodRect.yMax - moodRect.height * threshold, 8, 2), MoodBreakCrossedTex);
+			}*/
+        }
 
         private float GetColonistRectAlpha(Rect rect)
         {

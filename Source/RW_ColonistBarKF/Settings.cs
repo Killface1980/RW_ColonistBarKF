@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Verse;
 
 namespace RW_ColonistBarKF
 {
@@ -23,8 +22,6 @@ namespace RW_ColonistBarKF
         public static bool UseCustomMarginBottomVerLeft = false;
         public static bool UseCustomMarginBottomVerRight = false;
 
-
-
         public static bool UseCustomBaseSpacingHorizontal = false;
         public static bool UseCustomBaseSpacingVertical = false;
         public static bool UseCustomIconSize = false;
@@ -36,6 +33,8 @@ namespace RW_ColonistBarKF
         public static bool UseVerticalAlignment = false;
         public static bool UseRightAlignment = true;
         public static bool UseBottomAlignment;
+
+        public static bool UseMoodColors;
 
 
         public static float MarginTopHor = 21f;

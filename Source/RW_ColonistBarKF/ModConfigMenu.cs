@@ -1,6 +1,4 @@
-﻿using System;
-using CommunityCoreLibrary;
-using CommunityCoreLibrary.ColorPicker;
+﻿using CommunityCoreLibrary;
 using CommunityCoreLibrary.UI;
 using UnityEngine;
 using Verse;
@@ -72,6 +70,7 @@ namespace RW_ColonistBarKF
                 UseCustomMarginLeftHorBottom = false;
                 UseCustomMarginRightHorBottom = false;
                 UseBottomAlignment = false;
+                UseMoodColors = false;
                 UseFixedIconScale = false;
 
                 MarginBottomHor = 21f;
@@ -418,9 +417,15 @@ namespace RW_ColonistBarKF
             #endregion
 
             listing.Gap();
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.UseMoodColors".Translate(), ref UseMoodColors, null);
+
+            listing.Gap();
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.useGender".Translate(), ref UseGender, null);
 
             #region Gender
+
+
+
             if (UseGender)
             {
                 listing.Gap(3f);
@@ -573,6 +578,8 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref UseVerticalAlignment, "useVerticalAlignment", false, false);
             Scribe_Values.LookValue(ref UseRightAlignment, "useRightAlignment", false, false);
             Scribe_Values.LookValue(ref UseBottomAlignment, "useBottomAlignment", false, false);
+
+            Scribe_Values.LookValue(ref UseMoodColors, "UseMoodColors", false, false);
 
             Scribe_Values.LookValue(ref MarginTopHor, "MarginTopHor", 21f, false);
             Scribe_Values.LookValue(ref MarginBottomHor, "MarginBottomHor", 21f, false);
