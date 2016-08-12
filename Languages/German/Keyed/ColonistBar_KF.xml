@@ -14,7 +14,8 @@
   <RW_ColonistBarKF.Settings.MarginRight>Rechter Abstand</RW_ColonistBarKF.Settings.MarginRight>
   <RW_ColonistBarKF.Settings.MarginTop>Oberer Abstand</RW_ColonistBarKF.Settings.MarginTop>
   <RW_ColonistBarKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</RW_ColonistBarKF.Settings.MaxColonistBarHeight>
-  <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Kamera Offset vertikal</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset>Kamera Versatz horizontal</RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Kamera Versatz vertikal</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
   <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Kamera Zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
   <RW_ColonistBarKF.Settings.ResetColors>Farben zurücksetzen</RW_ColonistBarKF.Settings.ResetColors>
   <RW_ColonistBarKF.Settings.RevertSettings>Einstellungen zurücksetzen</RW_ColonistBarKF.Settings.RevertSettings>

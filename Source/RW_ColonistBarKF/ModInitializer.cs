@@ -14,11 +14,13 @@ namespace RW_ColonistBarKF
 
         public ModInitializer()
         {
-            modInitializerControllerObject = new GameObject("RW_ColonistBarKF");
-            modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
-            Object.DontDestroyOnLoad(modInitializerControllerObject);
-            Log.Message("RW_ColonistBarKF Initialized");
-
+            LongEventHandler.ExecuteWhenFinished(delegate
+            {
+                modInitializerControllerObject = new GameObject("RW_ColonistBarKF");
+                modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
+                Object.DontDestroyOnLoad(modInitializerControllerObject);
+                Log.Message("RW_ColonistBarKF Initialized");
+            });
         }
 
         protected override void FillTab() { }

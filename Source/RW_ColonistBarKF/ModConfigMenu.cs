@@ -77,6 +77,7 @@ namespace RW_ColonistBarKF
                 BaseSpacingHorizontal = 24f;
                 BaseSpacingVertical = 32f;
                 BaseSizeFloat = 48f;
+                PawnTextureCameraHorizontalOffset = 0f;
                 PawnTextureCameraVerticalOffset = 0.3f;
                 PawnTextureCameraZoom = 1.28205f;
                 MaxColonistBarWidth = Screen.width - 320f;
@@ -460,6 +461,17 @@ namespace RW_ColonistBarKF
             }
             listing.Gap(3f);
 
+            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset".Translate(), ref UseCustomPawnTextureCameraHorizontalOffset, null);
+            if (UseCustomPawnTextureCameraHorizontalOffset)
+            {
+                listing.Gap(3f);
+                PawnTextureCameraHorizontalOffset = listing.Slider(PawnTextureCameraHorizontalOffset, 0.7f, -0.7f);
+            }
+            else
+            {
+                PawnTextureCameraHorizontalOffset = 0f;
+            }
+
             listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset".Translate(), ref UseCustomPawnTextureCameraVerticalOffset, null);
             if (UseCustomPawnTextureCameraVerticalOffset)
             {
@@ -571,6 +583,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref UseCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false, false);
             Scribe_Values.LookValue(ref UseCustomIconSize, "useCustomIconSize", false, false);
             Scribe_Values.LookValue(ref UseFixedIconScale, "useFixedIconScale", false, false);
+            Scribe_Values.LookValue(ref UseCustomPawnTextureCameraHorizontalOffset, "UseCustomPawnTextureCameraHorizontalOffset", false, false);
             Scribe_Values.LookValue(ref UseCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
             Scribe_Values.LookValue(ref UseCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
             Scribe_Values.LookValue(ref UseCustomDoubleClickTime, "useCustomDoubleClick", false, false);
@@ -603,6 +616,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref BaseSpacingVertical, "BaseSpacingVertical", 32f, false);
             Scribe_Values.LookValue(ref BaseSizeFloat, "BaseSizeFloat", 48f, false);
             Scribe_Values.LookValue(ref BaseIconSize, "BaseIconSize", 20f, false);
+            Scribe_Values.LookValue(ref PawnTextureCameraHorizontalOffset, "PawnTextureCameraHorizontalOffset", 0f, false);
             Scribe_Values.LookValue(ref PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
             Scribe_Values.LookValue(ref PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
             Scribe_Values.LookValue(ref MaxColonistBarWidth, "MaxColonistBarWidth");

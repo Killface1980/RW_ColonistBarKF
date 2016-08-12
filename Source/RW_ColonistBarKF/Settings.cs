@@ -26,6 +26,7 @@ namespace RW_ColonistBarKF
         public static bool UseCustomBaseSpacingVertical = false;
         public static bool UseCustomIconSize = false;
         public static bool UseFixedIconScale = false;
+        public static bool UseCustomPawnTextureCameraHorizontalOffset = false;
         public static bool UseCustomPawnTextureCameraVerticalOffset = false;
         public static bool UseCustomPawnTextureCameraZoom = false;
         public static bool UseCustomDoubleClickTime = false;
@@ -57,6 +58,7 @@ namespace RW_ColonistBarKF
         public static float BaseSpacingVertical = 32f;
         public static float BaseSizeFloat = 48f;
         public static float BaseIconSize = 20f;
+        public static float PawnTextureCameraHorizontalOffset = 0f;
         public static float PawnTextureCameraVerticalOffset = 0.3f;
         public static float PawnTextureCameraZoom = 1.28205f;
         public static float MaxColonistBarWidth = Screen.width - 320f;

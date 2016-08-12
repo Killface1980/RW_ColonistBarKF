@@ -14,6 +14,7 @@
   <RW_ColonistBarKF.Settings.MarginRight>Right margin</RW_ColonistBarKF.Settings.MarginRight>
   <RW_ColonistBarKF.Settings.MarginTop>Top margin</RW_ColonistBarKF.Settings.MarginTop>
   <RW_ColonistBarKF.Settings.MaxColonistBarWidth>Maximum bar width</RW_ColonistBarKF.Settings.MaxColonistBarWidth>
+  <RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset>Camera offset horizontal</RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset>
   <RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset>
   <RW_ColonistBarKF.Settings.PawnTextureCameraZoom>Camera zoom</RW_ColonistBarKF.Settings.PawnTextureCameraZoom>
   <RW_ColonistBarKF.Settings.ResetColors>Reset Colors</RW_ColonistBarKF.Settings.ResetColors>

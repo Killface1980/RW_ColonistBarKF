@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -264,7 +266,7 @@ namespace RW_ColonistBarKF
                 PawnTextureSize.x = Settings.BaseSizeFloat - 2f;
                 PawnTextureSize.y = Settings.BaseSizeFloat * 1.5f;
                 float pawnTextureCameraOffsetNew = Settings.PawnTextureCameraZoom / 1.28205f;
-                PawnTextureCameraOffset = new Vector3(0f, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
+                PawnTextureCameraOffset = new Vector3(Settings.PawnTextureCameraHorizontalOffset / pawnTextureCameraOffsetNew, 0f, Settings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
                 Settings.Firstload = false;
                 Settings.Reloadsettings = false;
                 if (Settings.UseGender)
@@ -288,9 +290,8 @@ namespace RW_ColonistBarKF
                     HandleColonistClicks(rect, colonist);
                     if (Event.current.type == EventType.Repaint)
                     {
-
+                        //Widgets.DrawShadowAround(rect);
                         DrawColonist(rect, colonist);
-
                     }
                 }
             }
@@ -377,7 +378,6 @@ namespace RW_ColonistBarKF
             cachedDrawLocs.Clear();
             if (Settings.UseVerticalAlignment)
             {
-
                 for (int i = 0; i < cachedColonists.Count; i++)
                 {
                     //         Debug.Log("Colonists count: " + i);
@@ -452,7 +452,9 @@ namespace RW_ColonistBarKF
                 return;
             }
             cachedColonists.Clear();
+
             cachedColonists.AddRange(Find.MapPawns.FreeColonists);
+
             List<Thing> list = Find.ListerThings.ThingsInGroup(ThingRequestGroup.Corpse);
             for (int i = 0; i < list.Count; i++)
             {
@@ -474,7 +476,16 @@ namespace RW_ColonistBarKF
                     cachedColonists.Add(corpse.innerPawn);
                 }
             }
-            cachedColonists.SortBy(x => x.thingIDNumber);
+            if (true)
+            {
+                //       var orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x=>x.ageTracker.AgeBiologicalYears);
+                var orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                cachedColonists = orderedEnumerable.ToList();
+            }
+            else
+            {
+                cachedColonists.SortBy(x => x.thingIDNumber);
+            }
             pawnLabelsCache.Clear();
             colonistsDirty = false;
         }
@@ -488,12 +499,12 @@ namespace RW_ColonistBarKF
 
             Color BGColor = new Color();
 
-                Need_Mood mood = (!colonist.Dead) ? colonist.needs.mood : null;
-                MentalBreaker mb = (!colonist.Dead) ? colonist.mindState.mentalBreaker : null;
+            Need_Mood mood = (!colonist.Dead) ? colonist.needs.mood : null;
+            MentalBreaker mb = (!colonist.Dead) ? colonist.mindState.mentalBreaker : null;
 
             if (Settings.UseMoodColors)
             {
-			Rect moodBorderRect = rect.ContractedBy(-1f);
+                Rect moodBorderRect = rect.ContractedBy(-1f);
 
                 if (mood != null && mb != null)
                 {
@@ -579,7 +590,20 @@ namespace RW_ColonistBarKF
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
             }
+
             GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, Settings.PawnTextureCameraZoom));
+
+            if (true)
+            {
+
+
+                DrawWeapon(rect, colonist);
+                if (!Settings.UseCustomPawnTextureCameraHorizontalOffset)
+                {
+                    Settings.PawnTextureCameraHorizontalOffset = 0.3f;
+                }
+            }
+
             GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
             DrawIcons(rect, colonist);
             GUI.color = color;
@@ -592,6 +616,55 @@ namespace RW_ColonistBarKF
             GenWorldUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
         }
+        private static readonly Color _highlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        private void DrawWeapon(Rect rect, Pawn colonist)
+        {
+            foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
+            {
+                var rect2 = rect.ContractedBy(rect.width / 3);
+
+                rect2.x += rect.width / 3 - (rect.width / 12);
+                rect2.y += rect.height / 3 - (rect.height / 12);
+
+                if (Mouse.IsOver(rect2))
+                {
+                    GUI.color = _highlightColor;
+                    GUI.DrawTexture(rect2, TexUI.HighlightTex);
+                }
+                
+                GUI.color = Color.white;
+                Texture2D resolvedIcon;
+                if (!thing.def.uiIconPath.NullOrEmpty())
+                {
+                    resolvedIcon = thing.def.uiIcon;
+                }
+                else
+                {
+                    resolvedIcon = thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
+                }
+                // color labe by thing
+
+                var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f);
+                if (thing.def.IsMeleeWeapon)
+                {
+                    GUI.color = new Color(0.8f, 0.1f, 0.1f, 0.9f);
+                }
+                if (thing.def.IsRangedWeapon)
+                {
+                    GUI.color = new Color(0.8f, 0.8f, 0.1f, 0.9f);
+                }
+                Widgets.DrawBoxSolid(rect2, iconcolor);
+                Widgets.DrawBox(rect2);
+                GUI.color = Color.white;
+                var rect3 = rect2.ContractedBy(rect2.width / 8);
+
+                Widgets.DrawTextureRotated(rect3, resolvedIcon, -90f);
+
+
+            }
+        }
+
+
 
         internal static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
         {
