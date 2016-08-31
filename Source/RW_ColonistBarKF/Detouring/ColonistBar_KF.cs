@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static RW_ColonistBarKF.CBKF;
 
 namespace RW_ColonistBarKF
 {
@@ -253,6 +254,7 @@ namespace RW_ColonistBarKF
 
         private static List<Thing> tmpColonists = new List<Thing>();
 
+        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
         public void ColonistBarOnGUI()
         {
             if (!Find.PlaySettings.showColonistBar)
@@ -295,9 +297,11 @@ namespace RW_ColonistBarKF
                     }
                 }
             }
+
         }
 
         // RimWorld.ColonistBar
+        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
         public List<Thing> ColonistsInScreenRect(Rect rect)
         {
 
@@ -325,7 +329,7 @@ namespace RW_ColonistBarKF
             return tmpColonists;
         }
 
-        // RimWorld.ColonistBar
+        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
         public Thing ColonistAt(Vector2 pos)
         {
             Pawn pawn = null;
@@ -355,7 +359,7 @@ namespace RW_ColonistBarKF
         }
 
 
-        private void RecacheDrawLocs()
+        public void RecacheDrawLocs()
         {
             CheckRecacheColonistsRaw();
             Vector2 size = Size;
@@ -405,7 +409,7 @@ namespace RW_ColonistBarKF
                     }
                     cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
 
-                    //      Debug.Log("MaxColonistBarHeight:" + Settings.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
+                    //      Debug.Log("MaxColonistBarHeight:" + ModSettings.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
                     //
                     //      Debug.Log("colonistsPerRow " + colonistsPerRow);
                     //      Debug.Log("colonistsPerColumn " + colonistsPerColumn);
@@ -476,18 +480,55 @@ namespace RW_ColonistBarKF
                     cachedColonists.Add(corpse.innerPawn);
                 }
             }
-            if (true)
-            {
-                //       var orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x=>x.ageTracker.AgeBiologicalYears);
-                var orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
-                cachedColonists = orderedEnumerable.ToList();
-            }
-            else
-            {
-                cachedColonists.SortBy(x => x.thingIDNumber);
-            }
+
+            SortCachedColonists();
+
             pawnLabelsCache.Clear();
             colonistsDirty = false;
+        }
+
+        public void SortCachedColonists()
+        {
+            IOrderedEnumerable<Pawn> orderedEnumerable;
+            switch (Settings.SortBy)
+            {
+                case "vanilla":
+                    cachedColonists.SortBy(x => x.thingIDNumber);
+                    break;
+
+                case "sexage":
+                    orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                    cachedColonists = orderedEnumerable.ToList();
+                    break;
+
+                case "health":
+                    cachedColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
+                    break;
+
+                case "health2":
+                    cachedColonists.SortByDescending(x => x.health.summaryHealth.SummaryHealthPercent);
+                    break;
+                case "mood":
+                    cachedColonists.SortByDescending(x => x.needs.mood.CurInstantLevel);
+                    break;
+                case "health3":
+                    orderedEnumerable = cachedColonists.OrderByDescending(
+                        x =>
+                        {
+                            return x.equipment.Primary != null && x.equipment.Primary.def.IsMeleeWeapon;
+                        }).ThenByDescending(
+                        x =>
+                        {
+                            return x.equipment.Primary != null && x.equipment.Primary.def.IsRangedWeapon;
+                        });
+                    cachedColonists = orderedEnumerable.ToList();
+                    break;
+
+                default:
+                    cachedColonists.SortBy(x => x.thingIDNumber);
+                    break;
+            }
+
         }
 
         private void DrawColonist(Rect rect, Pawn colonist)
@@ -617,6 +658,7 @@ namespace RW_ColonistBarKF
             GUI.color = Color.white;
         }
         private static readonly Color _highlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+
         private void DrawWeapon(Rect rect, Pawn colonist)
         {
             foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
@@ -631,7 +673,7 @@ namespace RW_ColonistBarKF
                     GUI.color = _highlightColor;
                     GUI.DrawTexture(rect2, TexUI.HighlightTex);
                 }
-                
+
                 GUI.color = Color.white;
                 Texture2D resolvedIcon;
                 if (!thing.def.uiIconPath.NullOrEmpty())
@@ -750,7 +792,7 @@ namespace RW_ColonistBarKF
             }
             // custom 
 
-            //       if (Settings.useExtraIcons)
+            //       if (ModSettings.useExtraIcons)
             //       {
             //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
             //           {
@@ -792,7 +834,9 @@ namespace RW_ColonistBarKF
             }
             if (Mouse.IsOver(rect) && Event.current.button == 2)
             {
-                Find.WindowStack.Add(new Dialog_InfoCard(colonist));
+                if (Event.current.type == EventType.MouseDown)
+                    Find.WindowStack.Add(new ColonistBarKF_Settings());
+                //    Find.WindowStack.Add(new Dialog_InfoCard(colonist));
             }
         }
 

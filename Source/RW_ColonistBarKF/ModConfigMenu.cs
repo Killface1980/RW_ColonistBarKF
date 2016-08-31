@@ -1,12 +1,23 @@
-﻿using CommunityCoreLibrary;
+﻿#if !NoCCL
+using CommunityCoreLibrary;
 using CommunityCoreLibrary.UI;
+# endif
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using RimWorld;
 using UnityEngine;
 using Verse;
-using static RW_ColonistBarKF.Settings;
+using static RW_ColonistBarKF.CBKF;
 
 namespace RW_ColonistBarKF
 {
+#if !NoCCL
     public class ModConfigMenu : ModConfigurationMenu
+#else
+    public class ColonistBarKF_Settings : Window
+#endif
     {
         #region Fields
 
@@ -17,21 +28,52 @@ namespace RW_ColonistBarKF
 
         #region Methods
 
-        public override float DoWindowContents(Rect rect)
+        public override Vector2 InitialSize
+        {
+            get { return new Vector2(438f, 850f); }
+        }
+
+        public override void PreOpen()
+        {
+            base.PreOpen();
+        }
+
+        public override void PreClose()
+        {
+            SaveSettings();
+        }
+
+
+#if NoCCL
+        public ColonistBarKF_Settings()
+        {
+            forcePause = true;
+            doCloseX = true;
+        }
+
+
+#endif
+
+        public override void DoWindowContents(Rect rect)
         {
             rect.xMin += 15f;
             rect.width -= 15f;
-
-            var listingreset = new Listing_Standard(rect);
+            rect.yMin += 10f;
+            Listing_Standard listingreset = new Listing_Standard(rect);
             {
                 FillPageReset(listingreset, rect.width - 15f);
-                listingreset.Gap();
-                listingreset.Label("RW_ColonistBarKF.Settings.BarPosition".Translate());
+                listingreset.Gap(6f);
             }
             listingreset.End();
 
+            var rect2c = new Rect(rect);
+            rect2c.yMin = listingreset.CurHeight;
+            rect2c.height = Text.LineHeight;
+
+            Widgets.Label(rect2c, "RW_ColonistBarKF.ModSettings.BarPosition".Translate());
             var rect2a = new Rect(rect);
-            rect2a.yMin = listingreset.CurHeight;
+            rect2a.yMin = rect2c.yMax;
+
 
             var listingMain = new Listing_Standard(rect2a);
             {
@@ -39,403 +81,464 @@ namespace RW_ColonistBarKF
             }
             listingMain.End();
 
+
             var rect2 = new Rect(rect);
-            rect2.yMin = listingreset.CurHeight + listingMain.CurHeight;
+            rect2.yMin = listingreset.CurHeight + listingMain.CurHeight +rect2c.height;
 
             var listing2 = new Listing_Standard(rect2);
             {
                 FillPageOptions(listing2, rect2.width);
             }
             listing2.End();
-
+#if !NoCCL
             return 1000f;
+#endif
         }
+
         private void FillPageReset(Listing_Standard listing, float columnwidth)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
-            Reloadsettings = true;
+            Settings.Reloadsettings = true;
             listing.ColumnWidth = columnwidth / 2;
 
-            if (listing.ButtonText("RW_ColonistBarKF.Settings.RevertSettings".Translate()))
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.RevertSettings".Translate()))
             {
-                UseGender = false;
-                UseCustomMarginTopHor = false;
-                UseCustomBaseSpacingHorizontal = false;
-                UseCustomBaseSpacingVertical = false;
-                UseCustomIconSize = false;
-                UseCustomPawnTextureCameraVerticalOffset = false;
-                UseCustomPawnTextureCameraZoom = false;
-                UseCustomMarginLeftHorTop = false;
-                UseCustomMarginRightHorTop = false;
-                UseCustomMarginLeftHorBottom = false;
-                UseCustomMarginRightHorBottom = false;
-                UseBottomAlignment = false;
-                UseMoodColors = false;
-                UseFixedIconScale = false;
+                Settings.UseGender = true;
+                Settings.UseCustomMarginTopHor = false;
+                Settings.UseCustomBaseSpacingHorizontal = false;
+                Settings.UseCustomBaseSpacingVertical = false;
+                Settings.UseCustomIconSize = false;
+                Settings.UseCustomPawnTextureCameraVerticalOffset = false;
+                Settings.UseCustomPawnTextureCameraZoom = false;
+                Settings.UseCustomMarginLeftHorTop = false;
+                Settings.UseCustomMarginRightHorTop = false;
+                Settings.UseCustomMarginLeftHorBottom = false;
+                Settings.UseCustomMarginRightHorBottom = false;
+                Settings.UseBottomAlignment = false;
+                Settings.UseMoodColors = false;
+                Settings.UseFixedIconScale = false;
 
-                MarginBottomHor = 21f;
-                BaseSpacingHorizontal = 24f;
-                BaseSpacingVertical = 32f;
-                BaseSizeFloat = 48f;
-                PawnTextureCameraHorizontalOffset = 0f;
-                PawnTextureCameraVerticalOffset = 0.3f;
-                PawnTextureCameraZoom = 1.28205f;
-                MaxColonistBarWidth = Screen.width - 320f;
-                FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-                MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+                Settings.MarginBottomHor = 21f;
+                Settings.BaseSpacingHorizontal = 24f;
+                Settings.BaseSpacingVertical = 32f;
+                Settings.BaseSizeFloat = 48f;
+                Settings.PawnTextureCameraHorizontalOffset = 0f;
+                Settings.PawnTextureCameraVerticalOffset = 0.3f;
+                Settings.PawnTextureCameraZoom = 1.28205f;
+                Settings.MaxColonistBarWidth = Screen.width - 320f;
+                Settings.FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+                Settings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+#if !NoCCL
                 femaleColorField.Value = new Color(1f, 0.64f, 0.8f, 1f);
                 maleColorField.Value = new Color(0.52f, 0.75f, 0.92f, 1f);
+#endif
+                Settings.HorizontalOffset = 0f;
+                Settings.VerticalOffset = 0f;
+                Settings.UseCustomBaseSpacingVertical = false;
+                Settings.UseVerticalAlignment = false;
+                Settings.BaseSpacingVertical = 32f;
+                Settings.MaxColonistBarHeight = Screen.height - 240f;
+                Settings.UseRightAlignment = false;
+                Settings.MarginLeftHorTop = 180f;
+                Settings.MarginRightHorTop = 180f;
+                Settings.MarginLeftHorBottom = 180f;
+                Settings.MarginRightHorBottom = 180f;
+                Settings.UseCustomDoubleClickTime = false;
+                Settings.DoubleClickTime = 0.5f;
+                Settings.UseCustomMarginLeftVer = false;
+                Settings.MarginLeftVer = 21f;
+                Settings.UseCustomMarginTopVerLeft = false;
+                Settings.MarginTopVerLeft = 120f;
+                Settings.UseCustomMarginBottomVerLeft = false;
+                Settings.MarginBottomVerLeft = 120f;
 
-                HorizontalOffset = 0f;
-                VerticalOffset = 0f;
-                UseCustomBaseSpacingVertical = false;
-                UseVerticalAlignment = false;
-                BaseSpacingVertical = 32f;
-                MaxColonistBarHeight = Screen.height - 240f;
-                UseRightAlignment = false;
-                MarginLeftHorTop = 180f;
-                MarginRightHorTop = 180f;
-                MarginLeftHorBottom = 180f;
-                MarginRightHorBottom = 180f;
-                UseCustomDoubleClickTime = false;
-                DoubleClickTime = 0.5f;
-                UseCustomMarginLeftVer = false;
-                MarginLeftVer = 21f;
-                UseCustomMarginTopVerLeft = false;
-                MarginTopVerLeft = 120f;
-                UseCustomMarginBottomVerLeft = false;
-                MarginBottomVerLeft = 120f;
+                Settings.UseCustomMarginTopHor = false;
+                Settings.UseCustomMarginBottomHor = false;
+                Settings.UseCustomMarginLeftHorTop = false;
+                Settings.UseCustomMarginRightHorTop = false;
 
-                UseCustomMarginTopHor = false;
-                UseCustomMarginBottomHor = false;
-                UseCustomMarginLeftHorTop = false;
-                UseCustomMarginRightHorTop = false;
-
-                UseCustomMarginTopVerLeft = false;
-                UseCustomMarginTopVerRight = false;
-                UseCustomMarginLeftVer = false;
-                UseCustomMarginRightVer = false;
-                UseCustomMarginBottomVerLeft = false;
-                UseCustomMarginBottomVerRight = false;
+                Settings.UseCustomMarginTopVerLeft = false;
+                Settings.UseCustomMarginTopVerRight = false;
+                Settings.UseCustomMarginLeftVer = false;
+                Settings.UseCustomMarginRightVer = false;
+                Settings.UseCustomMarginBottomVerLeft = false;
+                Settings.UseCustomMarginBottomVerRight = false;
+                Settings.SortBy = "vanilla";
             }
+
+            listing.NewColumn();
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.SortBy".Translate()))
+            {
+
+                List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                floatOptionList.Add(new FloatMenuOption("Vanilla".Translate(), delegate
+                {
+                    Settings.SortBy = "vanilla";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+
+                floatOptionList.Add(new FloatMenuOption("SexAge".Translate(), delegate
+                {
+                    Settings.SortBy = "sexage";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+
+                floatOptionList.Add(new FloatMenuOption("Health".Translate(), delegate
+                {
+                    Settings.SortBy = "health";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+                floatOptionList.Add(new FloatMenuOption("Mood".Translate(), delegate
+                {
+                    Settings.SortBy = "mood";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+                floatOptionList.Add(new FloatMenuOption("HealthDesc".Translate(), delegate
+                {
+                    Settings.SortBy = "health2";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+
+                floatOptionList.Add(new FloatMenuOption("Weapons".Translate(), delegate
+                {
+                    Settings.SortBy = "health3";
+                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                }));
+                FloatMenu window = new FloatMenu(floatOptionList, "Sorting Options");
+                Find.WindowStack.Add(window);
+
+            }
+
             listing.ColumnWidth = columnwidth;
-            listing.Gap();
+            listing.Gap(6f);
         }
+
 
         private void FillPageMain(Listing_Standard listing, float columnwidth)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
-            Reloadsettings = true;
+            Settings.Reloadsettings = true;
             listing.ColumnWidth = columnwidth / 2;
 
 
             #region Alignment
 
 
-            if (listing.ButtonText("RW_ColonistBarKF.Settings.useTop".Translate()))
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.useTop".Translate()))
             {
-                UseBottomAlignment = false;
-                UseVerticalAlignment = false;
-                UseRightAlignment = false;
+                Settings.UseBottomAlignment = false;
+                Settings.UseVerticalAlignment = false;
+                Settings.UseRightAlignment = false;
 
             }
-            if (listing.ButtonText("RW_ColonistBarKF.Settings.useBottom".Translate()))
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.useBottom".Translate()))
             {
-                UseBottomAlignment = true;
-                UseVerticalAlignment = false;
-                UseRightAlignment = false;
+                Settings.UseBottomAlignment = true;
+                Settings.UseVerticalAlignment = false;
+                Settings.UseRightAlignment = false;
             }
             listing.NewColumn();
-            if (listing.ButtonText("RW_ColonistBarKF.Settings.useLeft".Translate()))
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.useLeft".Translate()))
             {
 
-                UseBottomAlignment = false;
-                UseVerticalAlignment = true;
-                UseRightAlignment = false;
+                Settings.UseBottomAlignment = false;
+                Settings.UseVerticalAlignment = true;
+                Settings.UseRightAlignment = false;
             }
-            if (listing.ButtonText("RW_ColonistBarKF.Settings.useRight".Translate()))
+            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.useRight".Translate()))
             {
 
-                UseBottomAlignment = false;
-                UseVerticalAlignment = true;
-                UseRightAlignment = true;
+                Settings.UseBottomAlignment = false;
+                Settings.UseVerticalAlignment = true;
+                Settings.UseRightAlignment = true;
             }
 
             listing.ColumnWidth = columnwidth;
+
             #endregion
         }
 
         private void FillPageOptions(Listing_Standard listing, float columnwidth)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
-            Reloadsettings = true;
+            Settings.Reloadsettings = true;
 
             listing.ColumnWidth = columnwidth;
 
-            listing.Gap();
+            listing.Gap(6f);
 
             #region Vertical Alignment
 
-            if (UseVerticalAlignment)
+            if (Settings.UseVerticalAlignment)
             {
+#if !NoCCL
                 listing.Indent();
-                if (UseRightAlignment)
+#endif
+                if (Settings.UseRightAlignment)
                 {
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginEdge".Translate(), ref UseCustomMarginRightVer, null);
-                    if (UseCustomMarginRightVer)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginEdge".Translate(), ref Settings.UseCustomMarginRightVer, null);
+                    if (Settings.UseCustomMarginRightVer)
                     {
-                        listing.Gap(3f);
-                        MarginRightVer = listing.Slider(MarginRightVer, 0f, Screen.width / 12);
+                    //    listing.Gap(3f);
+                        Settings.MarginRightVer = listing.Slider(Settings.MarginRightVer, 0f, Screen.width / 12);
                     }
                     else
                     {
-                        MarginRightVer = 21f;
+                        Settings.MarginRightVer = 21f;
                     }
-                    listing.Gap(3f);
+                    // listing.Gap(3f);
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginTop".Translate(), ref UseCustomMarginTopVerRight, null);
-                    if (UseCustomMarginTopVerRight)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginTop".Translate(), ref Settings.UseCustomMarginTopVerRight, null);
+                    if (Settings.UseCustomMarginTopVerRight)
                     {
-                        listing.Gap(3f);
-                        MarginTopVerRight = SliderMaxBarHeight(listing.GetRect(30f), MarginTopVerRight, 0f, Screen.height * 2 / 5);
+                        //    listing.Gap(3f);
+                        Settings.MarginTopVerRight = SliderMaxBarHeight(listing.GetRect(30f), Settings.MarginTopVerRight, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
-                        MarginTopVerRight = 120f;
-                        MaxColonistBarHeight = Screen.height - MarginTopVerRight - MarginBottomVerRight;
-                        VerticalOffset = MarginTopVerRight / 2 - MarginBottomVerRight / 2;
+                        Settings.MarginTopVerRight = 120f;
+                        Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerRight - Settings.MarginBottomVerRight;
+                        Settings.VerticalOffset = Settings.MarginTopVerRight / 2 - Settings.MarginBottomVerRight / 2;
 
                     }
-                    listing.Gap(3f);
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginBottom".Translate(), ref UseCustomMarginBottomVerRight, null);
-                    if (UseCustomMarginBottomVerRight)
+                    //  listing.Gap(3f);
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginBottom".Translate(), ref Settings.UseCustomMarginBottomVerRight, null);
+                    if (Settings.UseCustomMarginBottomVerRight)
                     {
-                        listing.Gap(3f);
-                        MarginBottomVerRight = SliderMaxBarHeight(listing.GetRect(30f), MarginBottomVerRight, 0f, Screen.height * 2 / 5);
+                        //     listing.Gap(3f);
+                        Settings.MarginBottomVerRight = SliderMaxBarHeight(listing.GetRect(30f), Settings.MarginBottomVerRight, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
-                        MarginBottomVerRight = 120f;
-                        MaxColonistBarHeight = Screen.height - MarginTopVerRight - MarginBottomVerRight;
-                        VerticalOffset = MarginTopVerRight / 2 - MarginBottomVerRight / 2;
+                        Settings.MarginBottomVerRight = 120f;
+                        Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerRight - Settings.MarginBottomVerRight;
+                        Settings.VerticalOffset = Settings.MarginTopVerRight / 2 - Settings.MarginBottomVerRight / 2;
                     }
                 }
                 else
                 {
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginEdge".Translate(), ref UseCustomMarginLeftVer, null);
-                    if (UseCustomMarginLeftVer)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginEdge".Translate(), ref Settings.UseCustomMarginLeftVer, null);
+                    if (Settings.UseCustomMarginLeftVer)
                     {
-                        listing.Gap(3f);
-                        MarginLeftVer = listing.Slider(MarginLeftVer, 0f, Screen.width / 12);
+                        //     listing.Gap(3f);
+                        Settings.MarginLeftVer = listing.Slider(Settings.MarginLeftVer, 0f, Screen.width / 12);
                     }
                     else
                     {
-                        MarginLeftVer = 21f;
+                        Settings.MarginLeftVer = 21f;
                     }
-                    listing.Gap(3f);
+                    //   listing.Gap(3f);
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginTop".Translate(), ref UseCustomMarginTopVerLeft, null);
-                    if (UseCustomMarginTopVerLeft)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginTop".Translate(), ref Settings.UseCustomMarginTopVerLeft, null);
+                    if (Settings.UseCustomMarginTopVerLeft)
                     {
-                        listing.Gap(3f);
-                        MarginTopVerLeft = SliderMaxBarHeight(listing.GetRect(30f), MarginTopVerLeft, 0f, Screen.height * 2 / 5);
+                        //    listing.Gap(3f);
+                        Settings.MarginTopVerLeft = SliderMaxBarHeight(listing.GetRect(30f), Settings.MarginTopVerLeft, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
-                        MarginTopVerLeft = 120f;
-                        MaxColonistBarHeight = Screen.height - MarginTopVerLeft - MarginBottomVerLeft;
-                        VerticalOffset = MarginTopVerLeft / 2 - MarginBottomVerLeft / 2;
+                        Settings.MarginTopVerLeft = 120f;
+                        Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerLeft - Settings.MarginBottomVerLeft;
+                        Settings.VerticalOffset = Settings.MarginTopVerLeft / 2 - Settings.MarginBottomVerLeft / 2;
 
                     }
-                    listing.Gap(3f);
+                    //   listing.Gap(3f);
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginBottom".Translate(), ref UseCustomMarginBottomVerLeft, null);
-                    if (UseCustomMarginBottomVerLeft)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginBottom".Translate(), ref Settings.UseCustomMarginBottomVerLeft, null);
+                    if (Settings.UseCustomMarginBottomVerLeft)
                     {
-                        listing.Gap(3f);
-                        MarginBottomVerLeft = SliderMaxBarHeight(listing.GetRect(30f), MarginBottomVerLeft, 0f, Screen.height * 2 / 5);
+                        //    listing.Gap(3f);
+                        Settings.MarginBottomVerLeft = SliderMaxBarHeight(listing.GetRect(30f), Settings.MarginBottomVerLeft, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
-                        MarginBottomVerLeft = 120f;
-                        MaxColonistBarHeight = Screen.height - MarginTopVerLeft - MarginBottomVerLeft;
-                        VerticalOffset = MarginTopVerLeft / 2 - MarginBottomVerLeft / 2;
+                        Settings.MarginBottomVerLeft = 120f;
+                        Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerLeft - Settings.MarginBottomVerLeft;
+                        Settings.VerticalOffset = Settings.MarginTopVerLeft / 2 - Settings.MarginBottomVerLeft / 2;
                     }
 
                 }
 
 
 
-                listing.Gap(3f);
-
+                //  listing.Gap(3f);
+#if !NoCCL
                 listing.Undent();
+#endif
             }
             #endregion
 
             #region Horizontal alignment
             else
             {
+#if !NoCCL
                 listing.Indent();
+#endif
 
-
-                if (UseBottomAlignment)
+                if (Settings.UseBottomAlignment)
                 {
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginEdge".Translate(), ref UseCustomMarginBottomHor, null);
-                    if (UseCustomMarginBottomHor)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginEdge".Translate(), ref Settings.UseCustomMarginBottomHor, null);
+                    if (Settings.UseCustomMarginBottomHor)
                     {
-                        listing.Gap(3f);
-                        MarginBottomHor = listing.Slider(MarginBottomHor, 10, Screen.height / 12);
+                        //    listing.Gap(3f);
+                        Settings.MarginBottomHor = listing.Slider(Settings.MarginBottomHor, 10, Screen.height / 12);
                     }
                     else
                     {
-                        MarginBottomHor = 21f;
+                        Settings.MarginBottomHor = 21f;
                     }
-                    listing.Gap(3f);
+                    //   listing.Gap(3f);
 
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginLeft".Translate(), ref UseCustomMarginLeftHorBottom, null);
-                    if (UseCustomMarginLeftHorBottom)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginLeft".Translate(), ref Settings.UseCustomMarginLeftHorBottom, null);
+                    if (Settings.UseCustomMarginLeftHorBottom)
                     {
-                        listing.Gap(3f);
-                        MarginLeftHorBottom = SliderMaxBarWidth(listing.GetRect(30f), MarginLeftHorBottom, 0f, Screen.width * 2 / 5);
+                        //   listing.Gap(3f);
+                        Settings.MarginLeftHorBottom = SliderMaxBarWidth(listing.GetRect(30f), Settings.MarginLeftHorBottom, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
-                        MarginLeftHorBottom = 160f;
-                        MaxColonistBarWidth = Screen.width - MarginLeftHorBottom - MarginRightHorBottom;
-                        HorizontalOffset = MarginLeftHorBottom / 2 - MarginRightHorBottom / 2;
+                        Settings.MarginLeftHorBottom = 160f;
+                        Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorBottom - Settings.MarginRightHorBottom;
+                        Settings.HorizontalOffset = Settings.MarginLeftHorBottom / 2 - Settings.MarginRightHorBottom / 2;
                     }
-                    listing.Gap(3f);
+                    //  listing.Gap(3f);
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginRight".Translate(), ref UseCustomMarginRightHorBottom, null);
-                    if (UseCustomMarginRightHorBottom)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginRight".Translate(), ref Settings.UseCustomMarginRightHorBottom, null);
+                    if (Settings.UseCustomMarginRightHorBottom)
                     {
-                        listing.Gap(3f);
-                        MarginRightHorBottom = SliderMaxBarWidth(listing.GetRect(30f), MarginRightHorBottom, 0f, Screen.width * 2 / 5);
+                        //      listing.Gap(3f);
+                        Settings.MarginRightHorBottom = SliderMaxBarWidth(listing.GetRect(30f), Settings.MarginRightHorBottom, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
-                        MarginRightHorBottom = 160f;
-                        MaxColonistBarWidth = Screen.width - MarginLeftHorBottom - MarginRightHorBottom;
-                        HorizontalOffset = MarginLeftHorBottom / 2 - MarginRightHorBottom / 2;
+                        Settings.MarginRightHorBottom = 160f;
+                        Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorBottom - Settings.MarginRightHorBottom;
+                        Settings.HorizontalOffset = Settings.MarginLeftHorBottom / 2 - Settings.MarginRightHorBottom / 2;
                     }
-                    listing.Gap(3f);
+                    //    listing.Gap(3f);
                 }
                 else
                 {
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginEdge".Translate(), ref UseCustomMarginTopHor, null);
-                    if (UseCustomMarginTopHor)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginEdge".Translate(), ref Settings.UseCustomMarginTopHor, null);
+                    if (Settings.UseCustomMarginTopHor)
                     {
-                        listing.Gap(3f);
-                        MarginTopHor = listing.Slider(MarginTopHor, 10, Screen.height / 12);
+                        //    listing.Gap(3f);
+                        Settings.MarginTopHor = listing.Slider(Settings.MarginTopHor, 10, Screen.height / 12);
                     }
                     else
                     {
-                        MarginTopHor = 21f;
+                        Settings.MarginTopHor = 21f;
                     }
-                    listing.Gap(3f);
+                    //  listing.Gap(3f);
 
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginLeft".Translate(), ref UseCustomMarginLeftHorTop, null);
-                    if (UseCustomMarginLeftHorTop)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginLeft".Translate(), ref Settings.UseCustomMarginLeftHorTop, null);
+                    if (Settings.UseCustomMarginLeftHorTop)
                     {
-                        listing.Gap(3f);
-                        MarginLeftHorTop = SliderMaxBarWidth(listing.GetRect(30f), MarginLeftHorTop, 0f, Screen.width * 2 / 5);
+                        //    listing.Gap(3f);
+                        Settings.MarginLeftHorTop = SliderMaxBarWidth(listing.GetRect(30f), Settings.MarginLeftHorTop, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
-                        MarginLeftHorTop = 160f;
-                        MaxColonistBarWidth = Screen.width - MarginLeftHorTop - MarginRightHorTop;
-                        HorizontalOffset = MarginLeftHorTop / 2 - MarginRightHorTop / 2;
+                        Settings.MarginLeftHorTop = 160f;
+                        Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorTop - Settings.MarginRightHorTop;
+                        Settings.HorizontalOffset = Settings.MarginLeftHorTop / 2 - Settings.MarginRightHorTop / 2;
                     }
-                    listing.Gap(3f);
+                    //  listing.Gap(3f);
 
-                    listing.CheckboxLabeled("RW_ColonistBarKF.Settings.MarginRight".Translate(), ref UseCustomMarginRightHorTop, null);
-                    if (UseCustomMarginRightHorTop)
+                    listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginRight".Translate(), ref Settings.UseCustomMarginRightHorTop, null);
+                    if (Settings.UseCustomMarginRightHorTop)
                     {
-                        listing.Gap(3f);
-                        MarginRightHorTop = SliderMaxBarWidth(listing.GetRect(30f), MarginRightHorTop, 0f, Screen.width * 2 / 5);
+                        //     listing.Gap(3f);
+                        Settings.MarginRightHorTop = SliderMaxBarWidth(listing.GetRect(30f), Settings.MarginRightHorTop, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
-                        MarginRightHorTop = 160f;
-                        MaxColonistBarWidth = Screen.width - MarginLeftHorTop - MarginRightHorTop;
-                        HorizontalOffset = MarginLeftHorTop / 2 - MarginRightHorTop / 2;
+                        Settings.MarginRightHorTop = 160f;
+                        Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorTop - Settings.MarginRightHorTop;
+                        Settings.HorizontalOffset = Settings.MarginLeftHorTop / 2 - Settings.MarginRightHorTop / 2;
                     }
-                    listing.Gap(3f);
+                    //  listing.Gap(3f);
                 }
+#if !NoCCL
                 listing.Undent();
-
+#endif
             }
             #endregion
+            listing.Gap(6f);
 
-            listing.Gap();
+            Widgets.DrawLineHorizontal(0, listing.CurHeight, listing.ColumnWidth);
+
+            listing.Gap(6f);
 
             #region Size + Spacing
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BasicSize".Translate(), ref UseCustomIconSize, null);
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.BasicSize".Translate(), ref Settings.UseCustomIconSize, null);
 
-            if (UseCustomIconSize)
+            if (Settings.UseCustomIconSize)
             {
-                listing.Gap(3f);
-                listing.CheckboxLabeled("RW_ColonistBarKF.Settings.FixedScale".Translate(), ref UseFixedIconScale, null);
-                listing.Gap(3f);
-                BaseSizeFloat = SliderBaseSize(listing.GetRect(30f), BaseSizeFloat, 16f, 128f);
+                //     listing.Gap(3f);
+                listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.FixedScale".Translate(), ref Settings.UseFixedIconScale, null);
+                //    listing.Gap(3f);
+                Settings.BaseSizeFloat = SliderBaseSize(listing.GetRect(30f), Settings.BaseSizeFloat, 16f, 128f);
 
-                listing.Gap();
+                //     listing.Gap();
             }
             else
             {
-                BaseSizeFloat = 48f;
-                BaseIconSize = 20f;
-                listing.Gap(3f);
+                Settings.BaseSizeFloat = 48f;
+                Settings.BaseIconSize = 20f;
+                //     listing.Gap(3f);
             }
 
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BaseSpacingHorizontal".Translate(), ref UseCustomBaseSpacingHorizontal, null);
-            if (UseCustomBaseSpacingHorizontal)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.BaseSpacingHorizontal".Translate(), ref Settings.UseCustomBaseSpacingHorizontal, null);
+            if (Settings.UseCustomBaseSpacingHorizontal)
             {
-                listing.Gap(3f);
-                BaseSpacingHorizontal = listing.Slider(BaseSpacingHorizontal, 1f, 72f);
+                //      listing.Gap(3f);
+                Settings.BaseSpacingHorizontal = listing.Slider(Settings.BaseSpacingHorizontal, 1f, 72f);
             }
             else
             {
-                BaseSpacingHorizontal = 24f;
-                listing.Gap(3f);
+                Settings.BaseSpacingHorizontal = 24f;
+                //      listing.Gap(3f);
             }
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.BaseSpacingVertical".Translate(), ref UseCustomBaseSpacingVertical, null);
-            if (UseCustomBaseSpacingVertical)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.BaseSpacingVertical".Translate(), ref Settings.UseCustomBaseSpacingVertical, null);
+            if (Settings.UseCustomBaseSpacingVertical)
             {
-                listing.Gap(3f);
-                BaseSpacingVertical = listing.Slider(BaseSpacingVertical, 1f, 96f);
+                //      listing.Gap(3f);
+                Settings.BaseSpacingVertical = listing.Slider(Settings.BaseSpacingVertical, 1f, 96f);
             }
             else
             {
-                BaseSpacingVertical = 32f;
+                Settings.BaseSpacingVertical = 32f;
             }
 
             #endregion
 
-            listing.Gap();
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.UseMoodColors".Translate(), ref UseMoodColors, null);
+            listing.Gap(6f);
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseMoodColors".Translate(), ref Settings.UseMoodColors, null);
 
-            listing.Gap();
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.useGender".Translate(), ref UseGender, null);
+            listing.Gap(6f);
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useGender".Translate(), ref Settings.UseGender, null);
 
             #region Gender
 
 
 
+#if !NoCCL
             if (UseGender)
             {
-                listing.Gap(3f);
+            //    listing.Gap(3f);
                 float indent = 24f;
                 DrawMCMRegion(new Rect(indent, listing.CurHeight, listing.ColumnWidth - indent, 64f));
                 listing.Gap(72f);
                 listing.ColumnWidth = columnwidth / 2;
                 listing.Indent();
-                if (listing.ButtonText("RW_ColonistBarKF.Settings.ResetColors".Translate()))
+                if (listing.ButtonText("RW_ColonistBarKF.ModSettings.ResetColors".Translate()))
                 {
                     femaleColorField.Value = new Color(1f, 0.64f, 0.8f, 1f);
                     maleColorField.Value = new Color(0.52f, 0.75f, 0.92f, 1f);
@@ -444,63 +547,64 @@ namespace RW_ColonistBarKF
                 listing.ColumnWidth = columnwidth;
                 listing.Gap();
             }
+#endif
             #endregion
 
             listing.Gap();
 
             #region Camera
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraZoom".Translate(), ref UseCustomPawnTextureCameraZoom, null);
-            if (UseCustomPawnTextureCameraZoom)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.PawnTextureCameraZoom".Translate(), ref Settings.UseCustomPawnTextureCameraZoom, null);
+            if (Settings.UseCustomPawnTextureCameraZoom)
             {
-                listing.Gap(3f);
-                PawnTextureCameraZoom = listing.Slider(PawnTextureCameraZoom, 0.3f, 3f);
+                //    listing.Gap(3f);
+                Settings.PawnTextureCameraZoom = listing.Slider(Settings.PawnTextureCameraZoom, 0.3f, 3f);
             }
             else
             {
-                PawnTextureCameraZoom = 1.28205f;
+                Settings.PawnTextureCameraZoom = 1.28205f;
             }
-            listing.Gap(3f);
+            //    listing.Gap(3f);
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraHorizontalOffset".Translate(), ref UseCustomPawnTextureCameraHorizontalOffset, null);
-            if (UseCustomPawnTextureCameraHorizontalOffset)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.PawnTextureCameraHorizontalOffset".Translate(), ref Settings.UseCustomPawnTextureCameraHorizontalOffset, null);
+            if (Settings.UseCustomPawnTextureCameraHorizontalOffset)
             {
-                listing.Gap(3f);
-                PawnTextureCameraHorizontalOffset = listing.Slider(PawnTextureCameraHorizontalOffset, 0.7f, -0.7f);
+                //        listing.Gap(3f);
+                Settings.PawnTextureCameraHorizontalOffset = listing.Slider(Settings.PawnTextureCameraHorizontalOffset, 0.7f, -0.7f);
             }
             else
             {
-                PawnTextureCameraHorizontalOffset = 0f;
+                Settings.PawnTextureCameraHorizontalOffset = 0f;
             }
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.PawnTextureCameraVerticalOffset".Translate(), ref UseCustomPawnTextureCameraVerticalOffset, null);
-            if (UseCustomPawnTextureCameraVerticalOffset)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.PawnTextureCameraVerticalOffset".Translate(), ref Settings.UseCustomPawnTextureCameraVerticalOffset, null);
+            if (Settings.UseCustomPawnTextureCameraVerticalOffset)
             {
-                listing.Gap(3f);
-                PawnTextureCameraVerticalOffset = listing.Slider(PawnTextureCameraVerticalOffset, 0f, 1f);
+                //       listing.Gap(3f);
+                Settings.PawnTextureCameraVerticalOffset = listing.Slider(Settings.PawnTextureCameraVerticalOffset, 0f, 1f);
             }
             else
             {
-                PawnTextureCameraVerticalOffset = 0.3f;
+                Settings.PawnTextureCameraVerticalOffset = 0.3f;
             }
             #endregion
 
-            listing.Gap();
+            listing.Gap(6f);
 
-            listing.CheckboxLabeled("RW_ColonistBarKF.Settings.DoubleClickTime".Translate(), ref UseCustomDoubleClickTime, null);
-            if (UseCustomDoubleClickTime)
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.DoubleClickTime".Translate(), ref Settings.UseCustomDoubleClickTime, null);
+            if (Settings.UseCustomDoubleClickTime)
             {
-                listing.Gap(3f);
-                DoubleClickTime = listing.Slider(DoubleClickTime, 0.1f, 1.5f);
+                //       listing.Gap(3f);
+                Settings.DoubleClickTime = listing.Slider(Settings.DoubleClickTime, 0.1f, 1.5f);
             }
             else
             {
-                DoubleClickTime = 0.5f;
+                Settings.DoubleClickTime = 0.5f;
             }
 
-            //       listing.CheckboxLabeled("RW_ColonistBarKF.Settings.useExtraIcons".Translate(), ref Settings.useExtraIcons, null);
+            //       listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useExtraIcons".Translate(), ref ModSettings.useExtraIcons, null);
         }
 
-
+#if !NoCCL
         private void DrawMCMRegion(Rect InRect)
         {
             Rect row = InRect;
@@ -514,21 +618,21 @@ namespace RW_ColonistBarKF
             maleColorField.Draw(row);
             MaleColor = maleColorField.Value;
         }
-
+#endif
         public float SliderMaxBarWidth(Rect rect, float val, float min, float max)
         {
             GUI.skin.horizontalSlider.alignment = TextAnchor.MiddleCenter;
             float result = GUI.HorizontalSlider(rect, val, min, max);
-            if (UseBottomAlignment)
+            if (Settings.UseBottomAlignment)
             {
-                MaxColonistBarWidth = Screen.width - MarginLeftHorBottom - MarginRightHorBottom;
-                HorizontalOffset = MarginLeftHorBottom / 2 - MarginRightHorBottom / 2;
+                Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorBottom - Settings.MarginRightHorBottom;
+                Settings.HorizontalOffset = Settings.MarginLeftHorBottom / 2 - Settings.MarginRightHorBottom / 2;
 
             }
             else
             {
-                MaxColonistBarWidth = Screen.width - MarginLeftHorTop - MarginRightHorTop;
-                HorizontalOffset = MarginLeftHorTop / 2 - MarginRightHorTop / 2;
+                Settings.MaxColonistBarWidth = Screen.width - Settings.MarginLeftHorTop - Settings.MarginRightHorTop;
+                Settings.HorizontalOffset = Settings.MarginLeftHorTop / 2 - Settings.MarginRightHorTop / 2;
 
             }
             return result;
@@ -538,15 +642,15 @@ namespace RW_ColonistBarKF
         {
             GUI.skin.horizontalSlider.alignment = TextAnchor.MiddleCenter;
             float result = GUI.HorizontalSlider(rect, val, min, max);
-            if (UseRightAlignment)
+            if (Settings.UseRightAlignment)
             {
-                MaxColonistBarHeight = Screen.height - MarginTopVerRight - MarginBottomVerRight;
-                VerticalOffset = MarginTopVerRight / 2 - MarginBottomVerRight / 2;
+                Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerRight - Settings.MarginBottomVerRight;
+                Settings.VerticalOffset = Settings.MarginTopVerRight / 2 - Settings.MarginBottomVerRight / 2;
             }
             else
             {
-                MaxColonistBarHeight = Screen.height - MarginTopVerLeft - MarginBottomVerLeft;
-                VerticalOffset = MarginTopVerLeft / 2 - MarginBottomVerLeft / 2;
+                Settings.MaxColonistBarHeight = Screen.height - Settings.MarginTopVerLeft - Settings.MarginBottomVerLeft;
+                Settings.VerticalOffset = Settings.MarginTopVerLeft / 2 - Settings.MarginBottomVerLeft / 2;
             }
             return result;
         }
@@ -555,88 +659,91 @@ namespace RW_ColonistBarKF
         {
             GUI.skin.horizontalSlider.alignment = TextAnchor.MiddleCenter;
             float result = GUI.HorizontalSlider(rect, val, min, max);
-            BaseIconSize = BaseSizeFloat / 2f - 4f;
+            Settings.BaseIconSize = Settings.BaseSizeFloat / 2f - 4f;
             return result;
         }
-
-        private LabeledInput_Color femaleColorField = new LabeledInput_Color(FemaleColor, "RW_ColonistBarKF.Settings.FemaleColor".Translate());
-        private LabeledInput_Color maleColorField = new LabeledInput_Color(MaleColor, "RW_ColonistBarKF.Settings.MaleColor".Translate());
-
-        public override void ExposeData()
+#if !NoCCL
+        private LabeledInput_Color femaleColorField = new LabeledInput_Color(FemaleColor, "RW_ColonistBarKF.ModSettings.FemaleColor".Translate());
+        private LabeledInput_Color maleColorField = new LabeledInput_Color(MaleColor, "RW_ColonistBarKF.ModSettings.MaleColor".Translate());
+#endif
+        public void ExposeData()
         {
-            Scribe_Values.LookValue(ref UseCustomMarginTopHor, "useCustomMarginTopHor", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginBottomHor, "UseCustomMarginBottomHor", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginLeftHorTop, "useCustomMarginLeftHor", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginRightHorTop, "useCustomMarginRightHor", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginLeftHorBottom, "UseCustomMarginLeftHorBottom", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginRightHorBottom, "UseCustomMarginRightHorBottom", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginTopHor, "useCustomMarginTopHor", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginBottomHor, "UseCustomMarginBottomHor", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginLeftHorTop, "useCustomMarginLeftHor", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginRightHorTop, "useCustomMarginRightHor", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginLeftHorBottom, "UseCustomMarginLeftHorBottom", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginRightHorBottom, "UseCustomMarginRightHorBottom", false, false);
 
-            Scribe_Values.LookValue(ref UseCustomMarginTopVerLeft, "UseCustomMarginTopVerLeft", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginTopVerRight, "UseCustomMarginTopVerRight", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginLeftVer, "useCustomMarginLeftRightVer", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginRightVer, "UseCustomMarginRightVer", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginBottomVerLeft, "UseCustomMarginBottomVerLeft", false, false);
-            Scribe_Values.LookValue(ref UseCustomMarginBottomVerRight, "UseCustomMarginBottomVerRight", false, false);
-
-
-            Scribe_Values.LookValue(ref UseCustomBaseSpacingHorizontal, "useCustomBaseSpacingHorizontal", false, false);
-            Scribe_Values.LookValue(ref UseCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false, false);
-            Scribe_Values.LookValue(ref UseCustomIconSize, "useCustomIconSize", false, false);
-            Scribe_Values.LookValue(ref UseFixedIconScale, "useFixedIconScale", false, false);
-            Scribe_Values.LookValue(ref UseCustomPawnTextureCameraHorizontalOffset, "UseCustomPawnTextureCameraHorizontalOffset", false, false);
-            Scribe_Values.LookValue(ref UseCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
-            Scribe_Values.LookValue(ref UseCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
-            Scribe_Values.LookValue(ref UseCustomDoubleClickTime, "useCustomDoubleClick", false, false);
-            Scribe_Values.LookValue(ref UseGender, "useGender", false, false);
-            Scribe_Values.LookValue(ref UseVerticalAlignment, "useVerticalAlignment", false, false);
-            Scribe_Values.LookValue(ref UseRightAlignment, "useRightAlignment", false, false);
-            Scribe_Values.LookValue(ref UseBottomAlignment, "useBottomAlignment", false, false);
-
-            Scribe_Values.LookValue(ref UseMoodColors, "UseMoodColors", false, false);
-
-            Scribe_Values.LookValue(ref MarginTopHor, "MarginTopHor", 21f, false);
-            Scribe_Values.LookValue(ref MarginBottomHor, "MarginBottomHor", 21f, false);
-            Scribe_Values.LookValue(ref MarginLeftHorTop, "MarginLeftHorTop", 160f, false);
-            Scribe_Values.LookValue(ref MarginRightHorTop, "MarginRightHorTop", 160f, false);
-            Scribe_Values.LookValue(ref MarginLeftHorBottom, "MarginLeftHorBottom", 160f, false);
-            Scribe_Values.LookValue(ref MarginRightHorBottom, "MarginRightHorBottom", 160f, false);
-
-            Scribe_Values.LookValue(ref MarginTopVerLeft, "MarginTopVerLeft", 120f, false);
-            Scribe_Values.LookValue(ref MarginBottomVerLeft, "MarginBottomVerLeft", 120f, false);
-            Scribe_Values.LookValue(ref MarginTopVerRight, "MarginTopVerRight", 120f, false);
-            Scribe_Values.LookValue(ref MarginBottomVerRight, "MarginBottomVerRight", 120f, false);
-            Scribe_Values.LookValue(ref MarginLeftVer, "MarginLeftVer", 21f, false);
-            Scribe_Values.LookValue(ref MarginRightVer, "MarginRightVer", 21f, false);
-
-            Scribe_Values.LookValue(ref HorizontalOffset, "HorizontalOffset", 0f, false);
-            Scribe_Values.LookValue(ref VerticalOffset, "VerticalOffset", 0f, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginTopVerLeft, "UseCustomMarginTopVerLeft", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginTopVerRight, "UseCustomMarginTopVerRight", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginLeftVer, "useCustomMarginLeftRightVer", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginRightVer, "UseCustomMarginRightVer", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginBottomVerLeft, "UseCustomMarginBottomVerLeft", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomMarginBottomVerRight, "UseCustomMarginBottomVerRight", false, false);
 
 
-            Scribe_Values.LookValue(ref BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
-            Scribe_Values.LookValue(ref BaseSpacingVertical, "BaseSpacingVertical", 32f, false);
-            Scribe_Values.LookValue(ref BaseSizeFloat, "BaseSizeFloat", 48f, false);
-            Scribe_Values.LookValue(ref BaseIconSize, "BaseIconSize", 20f, false);
-            Scribe_Values.LookValue(ref PawnTextureCameraHorizontalOffset, "PawnTextureCameraHorizontalOffset", 0f, false);
-            Scribe_Values.LookValue(ref PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
-            Scribe_Values.LookValue(ref PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
-            Scribe_Values.LookValue(ref MaxColonistBarWidth, "MaxColonistBarWidth");
-            Scribe_Values.LookValue(ref MaxColonistBarHeight, "MaxColonistBarHeight");
+            Scribe_Values.LookValue(ref Settings.UseCustomBaseSpacingHorizontal, "useCustomBaseSpacingHorizontal", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomIconSize, "useCustomIconSize", false, false);
+            Scribe_Values.LookValue(ref Settings.UseFixedIconScale, "useFixedIconScale", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomPawnTextureCameraHorizontalOffset, "UseCustomPawnTextureCameraHorizontalOffset", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false, false);
+            Scribe_Values.LookValue(ref Settings.UseCustomDoubleClickTime, "useCustomDoubleClick", false, false);
+            Scribe_Values.LookValue(ref Settings.UseGender, "useGender", false, false);
+            Scribe_Values.LookValue(ref Settings.UseVerticalAlignment, "useVerticalAlignment", false, false);
+            Scribe_Values.LookValue(ref Settings.UseRightAlignment, "useRightAlignment", false, false);
+            Scribe_Values.LookValue(ref Settings.UseBottomAlignment, "useBottomAlignment", false, false);
+
+            Scribe_Values.LookValue(ref Settings.UseMoodColors, "UseMoodColors", false, false);
+
+            Scribe_Values.LookValue(ref Settings.MarginTopHor, "MarginTopHor", 21f, false);
+            Scribe_Values.LookValue(ref Settings.MarginBottomHor, "MarginBottomHor", 21f, false);
+            Scribe_Values.LookValue(ref Settings.MarginLeftHorTop, "MarginLeftHorTop", 160f, false);
+            Scribe_Values.LookValue(ref Settings.MarginRightHorTop, "MarginRightHorTop", 160f, false);
+            Scribe_Values.LookValue(ref Settings.MarginLeftHorBottom, "MarginLeftHorBottom", 160f, false);
+            Scribe_Values.LookValue(ref Settings.MarginRightHorBottom, "MarginRightHorBottom", 160f, false);
+
+            Scribe_Values.LookValue(ref Settings.MarginTopVerLeft, "MarginTopVerLeft", 120f, false);
+            Scribe_Values.LookValue(ref Settings.MarginBottomVerLeft, "MarginBottomVerLeft", 120f, false);
+            Scribe_Values.LookValue(ref Settings.MarginTopVerRight, "MarginTopVerRight", 120f, false);
+            Scribe_Values.LookValue(ref Settings.MarginBottomVerRight, "MarginBottomVerRight", 120f, false);
+            Scribe_Values.LookValue(ref Settings.MarginLeftVer, "MarginLeftVer", 21f, false);
+            Scribe_Values.LookValue(ref Settings.MarginRightVer, "MarginRightVer", 21f, false);
+
+            Scribe_Values.LookValue(ref Settings.HorizontalOffset, "HorizontalOffset", 0f, false);
+            Scribe_Values.LookValue(ref Settings.VerticalOffset, "VerticalOffset", 0f, false);
 
 
-            Scribe_Values.LookValue(ref DoubleClickTime, "DoubleClickTime", 0.5f, false);
+            Scribe_Values.LookValue(ref Settings.BaseSpacingHorizontal, "BaseSpacingHorizontal", 24f, false);
+            Scribe_Values.LookValue(ref Settings.BaseSpacingVertical, "BaseSpacingVertical", 32f, false);
+            Scribe_Values.LookValue(ref Settings.BaseSizeFloat, "BaseSizeFloat", 48f, false);
+            Scribe_Values.LookValue(ref Settings.BaseIconSize, "BaseIconSize", 20f, false);
+            Scribe_Values.LookValue(ref Settings.PawnTextureCameraHorizontalOffset, "PawnTextureCameraHorizontalOffset", 0f, false);
+            Scribe_Values.LookValue(ref Settings.PawnTextureCameraVerticalOffset, "PawnTextureCameraVerticalOffset", 0.3f, false);
+            Scribe_Values.LookValue(ref Settings.PawnTextureCameraZoom, "PawnTextureCameraZoom", 1.28205f, false);
+            Scribe_Values.LookValue(ref Settings.MaxColonistBarWidth, "MaxColonistBarWidth");
+            Scribe_Values.LookValue(ref Settings.MaxColonistBarHeight, "MaxColonistBarHeight");
 
-            Scribe_Values.LookValue(ref FemaleColor, "FemaleColor");
-            Scribe_Values.LookValue(ref MaleColor, "MaleColor");
 
-            Scribe_Values.LookValue(ref MaxRows, "MaxRows");
+            Scribe_Values.LookValue(ref Settings.DoubleClickTime, "DoubleClickTime", 0.5f, false);
+
+            Scribe_Values.LookValue(ref Settings.FemaleColor, "FemaleColor");
+            Scribe_Values.LookValue(ref Settings.MaleColor, "MaleColor");
+
+            Scribe_Values.LookValue(ref Settings.MaxRows, "MaxRows");
+            Scribe_Values.LookValue(ref Settings.SortBy, "SortBy");
 
 
-            Reloadsettings = false;
+            Settings.Reloadsettings = false;
+#if !NoCCL
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 femaleColorField.Value = FemaleColor;
                 maleColorField.Value = MaleColor;
             }
+#endif
         }
 
         #endregion

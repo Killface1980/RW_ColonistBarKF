@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>RW_ColonistBarKF</name>
+  <name>Colonist Bar KF</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
-  <targetVersion>0.14.1241</targetVersion>
+  <targetVersion>0.15.1280</targetVersion>
   <description>More options for the Colonist Bar.
   Requires CCL.
   </description>
