@@ -8,6 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace RW_ColonistBarKF
 {
+    [StaticConstructorOnStartup]
     public class ModInitializer : ITab
     {
         protected GameObject modInitializerControllerObject;
@@ -51,6 +52,9 @@ namespace RW_ColonistBarKF
 
         public void FixedUpdate()
         {
+            if (Current.ProgramState != ProgramState.MapPlaying)
+                return;
+
             if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
             {
                 ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();

@@ -10,6 +10,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using static RW_ColonistBarKF.CBKF;
+using static RW_ColonistBarKF.ModSettings.SortByWhat;
 
 namespace RW_ColonistBarKF
 {
@@ -61,7 +62,7 @@ namespace RW_ColonistBarKF
             rect.yMin += 10f;
             Listing_Standard listingreset = new Listing_Standard(rect);
             {
-                FillPageReset(listingreset, rect.width - 15f);
+                FillPageHeader(listingreset, rect.width - 15f);
                 listingreset.Gap(6f);
             }
             listingreset.End();
@@ -83,7 +84,7 @@ namespace RW_ColonistBarKF
 
 
             var rect2 = new Rect(rect);
-            rect2.yMin = listingreset.CurHeight + listingMain.CurHeight +rect2c.height;
+            rect2.yMin = listingreset.CurHeight + listingMain.CurHeight + rect2c.height;
 
             var listing2 = new Listing_Standard(rect2);
             {
@@ -95,7 +96,7 @@ namespace RW_ColonistBarKF
 #endif
         }
 
-        private void FillPageReset(Listing_Standard listing, float columnwidth)
+        private void FillPageHeader(Listing_Standard listing, float columnwidth)
         {
             // forces the mod to update the values from the sliders. is deactivated by saving the values.
             Settings.Reloadsettings = true;
@@ -116,6 +117,7 @@ namespace RW_ColonistBarKF
                 Settings.UseCustomMarginRightHorBottom = false;
                 Settings.UseBottomAlignment = false;
                 Settings.UseMoodColors = false;
+                Settings.UseWeaponIcons = false;
                 Settings.UseFixedIconScale = false;
 
                 Settings.MarginBottomHor = 21f;
@@ -163,7 +165,7 @@ namespace RW_ColonistBarKF
                 Settings.UseCustomMarginRightVer = false;
                 Settings.UseCustomMarginBottomVerLeft = false;
                 Settings.UseCustomMarginBottomVerRight = false;
-                Settings.SortBy = "vanilla";
+                Settings.SortBy = (int)vanilla;
             }
 
             listing.NewColumn();
@@ -172,40 +174,40 @@ namespace RW_ColonistBarKF
 
                 List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
-                floatOptionList.Add(new FloatMenuOption("Vanilla".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Vanilla".Translate(), delegate
                 {
-                    Settings.SortBy = "vanilla";
+                    Settings.SortBy = (int)vanilla;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
 
-                floatOptionList.Add(new FloatMenuOption("SexAge".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.SexAge".Translate(), delegate
                 {
-                    Settings.SortBy = "sexage";
+                    Settings.SortBy = (int)sexage;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
 
-                floatOptionList.Add(new FloatMenuOption("Health".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Mood".Translate(), delegate
                 {
-                    Settings.SortBy = "health";
+                    Settings.SortBy = (int)mood;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
-                floatOptionList.Add(new FloatMenuOption("Mood".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Health".Translate(), delegate
                 {
-                    Settings.SortBy = "mood";
+                    Settings.SortBy = (int)health;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
-                floatOptionList.Add(new FloatMenuOption("HealthDesc".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.HealthDesc".Translate(), delegate
                 {
-                    Settings.SortBy = "health2";
+                    Settings.SortBy = (int)healthDesc;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
 
-                floatOptionList.Add(new FloatMenuOption("Weapons".Translate(), delegate
+                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
                 {
-                    Settings.SortBy = "health3";
+                    Settings.SortBy = (int)weapons;
                     ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                 }));
-                FloatMenu window = new FloatMenu(floatOptionList, "Sorting Options");
+                FloatMenu window = new FloatMenu(floatOptionList, "RW_ColonistBarKF.ModSettings.SortingOptions".Translate());
                 Find.WindowStack.Add(window);
 
             }
@@ -280,7 +282,7 @@ namespace RW_ColonistBarKF
                     listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.MarginEdge".Translate(), ref Settings.UseCustomMarginRightVer, null);
                     if (Settings.UseCustomMarginRightVer)
                     {
-                    //    listing.Gap(3f);
+                        //    listing.Gap(3f);
                         Settings.MarginRightVer = listing.Slider(Settings.MarginRightVer, 0f, Screen.width / 12);
                     }
                     else
@@ -519,10 +521,10 @@ namespace RW_ColonistBarKF
 
             #endregion
 
-            listing.Gap(6f);
+            listing.Gap(3f);
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseMoodColors".Translate(), ref Settings.UseMoodColors, null);
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseWeaponIcons".Translate(), ref Settings.UseWeaponIcons, null);
 
-            listing.Gap(6f);
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useGender".Translate(), ref Settings.UseGender, null);
 
             #region Gender
@@ -697,6 +699,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.UseBottomAlignment, "useBottomAlignment", false, false);
 
             Scribe_Values.LookValue(ref Settings.UseMoodColors, "UseMoodColors", false, false);
+            Scribe_Values.LookValue(ref Settings.UseWeaponIcons, "UseWeaponIcons", false, false);
 
             Scribe_Values.LookValue(ref Settings.MarginTopHor, "MarginTopHor", 21f, false);
             Scribe_Values.LookValue(ref Settings.MarginBottomHor, "MarginBottomHor", 21f, false);

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using static RW_ColonistBarKF.CBKF;
+using static RW_ColonistBarKF.ModSettings.SortByWhat;
 
 namespace RW_ColonistBarKF
 {
@@ -26,14 +29,15 @@ namespace RW_ColonistBarKF
 
         private float clickedAt;
 
-        private static readonly Texture2D MoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.8f, 0.85f, 0.5f));
-        private static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.85f, 0.85f, 0.2f, 0.5f));
-        private static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.55f, 0.05f, 0.75f));
-        private static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.15f, 0.00f, 0.8f));
-        private static readonly Texture2D MoodExtremeCrossedBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.1f, 0.00f, 0.45f));
+        private static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.8f));
+        private static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.7f, 0f, 0.8f));
+        private static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.9f, 0.9f, 0.8f));
+        private static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.95f, 0.1f, 0.8f));
+        private static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.5f, 0f, 0.8f));
+        private static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0f, 0f, 0.8f));
 
-        private static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.9f, 0.95f, 0.7f));
-        private static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.2f, 0.22f, 0.8f));
+        private static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.8f, 0.8f, 0.8f));
+        private static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.1f, 0.1f, 0.9f));
 
 
         //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
@@ -61,10 +65,6 @@ namespace RW_ColonistBarKF
         private static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning", true);
 
         // custom test
-
-
-
-
 
         private static Vector2 BaseSize = new Vector2(Settings.BaseSizeFloat, Settings.BaseSizeFloat);
 
@@ -492,26 +492,28 @@ namespace RW_ColonistBarKF
             IOrderedEnumerable<Pawn> orderedEnumerable;
             switch (Settings.SortBy)
             {
-                case "vanilla":
+                case (int)vanilla:
                     cachedColonists.SortBy(x => x.thingIDNumber);
                     break;
 
-                case "sexage":
+                case (int)sexage:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
-                case "health":
+                case (int)health:
                     cachedColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
                     break;
 
-                case "health2":
+                case (int)healthDesc:
                     cachedColonists.SortByDescending(x => x.health.summaryHealth.SummaryHealthPercent);
                     break;
-                case "mood":
-                    cachedColonists.SortByDescending(x => x.needs.mood.CurInstantLevel);
+
+                case (int)mood:
+                    cachedColonists.SortByDescending(x => x.needs.mood.CurLevelPercentage);
                     break;
-                case "health3":
+
+                case (int)weapons:
                     orderedEnumerable = cachedColonists.OrderByDescending(
                         x =>
                         {
@@ -545,7 +547,10 @@ namespace RW_ColonistBarKF
 
             if (Settings.UseMoodColors)
             {
-                Rect moodBorderRect = rect.ContractedBy(-1f);
+                Rect moodBorderRect = rect.ContractedBy(rect.width / 3);
+
+                moodBorderRect.x += rect.width / 3 - (rect.width / 12);
+                moodBorderRect.y -= rect.height / 3 - (rect.height / 12);
 
                 if (mood != null && mb != null)
                 {
@@ -595,26 +600,35 @@ namespace RW_ColonistBarKF
             if (Settings.UseMoodColors)
             {
                 // draw mood thingie
-                Rect moodRect = rect.ContractedBy(2.0f);
+
+                Rect moodRect = rect.ContractedBy(rect.width / 3);
+
+                moodRect.x += rect.width / 3 - (rect.width / 12);
+                moodRect.y -= rect.height / 3 - (rect.height / 12);
 
                 if (mood != null && mb != null)
                 {
+
+                    GUI.DrawTexture(moodRect, MoodBGTex);
                     if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodTex);
+                        GUI.DrawTexture(moodRect, MoodNeutral);
+                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, mood.CurLevelPercentage)), MoodGoodTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodMinorCrossedTex);
+                        GUI.DrawTexture(moodRect, MoodMinorCrossedTex);
+                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, mood.CurLevelPercentage)), MoodNeutral);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodMajorCrossedTex);
+                        GUI.DrawTexture(moodRect, MoodMajorCrossedTex);
+                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, mood.CurLevelPercentage)), MoodMinorCrossedTex);
                     }
                     else
                     {
-                        GUI.DrawTexture(moodRect, MoodExtremeCrossedBGTex);
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), MoodExtremeCrossedTex);
+                        GUI.DrawTexture(moodRect, MoodExtremeCrossedTex);
+                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, mood.CurLevelPercentage)), MoodMajorCrossedTex);
                     }
 
                     DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
@@ -634,10 +648,8 @@ namespace RW_ColonistBarKF
 
             GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, Settings.PawnTextureCameraZoom));
 
-            if (true)
+            if (Settings.UseWeaponIcons)
             {
-
-
                 DrawWeapon(rect, colonist);
                 if (!Settings.UseCustomPawnTextureCameraHorizontalOffset)
                 {
@@ -689,20 +701,18 @@ namespace RW_ColonistBarKF
                 var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f);
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.8f, 0.1f, 0.1f, 0.9f);
+                    GUI.color = new Color(0.9f, 0.1f, 0.1f, 1f);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.8f, 0.8f, 0.1f, 0.9f);
+                    GUI.color = new Color(0.9f, 0.9f, 0.1f, 1f);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
                 GUI.color = Color.white;
                 var rect3 = rect2.ContractedBy(rect2.width / 8);
 
-                Widgets.DrawTextureRotated(rect3, resolvedIcon, -90f);
-
-
+                Widgets.DrawTextureRotated(rect3, resolvedIcon, 0);
             }
         }
 

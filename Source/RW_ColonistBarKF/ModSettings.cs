@@ -36,6 +36,7 @@ namespace RW_ColonistBarKF
         public bool UseBottomAlignment;
 
         public bool UseMoodColors = true;
+        public bool UseWeaponIcons = true;
 
         public float MarginTopHor = 21f;
         public float MarginBottomHor = 21f;
@@ -69,6 +70,16 @@ namespace RW_ColonistBarKF
 
         public int MaxRows;
 
-        public string SortBy = "vanilla";
+        public int SortBy;
+
+        public enum SortByWhat
+        {
+            vanilla = -1,
+            sexage,
+            health,
+            healthDesc,
+            mood,
+            weapons
+        }
     }
 }
