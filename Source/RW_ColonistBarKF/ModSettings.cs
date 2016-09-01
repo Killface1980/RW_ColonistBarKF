@@ -77,9 +77,9 @@ namespace RW_ColonistBarKF
             vanilla = -1,
             sexage,
             health,
-            healthDesc,
             mood,
-            weapons
+            weapons,
+            byName
         }
     }
 }

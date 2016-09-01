@@ -31,7 +31,7 @@ namespace RW_ColonistBarKF
 
         public override Vector2 InitialSize
         {
-            get { return new Vector2(438f, 850f); }
+            get { return new Vector2(438f, 875f); }
         }
 
         public override void PreOpen()
@@ -168,53 +168,56 @@ namespace RW_ColonistBarKF
                 Settings.SortBy = (int)vanilla;
             }
 
-            listing.NewColumn();
-            if (listing.ButtonText("RW_ColonistBarKF.ModSettings.SortBy".Translate()))
-            {
-
-                List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
-
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Vanilla".Translate(), delegate
-                {
-                    Settings.SortBy = (int)vanilla;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.SexAge".Translate(), delegate
-                {
-                    Settings.SortBy = (int)sexage;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Mood".Translate(), delegate
-                {
-                    Settings.SortBy = (int)mood;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Health".Translate(), delegate
-                {
-                    Settings.SortBy = (int)health;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.HealthDesc".Translate(), delegate
-                {
-                    Settings.SortBy = (int)healthDesc;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-
-                floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
-                {
-                    Settings.SortBy = (int)weapons;
-                    ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                }));
-                FloatMenu window = new FloatMenu(floatOptionList, "RW_ColonistBarKF.ModSettings.SortingOptions".Translate());
-                Find.WindowStack.Add(window);
-
-            }
-
-            listing.ColumnWidth = columnwidth;
-            listing.Gap(6f);
-        }
+      //    listing.NewColumn();
+      //    if (listing.ButtonText("RW_ColonistBarKF.ModSettings.SortBy".Translate()))
+      //    {
+      //        List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+      //
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Vanilla".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)vanilla;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.ByName".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)byName;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.SexAge".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)sexage;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Mood".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)mood;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Health".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)health;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
+      //        {
+      //            Settings.SortBy = (int)weapons;
+      //            ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+      //        }));
+      //        floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Settings".Translate(), delegate
+      //        {
+      //            Find.WindowStack.Add(new ColonistBarKF_Settings());
+      //        }));
+      //        FloatMenu window = new FloatMenu(floatOptionList, "RW_ColonistBarKF.ModSettings.SortingOptions".Translate());
+      //        Find.WindowStack.Add(window);
+      //
+      //    }
+      //
+      //    listing.ColumnWidth = columnwidth;
+          listing.Gap(6f);
+      }
 
 
         private void FillPageMain(Listing_Standard listing, float columnwidth)

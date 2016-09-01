@@ -32,7 +32,7 @@ namespace RW_ColonistBarKF
         private static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.8f));
         private static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.7f, 0f, 0.8f));
         private static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.9f, 0.9f, 0.8f));
-        private static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.95f, 0.1f, 0.8f));
+        private static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.85f, 0.1f, 0.8f));
         private static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.5f, 0f, 0.8f));
         private static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0f, 0f, 0.8f));
 
@@ -496,6 +496,11 @@ namespace RW_ColonistBarKF
                     cachedColonists.SortBy(x => x.thingIDNumber);
                     break;
 
+                case (int)byName:
+                    orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap);
+                    cachedColonists = orderedEnumerable.ToList();
+                    break;
+
                 case (int)sexage:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     cachedColonists = orderedEnumerable.ToList();
@@ -503,10 +508,6 @@ namespace RW_ColonistBarKF
 
                 case (int)health:
                     cachedColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
-                    break;
-
-                case (int)healthDesc:
-                    cachedColonists.SortByDescending(x => x.health.summaryHealth.SummaryHealthPercent);
                     break;
 
                 case (int)mood:
@@ -536,7 +537,7 @@ namespace RW_ColonistBarKF
         private void DrawColonist(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
-            bool flag = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
+            bool colonistAlive = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
 
@@ -641,7 +642,7 @@ namespace RW_ColonistBarKF
                 }
 
             }
-            if (flag)
+            if (colonistAlive)
             {
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
             }
@@ -845,8 +846,50 @@ namespace RW_ColonistBarKF
             if (Mouse.IsOver(rect) && Event.current.button == 2)
             {
                 if (Event.current.type == EventType.MouseDown)
-                    Find.WindowStack.Add(new ColonistBarKF_Settings());
-                //    Find.WindowStack.Add(new Dialog_InfoCard(colonist));
+                {
+                    List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Vanilla".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)vanilla;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.ByName".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)byName;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.SexAge".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)sexage;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Mood".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)mood;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Health".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)health;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
+                    {
+                        Settings.SortBy = (int)weapons;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Settings".Translate(), delegate
+                    {
+                        Find.WindowStack.Add(new ColonistBarKF_Settings());
+                    }));
+                    FloatMenu window = new FloatMenu(floatOptionList, "RW_ColonistBarKF.ModSettings.SortingOptions".Translate());
+                    Find.WindowStack.Add(window);
+                }
+
             }
         }
 
