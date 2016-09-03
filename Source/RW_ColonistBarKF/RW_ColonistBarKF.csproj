@@ -62,6 +62,7 @@
   <ItemGroup>
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
