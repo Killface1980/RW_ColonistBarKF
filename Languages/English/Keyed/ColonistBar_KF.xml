@@ -26,12 +26,12 @@
   <RW_ColonistBarKF.ModSettings.useTop>Top</RW_ColonistBarKF.ModSettings.useTop>
   <RW_ColonistBarKF.ModSettings.UseMoodColors>Use mood bars</RW_ColonistBarKF.ModSettings.UseMoodColors>
 
-  <RW_ColonistBarKF.ModSettings.SortBy>Sort by</RW_ColonistBarKF.ModSettings.SortBy>
+  <RW_ColonistBarKF.ModSettings.SortBy>Sort By</RW_ColonistBarKF.ModSettings.SortBy>
   <RW_ColonistBarKF.ModSettings.Vanilla>Vanilla</RW_ColonistBarKF.ModSettings.Vanilla>
   <RW_ColonistBarKF.ModSettings.SexAge>Sex then Age</RW_ColonistBarKF.ModSettings.SexAge>
   <RW_ColonistBarKF.ModSettings.Mood>Mood</RW_ColonistBarKF.ModSettings.Mood>
-  <RW_ColonistBarKF.ModSettings.Health>Health Ascending</RW_ColonistBarKF.ModSettings.Health>
-  <RW_ColonistBarKF.ModSettings.HealthDesc>Health Descending</RW_ColonistBarKF.ModSettings.HealthDesc>
+  <RW_ColonistBarKF.ModSettings.Health>Health</RW_ColonistBarKF.ModSettings.Health>
+  <RW_ColonistBarKF.ModSettings.Medic>Medical Skill</RW_ColonistBarKF.ModSettings.Medic>
   <RW_ColonistBarKF.ModSettings.Weapons>Weapons</RW_ColonistBarKF.ModSettings.Weapons>
   <RW_ColonistBarKF.ModSettings.SortingOptions>Sorting Options</RW_ColonistBarKF.ModSettings.SortingOptions>
   <RW_ColonistBarKF.ModSettings.UseWeaponIcons>Use Weapon Icons</RW_ColonistBarKF.ModSettings.UseWeaponIcons>

@@ -501,7 +501,7 @@ namespace RW_ColonistBarKF
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
-                case (int)sexage:
+                case sexage:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     cachedColonists = orderedEnumerable.ToList();
                     break;
@@ -515,15 +515,25 @@ namespace RW_ColonistBarKF
                     break;
 
                 case weapons:
-                    orderedEnumerable = cachedColonists.OrderByDescending(
-                        x =>
-                        {
-                            return x.equipment.Primary != null && x.equipment.Primary.def.IsMeleeWeapon;
-                        }).ThenByDescending(
-                        x =>
-                        {
-                            return x.equipment.Primary != null && x.equipment.Primary.def.IsRangedWeapon;
-                        });
+                    //orderedEnumerable = cachedColonists
+                    //    .OrderByDescending(x => x.equipment.Primary != null && x.equipment.Primary.def.IsMeleeWeapon)
+                    //    .ThenByDescending(x => x.equipment.Primary != null && x.equipment.Primary.def.IsRangedWeapon);
+
+                    orderedEnumerable = cachedColonists
+                        .OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
+                        //.GetSkill(SkillDefOf.Melee).level)
+                        .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon)
+                        .ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+//                    .ThenByDescending(d => d.skills.GetSkill(SkillDefOf.Shooting).level);
+
+                    cachedColonists = orderedEnumerable.ToList();
+                    break;
+
+                case medic:
+
+                    orderedEnumerable = cachedColonists
+                        .OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
@@ -862,7 +872,7 @@ namespace RW_ColonistBarKF
 
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.SexAge".Translate(), delegate
                     {
-                        Settings.SortBy = (int)sexage;
+                        Settings.SortBy = sexage;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
@@ -876,12 +886,17 @@ namespace RW_ColonistBarKF
                         Settings.SortBy = health;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-
+                    floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Medic".Translate(), delegate
+                    {
+                        Settings.SortBy = medic;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
                     {
                         Settings.SortBy = weapons;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
+
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Settings".Translate(), delegate
                     {
                         Find.WindowStack.Add(new ColonistBarKF_Settings());

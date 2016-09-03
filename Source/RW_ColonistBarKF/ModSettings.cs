@@ -79,6 +79,7 @@ namespace RW_ColonistBarKF
             health,
             mood,
             weapons,
+            medic,
             byName
         }
     }
