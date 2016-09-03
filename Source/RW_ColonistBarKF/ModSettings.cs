@@ -70,7 +70,7 @@ namespace RW_ColonistBarKF
 
         public int MaxRows;
 
-        public int SortBy;
+        public SortByWhat SortBy;
 
         public enum SortByWhat
         {

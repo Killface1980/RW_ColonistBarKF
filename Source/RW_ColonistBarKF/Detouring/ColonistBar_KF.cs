@@ -492,11 +492,11 @@ namespace RW_ColonistBarKF
             IOrderedEnumerable<Pawn> orderedEnumerable;
             switch (Settings.SortBy)
             {
-                case (int)vanilla:
+                case vanilla:
                     cachedColonists.SortBy(x => x.thingIDNumber);
                     break;
 
-                case (int)byName:
+                case byName:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap);
                     cachedColonists = orderedEnumerable.ToList();
                     break;
@@ -506,15 +506,15 @@ namespace RW_ColonistBarKF
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
-                case (int)health:
+                case health:
                     cachedColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
                     break;
 
-                case (int)mood:
+                case mood:
                     cachedColonists.SortByDescending(x => x.needs.mood.CurLevelPercentage);
                     break;
 
-                case (int)weapons:
+                case weapons:
                     orderedEnumerable = cachedColonists.OrderByDescending(
                         x =>
                         {
@@ -706,7 +706,7 @@ namespace RW_ColonistBarKF
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.9f, 0.9f, 0.1f, 1f);
+                    GUI.color = new Color(0.45f, 0.9f, 0.1f, 1f);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
@@ -851,12 +851,12 @@ namespace RW_ColonistBarKF
 
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Vanilla".Translate(), delegate
                     {
-                        Settings.SortBy = (int)vanilla;
+                        Settings.SortBy = vanilla;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.ByName".Translate(), delegate
                     {
-                        Settings.SortBy = (int)byName;
+                        Settings.SortBy = byName;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
@@ -868,18 +868,18 @@ namespace RW_ColonistBarKF
 
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Mood".Translate(), delegate
                     {
-                        Settings.SortBy = (int)mood;
+                        Settings.SortBy = mood;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Health".Translate(), delegate
                     {
-                        Settings.SortBy = (int)health;
+                        Settings.SortBy = health;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Weapons".Translate(), delegate
                     {
-                        Settings.SortBy = (int)weapons;
+                        Settings.SortBy = weapons;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("RW_ColonistBarKF.ModSettings.Settings".Translate(), delegate

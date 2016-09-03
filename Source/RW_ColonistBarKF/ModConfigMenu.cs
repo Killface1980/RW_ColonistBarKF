@@ -165,7 +165,7 @@ namespace RW_ColonistBarKF
                 Settings.UseCustomMarginRightVer = false;
                 Settings.UseCustomMarginBottomVerLeft = false;
                 Settings.UseCustomMarginBottomVerRight = false;
-                Settings.SortBy = (int)vanilla;
+                Settings.SortBy = vanilla;
             }
 
       //    listing.NewColumn();
