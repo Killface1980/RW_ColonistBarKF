@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using RW_ColonistBarKF;
 using Verse;
 // Toggle in Hospitality Properties
 #if NoCCL
@@ -49,9 +48,7 @@ namespace RW_ColonistBarKF
             #endregion
 
             return true;
+        
         }
-
-
-
     }
 }

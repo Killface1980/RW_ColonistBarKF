@@ -4,7 +4,12 @@
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
   <targetVersion>0.15.1284</targetVersion>
-  <description>More options for the Colonist Bar. Options available with Middle Button Click on any icon.
-  Requires CCL.
+  <description>
+    More options for the Colonist Bar.
+    All options available with Right Mouse Button click on any icon.
+    FollowMe™ functionality via Middle Mouse Button click.
+
+    Includes 'FollowMe™' functionality by Fluffy with updated code by alexschrod
+
   </description>
 </ModMetaData>

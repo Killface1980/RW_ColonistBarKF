@@ -490,7 +490,7 @@ namespace RW_ColonistBarKF
                         //.GetSkill(SkillDefOf.Melee).level)
                         .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon)
                         .ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-//                    .ThenByDescending(d => d.skills.GetSkill(SkillDefOf.Shooting).level);
+                    //                    .ThenByDescending(d => d.skills.GetSkill(SkillDefOf.Shooting).level);
 
                     cachedColonists = orderedEnumerable.ToList();
                     break;
@@ -809,6 +809,7 @@ namespace RW_ColonistBarKF
             {
                 if (clickedColonist == colonist && Time.time - clickedAt < Settings.DoubleClickTime)
                 {
+                    // use event so it doesn't bubble through
                     Event.current.Use();
                     JumpToTargetUtility.TryJump(colonist);
                     clickedColonist = null;
@@ -819,7 +820,7 @@ namespace RW_ColonistBarKF
                     clickedAt = Time.time;
                 }
             }
-            if (Mouse.IsOver(rect) && Event.current.button == 2)
+            if (Mouse.IsOver(rect) && Event.current.button == 1)
             {
                 if (Event.current.type == EventType.MouseDown)
                 {
@@ -869,9 +870,12 @@ namespace RW_ColonistBarKF
                     }));
                     FloatMenu window = new FloatMenu(floatOptionList, "RW_ColonistBarKF.ModSettings.SortingOptions".Translate());
                     Find.WindowStack.Add(window);
-                }
 
+                    // use event so it doesn't bubble through
+                    Event.current.Use();
+                }
             }
+
         }
 
         private void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)

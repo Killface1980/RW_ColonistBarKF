@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,7 +6,6 @@ using Object = UnityEngine.Object;
 
 namespace RW_ColonistBarKF
 {
-    [StaticConstructorOnStartup]
     public class ModInitializer : ITab
     {
         protected GameObject modInitializerControllerObject;
@@ -17,10 +14,10 @@ namespace RW_ColonistBarKF
         {
             LongEventHandler.ExecuteWhenFinished(delegate
             {
-                modInitializerControllerObject = new GameObject("RW_ColonistBarKF");
+                modInitializerControllerObject = new GameObject("Colonist Bar KF");
                 modInitializerControllerObject.AddComponent<CBKF>();
                 Object.DontDestroyOnLoad(modInitializerControllerObject);
-                Log.Message("RW_ColonistBarKF Initialized");
+                Log.Message("Colonist Bar KF Initialized");
             });
         }
 

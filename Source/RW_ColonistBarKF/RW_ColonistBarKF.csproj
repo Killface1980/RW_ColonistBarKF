@@ -62,8 +62,10 @@
   <ItemGroup>
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="MapComponentInjectorBehavior.cs" />
+    <Compile Include="ColonistBarTextures.cs" />
     <Compile Include="DetourAttribute.cs" />
+    <Compile Include="MapComponent_FollowMe.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="ModSettings.cs" />
@@ -83,6 +85,9 @@
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>Defs\Initializer.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\Injector.xml">
+      <Link>Defs\Injector.xml</Link>
     </Content>
     <Content Include="..\..\Languages\English\Keyed\ColonistBar_KF.xml">
       <Link>Languages\English\ColonistBar_KF.xml</Link>
