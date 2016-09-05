@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Colonist Bar KF</name>
   <author>Killface</author>
@@ -6,10 +6,12 @@
   <targetVersion>0.15.1284</targetVersion>
   <description>
     More options for the Colonist Bar.
+    Allows custom placement of the bar, as well as advanced scaling and sorting functionality.
     All options available with Right Mouse Button click on any icon.
     FollowMe™ functionality via Middle Mouse Button click.
 
+    Includes a modified version of the mood bar from 'MuzzyUtils™' by muzzy
     Includes 'FollowMe™' functionality by Fluffy with updated code by alexschrod
-
+    Includes 'ZoomToMouse™' functionality by Fluffy
   </description>
 </ModMetaData>
