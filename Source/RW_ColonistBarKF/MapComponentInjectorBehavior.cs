@@ -87,7 +87,8 @@ namespace RW_ColonistBarKF       // Replace with yours.
 
         public MapComponentInjector()
         {
-            Log.Message("MapComponentInjector: initializing for " + MapComponentInjectorBehavior.mapComponentName + " and " + MapComponentInjectorBehavior.mapComponentName);
+            Log.Message("MapComponentInjector: initializing for " + MapComponentInjectorBehavior.mapComponentName);
+            Log.Message("MapComponentInjector: initializing for " + MapComponentInjectorBehavior.mapComponentName2);
             initializer = new GameObject("CBKFMapComponentInjector");
             initializer.AddComponent<MapComponentInjectorBehavior>();
             Object.DontDestroyOnLoad((Object)initializer);
