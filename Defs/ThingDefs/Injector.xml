@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ThingDefs>
   <ThingDef>
-    <defName>FollowMeInjector</defName><!-- Replace with your namespace, for safety. -->
+    <defName>ColonistBarKFInjector</defName><!-- Replace with your namespace, for safety. -->
     <category>Building</category>
     <menuHidden>true</menuHidden>
     <label>ModInitializer</label>

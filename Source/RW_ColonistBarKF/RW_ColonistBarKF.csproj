@@ -66,6 +66,7 @@
     <Compile Include="ColonistBarTextures.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="MapComponent_FollowMe.cs" />
+    <Compile Include="MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="ModSettings.cs" />
