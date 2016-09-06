@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 using Verse;
+using static RW_ColonistBarKF.CBKF;
 
 namespace RW_ColonistBarKF
 {
@@ -27,18 +28,21 @@ namespace RW_ColonistBarKF
 
         public override void MapComponentUpdate()
         {
-            // determine zoom action
-            float action = CurrentSize - DesiredSize;
+            if (Settings.useZoomToMouse)
+            {
+                // determine zoom action
+                float action = CurrentSize - DesiredSize;
 
-            // zoom action has taken place
-            if (action > tolerance)
-                Current.CameraDriver.JumpTo(CurrentRealPosition + MouseMapOffset);
-            else
-                // update last known location.
-                LastMouseMapPosition = CurrentMouseMapPosition;
+                // zoom action has taken place
+                if (action > tolerance)
+                    Current.CameraDriver.JumpTo(CurrentRealPosition + MouseMapOffset);
+                else
+                    // update last known location.
+                    LastMouseMapPosition = CurrentMouseMapPosition;
 
-            // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
-            // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.
+                // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
+                // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.
+            }
         }
     }
 }

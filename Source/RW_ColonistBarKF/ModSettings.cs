@@ -68,6 +68,8 @@ namespace RW_ColonistBarKF
         public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
+        public bool useZoomToMouse = false;
+
         public int MaxRows;
 
         public SortByWhat SortBy;

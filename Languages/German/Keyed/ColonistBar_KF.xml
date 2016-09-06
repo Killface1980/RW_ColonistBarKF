@@ -24,8 +24,21 @@
   <RW_ColonistBarKF.ModSettings.useLeft>Links</RW_ColonistBarKF.ModSettings.useLeft>
   <RW_ColonistBarKF.ModSettings.useRight>Rechts</RW_ColonistBarKF.ModSettings.useRight>
   <RW_ColonistBarKF.ModSettings.useTop>Top</RW_ColonistBarKF.ModSettings.useTop>
-  <RW_ColonistBarKF.ModSettings.UseMoodColors>Zeige Laune im Hintergrund</RW_ColonistBarKF.ModSettings.UseMoodColors>
+  <RW_ColonistBarKF.ModSettings.UseMoodColors>Zeige Stimmung im Hintergrund</RW_ColonistBarKF.ModSettings.UseMoodColors>
 
+  <RW_ColonistBarKF.ModSettings.SortBy>Sortieren nach</RW_ColonistBarKF.ModSettings.SortBy>
+  <RW_ColonistBarKF.ModSettings.Vanilla>Vanilla</RW_ColonistBarKF.ModSettings.Vanilla>
+  <RW_ColonistBarKF.ModSettings.SexAge>Geschlecht dann Alter</RW_ColonistBarKF.ModSettings.SexAge>
+  <RW_ColonistBarKF.ModSettings.Mood>Stimmung</RW_ColonistBarKF.ModSettings.Mood>
+  <RW_ColonistBarKF.ModSettings.Health>Gesundheit</RW_ColonistBarKF.ModSettings.Health>
+  <RW_ColonistBarKF.ModSettings.Medic>Medizin</RW_ColonistBarKF.ModSettings.Medic>
+  <RW_ColonistBarKF.ModSettings.Weapons>Waffen</RW_ColonistBarKF.ModSettings.Weapons>
+  <RW_ColonistBarKF.ModSettings.SortingOptions>Sortierungs-Optionen</RW_ColonistBarKF.ModSettings.SortingOptions>
+  <RW_ColonistBarKF.ModSettings.UseWeaponIcons>Benutze Icons für Waffen</RW_ColonistBarKF.ModSettings.UseWeaponIcons>
+  <RW_ColonistBarKF.ModSettings.ByName>Nach Name</RW_ColonistBarKF.ModSettings.ByName>
+  <RW_ColonistBarKF.ModSettings.Settings>Colonist Bar Einstellungen </RW_ColonistBarKF.ModSettings.Settings>
+  <RW_ColonistBarKF.ModSettings.useZoomToMouse>Benutze ZoomToMouse</RW_ColonistBarKF.ModSettings.useZoomToMouse>
+  
   <FollowMe.Cancel> {0} wird nicht mehr Verfolgt.</FollowMe.Cancel>
   <FollowMe.Follow> Verfolge jetzt {0}.</FollowMe.Follow>
 

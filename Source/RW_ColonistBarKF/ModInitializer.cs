@@ -27,7 +27,6 @@ namespace RW_ColonistBarKF
     internal class CBKF : MonoBehaviour
     {
 
-#if NoCCL
 
         public static ModSettings Settings = new ModSettings();
 
@@ -44,7 +43,6 @@ namespace RW_ColonistBarKF
             XmlSaver.SaveDataObject(Settings, configFolder + "/" + path);
         }
 
-#endif
         private int _lastStatUpdate;
 
         public void FixedUpdate()

@@ -29,33 +29,36 @@ namespace RW_ColonistBarKF
 
         #region Methods
 
-        public override Vector2 InitialSize
-        {
-            get { return new Vector2(438f, 875f); }
-        }
+
 
         public override void PreOpen()
         {
             base.PreOpen();
         }
 
-        public override void PreClose()
-        {
-            SaveSettings();
-        }
+
 
 
 #if NoCCL
+         public override void PreClose()
+        {
+            SaveSettings();
+        }
+        
+        public override Vector2 InitialSize
+        {
+            get { return new Vector2(438f, 875f); }
+        }
+        
         public ColonistBarKF_Settings()
         {
             forcePause = true;
             doCloseX = true;
         }
-
-
-#endif
-
         public override void DoWindowContents(Rect rect)
+#else
+        public override float DoWindowContents(Rect rect)
+#endif
         {
             rect.xMin += 15f;
             rect.width -= 15f;
@@ -166,6 +169,7 @@ namespace RW_ColonistBarKF
                 Settings.UseCustomMarginBottomVerLeft = false;
                 Settings.UseCustomMarginBottomVerRight = false;
                 Settings.SortBy = vanilla;
+                Settings.useZoomToMouse = false;
             }
 
       //    listing.NewColumn();
@@ -529,13 +533,14 @@ namespace RW_ColonistBarKF
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseWeaponIcons".Translate(), ref Settings.UseWeaponIcons, null);
 
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useGender".Translate(), ref Settings.UseGender, null);
+            listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useZoomToMouse".Translate(), ref Settings.useZoomToMouse, null);
 
             #region Gender
 
 
 
 #if !NoCCL
-            if (UseGender)
+            if (Settings.UseGender)
             {
             //    listing.Gap(3f);
                 float indent = 24f;
@@ -616,12 +621,12 @@ namespace RW_ColonistBarKF
             row.height = 24f;
 
             femaleColorField.Draw(row);
-            FemaleColor = femaleColorField.Value;
+            Settings.FemaleColor = femaleColorField.Value;
 
             row.y += 30f;
 
             maleColorField.Draw(row);
-            MaleColor = maleColorField.Value;
+            Settings.MaleColor = maleColorField.Value;
         }
 #endif
         public float SliderMaxBarWidth(Rect rect, float val, float min, float max)
@@ -668,10 +673,14 @@ namespace RW_ColonistBarKF
             return result;
         }
 #if !NoCCL
-        private LabeledInput_Color femaleColorField = new LabeledInput_Color(FemaleColor, "RW_ColonistBarKF.ModSettings.FemaleColor".Translate());
-        private LabeledInput_Color maleColorField = new LabeledInput_Color(MaleColor, "RW_ColonistBarKF.ModSettings.MaleColor".Translate());
+        private LabeledInput_Color femaleColorField = new LabeledInput_Color(Settings.FemaleColor, "RW_ColonistBarKF.ModSettings.FemaleColor".Translate());
+        private LabeledInput_Color maleColorField = new LabeledInput_Color(Settings.MaleColor, "RW_ColonistBarKF.ModSettings.MaleColor".Translate());
 #endif
+#if NoCCL
         public void ExposeData()
+#else
+        public override void ExposeData()
+#endif
         {
             Scribe_Values.LookValue(ref Settings.UseCustomMarginTopHor, "useCustomMarginTopHor", false, false);
             Scribe_Values.LookValue(ref Settings.UseCustomMarginBottomHor, "UseCustomMarginBottomHor", false, false);
@@ -740,19 +749,20 @@ namespace RW_ColonistBarKF
 
             Scribe_Values.LookValue(ref Settings.MaxRows, "MaxRows");
             Scribe_Values.LookValue(ref Settings.SortBy, "SortBy");
+            Scribe_Values.LookValue(ref Settings.useZoomToMouse, "useZoomToMouse");
 
 
             Settings.Reloadsettings = false;
 #if !NoCCL
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                femaleColorField.Value = FemaleColor;
-                maleColorField.Value = MaleColor;
+                femaleColorField.Value = Settings.FemaleColor;
+                maleColorField.Value = Settings.MaleColor;
             }
 #endif
         }
 
-        #endregion
+#endregion
 
     }
 }

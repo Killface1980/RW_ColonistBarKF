@@ -37,6 +37,7 @@
   <RW_ColonistBarKF.ModSettings.UseWeaponIcons>Use Weapon Icons</RW_ColonistBarKF.ModSettings.UseWeaponIcons>
   <RW_ColonistBarKF.ModSettings.ByName>By Name</RW_ColonistBarKF.ModSettings.ByName>
   <RW_ColonistBarKF.ModSettings.Settings>Colonist Bar Settings</RW_ColonistBarKF.ModSettings.Settings>
+  <RW_ColonistBarKF.ModSettings.useZoomToMouse>Use ZoomToMouse</RW_ColonistBarKF.ModSettings.useZoomToMouse>
 
   <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Following {0}.</FollowMe.Follow>
