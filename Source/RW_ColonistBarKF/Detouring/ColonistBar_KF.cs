@@ -455,7 +455,7 @@ namespace RW_ColonistBarKF
 
         public void SortCachedColonists()
         {
-            IOrderedEnumerable<Pawn> orderedEnumerable;
+            IOrderedEnumerable<Pawn> orderedEnumerable = null;
             switch (Settings.SortBy)
             {
                 case vanilla:
@@ -463,21 +463,23 @@ namespace RW_ColonistBarKF
                     break;
 
                 case byName:
-                    orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap);
+                    orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap != null).ThenByDescending(x => x.LabelCap);
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
                 case sexage:
-                    orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                    orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     cachedColonists = orderedEnumerable.ToList();
                     break;
 
                 case health:
-                    cachedColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
+                    orderedEnumerable = cachedColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
+                    cachedColonists = orderedEnumerable.ToList();
                     break;
 
                 case mood:
-                    cachedColonists.SortByDescending(x => x.needs.mood.CurLevelPercentage);
+                    orderedEnumerable = cachedColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
+                    cachedColonists = orderedEnumerable.ToList();
                     break;
 
                 case weapons:
