@@ -526,10 +526,17 @@ namespace RW_ColonistBarKF
 
             if (Settings.UseMoodColors)
             {
-                Rect moodBorderRect = rect.ContractedBy(rect.width / 3);
 
-                moodBorderRect.x += rect.width / 3 - (rect.width / 12);
-                moodBorderRect.y -= rect.height / 3 - (rect.height / 12);
+                Rect moodBorderRect = rect.ContractedBy(rect.width - 1f);
+                moodBorderRect.width *= Settings.moodRectScale;
+                moodBorderRect.height *= Settings.moodRectScale;
+                if (Settings.moodRectScale < 1f)
+                {
+                    moodBorderRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale);
+                    moodBorderRect.y = rect.yMin + 1f - moodBorderRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale);
+                }
+
+
 
                 if (mood != null && mb != null)
                 {
@@ -580,40 +587,50 @@ namespace RW_ColonistBarKF
             {
                 // draw mood thingie
 
-                Rect moodRect = rect.ContractedBy(rect.width / 3);
+                Rect moodRect = rect.ContractedBy(rect.width - 1f);
+                moodRect.width *= Settings.moodRectScale;
+                moodRect.height *= Settings.moodRectScale;
+                if (Settings.moodRectScale < 1f)
+                {
+                    moodRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale);
+                    moodRect.y = rect.yMin + 1f - moodRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale);
+                }
 
-                moodRect.x += rect.width / 3 - (rect.width / 12);
-                moodRect.y -= rect.height / 3 - (rect.height / 12);
 
                 if (mood != null && mb != null)
                 {
 
-                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodBGTex);
+//                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodBGTex);
                     if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
                     {
+                      //  GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodNeutral);
+                      //  GUI.color = new Color(1, 1, 1, 0.4f + 0.6f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
                         GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, mood.CurLevelPercentage)), ColonistBarTextures.MoodGoodTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
                     {
+                        //GUI.color = new Color(1, 1, 1, 0.6f + 0.4f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMinorCrossedTex);
                         GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, mood.CurLevelPercentage)), ColonistBarTextures.MoodNeutral);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
                     {
+                        //GUI.color = new Color(1, 1, 1, 0.8f + 0.6f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMajorCrossedTex);
                         GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, mood.CurLevelPercentage)), ColonistBarTextures.MoodMinorCrossedTex);
                     }
                     else
                     {
+                    //    GUI.color = color;
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedTex);
                         GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, mood.CurLevelPercentage)), ColonistBarTextures.MoodMajorCrossedTex);
                     }
 
+                    GUI.color = color;
                     DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
                     DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
                     DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
-
                     GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
 
                     GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
@@ -652,12 +669,15 @@ namespace RW_ColonistBarKF
 
         private void DrawWeapon(Rect rect, Pawn colonist)
         {
+            float colonistRectAlpha = GetColonistRectAlpha(rect);
+            Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
+            GUI.color = color;
             foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
             {
                 var rect2 = rect.ContractedBy(rect.width / 3);
 
-                rect2.x += rect.width / 3 - (rect.width / 12);
-                rect2.y += rect.height / 3 - (rect.height / 12);
+                rect2.x += rect.width / 3 - (rect.width / 8);
+                rect2.y += rect.height / 3 - (rect.height / 8);
 
                 if (Mouse.IsOver(rect2))
                 {
@@ -677,14 +697,14 @@ namespace RW_ColonistBarKF
                 }
                 // color labe by thing
 
-                var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f);
+                var iconcolor = new Color(0.8f, 0.8f, 0.8f, colonistRectAlpha * 0.75f);
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.9f, 0.1f, 0.1f, 1f);
+                    GUI.color = new Color(0.7f, 0.1f, 0.1f, colonistRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.45f, 0.9f, 0.1f, 1f);
+                    GUI.color = new Color(0.1f, 0.7f, 0.1f, colonistRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);

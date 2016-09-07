@@ -47,7 +47,7 @@ namespace RW_ColonistBarKF
         
         public override Vector2 InitialSize
         {
-            get { return new Vector2(438f, 875f); }
+            get { return new Vector2(438f, 925f); }
         }
         
         public ColonistBarKF_Settings()
@@ -170,6 +170,7 @@ namespace RW_ColonistBarKF
                 Settings.UseCustomMarginBottomVerRight = false;
                 Settings.SortBy = vanilla;
                 Settings.useZoomToMouse = false;
+                Settings.moodRectScale = 0.33f;
             }
 
       //    listing.NewColumn();
@@ -530,6 +531,11 @@ namespace RW_ColonistBarKF
 
             listing.Gap(3f);
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseMoodColors".Translate(), ref Settings.UseMoodColors, null);
+            if (Settings.UseMoodColors)
+            {
+                //      listing.Gap(3f);
+                Settings.moodRectScale = listing.Slider(Settings.moodRectScale, 0.33f, 1f);
+            }
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.UseWeaponIcons".Translate(), ref Settings.UseWeaponIcons, null);
 
             listing.CheckboxLabeled("RW_ColonistBarKF.ModSettings.useGender".Translate(), ref Settings.UseGender, null);
@@ -750,6 +756,7 @@ namespace RW_ColonistBarKF
             Scribe_Values.LookValue(ref Settings.MaxRows, "MaxRows");
             Scribe_Values.LookValue(ref Settings.SortBy, "SortBy");
             Scribe_Values.LookValue(ref Settings.useZoomToMouse, "useZoomToMouse");
+            Scribe_Values.LookValue(ref Settings.moodRectScale, "moodRectScale");
 
 
             Settings.Reloadsettings = false;

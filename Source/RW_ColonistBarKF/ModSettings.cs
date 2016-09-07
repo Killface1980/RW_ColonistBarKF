@@ -69,6 +69,7 @@ namespace RW_ColonistBarKF
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
         public bool useZoomToMouse = false;
+        public float moodRectScale =0.3f;
 
         public int MaxRows;
 
