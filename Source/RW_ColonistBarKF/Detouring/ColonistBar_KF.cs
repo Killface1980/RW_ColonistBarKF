@@ -599,41 +599,46 @@ namespace RW_ColonistBarKF
 
                 if (mood != null && mb != null)
                 {
-
-//                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodBGTex);
+                    //                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodBGTex);
                     if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
                     {
-                      //  GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
-                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodNeutral);
-                      //  GUI.color = new Color(1, 1, 1, 0.4f + 0.6f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
-                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, mood.CurLevelPercentage)), ColonistBarTextures.MoodGoodTex);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale) * color.a);
+                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodGoodTex);
+                        GUI.color = color;
+                        GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(1f, mb.BreakThresholdMinor, mood.CurLevelPercentage)), ColonistBarTextures.MoodNeutral);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
                     {
-                        //GUI.color = new Color(1, 1, 1, 0.6f + 0.4f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
-                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMinorCrossedTex);
-                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, mood.CurLevelPercentage)), ColonistBarTextures.MoodNeutral);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale) * color.a + 0.2f);
+                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodNeutral);
+                        GUI.color = color;
+                        GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdMinor, mb.BreakThresholdMajor, mood.CurLevelPercentage)), ColonistBarTextures.MoodMinorCrossedTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
                     {
-                        //GUI.color = new Color(1, 1, 1, 0.8f + 0.6f * Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale));
-                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMajorCrossedTex);
-                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, mood.CurLevelPercentage)), ColonistBarTextures.MoodMinorCrossedTex);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale) * color.a + 0.3f);
+                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMinorCrossedTex);
+                        GUI.color = color;
+                        GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdExtreme, mood.CurLevelPercentage)), ColonistBarTextures.MoodMajorCrossedTex);
                     }
                     else
                     {
-                    //    GUI.color = color;
-                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedTex);
-                        GUI.DrawTexture(moodRect.BottomPart(Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, mood.CurLevelPercentage)), ColonistBarTextures.MoodMajorCrossedTex);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, Settings.moodRectScale) * color.a + 0.4f);
+                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMajorCrossedTex);
+                        GUI.color = color;
+                        GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdExtreme, 0f, mood.CurLevelPercentage)), ColonistBarTextures.MoodExtremeCrossedTex);
                     }
 
-                    GUI.color = color;
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
-                    GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
+                    DrawMentalThresholdExt(moodRect, mb.BreakThresholdExtreme);
+                    DrawMentalThresholdMaj(moodRect, mb.BreakThresholdMajor);
+                    DrawMentalThresholdMin(moodRect, mb.BreakThresholdMinor);
 
-                    GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
+                    GUI.color = Color.black;
+                    GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
+
+                    GUI.color = Color.cyan;
+                    GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMin + moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
+                    GUI.color = color;
                 }
 
             }
@@ -717,15 +722,18 @@ namespace RW_ColonistBarKF
 
 
 
-        internal static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
+        internal static void DrawMentalThresholdExt(Rect moodRect, float threshold)
         {
-            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodBreakTex);
-            /*if (currentMood <= threshold)
-			{
-				GUI.DrawTexture(new Rect(moodRect.xMax-4, moodRect.yMax - moodRect.height * threshold, 8, 2), MoodBreakCrossedTex);
-			}*/
+            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodExtremeCrossedTex);
         }
-
+        internal static void DrawMentalThresholdMaj(Rect moodRect, float threshold)
+        {
+            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodMajorCrossedTex);
+        }
+        internal static void DrawMentalThresholdMin(Rect moodRect, float threshold)
+        {
+            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodMinorCrossedTex);
+        }
         private float GetColonistRectAlpha(Rect rect)
         {
             float t;
