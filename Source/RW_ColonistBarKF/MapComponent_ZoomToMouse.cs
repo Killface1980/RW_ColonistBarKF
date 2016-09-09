@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using UnityEngine;
 using Verse;
-using static RW_ColonistBarKF.CBKF;
+using static ColonistBarKF.CBKF;
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
     public class MapComponent_ZoomToMouse : MapComponent
     {
@@ -28,7 +28,7 @@ namespace RW_ColonistBarKF
 
         public override void MapComponentUpdate()
         {
-            if (Settings.useZoomToMouse)
+            if (CBKF.BarSettings.useZoomToMouse)
             {
                 // determine zoom action
                 float action = CurrentSize - DesiredSize;

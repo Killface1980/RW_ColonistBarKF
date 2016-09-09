@@ -2,7 +2,7 @@
 using System.Reflection;
 using Verse;
 
-namespace RW_ColonistBarKF.NoCCL
+namespace ColonistBarKF.NoCCL
 {
     public class SpecialInjector
     {

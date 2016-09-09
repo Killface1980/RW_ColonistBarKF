@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <RW_ColonistBarKF.ModSettings.BarPosition>Colonist Bar Position</RW_ColonistBarKF.ModSettings.BarPosition>
-  <RW_ColonistBarKF.ModSettings.BaseSpacingHorizontal>Horizontaler Abstand</RW_ColonistBarKF.ModSettings.BaseSpacingHorizontal>
-  <RW_ColonistBarKF.ModSettings.BaseSpacingVertical>Vertikaler Abstand</RW_ColonistBarKF.ModSettings.BaseSpacingVertical>
-  <RW_ColonistBarKF.ModSettings.BasicSize>Maximale Icon-Größe</RW_ColonistBarKF.ModSettings.BasicSize>
-  <RW_ColonistBarKF.ModSettings.DoubleClickTime>Doppelklick-Zeit (Standard 0,5 s)</RW_ColonistBarKF.ModSettings.DoubleClickTime>
-  <RW_ColonistBarKF.ModSettings.FemaleColor>Farbe für weibliche Kolonisten</RW_ColonistBarKF.ModSettings.FemaleColor>
-  <RW_ColonistBarKF.ModSettings.FixedScale>Keine Skalierung</RW_ColonistBarKF.ModSettings.FixedScale>
-  <RW_ColonistBarKF.ModSettings.MaleColor>Farbe für männliche Kolonisten</RW_ColonistBarKF.ModSettings.MaleColor>
-  <RW_ColonistBarKF.ModSettings.MarginBottom>Unterer Abstand</RW_ColonistBarKF.ModSettings.MarginBottom>
-  <RW_ColonistBarKF.ModSettings.MarginEdge>Abstand Rand</RW_ColonistBarKF.ModSettings.MarginEdge>
-  <RW_ColonistBarKF.ModSettings.MarginLeft>Linker Abstand</RW_ColonistBarKF.ModSettings.MarginLeft>
-  <RW_ColonistBarKF.ModSettings.MarginRight>Rechter Abstand</RW_ColonistBarKF.ModSettings.MarginRight>
-  <RW_ColonistBarKF.ModSettings.MarginTop>Oberer Abstand</RW_ColonistBarKF.ModSettings.MarginTop>
-  <RW_ColonistBarKF.ModSettings.MaxColonistBarHeight>Maximale Leistenhöhe</RW_ColonistBarKF.ModSettings.MaxColonistBarHeight>
-  <RW_ColonistBarKF.ModSettings.PawnTextureCameraHorizontalOffset>Kamera Versatz horizontal</RW_ColonistBarKF.ModSettings.PawnTextureCameraHorizontalOffset>
-  <RW_ColonistBarKF.ModSettings.PawnTextureCameraVerticalOffset>Kamera Versatz vertikal</RW_ColonistBarKF.ModSettings.PawnTextureCameraVerticalOffset>
-  <RW_ColonistBarKF.ModSettings.PawnTextureCameraZoom>Kamera Zoom</RW_ColonistBarKF.ModSettings.PawnTextureCameraZoom>
-  <RW_ColonistBarKF.ModSettings.ResetColors>Farben zurücksetzen</RW_ColonistBarKF.ModSettings.ResetColors>
-  <RW_ColonistBarKF.ModSettings.RevertSettings>Einstellungen zurücksetzen</RW_ColonistBarKF.ModSettings.RevertSettings>
-  <RW_ColonistBarKF.ModSettings.useBottom>Unten</RW_ColonistBarKF.ModSettings.useBottom>
-  <RW_ColonistBarKF.ModSettings.useGender>Hintergrundfarbe nach Geschlecht</RW_ColonistBarKF.ModSettings.useGender>
-  <RW_ColonistBarKF.ModSettings.useLeft>Links</RW_ColonistBarKF.ModSettings.useLeft>
-  <RW_ColonistBarKF.ModSettings.useRight>Rechts</RW_ColonistBarKF.ModSettings.useRight>
-  <RW_ColonistBarKF.ModSettings.useTop>Top</RW_ColonistBarKF.ModSettings.useTop>
-  <RW_ColonistBarKF.ModSettings.UseMoodColors>Zeige Stimmung im Hintergrund</RW_ColonistBarKF.ModSettings.UseMoodColors>
+  <ColonistBarKF.BarSettings.BarPosition>Colonist Bar Position</ColonistBarKF.BarSettings.BarPosition>
+  <ColonistBarKF.BarSettings.BaseSpacingHorizontal>Horizontaler Abstand</ColonistBarKF.BarSettings.BaseSpacingHorizontal>
+  <ColonistBarKF.BarSettings.BaseSpacingVertical>Vertikaler Abstand</ColonistBarKF.BarSettings.BaseSpacingVertical>
+  <ColonistBarKF.BarSettings.BasicSize>Maximale Icon-Größe</ColonistBarKF.BarSettings.BasicSize>
+  <ColonistBarKF.BarSettings.DoubleClickTime>Doppelklick-Zeit (Standard 0,5 s)</ColonistBarKF.BarSettings.DoubleClickTime>
+  <ColonistBarKF.BarSettings.FemaleColor>Farbe für weibliche Kolonisten</ColonistBarKF.BarSettings.FemaleColor>
+  <ColonistBarKF.BarSettings.FixedScale>Keine Skalierung</ColonistBarKF.BarSettings.FixedScale>
+  <ColonistBarKF.BarSettings.MaleColor>Farbe für männliche Kolonisten</ColonistBarKF.BarSettings.MaleColor>
+  <ColonistBarKF.BarSettings.MarginBottom>Unterer Abstand</ColonistBarKF.BarSettings.MarginBottom>
+  <ColonistBarKF.BarSettings.MarginEdge>Abstand Rand</ColonistBarKF.BarSettings.MarginEdge>
+  <ColonistBarKF.BarSettings.MarginLeft>Linker Abstand</ColonistBarKF.BarSettings.MarginLeft>
+  <ColonistBarKF.BarSettings.MarginRight>Rechter Abstand</ColonistBarKF.BarSettings.MarginRight>
+  <ColonistBarKF.BarSettings.MarginTop>Oberer Abstand</ColonistBarKF.BarSettings.MarginTop>
+  <ColonistBarKF.BarSettings.MaxColonistBarHeight>Maximale Leistenhöhe</ColonistBarKF.BarSettings.MaxColonistBarHeight>
+  <ColonistBarKF.BarSettings.PawnTextureCameraHorizontalOffset>Kamera Versatz horizontal</ColonistBarKF.BarSettings.PawnTextureCameraHorizontalOffset>
+  <ColonistBarKF.BarSettings.PawnTextureCameraVerticalOffset>Kamera Versatz vertikal</ColonistBarKF.BarSettings.PawnTextureCameraVerticalOffset>
+  <ColonistBarKF.BarSettings.PawnTextureCameraZoom>Kamera Zoom</ColonistBarKF.BarSettings.PawnTextureCameraZoom>
+  <ColonistBarKF.BarSettings.ResetColors>Farben zurücksetzen</ColonistBarKF.BarSettings.ResetColors>
+  <ColonistBarKF.BarSettings.RevertSettings>Einstellungen zurücksetzen</ColonistBarKF.BarSettings.RevertSettings>
+  <ColonistBarKF.BarSettings.useBottom>Unten</ColonistBarKF.BarSettings.useBottom>
+  <ColonistBarKF.BarSettings.useGender>Hintergrundfarbe nach Geschlecht</ColonistBarKF.BarSettings.useGender>
+  <ColonistBarKF.BarSettings.useLeft>Links</ColonistBarKF.BarSettings.useLeft>
+  <ColonistBarKF.BarSettings.useRight>Rechts</ColonistBarKF.BarSettings.useRight>
+  <ColonistBarKF.BarSettings.useTop>Top</ColonistBarKF.BarSettings.useTop>
+  <ColonistBarKF.BarSettings.UseMoodColors>Zeige Stimmung im Hintergrund</ColonistBarKF.BarSettings.UseMoodColors>
 
-  <RW_ColonistBarKF.ModSettings.SortBy>Sortieren nach</RW_ColonistBarKF.ModSettings.SortBy>
-  <RW_ColonistBarKF.ModSettings.Vanilla>Vanilla</RW_ColonistBarKF.ModSettings.Vanilla>
-  <RW_ColonistBarKF.ModSettings.SexAge>Geschlecht dann Alter</RW_ColonistBarKF.ModSettings.SexAge>
-  <RW_ColonistBarKF.ModSettings.Mood>Stimmung</RW_ColonistBarKF.ModSettings.Mood>
-  <RW_ColonistBarKF.ModSettings.Health>Gesundheit</RW_ColonistBarKF.ModSettings.Health>
-  <RW_ColonistBarKF.ModSettings.Medic>Medizin</RW_ColonistBarKF.ModSettings.Medic>
-  <RW_ColonistBarKF.ModSettings.Weapons>Waffen</RW_ColonistBarKF.ModSettings.Weapons>
-  <RW_ColonistBarKF.ModSettings.SortingOptions>Sortierungs-Optionen</RW_ColonistBarKF.ModSettings.SortingOptions>
-  <RW_ColonistBarKF.ModSettings.UseWeaponIcons>Benutze Icons für Waffen</RW_ColonistBarKF.ModSettings.UseWeaponIcons>
-  <RW_ColonistBarKF.ModSettings.ByName>Nach Name</RW_ColonistBarKF.ModSettings.ByName>
-  <RW_ColonistBarKF.ModSettings.Settings>Colonist Bar Einstellungen </RW_ColonistBarKF.ModSettings.Settings>
-  <RW_ColonistBarKF.ModSettings.useZoomToMouse>Benutze ZoomToMouse</RW_ColonistBarKF.ModSettings.useZoomToMouse>
+  <ColonistBarKF.BarSettings.SortBy>Sortieren nach</ColonistBarKF.BarSettings.SortBy>
+  <ColonistBarKF.BarSettings.Vanilla>Vanilla</ColonistBarKF.BarSettings.Vanilla>
+  <ColonistBarKF.BarSettings.SexAge>Geschlecht dann Alter</ColonistBarKF.BarSettings.SexAge>
+  <ColonistBarKF.BarSettings.Mood>Stimmung</ColonistBarKF.BarSettings.Mood>
+  <ColonistBarKF.BarSettings.Health>Gesundheit</ColonistBarKF.BarSettings.Health>
+  <ColonistBarKF.BarSettings.Medic>Medizin</ColonistBarKF.BarSettings.Medic>
+  <ColonistBarKF.BarSettings.Weapons>Waffen</ColonistBarKF.BarSettings.Weapons>
+  <ColonistBarKF.BarSettings.SortingOptions>Sortierungs-Optionen</ColonistBarKF.BarSettings.SortingOptions>
+  <ColonistBarKF.BarSettings.UseWeaponIcons>Benutze Icons für Waffen</ColonistBarKF.BarSettings.UseWeaponIcons>
+  <ColonistBarKF.BarSettings.ByName>Nach Name</ColonistBarKF.BarSettings.ByName>
+  <ColonistBarKF.BarSettings.barSettings>Colonist Bar Einstellungen </ColonistBarKF.BarSettings.barSettings>
+  <ColonistBarKF.BarSettings.useZoomToMouse>Benutze ZoomToMouse</ColonistBarKF.BarSettings.useZoomToMouse>
   
   <FollowMe.Cancel> {0} wird nicht mehr Verfolgt.</FollowMe.Cancel>
   <FollowMe.Follow> Verfolge jetzt {0}.</FollowMe.Follow>

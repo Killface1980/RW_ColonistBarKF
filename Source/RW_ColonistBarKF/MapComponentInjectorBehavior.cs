@@ -2,15 +2,16 @@
 using UnityEngine;
 using Verse;
 
-namespace RW_ColonistBarKF       // Replace with yours.
+namespace ColonistBarKF       // Replace with yours.
 {       // This code is mostly borrowed from Pawn State Icons mod by Dan Sadler, which has open source and no license I could find, so...
     [StaticConstructorOnStartup]
     public class MapComponentInjectorBehavior : MonoBehaviour
     {
-        public static readonly string mapComponentName = "RW_ColonistBarKF.MapComponent_FollowMe";       // Ditto.
+        public static readonly string mapComponentName = "ColonistBarKF.MapComponent_FollowMe";       // Ditto.
         private static readonly MapComponent_FollowMe mapComponent = new MapComponent_FollowMe();       // Ditto.
-        public static readonly string mapComponentName2 = "RW_ColonistBarKF.MapComponent_ZoomToMouse";       // Ditto.
+        public static readonly string mapComponentName2 = "ColonistBarKF.MapComponent_ZoomToMouse";       // Ditto.
         private static readonly MapComponent_ZoomToMouse mapComponent2 = new MapComponent_ZoomToMouse();       // Ditto.
+        private GameObject _psiObject;
 
         #region No editing required
         protected bool reinjectNeeded = false;
@@ -71,6 +72,9 @@ namespace RW_ColonistBarKF       // Replace with yours.
                             //Destroy(gameObject);
                         }
                     }
+                    _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
+                    _psiObject.AddComponent<PSI.PSI>();
+                    Log.Message("PSI Injected!!");
                 }
             }
         }

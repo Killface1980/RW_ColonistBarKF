@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Verse;
 
-namespace RW_ColonistBarKF.NoCCL
+namespace ColonistBarKF.NoCCL
 {
 #if NoCCL
     /// <summary>

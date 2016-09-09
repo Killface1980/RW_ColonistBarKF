@@ -6,7 +6,7 @@ using System.Text;
 using CommunityCoreLibrary;
 using RimWorld;
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
     class DetourInjector : SpecialInjector
     {

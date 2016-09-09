@@ -60,6 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSI\Materials.cs" />
+    <Compile Include="PSI\PSI.cs" />
+    <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
     <Compile Include="MapComponentInjectorBehavior.cs" />
@@ -69,7 +72,7 @@
     <Compile Include="MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="ModSettings.cs" />
+    <Compile Include="BarSettings.cs" />
     <Compile Include="Detouring\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />

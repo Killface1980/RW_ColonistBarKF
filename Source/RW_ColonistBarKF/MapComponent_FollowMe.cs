@@ -4,7 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
     public class MapComponent_FollowMe : MapComponent
     {

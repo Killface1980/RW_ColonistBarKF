@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
+using ColonistBarKF.NoCCL;
 using Verse;
 // Toggle in Hospitality Properties
 #if NoCCL
-using RW_ColonistBarKF.NoCCL;
+
 #else
 using CommunityCoreLibrary;
 #endif
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
 
     public class CB_SpecialInjector : SpecialInjector

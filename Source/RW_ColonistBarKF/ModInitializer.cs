@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
     public class ModInitializer : ITab
     {
@@ -26,23 +26,31 @@ namespace RW_ColonistBarKF
 
     internal class CBKF : MonoBehaviour
     {
+        public static BarSettings BarSettings = new BarSettings();
+        public static PSISettings PsiSettings= new PSISettings();
 
-
-        public static ModSettings Settings = new ModSettings();
-
-        public static ModSettings LoadSettings(string path = "ColonistBarKF.xml")
+        public static BarSettings LoadBarSettings(string path = "ColonistBarKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            ModSettings result = XmlLoader.ItemFromXmlFile<ModSettings>(configFolder + "/" + path, true);
+            BarSettings result = XmlLoader.ItemFromXmlFile<BarSettings>(configFolder + "/" + path, true);
             return result;
         }
-
         public static void SaveSettings(string path = "ColonistBarKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(Settings, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(BarSettings, configFolder + "/" + path);
         }
-
+        public static PSISettings LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
+        {
+            var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
+            PSISettings result = XmlLoader.ItemFromXmlFile<PSISettings>(configFolder + "/" + path, true);
+            return result;
+        }
+        public static void SavePsiSettings(string path = "ColonistBarPSIKF.xml")
+        {
+            var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
+            XmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
+        }
         private int _lastStatUpdate;
 
         public void FixedUpdate()
@@ -60,8 +68,9 @@ namespace RW_ColonistBarKF
 
         public void Start()
         {
-            Settings = LoadSettings();
-            Settings.Firstload = true;
+            BarSettings = LoadBarSettings();
+            PsiSettings = LoadPsiSettings();
+            BarSettings.Firstload = true;
             _lastStatUpdate = -5000;
         }
     }

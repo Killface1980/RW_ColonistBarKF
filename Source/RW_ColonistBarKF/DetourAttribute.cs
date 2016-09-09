@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace RW_ColonistBarKF
+namespace ColonistBarKF
 {
 
     [AttributeUsage(AttributeTargets.Method)]

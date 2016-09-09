@@ -5,9 +5,9 @@
     <category>Building</category>
     <menuHidden>true</menuHidden>
     <label>ModInitializer</label>
-    <thingClass>RW_ColonistBarKF.MapComponentInjector</thingClass><!-- Replace namespace. -->
+    <thingClass>ColonistBarKF.MapComponentInjector</thingClass><!-- Replace namespace. -->
     <inspectorTabs>
-      <li>RW_ColonistBarKF.MapComponentInjector</li><!-- Replace namespace. -->
+      <li>ColonistBarKF.MapComponentInjector</li><!-- Replace namespace. -->
     </inspectorTabs>
   </ThingDef>
 </ThingDefs>
