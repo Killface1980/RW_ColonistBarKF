@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using RimWorld;
+using RW_ColonistBarKF;
 using UnityEngine;
 using Verse;
-using Object = UnityEngine.Object;
 
 namespace ColonistBarKF
 {
@@ -26,7 +26,7 @@ namespace ColonistBarKF
 
     internal class CBKF : MonoBehaviour
     {
-        public static BarSettings BarSettings = new BarSettings();
+        public static BarSettings ColBarSettings = new BarSettings();
         public static PSISettings PsiSettings= new PSISettings();
 
         public static BarSettings LoadBarSettings(string path = "ColonistBarKF.xml")
@@ -38,7 +38,7 @@ namespace ColonistBarKF
         public static void SaveSettings(string path = "ColonistBarKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(BarSettings, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
         }
         public static PSISettings LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
         {
@@ -68,9 +68,9 @@ namespace ColonistBarKF
 
         public void Start()
         {
-            BarSettings = LoadBarSettings();
+            ColBarSettings = LoadBarSettings();
             PsiSettings = LoadPsiSettings();
-            BarSettings.Firstload = true;
+            ColBarSettings.Firstload = true;
             _lastStatUpdate = -5000;
         }
     }

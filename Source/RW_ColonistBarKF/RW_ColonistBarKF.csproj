@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PSISettings.cs" />
     <Compile Include="PSI\Materials.cs" />
     <Compile Include="PSI\PSI.cs" />
     <Compile Include="PSI\PawnStats.cs" />

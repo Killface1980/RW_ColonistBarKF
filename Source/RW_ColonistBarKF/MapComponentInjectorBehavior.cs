@@ -14,8 +14,8 @@ namespace ColonistBarKF       // Replace with yours.
         private GameObject _psiObject;
 
         #region No editing required
-        protected bool reinjectNeeded = false;
-        protected float reinjectTime = 0;
+        protected bool reinjectNeeded;
+        protected float reinjectTime;
 
         public void OnLevelWasLoaded(int level)
         {
@@ -95,7 +95,7 @@ namespace ColonistBarKF       // Replace with yours.
             Log.Message("MapComponentInjector: initializing for " + MapComponentInjectorBehavior.mapComponentName2);
             initializer = new GameObject("CBKFMapComponentInjector");
             initializer.AddComponent<MapComponentInjectorBehavior>();
-            Object.DontDestroyOnLoad((Object)initializer);
+            Object.DontDestroyOnLoad(initializer);
         }
 
         protected override void FillTab()

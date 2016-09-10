@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using ColonistBarKF.NoCCL;
 using Verse;
+
 // Toggle in Hospitality Properties
 #if NoCCL
 
@@ -18,7 +19,7 @@ namespace ColonistBarKF
 
         private static readonly BindingFlags[] bindingFlagCombos = {
             BindingFlags.Instance | BindingFlags.Public, BindingFlags.Static | BindingFlags.Public,
-            BindingFlags.Instance | BindingFlags.NonPublic, BindingFlags.Static | BindingFlags.NonPublic,
+            BindingFlags.Instance | BindingFlags.NonPublic, BindingFlags.Static | BindingFlags.NonPublic
         };
 
         public override bool Inject()
