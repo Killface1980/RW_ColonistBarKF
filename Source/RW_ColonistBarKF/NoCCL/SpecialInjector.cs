@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using Verse;
 
 namespace ColonistBarKF.NoCCL
@@ -30,6 +31,10 @@ namespace ColonistBarKF.NoCCL
             var injector = new CB_SpecialInjector();
             if (injector.Inject()) Log.Message(AssemblyName + " injected.");
             else Log.Error(AssemblyName + " failed to get injected properly.");
+
+            GameObject initializer = new GameObject("CBKFMapComponentInjector");
+            initializer.AddComponent<MapComponentInjector>();
+            Object.DontDestroyOnLoad(initializer);
         }
 #endif
     }

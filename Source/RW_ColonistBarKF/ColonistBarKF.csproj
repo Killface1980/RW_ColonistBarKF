@@ -44,10 +44,6 @@
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Community Core Library">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\729577707\Assemblies\Community Core Library.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,20 +56,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PSISettings.cs" />
+    <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\Materials.cs" />
     <Compile Include="PSI\PSI.cs" />
     <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
-    <Compile Include="MapComponentInjectorBehavior.cs" />
+    <Compile Include="MapComponentInjector.cs" />
     <Compile Include="ColonistBarTextures.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="MapComponent_FollowMe.cs" />
     <Compile Include="MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="BarSettings.cs" />
+    <Compile Include="Settings\SettingsColBar.cs" />
     <Compile Include="Detouring\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />

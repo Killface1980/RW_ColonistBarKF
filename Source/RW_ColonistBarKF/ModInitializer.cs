@@ -26,30 +26,36 @@ namespace ColonistBarKF
 
     internal class CBKF : MonoBehaviour
     {
-        public static BarSettings ColBarSettings = new BarSettings();
-        public static PSISettings PsiSettings= new PSISettings();
+        public static SettingsColBar ColSettingsColBar = new SettingsColBar();
+        public static SettingsPSI SettingsPsi= new SettingsPSI();
 
-        public static BarSettings LoadBarSettings(string path = "ColonistBarKF.xml")
+        public static SettingsColBar LoadBarSettings(string path = "ColonistBarKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            BarSettings result = XmlLoader.ItemFromXmlFile<BarSettings>(configFolder + "/" + path, true);
+            SettingsColBar result = XmlLoader.ItemFromXmlFile<SettingsColBar>(configFolder + "/" + path);
             return result;
         }
-        public static void SaveSettings(string path = "ColonistBarKF.xml")
+        public static void SaveBarSettings(string path = "ColonistBarKF.xml")
         {
+            if (ColSettingsColBar.UseGender)
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
+            else
+            {
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
+            }
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(ColSettingsColBar, configFolder + "/" + path);
         }
-        public static PSISettings LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
+        public static SettingsPSI LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            PSISettings result = XmlLoader.ItemFromXmlFile<PSISettings>(configFolder + "/" + path, true);
+            SettingsPSI result = XmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
             return result;
         }
         public static void SavePsiSettings(string path = "ColonistBarPSIKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(SettingsPsi, configFolder + "/" + path);
         }
         private int _lastStatUpdate;
 
@@ -68,9 +74,8 @@ namespace ColonistBarKF
 
         public void Start()
         {
-            ColBarSettings = LoadBarSettings();
-            PsiSettings = LoadPsiSettings();
-            ColBarSettings.Firstload = true;
+            ColSettingsColBar = LoadBarSettings();
+            SettingsPsi = LoadPsiSettings();
             _lastStatUpdate = -5000;
         }
     }

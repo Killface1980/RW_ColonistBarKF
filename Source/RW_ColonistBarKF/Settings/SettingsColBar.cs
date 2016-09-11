@@ -2,11 +2,8 @@
 
 namespace ColonistBarKF
 {
-    public class BarSettings
+    public class SettingsColBar
     {
-        public bool Firstload = false;
-        public bool Reloadsettings = true;
-
         //      public static bool useCustomScale = false;
         public bool UseCustomMarginTopHor = false;
         public bool UseCustomMarginBottomHor = false;
@@ -64,6 +61,7 @@ namespace ColonistBarKF
         public float DoubleClickTime = 0.5f;
         public float VerticalOffset = 0f;
         public float HorizontalOffset = 0f;
+
 
         public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);

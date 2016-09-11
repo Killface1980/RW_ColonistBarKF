@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RW_ColonistBarKF
 {
-    public class PSISettings
+    public class SettingsPSI
     {
 
         // PSI settings
