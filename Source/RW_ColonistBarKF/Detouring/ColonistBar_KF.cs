@@ -148,7 +148,7 @@ namespace ColonistBarKF
             }
         }
 
-        public static float ScaledIconsSize
+        public static float ScaledIconSize
         {
             get
             {
@@ -159,7 +159,7 @@ namespace ColonistBarKF
 
         public static float RealIconScale
         {
-            get { return 1f*CBKF.SettingsColBar.BaseSizeFloat/48f*CurrentScale; }
+            get { return 1f * CBKF.SettingsColBar.BaseSizeFloat / 48f * CurrentScale; }
         }
 
         private static Vector2 SizeAssumingScale(float scale)
@@ -307,8 +307,12 @@ namespace ColonistBarKF
                     {
                         //Widgets.DrawShadowAround(rect);
                         DrawColonist(rect, colonist);
+                        if (CBKF.SettingsColBar.UsePsi)
+                        {
 
-                        PSI.PSI.DrawColonistIconsOnBar(rect, colonist);
+                            PSI.PSI.DrawColonistIconsOnBar(rect, colonist);
+
+                        }
                     }
                 }
             }
@@ -804,7 +808,7 @@ namespace ColonistBarKF
             {
                 return;
             }
-            Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - ScaledIconsSize - 1f);
+            Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - ScaledIconSize - 1f);
             bool flag = false;
             if (colonist.CurJob != null)
             {
@@ -871,10 +875,10 @@ namespace ColonistBarKF
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            Rect rect = new Rect(pos.x, pos.y, ScaledIconsSize, ScaledIconsSize);
+            Rect rect = new Rect(pos.x, pos.y, ScaledIconSize, ScaledIconSize);
             GUI.DrawTexture(rect, icon);
             TooltipHandler.TipRegion(rect, tooltip);
-            pos.x += ScaledIconsSize;
+            pos.x += ScaledIconSize;
         }
 
 
@@ -963,7 +967,7 @@ namespace ColonistBarKF
             }
             float num = 0.4f * Scale;
             Vector2 textureSize = new Vector2(ColonistBarTextures.SelectedTex.width * num, ColonistBarTextures.SelectedTex.height * num);
-            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, ScaledIconsSize);
+            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, ScaledIconSize);
             int num2 = 90;
             for (int i = 0; i < 4; i++)
             {

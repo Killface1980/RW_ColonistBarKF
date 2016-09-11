@@ -9,7 +9,8 @@ namespace RW_ColonistBarKF
     {
 
         // PSI settings
-        public bool UsePsi = true;
+        public int IconAlignment = 0;
+            public bool UsePsi = true;
 
         public float IconSize = 1f;
         public float IconSizeMult = 1f;
@@ -69,4 +70,5 @@ namespace RW_ColonistBarKF
         public bool UseColoredTarget = true;
 
     }
+
 }

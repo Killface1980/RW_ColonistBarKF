@@ -106,6 +106,7 @@ namespace ColonistBarKF.PSI
             if (Input.GetKeyUp(KeyCode.F11))
             {
                 SettingsPsi.UsePsi = !SettingsPsi.UsePsi;
+                CBKF.SettingsColBar.UsePsi = !CBKF.SettingsColBar.UsePsi;
                 Messages.Message(SettingsPsi.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(), MessageSound.Standard);
             }
             _worldScale = Screen.height / (2f * Camera.current.orthographicSize);
@@ -144,6 +145,7 @@ namespace ColonistBarKF.PSI
             Rect position = new Rect(vectorAtBody.x, vectorAtBody.y, num2 * SettingsPsi.IconSize, num2 * SettingsPsi.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
+
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = guiColor;
         }
@@ -160,13 +162,49 @@ namespace ColonistBarKF.PSI
             Color guiColor = GUI.color;
             GUI.color = color;
 
-            rect.x +=  posOffset.x * ColonistBar_KF.ScaledIconsSize+2f;
-            rect.y -= posOffset.z * ColonistBar_KF.ScaledIconsSize+2f;
+            Rect iconRect = new Rect(rect);
+
+
+            iconRect.width /= CBKF.SettingsColBar.IconsInColumn;
+            iconRect.height = iconRect.width;
+
+            switch (CBKF.SettingsColBar.IconAlignment)
+            {
+                case 0:
+                    iconRect.x = rect.xMin;
+                    iconRect.y = rect.yMax - iconRect.width;
+                    break;
+                case 1:
+                    iconRect.x = rect.xMax;
+                    iconRect.y = rect.yMax - iconRect.width;
+                    break;
+                case 2:
+                    iconRect.x = rect.xMin + iconRect.width;
+                    iconRect.y = rect.yMin - 1.5f*iconRect.width;
+                    break;
+                case 3:
+                    iconRect.x = rect.xMin + iconRect.width;
+                    iconRect.y = rect.yMax + 0.5f*iconRect.width;
+                    break;
+
+                default:
+                    iconRect.x = rect.xMin - iconRect.width;
+                    iconRect.y = rect.yMax;
+                    break;
+            }
+
+            //    iconRect.x += (-0.5f * CBKF.SettingsColBar.IconDistanceX - 0.5f  * CBKF.SettingsColBar.IconOffsetX) * iconRect.width;
+            //    iconRect.y -= (-0.5f * CBKF.SettingsColBar.IconDistanceY + 0.5f  * CBKF.SettingsColBar.IconOffsetY) * iconRect.height;
+
+            iconRect.x += posOffset.x * iconRect.width;
+            iconRect.y -= posOffset.z * iconRect.height;
 
             //On Colonist
-            Rect position = new Rect(rect.center.x, rect.center.y, ColonistBar_KF.ScaledIconsSize / 3, ColonistBar_KF.ScaledIconsSize / 3);
+            Rect position = new Rect(iconRect.x, iconRect.y, iconRect.width, iconRect.height);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
+
+            GUI.DrawTexture(position, SolidColorMaterials.NewSolidColorTexture(Color.grey), ScaleMode.ScaleToFit, true);
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = guiColor;
         }
@@ -337,9 +375,9 @@ namespace ColonistBarKF.PSI
             _iconPosRectsBar = new Vector3[40];
             for (int index = 0; index < _iconPosRectsBar.Length; ++index)
             {
-                int num1 = index / SettingsPsi.IconsInColumn;
-                int num2 = index % SettingsPsi.IconsInColumn;
-                if (SettingsPsi.IconsHorizontal)
+                int num1 = index / CBKF.SettingsColBar.IconsInColumn;
+                int num2 = index % CBKF.SettingsColBar.IconsInColumn;
+                if (CBKF.SettingsColBar.IconsHorizontal)
                 {
                     int num3 = num1;
                     num1 = num2;
@@ -350,11 +388,11 @@ namespace ColonistBarKF.PSI
                 _iconPosRectsBar[index] =
                     new Vector3(
                         (float)
-                            (-0.600000023841858 * SettingsPsi.IconDistanceX -
-                             0.550000011920929  * SettingsPsi.IconOffsetX * num1), 3f,
+                            (-0.55 * CBKF.SettingsColBar.IconDistanceX -
+                             0.45 * ColonistBar_KF.RealIconScale * CBKF.SettingsColBar.IconOffsetX * num1), 3f,
                         (float)
-                            (-0.600000023841858 * SettingsPsi.IconDistanceY +
-                             0.550000011920929  * SettingsPsi.IconOffsetY * num2));
+                            (-0.55 * CBKF.SettingsColBar.IconDistanceY +
+                             0.45 * ColonistBar_KF.RealIconScale * CBKF.SettingsColBar.IconOffsetY * num2));
 
             }
         }

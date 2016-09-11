@@ -52,6 +52,7 @@ namespace ColonistBarKF
             SettingsPSI result = XmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
             return result;
         }
+
         public static void SavePsiSettings(string path = "ColonistBarPSIKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
