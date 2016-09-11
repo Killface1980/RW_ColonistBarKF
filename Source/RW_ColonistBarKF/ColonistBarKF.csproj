@@ -65,8 +65,8 @@
     <Compile Include="MapComponentInjector.cs" />
     <Compile Include="ColonistBarTextures.cs" />
     <Compile Include="DetourAttribute.cs" />
-    <Compile Include="MapComponent_FollowMe.cs" />
-    <Compile Include="MapComponent_ZoomToMouse.cs" />
+    <Compile Include="Fluffy\MapComponent_FollowMe.cs" />
+    <Compile Include="Fluffy\MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Settings\SettingsColBar.cs" />
@@ -95,6 +95,9 @@
     </Content>
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\Russian\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\Russian\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

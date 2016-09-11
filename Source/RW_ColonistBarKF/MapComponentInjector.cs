@@ -23,6 +23,7 @@ namespace ColonistBarKF       // Replace with yours.
                 return;
             }
 
+
             if (Find.Map.components.FindAll(c => c.GetType() == followMe).Count == 0)
             {
                 Find.Map.components.Add((MapComponent)Activator.CreateInstance(followMe));

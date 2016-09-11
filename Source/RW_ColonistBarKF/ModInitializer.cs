@@ -26,7 +26,7 @@ namespace ColonistBarKF
 
     internal class CBKF : MonoBehaviour
     {
-        public static SettingsColBar ColSettingsColBar = new SettingsColBar();
+        public static SettingsColBar SettingsColBar = new SettingsColBar();
         public static SettingsPSI SettingsPsi = new SettingsPSI();
 
         public static SettingsColBar LoadBarSettings(string path = "ColonistBarKF.xml")
@@ -37,14 +37,14 @@ namespace ColonistBarKF
         }
         public static void SaveBarSettings(string path = "ColonistBarKF.xml")
         {
-            if (ColSettingsColBar.UseGender)
+            if (SettingsColBar.UseGender)
                 ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
             else
             {
                 ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
             }
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(ColSettingsColBar, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(SettingsColBar, configFolder + "/" + path);
         }
         public static SettingsPSI LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
         {
@@ -96,7 +96,7 @@ namespace ColonistBarKF
 
         public void Start()
         {
-            ColSettingsColBar = LoadBarSettings();
+            SettingsColBar = LoadBarSettings();
             SettingsPsi = LoadPsiSettings();
             _lastStatUpdate = -5000;
 

@@ -28,7 +28,7 @@ namespace ColonistBarKF
 
         public override void MapComponentUpdate()
         {
-            if (ColSettingsColBar.useZoomToMouse)
+            if (CBKF.SettingsColBar.useZoomToMouse)
             {
                 // determine zoom action
                 float action = CurrentSize - DesiredSize;
