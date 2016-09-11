@@ -159,8 +159,8 @@ namespace ColonistBarKF.PSI
                 return;
             }
             material.color = color;
-            Color guiColor = GUI.color;
-            GUI.color = color;
+
+            Color GuiColor = GUI.color;
 
             Rect iconRect = new Rect(rect);
 
@@ -171,7 +171,7 @@ namespace ColonistBarKF.PSI
             switch (CBKF.SettingsColBar.IconAlignment)
             {
                 case 0:
-                    iconRect.x = rect.xMin;
+                    iconRect.x = rect.xMin - iconRect.width;
                     iconRect.y = rect.yMax - iconRect.width;
                     break;
                 case 1:
@@ -179,16 +179,16 @@ namespace ColonistBarKF.PSI
                     iconRect.y = rect.yMax - iconRect.width;
                     break;
                 case 2:
-                    iconRect.x = rect.xMin + iconRect.width;
-                    iconRect.y = rect.yMin - 1.5f*iconRect.width;
+                    iconRect.x = rect.xMin;
+                    iconRect.y = rect.yMin - iconRect.width * 1.5f;
                     break;
                 case 3:
-                    iconRect.x = rect.xMin + iconRect.width;
-                    iconRect.y = rect.yMax + 0.5f*iconRect.width;
+                    iconRect.x = rect.xMin;
+                    iconRect.y = rect.yMax + 0.5f * iconRect.width;
                     break;
 
                 default:
-                    iconRect.x = rect.xMin - iconRect.width;
+                    iconRect.x = rect.xMin;
                     iconRect.y = rect.yMax;
                     break;
             }
@@ -196,17 +196,17 @@ namespace ColonistBarKF.PSI
             //    iconRect.x += (-0.5f * CBKF.SettingsColBar.IconDistanceX - 0.5f  * CBKF.SettingsColBar.IconOffsetX) * iconRect.width;
             //    iconRect.y -= (-0.5f * CBKF.SettingsColBar.IconDistanceY + 0.5f  * CBKF.SettingsColBar.IconOffsetY) * iconRect.height;
 
-            iconRect.x += posOffset.x * iconRect.width;
-            iconRect.y -= posOffset.z * iconRect.height;
-
+            iconRect.x += CBKF.SettingsColBar.IconDistanceX * CBKF.SettingsColBar.IconOffsetX * posOffset.x * iconRect.width;
+            iconRect.y -= CBKF.SettingsColBar.IconDistanceY * CBKF.SettingsColBar.IconOffsetY * posOffset.z * iconRect.height;
             //On Colonist
-            Rect position = new Rect(iconRect.x, iconRect.y, iconRect.width, iconRect.height);
+            Rect position = new Rect(iconRect.center.x, iconRect.center.y, iconRect.width, iconRect.height);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
             GUI.DrawTexture(position, SolidColorMaterials.NewSolidColorTexture(Color.grey), ScaleMode.ScaleToFit, true);
+            GUI.color = color;
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = guiColor;
+            GUI.color = GuiColor;
         }
 
 
@@ -229,7 +229,7 @@ namespace ColonistBarKF.PSI
         private static void DrawIcon_FadeRedAlertToNeutral(Rect rect, int num, Icons icon, float v)
         {
             v = v * 0.9f; // max settings according to neutral icon
-            DrawIcon(rect, num, icon, new Color(0.9f, v, v, SettingsPsi.IconOpacity));
+            DrawIcon(rect, num, icon, new Color(0.9f, v, v, 1f));
         }
 
         private static void DrawIcon_FadeFloatWithTwoColors(Vector3 bodyPos, int num, Icons icon, float v, Color c1, Color c2)
@@ -375,24 +375,28 @@ namespace ColonistBarKF.PSI
             _iconPosRectsBar = new Vector3[40];
             for (int index = 0; index < _iconPosRectsBar.Length; ++index)
             {
-                int num1 = index / CBKF.SettingsColBar.IconsInColumn;
-                int num2 = index % CBKF.SettingsColBar.IconsInColumn;
+                int num1;
+                int num2;
+                num1 = index / (CBKF.SettingsColBar.IconsInColumn + 1);
+                num2 = index % (CBKF.SettingsColBar.IconsInColumn + 1);
                 if (CBKF.SettingsColBar.IconsHorizontal)
                 {
-                    int num3 = num1;
-                    num1 = num2;
-                    num2 = num3;
+                    //                  int num3 = num1;
+                    //                  num1 = num2;
+                    //                  num2 = num3;
+
+                    num2 = index / CBKF.SettingsColBar.IconsInColumn;
+                    num1 = index % CBKF.SettingsColBar.IconsInColumn;
+
+
                 }
 
 
                 _iconPosRectsBar[index] =
                     new Vector3(
-                        (float)
-                            (-0.55 * CBKF.SettingsColBar.IconDistanceX -
-                             0.45 * ColonistBar_KF.RealIconScale * CBKF.SettingsColBar.IconOffsetX * num1), 3f,
-                        (float)
-                            (-0.55 * CBKF.SettingsColBar.IconDistanceY +
-                             0.45 * ColonistBar_KF.RealIconScale * CBKF.SettingsColBar.IconOffsetY * num2));
+                        -num1,
+                        3f,
+                        num2);
 
             }
         }
@@ -1287,9 +1291,9 @@ namespace ColonistBarKF.PSI
 
         public static void DrawColonistIconsOnBar(Rect rect, Pawn colonist)
         {
-            var opacity = SettingsPsi.IconOpacity;
+            float opacityCritical = 1f;
+            var opacity = 1f;
 
-            float opacityCritical = SettingsPsi.IconOpacityCritical;
 
             Color color25To21 = new Color(0.8f, 0f, 0f, opacity);
 

@@ -100,15 +100,11 @@ namespace ColonistBarKF
         {
             get
             {
-                LoadBarSettings();
-                LoadPsiSettings();
                 return mainToolbarInt;
             }
 
             set
             {
-                SaveBarSettings();
-                SavePsiSettings();
                 mainToolbarInt = value;
             }
         }
@@ -117,8 +113,6 @@ namespace ColonistBarKF
         {
             get
             {
-                LoadBarSettings();
-                LoadPsiSettings();
                 if (!CBKF.SettingsColBar.UseBottomAlignment && !CBKF.SettingsColBar.UseVerticalAlignment && !CBKF.SettingsColBar.UseRightAlignment)
                 {
                     barPositionInt = 0;
@@ -165,8 +159,7 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.UseRightAlignment = false;
                         break;
                 }
-                SaveBarSettings();
-                SavePsiSettings();
+
                 barPositionInt = value;
             }
         }
@@ -175,8 +168,7 @@ namespace ColonistBarKF
         {
             get
             {
-                LoadBarSettings();
-                LoadPsiSettings();
+
                 if (CBKF.SettingsColBar.IconAlignment == 0)
                 {
                     psiBarPositionInt = 0;
@@ -208,7 +200,7 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.IconOffsetY = 1f;
                         CBKF.SettingsColBar.IconsHorizontal = false;
                         CBKF.SettingsColBar.IconsScreenScale = true;
-                        CBKF.SettingsColBar.IconsInColumn = 5;
+                        CBKF.SettingsColBar.IconsInColumn = 4;
                         CBKF.SettingsColBar.IconSize = 1f;
                         CBKF.SettingsColBar.IconOpacity = 0.7f;
                         CBKF.SettingsColBar.IconOpacityCritical = 0.6f;
@@ -222,7 +214,7 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.IconOffsetY = 1f;
                         CBKF.SettingsColBar.IconsHorizontal = false;
                         CBKF.SettingsColBar.IconsScreenScale = true;
-                        CBKF.SettingsColBar.IconsInColumn = 5;
+                        CBKF.SettingsColBar.IconsInColumn = 4;
                         CBKF.SettingsColBar.IconSize = 1f;
                         CBKF.SettingsColBar.IconOpacity = 0.7f;
                         CBKF.SettingsColBar.IconOpacityCritical = 0.6f;
@@ -261,8 +253,6 @@ namespace ColonistBarKF
 
                         break;
                 }
-                SaveBarSettings();
-                SavePsiSettings();
                 psiBarPositionInt = value;
             }
         }
