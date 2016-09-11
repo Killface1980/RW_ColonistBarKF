@@ -27,7 +27,7 @@ namespace ColonistBarKF
     internal class CBKF : MonoBehaviour
     {
         public static SettingsColBar ColSettingsColBar = new SettingsColBar();
-        public static SettingsPSI SettingsPsi= new SettingsPSI();
+        public static SettingsPSI SettingsPsi = new SettingsPSI();
 
         public static SettingsColBar LoadBarSettings(string path = "ColonistBarKF.xml")
         {
@@ -59,6 +59,16 @@ namespace ColonistBarKF
         }
         private int _lastStatUpdate;
 
+        private GameObject _psiObject;
+        private bool _reinjectNeeded;
+        private float _reinjectTime;
+        private void OnLevelWasLoaded(int level)
+        {
+            _reinjectNeeded = true;
+            _reinjectTime = level >= 0 ? 1f : 0.0f;
+        }
+
+
         public void FixedUpdate()
         {
             if (Current.ProgramState != ProgramState.MapPlaying)
@@ -70,6 +80,18 @@ namespace ColonistBarKF
                 _lastStatUpdate = Find.TickManager.TicksGame;
             }
 
+            // PSI 
+            if (_reinjectNeeded)
+            {
+                _reinjectTime -= Time.fixedDeltaTime;
+                if (_reinjectTime > 0.0)
+                    return;
+                _reinjectNeeded = false;
+                _reinjectTime = 0.0f;
+                _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
+                _psiObject.AddComponent<PSI.PSI>();
+                Log.Message("PSI Injected!!");
+            }
         }
 
         public void Start()
@@ -77,6 +99,11 @@ namespace ColonistBarKF
             ColSettingsColBar = LoadBarSettings();
             SettingsPsi = LoadPsiSettings();
             _lastStatUpdate = -5000;
+
+            //PSI
+            OnLevelWasLoaded(0);
+            enabled = true;
+
         }
     }
 }

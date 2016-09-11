@@ -27,13 +27,13 @@ namespace ColonistBarKF       // Replace with yours.
             {
                 Find.Map.components.Add((MapComponent)Activator.CreateInstance(followMe));
 
-                Log.Message("ColonistBarKF :: Added an ZoomToMouse to the map.");
+                Log.Message("ColonistBarKF :: Added FollowMe to the map.");
             }
             if (Find.Map.components.FindAll(c => c.GetType() == zoomToMouse).Count == 0)
             {
                 Find.Map.components.Add((MapComponent)Activator.CreateInstance(zoomToMouse));
 
-                Log.Message("ColonistBarKF :: Added an ZoomToMouse to the map.");
+                Log.Message("ColonistBarKF :: Added ZoomToMouse to the map.");
             }
             Destroy(this);
         }
