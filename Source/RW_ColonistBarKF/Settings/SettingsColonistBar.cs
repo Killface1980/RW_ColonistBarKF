@@ -2,7 +2,7 @@
 
 namespace ColonistBarKF
 {
-    public class SettingsColBar
+    public class SettingsColonistBar
     {
         //      public static bool useCustomScale = false;
         public bool UseCustomMarginTopHor = false;

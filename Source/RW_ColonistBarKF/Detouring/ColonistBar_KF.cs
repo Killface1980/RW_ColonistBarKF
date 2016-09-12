@@ -4,7 +4,7 @@ using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.SettingsColBar.SortByWhat;
+using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF
@@ -30,10 +30,10 @@ namespace ColonistBarKF
 
         // custom test
 
-        public static Vector2 BaseSize = new Vector2(CBKF.SettingsColBar.BaseSizeFloat, CBKF.SettingsColBar.BaseSizeFloat);
+        public static Vector2 BaseSize = new Vector2(CBKF.ColBarSettings.BaseSizeFloat, CBKF.ColBarSettings.BaseSizeFloat);
 
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static Vector2 PawnTextureSize = new Vector2(CBKF.SettingsColBar.BaseSizeFloat - 2f, CBKF.SettingsColBar.BaseSizeFloat * 1.5f);
+        public static Vector2 PawnTextureSize = new Vector2(CBKF.ColBarSettings.BaseSizeFloat - 2f, CBKF.ColBarSettings.BaseSizeFloat * 1.5f);
 
         private static Vector3 _pawnTextureCameraOffset;
 
@@ -41,8 +41,8 @@ namespace ColonistBarKF
         {
             get
             {
-                float pawnTextureCameraOffsetNew = CBKF.SettingsColBar.PawnTextureCameraZoom / 1.28205f;
-                _pawnTextureCameraOffset = new Vector3(CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset / pawnTextureCameraOffsetNew, 0f, CBKF.SettingsColBar.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
+                float pawnTextureCameraOffsetNew = CBKF.ColBarSettings.PawnTextureCameraZoom / 1.28205f;
+                _pawnTextureCameraOffset = new Vector3(CBKF.ColBarSettings.PawnTextureCameraHorizontalOffset / pawnTextureCameraOffsetNew, 0f, CBKF.ColBarSettings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew);
                 return _pawnTextureCameraOffset;
             }
 
@@ -57,12 +57,12 @@ namespace ColonistBarKF
             {
                 CurrentScale = 1f;
 
-                if (CBKF.SettingsColBar.UseFixedIconScale)
+                if (CBKF.ColBarSettings.UseFixedIconScale)
                 {
                     return 1f;
                 }
 
-                if (CBKF.SettingsColBar.UseVerticalAlignment)
+                if (CBKF.ColBarSettings.UseVerticalAlignment)
                 {
                     while (true)
                     {
@@ -77,7 +77,7 @@ namespace ColonistBarKF
                     return CurrentScale;
                 }
 
-                if (CBKF.SettingsColBar.UseCustomIconSize)
+                if (CBKF.ColBarSettings.UseCustomIconSize)
                 {
 
                     while (true)
@@ -152,20 +152,20 @@ namespace ColonistBarKF
         {
             get
             {
-                return CBKF.SettingsColBar.BaseSizeFloat * CurrentScale;
+                return CBKF.ColBarSettings.BaseSizeFloat * CurrentScale;
                 ;
             }
         }
 
         public static float RealIconScale
         {
-            get { return 1f * CBKF.SettingsColBar.BaseSizeFloat / 48f * CurrentScale; }
+            get { return 1f * CBKF.ColBarSettings.BaseSizeFloat / 48f * CurrentScale; }
         }
 
         private static Vector2 SizeAssumingScale(float scale)
         {
-            BaseSize.x = CBKF.SettingsColBar.BaseSizeFloat;
-            BaseSize.y = CBKF.SettingsColBar.BaseSizeFloat;
+            BaseSize.x = CBKF.ColBarSettings.BaseSizeFloat;
+            BaseSize.y = CBKF.ColBarSettings.BaseSizeFloat;
             return BaseSize * scale;
         }
 
@@ -179,45 +179,45 @@ namespace ColonistBarKF
         }
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            if (CBKF.SettingsColBar.UseBottomAlignment)
+            if (CBKF.ColBarSettings.UseBottomAlignment)
             {
-                CBKF.SettingsColBar.MaxColonistBarWidth = Screen.width - CBKF.SettingsColBar.MarginLeftHorBottom - CBKF.SettingsColBar.MarginRightHorBottom;
-                CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorBottom / 2 - CBKF.SettingsColBar.MarginRightHorBottom / 2;
+                CBKF.ColBarSettings.MaxColonistBarWidth = Screen.width - CBKF.ColBarSettings.MarginLeftHorBottom - CBKF.ColBarSettings.MarginRightHorBottom;
+                CBKF.ColBarSettings.HorizontalOffset = CBKF.ColBarSettings.MarginLeftHorBottom / 2 - CBKF.ColBarSettings.MarginRightHorBottom / 2;
 
             }
             else
             {
-                CBKF.SettingsColBar.MaxColonistBarWidth = Screen.width - CBKF.SettingsColBar.MarginLeftHorTop - CBKF.SettingsColBar.MarginRightHorTop;
-                CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorTop / 2 - CBKF.SettingsColBar.MarginRightHorTop / 2;
+                CBKF.ColBarSettings.MaxColonistBarWidth = Screen.width - CBKF.ColBarSettings.MarginLeftHorTop - CBKF.ColBarSettings.MarginRightHorTop;
+                CBKF.ColBarSettings.HorizontalOffset = CBKF.ColBarSettings.MarginLeftHorTop / 2 - CBKF.ColBarSettings.MarginRightHorTop / 2;
 
             }
-            return Mathf.FloorToInt((CBKF.SettingsColBar.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
+            return Mathf.FloorToInt((CBKF.ColBarSettings.MaxColonistBarWidth + SpacingHorizontalAssumingScale(scale)) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale)));
         }
 
         private static int ColonistsPerColumnAssumingScale(float scale)
         {
-            if (CBKF.SettingsColBar.UseRightAlignment)
+            if (CBKF.ColBarSettings.UseRightAlignment)
             {
-                CBKF.SettingsColBar.MaxColonistBarHeight = Screen.height - CBKF.SettingsColBar.MarginTopVerRight - CBKF.SettingsColBar.MarginBottomVerRight;
-                CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerRight / 2 - CBKF.SettingsColBar.MarginBottomVerRight / 2;
+                CBKF.ColBarSettings.MaxColonistBarHeight = Screen.height - CBKF.ColBarSettings.MarginTopVerRight - CBKF.ColBarSettings.MarginBottomVerRight;
+                CBKF.ColBarSettings.VerticalOffset = CBKF.ColBarSettings.MarginTopVerRight / 2 - CBKF.ColBarSettings.MarginBottomVerRight / 2;
             }
             else
             {
-                CBKF.SettingsColBar.MaxColonistBarHeight = Screen.height - CBKF.SettingsColBar.MarginTopVerLeft - CBKF.SettingsColBar.MarginBottomVerLeft;
-                CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerLeft / 2 - CBKF.SettingsColBar.MarginBottomVerLeft / 2;
+                CBKF.ColBarSettings.MaxColonistBarHeight = Screen.height - CBKF.ColBarSettings.MarginTopVerLeft - CBKF.ColBarSettings.MarginBottomVerLeft;
+                CBKF.ColBarSettings.VerticalOffset = CBKF.ColBarSettings.MarginTopVerLeft / 2 - CBKF.ColBarSettings.MarginBottomVerLeft / 2;
             }
-            return Mathf.FloorToInt((CBKF.SettingsColBar.MaxColonistBarHeight + SpacingVerticalAssumingScale(scale)) / (SizeAssumingScale(scale).y + SpacingVerticalAssumingScale(scale)));
+            return Mathf.FloorToInt((CBKF.ColBarSettings.MaxColonistBarHeight + SpacingVerticalAssumingScale(scale)) / (SizeAssumingScale(scale).y + SpacingVerticalAssumingScale(scale)));
         }
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
 
-            return CBKF.SettingsColBar.BaseSpacingHorizontal * scale;
+            return CBKF.ColBarSettings.BaseSpacingHorizontal * scale;
         }
 
         private static float SpacingVerticalAssumingScale(float scale)
         {
-            return CBKF.SettingsColBar.BaseSpacingVertical * scale;
+            return CBKF.ColBarSettings.BaseSpacingVertical * scale;
         }
 
         private static int GetAllowedRowsCountForScale(float scale)
@@ -279,12 +279,12 @@ namespace ColonistBarKF
 
             if (Event.current.type == EventType.Layout)
             {
-                BaseSize.x = CBKF.SettingsColBar.BaseSizeFloat;
-                BaseSize.y = CBKF.SettingsColBar.BaseSizeFloat;
-                PawnTextureSize.x = CBKF.SettingsColBar.BaseSizeFloat - 2f;
-                PawnTextureSize.y = CBKF.SettingsColBar.BaseSizeFloat * 1.5f;
+                BaseSize.x = CBKF.ColBarSettings.BaseSizeFloat;
+                BaseSize.y = CBKF.ColBarSettings.BaseSizeFloat;
+                PawnTextureSize.x = CBKF.ColBarSettings.BaseSizeFloat - 2f;
+                PawnTextureSize.y = CBKF.ColBarSettings.BaseSizeFloat * 1.5f;
 
-                if (CBKF.SettingsColBar.UseGender)
+                if (CBKF.ColBarSettings.UseGender)
                     ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
                 else
                 {
@@ -307,7 +307,7 @@ namespace ColonistBarKF
                     {
                         //Widgets.DrawShadowAround(rect);
                         DrawColonist(rect, colonist);
-                        if (CBKF.SettingsColBar.UsePsi)
+                        if (CBKF.ColBarSettings.UsePsi)
                         {
                             float colonistRectAlpha = GetColonistRectAlpha(rect);
                             PSI.PSI.DrawColonistIconsOnBar(rect, colonist, colonistRectAlpha);
@@ -386,20 +386,20 @@ namespace ColonistBarKF
             int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal;
             float spacingVertical = SpacingVertical;
-            float cachedDrawLocs_x = 0f + CBKF.SettingsColBar.MarginLeftHorTop;
-            float cachedDrawLocs_y = CBKF.SettingsColBar.MarginTopHor;
-            if (CBKF.SettingsColBar.UseVerticalAlignment)
+            float cachedDrawLocs_x = 0f + CBKF.ColBarSettings.MarginLeftHorTop;
+            float cachedDrawLocs_y = CBKF.ColBarSettings.MarginTopHor;
+            if (CBKF.ColBarSettings.UseVerticalAlignment)
             {
-                cachedDrawLocs_x = 0f + CBKF.SettingsColBar.MarginLeftVer;
-                if (CBKF.SettingsColBar.UseRightAlignment)
-                    cachedDrawLocs_x = Screen.width - size.x - CBKF.SettingsColBar.MarginRightVer;
+                cachedDrawLocs_x = 0f + CBKF.ColBarSettings.MarginLeftVer;
+                if (CBKF.ColBarSettings.UseRightAlignment)
+                    cachedDrawLocs_x = Screen.width - size.x - CBKF.ColBarSettings.MarginRightVer;
             }
-            else if (CBKF.SettingsColBar.UseBottomAlignment)
+            else if (CBKF.ColBarSettings.UseBottomAlignment)
             {
-                cachedDrawLocs_y = Screen.height - size.y - CBKF.SettingsColBar.MarginBottomHor - 30f - 12f;
+                cachedDrawLocs_y = Screen.height - size.y - CBKF.ColBarSettings.MarginBottomHor - 30f - 12f;
             }
             cachedDrawLocs.Clear();
-            if (CBKF.SettingsColBar.UseVerticalAlignment)
+            if (CBKF.ColBarSettings.UseVerticalAlignment)
             {
                 for (int i = 0; i < cachedColonists.Count; i++)
                 {
@@ -408,10 +408,10 @@ namespace ColonistBarKF
                     {
                         int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedColonists.Count - i);
                         float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * spacingVertical;
-                        cachedDrawLocs_y = (Screen.height - num4) / 2f + CBKF.SettingsColBar.VerticalOffset;
+                        cachedDrawLocs_y = (Screen.height - num4) / 2f + CBKF.ColBarSettings.VerticalOffset;
                         if (i != 0)
                         {
-                            if (CBKF.SettingsColBar.UseRightAlignment)
+                            if (CBKF.ColBarSettings.UseRightAlignment)
                             {
                                 cachedDrawLocs_x -= size.x + spacingHorizontal;
                             }
@@ -428,7 +428,7 @@ namespace ColonistBarKF
                     }
                     cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
 
-                    //      Debug.Log("MaxColonistBarHeight:" + SettingsColBar.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
+                    //      Debug.Log("MaxColonistBarHeight:" + SettingsColonistBar.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
                     //
                     //      Debug.Log("colonistsPerRow " + colonistsPerRow);
                     //      Debug.Log("colonistsPerColumn " + colonistsPerColumn);
@@ -446,10 +446,10 @@ namespace ColonistBarKF
                     {
                         int maxColInRow = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
                         float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
-                        cachedDrawLocs_x = (Screen.width - num4) / 2f + CBKF.SettingsColBar.HorizontalOffset;
+                        cachedDrawLocs_x = (Screen.width - num4) / 2f + CBKF.ColBarSettings.HorizontalOffset;
                         if (i != 0)
                         {
-                            if (CBKF.SettingsColBar.UseBottomAlignment)
+                            if (CBKF.ColBarSettings.UseBottomAlignment)
                             {
                                 cachedDrawLocs_y -= size.y + spacingVertical;
                             }
@@ -509,7 +509,7 @@ namespace ColonistBarKF
         private void SortCachedColonists()
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
-            switch (CBKF.SettingsColBar.SortBy)
+            switch (CBKF.ColBarSettings.SortBy)
             {
                 case vanilla:
                     cachedColonists.SortBy(x => x.thingIDNumber);
@@ -577,16 +577,16 @@ namespace ColonistBarKF
             Need_Mood mood = !colonist.Dead ? colonist.needs.mood : null;
             MentalBreaker mb = !colonist.Dead ? colonist.mindState.mentalBreaker : null;
 
-            if (CBKF.SettingsColBar.UseMoodColors)
+            if (CBKF.ColBarSettings.UseMoodColors)
             {
 
                 Rect moodBorderRect = rect.ContractedBy(rect.width - 1f);
-                moodBorderRect.width *= CBKF.SettingsColBar.moodRectScale;
-                moodBorderRect.height *= CBKF.SettingsColBar.moodRectScale;
-                if (CBKF.SettingsColBar.moodRectScale < 1f)
+                moodBorderRect.width *= CBKF.ColBarSettings.moodRectScale;
+                moodBorderRect.height *= CBKF.ColBarSettings.moodRectScale;
+                if (CBKF.ColBarSettings.moodRectScale < 1f)
                 {
-                    moodBorderRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale);
-                    moodBorderRect.y = rect.yMin + 1f - moodBorderRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale);
+                    moodBorderRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale);
+                    moodBorderRect.y = rect.yMin + 1f - moodBorderRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale);
                 }
 
 
@@ -607,15 +607,15 @@ namespace ColonistBarKF
                     }
                 }
             }
-            if (CBKF.SettingsColBar.UseGender)
+            if (CBKF.ColBarSettings.UseGender)
             {
                 if (colonist.gender == Gender.Male)
                 {
-                    BGColor = CBKF.SettingsColBar.MaleColor;
+                    BGColor = CBKF.ColBarSettings.MaleColor;
                 }
                 if (colonist.gender == Gender.Female)
                 {
-                    BGColor = CBKF.SettingsColBar.FemaleColor;
+                    BGColor = CBKF.ColBarSettings.FemaleColor;
                 }
             }
             if (colonist.Dead)
@@ -626,7 +626,7 @@ namespace ColonistBarKF
             //     BGColor = Color.Lerp(Color.red, BGColor, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
             // }
             BGColor.a = colonistRectAlpha;
-            if (CBKF.SettingsColBar.UseGender)
+            if (CBKF.ColBarSettings.UseGender)
             {
                 GUI.color = BGColor;
             }
@@ -636,17 +636,17 @@ namespace ColonistBarKF
 
             GUI.DrawTexture(rect, ColonistBarTextures.BGTex);
             GUI.color = color;
-            if (CBKF.SettingsColBar.UseMoodColors)
+            if (CBKF.ColBarSettings.UseMoodColors)
             {
                 // draw mood thingie
 
                 Rect moodRect = rect.ContractedBy(rect.width - 1f);
-                moodRect.width *= CBKF.SettingsColBar.moodRectScale;
-                moodRect.height *= CBKF.SettingsColBar.moodRectScale;
-                if (CBKF.SettingsColBar.moodRectScale < 1f)
+                moodRect.width *= CBKF.ColBarSettings.moodRectScale;
+                moodRect.height *= CBKF.ColBarSettings.moodRectScale;
+                if (CBKF.ColBarSettings.moodRectScale < 1f)
                 {
-                    moodRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale);
-                    moodRect.y = rect.yMin + 1f - moodRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale);
+                    moodRect.x -= rect.width / 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale);
+                    moodRect.y = rect.yMin + 1f - moodRect.height + 8 * Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale);
                 }
 
 
@@ -655,28 +655,28 @@ namespace ColonistBarKF
                     //                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodBGTex);
                     if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
                     {
-                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale) * color.a);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale) * color.a);
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodGoodTex);
                         GUI.color = color;
                         GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(1f, mb.BreakThresholdMinor, mood.CurLevelPercentage)), ColonistBarTextures.MoodNeutral);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
                     {
-                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale) * color.a + 0.2f);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale) * color.a + 0.2f);
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodNeutral);
                         GUI.color = color;
                         GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdMinor, mb.BreakThresholdMajor, mood.CurLevelPercentage)), ColonistBarTextures.MoodMinorCrossedTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
                     {
-                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale) * color.a + 0.3f);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale) * color.a + 0.3f);
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMinorCrossedTex);
                         GUI.color = color;
                         GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdExtreme, mood.CurLevelPercentage)), ColonistBarTextures.MoodMajorCrossedTex);
                     }
                     else
                     {
-                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.SettingsColBar.moodRectScale) * color.a + 0.4f);
+                        GUI.color = new Color(1, 1, 1, Mathf.InverseLerp(1f, 0.33f, CBKF.ColBarSettings.moodRectScale) * color.a + 0.4f);
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodMajorCrossedTex);
                         GUI.color = color;
                         GUI.DrawTexture(moodRect.TopPart(Mathf.InverseLerp(mb.BreakThresholdExtreme, 0f, mood.CurLevelPercentage)), ColonistBarTextures.MoodExtremeCrossedTex);
@@ -700,9 +700,9 @@ namespace ColonistBarKF
                 DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
             }
 
-            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, CBKF.SettingsColBar.PawnTextureCameraZoom));
+            GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, CBKF.ColBarSettings.PawnTextureCameraZoom));
 
-            if (CBKF.SettingsColBar.UseWeaponIcons)
+            if (CBKF.ColBarSettings.UseWeaponIcons)
             {
                 DrawWeapon(rect, colonist);
             }
@@ -860,7 +860,7 @@ namespace ColonistBarKF
             }
             // custom 
 
-            //       if (SettingsColBar.useExtraIcons)
+            //       if (SettingsColonistBar.useExtraIcons)
             //       {
             //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
             //           {
@@ -892,7 +892,7 @@ namespace ColonistBarKF
         {
             if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
-                if (clickedColonist == colonist && Time.time - clickedAt < CBKF.SettingsColBar.DoubleClickTime)
+                if (clickedColonist == colonist && Time.time - clickedAt < CBKF.ColBarSettings.DoubleClickTime)
                 {
                     // use event so it doesn't bubble through
                     Event.current.Use();
@@ -911,49 +911,49 @@ namespace ColonistBarKF
                 {
                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.Vanilla".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Vanilla".Translate(), delegate
                     {
-                        CBKF.SettingsColBar.SortBy = vanilla;
+                        CBKF.ColBarSettings.SortBy = vanilla;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.ByName".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.ByName".Translate(), delegate
                     {
-                        CBKF.SettingsColBar.SortBy = byName;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                    }));
-
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.SexAge".Translate(), delegate
-                    {
-                        CBKF.SettingsColBar.SortBy = sexage;
+                        CBKF.ColBarSettings.SortBy = byName;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.Mood".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.SexAge".Translate(), delegate
                     {
-                        CBKF.SettingsColBar.SortBy = mood;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.Health".Translate(), delegate
-                    {
-                        CBKF.SettingsColBar.SortBy = health;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.Medic".Translate(), delegate
-                    {
-                        CBKF.SettingsColBar.SortBy = medic;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.Weapons".Translate(), delegate
-                    {
-                        CBKF.SettingsColBar.SortBy = weapons;
+                        CBKF.ColBarSettings.SortBy = sexage;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColBar.barSettings".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Mood".Translate(), delegate
+                    {
+                        CBKF.ColBarSettings.SortBy = mood;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Health".Translate(), delegate
+                    {
+                        CBKF.ColBarSettings.SortBy = health;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Medic".Translate(), delegate
+                    {
+                        CBKF.ColBarSettings.SortBy = medic;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Weapons".Translate(), delegate
+                    {
+                        CBKF.ColBarSettings.SortBy = weapons;
+                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                    }));
+
+                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.barSettings".Translate(), delegate
                     {
                         Find.WindowStack.Add(new ColonistBarKF_Settings());
                     }));
-                    FloatMenu window = new FloatMenu(floatOptionList, "ColonistBarKF.SettingsColBar.SortingOptions".Translate());
+                    FloatMenu window = new FloatMenu(floatOptionList, "ColonistBarKF.SettingsColonistBar.SortingOptions".Translate());
                     Find.WindowStack.Add(window);
 
                     // use event so it doesn't bubble through

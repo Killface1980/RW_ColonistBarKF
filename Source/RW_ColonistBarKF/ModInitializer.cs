@@ -24,27 +24,27 @@ namespace ColonistBarKF
         protected override void FillTab() { }
     }
 
-    internal class CBKF : MonoBehaviour
+    public class CBKF : MonoBehaviour
     {
-        public static SettingsColBar SettingsColBar = new SettingsColBar();
-        public static SettingsPSI SettingsPsi = new SettingsPSI();
+        public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
+        public static SettingsPSI PsiSetting = new SettingsPSI();
 
-        public static SettingsColBar LoadBarSettings(string path = "ColonistBarKF.xml")
+        public static SettingsColonistBar LoadBarSettings(string path = "ColonistBarKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsColBar result = XmlLoader.ItemFromXmlFile<SettingsColBar>(configFolder + "/" + path);
+            SettingsColonistBar result = XmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
             return result;
         }
         public static void SaveBarSettings(string path = "ColonistBarKF.xml")
         {
-            if (SettingsColBar.UseGender)
+            if (ColBarSettings.UseGender)
                 ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
             else
             {
                 ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
             }
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(SettingsColBar, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
         }
         public static SettingsPSI LoadPsiSettings(string path = "ColonistBarPSIKF.xml")
         {
@@ -56,7 +56,7 @@ namespace ColonistBarKF
         public static void SavePsiSettings(string path = "ColonistBarPSIKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(SettingsPsi, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(PsiSetting, configFolder + "/" + path);
         }
         private int _lastStatUpdate;
 
@@ -99,8 +99,8 @@ namespace ColonistBarKF
         // ReSharper disable once UnusedMember.Global
         public void Start()
         {
-            SettingsColBar = LoadBarSettings();
-            SettingsPsi = LoadPsiSettings();
+            ColBarSettings = LoadBarSettings();
+            PsiSetting = LoadPsiSettings();
             _lastStatUpdate = -5000;
 
             //PSI

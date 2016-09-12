@@ -69,7 +69,7 @@
     <Compile Include="Fluffy\MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="Settings\SettingsColBar.cs" />
+    <Compile Include="Settings\SettingsColonistBar.cs" />
     <Compile Include="Detouring\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />
