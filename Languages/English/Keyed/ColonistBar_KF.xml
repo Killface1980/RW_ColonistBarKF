@@ -8,7 +8,7 @@
   <ColonistBarKF.SettingsColBar.BaseSpacingHorizontal>Horizontal spacing</ColonistBarKF.SettingsColBar.BaseSpacingHorizontal>
   <ColonistBarKF.SettingsColBar.BaseSpacingVertical>Vertical spacing</ColonistBarKF.SettingsColBar.BaseSpacingVertical>
   <ColonistBarKF.SettingsColBar.BasicSize>Maximum icon size</ColonistBarKF.SettingsColBar.BasicSize>
-  <ColonistBarKF.SettingsColBar.DoubleClickTime>Double Click Time (standard 0.5 s)</ColonistBarKF.SettingsColBar.DoubleClickTime>
+  <ColonistBarKF.SettingsColBar.DoubleClickTime>Double Click Time</ColonistBarKF.SettingsColBar.DoubleClickTime>
   <ColonistBarKF.SettingsColBar.FemaleColor>Color for female colonists</ColonistBarKF.SettingsColBar.FemaleColor>
   <ColonistBarKF.SettingsColBar.FixedScale>No scaling</ColonistBarKF.SettingsColBar.FixedScale>
   <ColonistBarKF.SettingsColBar.MaleColor>Color for male colonists</ColonistBarKF.SettingsColBar.MaleColor>

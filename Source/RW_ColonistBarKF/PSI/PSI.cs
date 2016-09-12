@@ -203,7 +203,7 @@ namespace ColonistBarKF.PSI
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
-            GUI.DrawTexture(position, SolidColorMaterials.NewSolidColorTexture(Color.grey), ScaleMode.ScaleToFit, true);
+            GUI.DrawTexture(position, SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.3f * color.a)), ScaleMode.ScaleToFit, true);
             GUI.color = color;
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;

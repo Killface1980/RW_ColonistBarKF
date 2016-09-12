@@ -11,6 +11,7 @@ using Verse;
 using static ColonistBarKF.CBKF;
 using static ColonistBarKF.PSI.PSI;
 using static ColonistBarKF.SettingsColBar.SortByWhat;
+using static UnityEngine.GUILayout;
 
 namespace ColonistBarKF
 {
@@ -45,7 +46,7 @@ namespace ColonistBarKF
                 {
                     ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
                 }
-                lastupdate = Find.TickManager.TicksGame+1000;
+                lastupdate = Find.TickManager.TicksGame + 1000;
             }
         }
 
@@ -281,12 +282,18 @@ namespace ColonistBarKF
             normal = { textColor = Color.white },
             padding = new RectOffset(0, 0, 12, 6)
         };
+
         GUIStyle Headline = new GUIStyle
         {
             fontStyle = FontStyle.Bold,
             fontSize = 16,
             normal = { textColor = Color.white },
-            padding = new RectOffset(0, 0, 12, 6)
+            padding = new RectOffset(0, 0, 12, 6),
+        };
+
+        GUIStyle hoverBox = new GUIStyle
+        {
+            hover = { background = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 1)) }
         };
 
         public ColonistBarKF_Settings()
@@ -296,6 +303,7 @@ namespace ColonistBarKF
             draggable = true;
             drawShadow = true;
             preventCameraMotion = false;
+            resizeable = true;
         }
 
         private Vector2 _scrollPosition;
@@ -310,39 +318,39 @@ namespace ColonistBarKF
             viewRect.width -= 15f;
             viewRect.height -= 50f;
 
-            GUILayout.Label("Colonist Bar KF 0.15.3", Headline);
-            GUILayout.Space(6f);
-            GUILayout.BeginVertical(GUILayout.Width(viewRect.width), GUILayout.Height(viewRect.height));
-            MainToolbarInt = GUILayout.Toolbar(MainToolbarInt, mainToolbarStrings, GUILayout.Width(viewRect.width));
+            Label("Colonist Bar KF 0.15.3", Headline);
+            Space(6f);
+            BeginVertical(Width(viewRect.width), Height(viewRect.height));
+            MainToolbarInt = Toolbar(MainToolbarInt, mainToolbarStrings, Width(viewRect.width));
 
             switch (MainToolbarInt)
             {
                 case 0:
                     {
-                        GUILayout.Label("ColonistBarKF.SettingsColBar.Position".Translate(), FontBold);
-                        BarPositionInt = GUILayout.Toolbar(BarPositionInt, psiPositionStrings, GUILayout.Width(viewRect.width));
-                        GUILayout.Label("ColonistBarKF.SettingsColBar.PsiBarPosition".Translate(), FontBold);
-                        CBKF.SettingsColBar.UsePsi = GUILayout.Toggle(CBKF.SettingsColBar.UsePsi, "UsePsiOnBar".Translate());
+                        Label("ColonistBarKF.SettingsColBar.Position".Translate(), FontBold);
+                        BarPositionInt = Toolbar(BarPositionInt, psiPositionStrings,  Width(viewRect.width));
+                        Label("ColonistBarKF.SettingsColBar.PsiBarPosition".Translate(), FontBold);
+                        CBKF.SettingsColBar.UsePsi = Toggle(CBKF.SettingsColBar.UsePsi, "UsePsiOnBar".Translate());
                         if (CBKF.SettingsColBar.UsePsi)
                         {
-                            PsiBarPositionInt = GUILayout.Toolbar(PsiBarPositionInt, psiColBarStrings, GUILayout.Width(viewRect.width));
+                            PsiBarPositionInt = Toolbar(PsiBarPositionInt, psiColBarStrings, Width(viewRect.width));
                         }
-                        GUILayout.Space(18f);
-                        FillPagePosition();
-                        GUILayout.Space(18f);
-                        _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, GUILayout.Width(viewRect.width));
-                        FillPageOptions();
+                        Space(18f);
+                        FillPagePosition(viewRect.width);
+                        Space(18f);
+                        _scrollPosition = BeginScrollView(_scrollPosition, Width(viewRect.width));
+                        FillPageOptions(viewRect.width);
 
                     }
                     break;
                 case 1:
                     {
-                        GUILayout.Label("ColonistBarKF.SettingsPSI.Settings".Translate(), FontBold);
-                        PSIToolbarInt = GUILayout.Toolbar(PSIToolbarInt, psiToolbarStrings, GUILayout.Width(viewRect.width));
-                        GUILayout.Space(12);
-                        SettingsPsi.UsePsi = GUILayout.Toggle(SettingsPsi.UsePsi, "UsePsiOnPawn".Translate());
-                        GUILayout.Space(18f);
-                        _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, GUILayout.Width(viewRect.width));
+                        Label("ColonistBarKF.SettingsPSI.Settings".Translate(), FontBold);
+                        PSIToolbarInt = Toolbar(PSIToolbarInt, psiToolbarStrings, Width(viewRect.width));
+                        Space(12);
+                        SettingsPsi.UsePsi = Toggle(SettingsPsi.UsePsi, "UsePsiOnPawn".Translate());
+                        Space(18f);
+                        _scrollPosition = BeginScrollView(_scrollPosition, Width(viewRect.width));
 
                         if (PSIToolbarInt == 0)
                         {
@@ -382,22 +390,22 @@ namespace ColonistBarKF
                     }
                     break;
             }
-            GUILayout.Space(12);
-            GUILayout.EndScrollView();
+            Space(12);
+            EndScrollView();
 
-            GUILayout.FlexibleSpace();
-            GUILayout.Space(12f);
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("ColonistBarKF.SettingsColBar.RevertSettings".Translate(), GUILayout.Width(viewRect.width / 2 - 10f)))
+            FlexibleSpace();
+            Space(12f);
+            BeginHorizontal(hoverBox);
+            if (Button("ColonistBarKF.SettingsColBar.RevertSettings".Translate(), Width(viewRect.width / 2 - 10f)))
             {
                 ResetBarSettings();
             }
-            if (GUILayout.Button("ColonistBarKF.SettingsColBar.RevertPSISettings".Translate(), GUILayout.Width(viewRect.width / 2 - 10f)))
+            if (Button("ColonistBarKF.SettingsColBar.RevertPSISettings".Translate(), Width(viewRect.width / 2 - 10f)))
             {
                 ResetPSISettings();
             }
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
+            EndHorizontal();
+            EndVertical();
 
 #if !NoCCL
             return 1000f;
@@ -541,8 +549,9 @@ namespace ColonistBarKF
 
         }
 
-        private void FillPagePosition()
+        private void FillPagePosition(float width)
         {
+            float colSize = width / 2 - 10f;
             #region Vertical Alignment
 
             if (CBKF.SettingsColBar.UseVerticalAlignment)
@@ -552,22 +561,24 @@ namespace ColonistBarKF
 #endif
                 if (CBKF.SettingsColBar.UseRightAlignment)
                 {
-                    CBKF.SettingsColBar.UseCustomMarginRightVer = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginRightVer, "ColonistBarKF.SettingsColBar.MarginEdge".Translate());
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginRightVer = Toggle(CBKF.SettingsColBar.UseCustomMarginRightVer, "ColonistBarKF.SettingsColBar.MarginEdge".Translate(), Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginRightVer)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginRightVer = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginRightVer, 0f, Screen.width / 12);
+                        CBKF.SettingsColBar.MarginRightVer = HorizontalSlider(CBKF.SettingsColBar.MarginRightVer, 0f, Screen.width / 12, Width(colSize));
                     }
                     else
                     {
                         CBKF.SettingsColBar.MarginRightVer = 21f;
                     }
                     // listing.Gap(3f);
-
-                    CBKF.SettingsColBar.UseCustomMarginTopVerRight = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginTopVerRight, "ColonistBarKF.SettingsColBar.MarginTop".Translate());
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginTopVerRight = Toggle(CBKF.SettingsColBar.UseCustomMarginTopVerRight, "ColonistBarKF.SettingsColBar.MarginTop".Translate(), Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginTopVerRight)
                     {
-                        CBKF.SettingsColBar.MarginTopVerRight = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginTopVerRight, 0f, Screen.height * 2 / 5);
+                        CBKF.SettingsColBar.MarginTopVerRight = HorizontalSlider(CBKF.SettingsColBar.MarginTopVerRight, 0f, Screen.height * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -576,12 +587,14 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerRight / 2 - CBKF.SettingsColBar.MarginBottomVerRight / 2;
 
                     }
+                    EndHorizontal();
                     //  listing.Gap(3f);
-                    CBKF.SettingsColBar.UseCustomMarginBottomVerRight = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginBottomVerRight, "ColonistBarKF.SettingsColBar.MarginBottom".Translate());
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginBottomVerRight = Toggle(CBKF.SettingsColBar.UseCustomMarginBottomVerRight, "ColonistBarKF.SettingsColBar.MarginBottom".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginBottomVerRight)
                     {
                         //     listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginBottomVerRight = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginBottomVerRight, 0f, Screen.height * 2 / 5);
+                        CBKF.SettingsColBar.MarginBottomVerRight = HorizontalSlider(CBKF.SettingsColBar.MarginBottomVerRight, 0f, Screen.height * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -589,26 +602,29 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.MaxColonistBarHeight = Screen.height - CBKF.SettingsColBar.MarginTopVerRight - CBKF.SettingsColBar.MarginBottomVerRight;
                         CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerRight / 2 - CBKF.SettingsColBar.MarginBottomVerRight / 2;
                     }
+                    EndHorizontal();
                 }
                 else
                 {
-                    CBKF.SettingsColBar.UseCustomMarginLeftVer = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginLeftVer, "ColonistBarKF.SettingsColBar.MarginEdge".Translate());
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginLeftVer = Toggle(CBKF.SettingsColBar.UseCustomMarginLeftVer, "ColonistBarKF.SettingsColBar.MarginEdge".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginLeftVer)
                     {
                         //     listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginLeftVer = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginLeftVer, 0f, Screen.width / 12);
+                        CBKF.SettingsColBar.MarginLeftVer = HorizontalSlider(CBKF.SettingsColBar.MarginLeftVer, 0f, Screen.width / 12, Width(colSize));
                     }
                     else
                     {
                         CBKF.SettingsColBar.MarginLeftVer = 21f;
                     }
                     //   listing.Gap(3f);
-
-                    CBKF.SettingsColBar.UseCustomMarginTopVerLeft = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginTopVerLeft, "ColonistBarKF.SettingsColBar.MarginTop".Translate());
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginTopVerLeft = Toggle(CBKF.SettingsColBar.UseCustomMarginTopVerLeft, "ColonistBarKF.SettingsColBar.MarginTop".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginTopVerLeft)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginTopVerLeft = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginTopVerLeft, 0f, Screen.height * 2 / 5);
+                        CBKF.SettingsColBar.MarginTopVerLeft = HorizontalSlider(CBKF.SettingsColBar.MarginTopVerLeft, 0f, Screen.height * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -617,13 +633,15 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerLeft / 2 - CBKF.SettingsColBar.MarginBottomVerLeft / 2;
 
                     }
-                    //   listing.Gap(3f);
+                    EndHorizontal();
 
-                    CBKF.SettingsColBar.UseCustomMarginBottomVerLeft = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginBottomVerLeft, "ColonistBarKF.SettingsColBar.MarginBottom".Translate());
+                    //   listing.Gap(3f);
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginBottomVerLeft = Toggle(CBKF.SettingsColBar.UseCustomMarginBottomVerLeft, "ColonistBarKF.SettingsColBar.MarginBottom".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginBottomVerLeft)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginBottomVerLeft = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginBottomVerLeft, 0f, Screen.height * 2 / 5);
+                        CBKF.SettingsColBar.MarginBottomVerLeft = HorizontalSlider(CBKF.SettingsColBar.MarginBottomVerLeft, 0f, Screen.height * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -631,7 +649,7 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.MaxColonistBarHeight = Screen.height - CBKF.SettingsColBar.MarginTopVerLeft - CBKF.SettingsColBar.MarginBottomVerLeft;
                         CBKF.SettingsColBar.VerticalOffset = CBKF.SettingsColBar.MarginTopVerLeft / 2 - CBKF.SettingsColBar.MarginBottomVerLeft / 2;
                     }
-
+                    EndHorizontal();
                 }
 
 
@@ -652,24 +670,25 @@ namespace ColonistBarKF
 
                 if (CBKF.SettingsColBar.UseBottomAlignment)
                 {
-                    CBKF.SettingsColBar.UseCustomMarginBottomHor = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginBottomHor, "ColonistBarKF.SettingsColBar.MarginEdge".Translate());
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginBottomHor = Toggle(CBKF.SettingsColBar.UseCustomMarginBottomHor, "ColonistBarKF.SettingsColBar.MarginEdge".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginBottomHor)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginBottomHor = CBKF.SettingsColBar.MarginBottomHor = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginBottomHor, 10, Screen.height / 12);
+                        CBKF.SettingsColBar.MarginBottomHor = CBKF.SettingsColBar.MarginBottomHor = HorizontalSlider(CBKF.SettingsColBar.MarginBottomHor, 10, Screen.height / 12, Width(colSize));
                     }
                     else
                     {
                         CBKF.SettingsColBar.MarginBottomHor = 21f;
                     }
                     //   listing.Gap(3f);
-
-
-                    CBKF.SettingsColBar.UseCustomMarginLeftHorBottom = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginLeftHorBottom, "ColonistBarKF.SettingsColBar.MarginLeft".Translate());
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginLeftHorBottom = Toggle(CBKF.SettingsColBar.UseCustomMarginLeftHorBottom, "ColonistBarKF.SettingsColBar.MarginLeft".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginLeftHorBottom)
                     {
                         //   listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginLeftHorBottom = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginLeftHorBottom, 0f, Screen.width * 2 / 5);
+                        CBKF.SettingsColBar.MarginLeftHorBottom = HorizontalSlider(CBKF.SettingsColBar.MarginLeftHorBottom, 0f, Screen.width * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -678,12 +697,13 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorBottom / 2 - CBKF.SettingsColBar.MarginRightHorBottom / 2;
                     }
                     //  listing.Gap(3f);
-
-                    CBKF.SettingsColBar.UseCustomMarginRightHorBottom = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginRightHorBottom, "ColonistBarKF.SettingsColBar.MarginRight".Translate());
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginRightHorBottom = Toggle(CBKF.SettingsColBar.UseCustomMarginRightHorBottom, "ColonistBarKF.SettingsColBar.MarginRight".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginRightHorBottom)
                     {
                         //      listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginRightHorBottom = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginRightHorBottom, 0f, Screen.width * 2 / 5);
+                        CBKF.SettingsColBar.MarginRightHorBottom = HorizontalSlider(CBKF.SettingsColBar.MarginRightHorBottom, 0f, Screen.width * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -691,28 +711,30 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.MaxColonistBarWidth = Screen.width - CBKF.SettingsColBar.MarginLeftHorBottom - CBKF.SettingsColBar.MarginRightHorBottom;
                         CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorBottom / 2 - CBKF.SettingsColBar.MarginRightHorBottom / 2;
                     }
+                    EndHorizontal();
                     //    listing.Gap(3f);
                 }
                 else
                 {
-                    CBKF.SettingsColBar.UseCustomMarginTopHor = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginTopHor, "ColonistBarKF.SettingsColBar.MarginEdge".Translate());
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginTopHor = Toggle(CBKF.SettingsColBar.UseCustomMarginTopHor, "ColonistBarKF.SettingsColBar.MarginEdge".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginTopHor)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginTopHor = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginTopHor, 10, Screen.height / 12);
+                        CBKF.SettingsColBar.MarginTopHor = HorizontalSlider(CBKF.SettingsColBar.MarginTopHor, 10, Screen.height / 12, Width(colSize));
                     }
                     else
                     {
                         CBKF.SettingsColBar.MarginTopHor = 21f;
                     }
                     //  listing.Gap(3f);
-
-
-                    CBKF.SettingsColBar.UseCustomMarginLeftHorTop = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginLeftHorTop, "ColonistBarKF.SettingsColBar.MarginLeft".Translate());
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
+                    CBKF.SettingsColBar.UseCustomMarginLeftHorTop = Toggle(CBKF.SettingsColBar.UseCustomMarginLeftHorTop, "ColonistBarKF.SettingsColBar.MarginLeft".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginLeftHorTop)
                     {
                         //    listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginLeftHorTop = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginLeftHorTop, 0f, Screen.width * 2 / 5);
+                        CBKF.SettingsColBar.MarginLeftHorTop = HorizontalSlider(CBKF.SettingsColBar.MarginLeftHorTop, 0f, Screen.width * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -720,13 +742,15 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.MaxColonistBarWidth = Screen.width - CBKF.SettingsColBar.MarginLeftHorTop - CBKF.SettingsColBar.MarginRightHorTop;
                         CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorTop / 2 - CBKF.SettingsColBar.MarginRightHorTop / 2;
                     }
+                    EndHorizontal();
+                    BeginHorizontal(hoverBox);
                     //  listing.Gap(3f);
 
-                    CBKF.SettingsColBar.UseCustomMarginRightHorTop = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomMarginRightHorTop, "ColonistBarKF.SettingsColBar.MarginRight".Translate());
+                    CBKF.SettingsColBar.UseCustomMarginRightHorTop = Toggle(CBKF.SettingsColBar.UseCustomMarginRightHorTop, "ColonistBarKF.SettingsColBar.MarginRight".Translate(),  Width(colSize));
                     if (CBKF.SettingsColBar.UseCustomMarginRightHorTop)
                     {
                         //     listing.Gap(3f);
-                        CBKF.SettingsColBar.MarginRightHorTop = GUILayout.HorizontalSlider(CBKF.SettingsColBar.MarginRightHorTop, 0f, Screen.width * 2 / 5);
+                        CBKF.SettingsColBar.MarginRightHorTop = HorizontalSlider(CBKF.SettingsColBar.MarginRightHorTop, 0f, Screen.width * 2 / 5, Width(colSize));
                     }
                     else
                     {
@@ -734,6 +758,7 @@ namespace ColonistBarKF
                         CBKF.SettingsColBar.MaxColonistBarWidth = Screen.width - CBKF.SettingsColBar.MarginLeftHorTop - CBKF.SettingsColBar.MarginRightHorTop;
                         CBKF.SettingsColBar.HorizontalOffset = CBKF.SettingsColBar.MarginLeftHorTop / 2 - CBKF.SettingsColBar.MarginRightHorTop / 2;
                     }
+                    EndHorizontal();
                     //  listing.Gap(3f);
                 }
 #if !NoCCL
@@ -742,24 +767,21 @@ namespace ColonistBarKF
             }
             #endregion
 
-            GUILayout.Space(12f);
+            Space(12f);
         }
 
-        private void FillPageOptions()
+        private void FillPageOptions(float width)
         {
-            // forces the mod to update the values from the sliders. is deactivated by saving the values.
-
-
+            float colSize = (width - 15f) / 2 - 10f;
             #region Size + Spacing
-
-            CBKF.SettingsColBar.UseCustomIconSize = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomIconSize, "ColonistBarKF.SettingsColBar.BasicSize".Translate());
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomIconSize = Toggle(CBKF.SettingsColBar.UseCustomIconSize, "ColonistBarKF.SettingsColBar.BasicSize".Translate(), Width(colSize));
 
             if (CBKF.SettingsColBar.UseCustomIconSize)
             {
                 //     listing.Gap(3f);
-                CBKF.SettingsColBar.UseFixedIconScale = GUILayout.Toggle(CBKF.SettingsColBar.UseFixedIconScale, "ColonistBarKF.SettingsColBar.FixedScale".Translate());
                 //    listing.Gap(3f);
-                CBKF.SettingsColBar.BaseSizeFloat = GUILayout.HorizontalSlider(CBKF.SettingsColBar.BaseSizeFloat, 16f, 128f);
+                CBKF.SettingsColBar.BaseSizeFloat = HorizontalSlider(CBKF.SettingsColBar.BaseSizeFloat, 16f, 128f, Width(colSize));
 
                 //     listing.Gap();
             }
@@ -769,47 +791,52 @@ namespace ColonistBarKF
                 CBKF.SettingsColBar.BaseIconSize = 20f;
                 //     listing.Gap(3f);
             }
+            EndHorizontal();
+            CBKF.SettingsColBar.UseFixedIconScale = Toggle(CBKF.SettingsColBar.UseFixedIconScale, "ColonistBarKF.SettingsColBar.FixedScale".Translate(), Width(colSize));
 
-
-            CBKF.SettingsColBar.UseCustomBaseSpacingHorizontal = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomBaseSpacingHorizontal, "ColonistBarKF.SettingsColBar.BaseSpacingHorizontal".Translate());
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomBaseSpacingHorizontal = Toggle(CBKF.SettingsColBar.UseCustomBaseSpacingHorizontal, "ColonistBarKF.SettingsColBar.BaseSpacingHorizontal".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseCustomBaseSpacingHorizontal)
             {
                 //      listing.Gap(3f);
-                CBKF.SettingsColBar.BaseSpacingHorizontal = GUILayout.HorizontalSlider(CBKF.SettingsColBar.BaseSpacingHorizontal, 1f, 72f);
+                CBKF.SettingsColBar.BaseSpacingHorizontal = HorizontalSlider(CBKF.SettingsColBar.BaseSpacingHorizontal, 1f, 72f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.BaseSpacingHorizontal = 24f;
                 //      listing.Gap(3f);
             }
-
-            CBKF.SettingsColBar.UseCustomBaseSpacingVertical = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomBaseSpacingVertical, "ColonistBarKF.SettingsColBar.BaseSpacingVertical".Translate());
+            EndHorizontal();
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomBaseSpacingVertical = Toggle(CBKF.SettingsColBar.UseCustomBaseSpacingVertical, "ColonistBarKF.SettingsColBar.BaseSpacingVertical".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseCustomBaseSpacingVertical)
             {
                 //      listing.Gap(3f);
-                CBKF.SettingsColBar.BaseSpacingVertical = GUILayout.HorizontalSlider(CBKF.SettingsColBar.BaseSpacingVertical, 1f, 96f);
+                CBKF.SettingsColBar.BaseSpacingVertical = HorizontalSlider(CBKF.SettingsColBar.BaseSpacingVertical, 1f, 96f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.BaseSpacingVertical = 32f;
             }
-
+            EndHorizontal();
             #endregion
 
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.UseMoodColors = GUILayout.Toggle(CBKF.SettingsColBar.UseMoodColors, "ColonistBarKF.SettingsColBar.UseMoodColors".Translate());
+            Space(12f);
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseMoodColors = Toggle(CBKF.SettingsColBar.UseMoodColors, "ColonistBarKF.SettingsColBar.UseMoodColors".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseMoodColors)
             {
                 //      listing.Gap(3f);
-                CBKF.SettingsColBar.moodRectScale = GUILayout.HorizontalSlider(CBKF.SettingsColBar.moodRectScale, 0.33f, 1f);
+                CBKF.SettingsColBar.moodRectScale = HorizontalSlider(CBKF.SettingsColBar.moodRectScale, 0.33f, 1f, Width(colSize));
             }
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.UseWeaponIcons = GUILayout.Toggle(CBKF.SettingsColBar.UseWeaponIcons, "ColonistBarKF.SettingsColBar.UseWeaponIcons".Translate());
+            EndHorizontal();
+            Space(12f);
+            CBKF.SettingsColBar.UseWeaponIcons = Toggle(CBKF.SettingsColBar.UseWeaponIcons, "ColonistBarKF.SettingsColBar.UseWeaponIcons".Translate());
 
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.UseGender = GUILayout.Toggle(CBKF.SettingsColBar.UseGender, "ColonistBarKF.SettingsColBar.useGender".Translate());
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.useZoomToMouse = GUILayout.Toggle(CBKF.SettingsColBar.useZoomToMouse, "ColonistBarKF.SettingsColBar.useZoomToMouse".Translate());
+            Space(12f);
+            CBKF.SettingsColBar.UseGender = Toggle(CBKF.SettingsColBar.UseGender, "ColonistBarKF.SettingsColBar.useGender".Translate());
+            Space(12f);
+            CBKF.SettingsColBar.useZoomToMouse = Toggle(CBKF.SettingsColBar.useZoomToMouse, "ColonistBarKF.SettingsColBar.useZoomToMouse".Translate());
 
             #region Gender
 
@@ -838,55 +865,61 @@ namespace ColonistBarKF
 
 
             #region Camera
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.UseCustomPawnTextureCameraZoom = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraZoom, "ColonistBarKF.SettingsColBar.PawnTextureCameraZoom".Translate());
+            Space(12f);
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomPawnTextureCameraZoom = Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraZoom, "ColonistBarKF.SettingsColBar.PawnTextureCameraZoom".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseCustomPawnTextureCameraZoom)
             {
                 //    listing.Gap(3f);
-                CBKF.SettingsColBar.PawnTextureCameraZoom = GUILayout.HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraZoom, 0.3f, 3f);
+                CBKF.SettingsColBar.PawnTextureCameraZoom = HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraZoom, 0.3f, 3f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.PawnTextureCameraZoom = 1.28205f;
             }
             //    listing.Gap(3f);
-
-            CBKF.SettingsColBar.UseCustomPawnTextureCameraHorizontalOffset = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraHorizontalOffset, "ColonistBarKF.SettingsColBar.PawnTextureCameraHorizontalOffset".Translate());
+            EndHorizontal();
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomPawnTextureCameraHorizontalOffset = Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraHorizontalOffset, "ColonistBarKF.SettingsColBar.PawnTextureCameraHorizontalOffset".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseCustomPawnTextureCameraHorizontalOffset)
             {
                 //        listing.Gap(3f);
-                CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset = GUILayout.HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset, 0.7f, -0.7f);
+                CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset = HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset, 0.7f, -0.7f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.PawnTextureCameraHorizontalOffset = 0f;
             }
+            EndHorizontal();
 
-            CBKF.SettingsColBar.UseCustomPawnTextureCameraVerticalOffset = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraVerticalOffset, "ColonistBarKF.SettingsColBar.PawnTextureCameraVerticalOffset".Translate());
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomPawnTextureCameraVerticalOffset = Toggle(CBKF.SettingsColBar.UseCustomPawnTextureCameraVerticalOffset, "ColonistBarKF.SettingsColBar.PawnTextureCameraVerticalOffset".Translate(), Width(colSize));
             if (CBKF.SettingsColBar.UseCustomPawnTextureCameraVerticalOffset)
             {
                 //       listing.Gap(3f);
-                CBKF.SettingsColBar.PawnTextureCameraVerticalOffset = GUILayout.HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraVerticalOffset, 0f, 1f);
+                CBKF.SettingsColBar.PawnTextureCameraVerticalOffset = HorizontalSlider(CBKF.SettingsColBar.PawnTextureCameraVerticalOffset, 0f, 1f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.PawnTextureCameraVerticalOffset = 0.3f;
             }
+            EndHorizontal();
             #endregion
 
 
-            GUILayout.Space(12f);
-            CBKF.SettingsColBar.UseCustomDoubleClickTime = GUILayout.Toggle(CBKF.SettingsColBar.UseCustomDoubleClickTime, "ColonistBarKF.SettingsColBar.DoubleClickTime".Translate());
+            Space(12f);
+            BeginHorizontal(hoverBox);
+            CBKF.SettingsColBar.UseCustomDoubleClickTime = Toggle(CBKF.SettingsColBar.UseCustomDoubleClickTime, "ColonistBarKF.SettingsColBar.DoubleClickTime".Translate() + ": " + CBKF.SettingsColBar.DoubleClickTime.ToString("N2") + "s", Width(colSize));
             if (CBKF.SettingsColBar.UseCustomDoubleClickTime)
             {
                 //       listing.Gap(3f);
-                CBKF.SettingsColBar.DoubleClickTime = GUILayout.HorizontalSlider(CBKF.SettingsColBar.DoubleClickTime, 0.1f, 1.5f);
+                CBKF.SettingsColBar.DoubleClickTime = HorizontalSlider(CBKF.SettingsColBar.DoubleClickTime, 0.1f, 1.5f, Width(colSize));
             }
             else
             {
                 CBKF.SettingsColBar.DoubleClickTime = 0.5f;
             }
-
+            EndHorizontal();
             //       GUILayout.Toggle("ColonistBarKF.SettingsColBar.useExtraIcons".Translate(), ref SettingsColBar.useExtraIcons, null);
         }
 
@@ -976,8 +1009,8 @@ namespace ColonistBarKF
             //   listing.NewColumn();
 
             //    if (GUILayout.ButtonLabeled("PSI.SettingsColBar.LoadPresetButton".Translate()))
-            GUILayout.Label("PSI.SettingsColBar.LoadPresetButton".Translate(), FontBold);
-            if (GUILayout.Button("PSI.SettingsColBar.IconSet".Translate() + SettingsPsi.IconSet))
+            Label("PSI.SettingsColBar.LoadPresetButton".Translate(), FontBold);
+            if (Button("PSI.SettingsColBar.IconSet".Translate() + SettingsPsi.IconSet))
             {
                 var options = new List<FloatMenuOption>();
 
@@ -1028,61 +1061,61 @@ namespace ColonistBarKF
 
         private void FillPagePSIShowHide()
         {
-            GUILayout.Label("PSI.Settings.Visibility.Header", FontBold);
+            Label("PSI.Settings.Visibility.Header", FontBold);
 
-            SettingsPsi.ShowTargetPoint = GUILayout.Toggle(SettingsPsi.ShowTargetPoint, "PSI.Settings.Visibility.TargetPoint".Translate());
-            SettingsPsi.ShowAggressive = GUILayout.Toggle(SettingsPsi.ShowAggressive, "PSI.Settings.Visibility.Aggressive".Translate());
-            SettingsPsi.ShowDazed = GUILayout.Toggle(SettingsPsi.ShowDazed, "PSI.Settings.Visibility.Dazed".Translate());
-            SettingsPsi.ShowLeave = GUILayout.Toggle(SettingsPsi.ShowLeave, "PSI.Settings.Visibility.Leave".Translate());
-            SettingsPsi.ShowDraft = GUILayout.Toggle(SettingsPsi.ShowDraft, "PSI.Settings.Visibility.Draft".Translate());
+            SettingsPsi.ShowTargetPoint = Toggle(SettingsPsi.ShowTargetPoint, "PSI.Settings.Visibility.TargetPoint".Translate());
+            SettingsPsi.ShowAggressive = Toggle(SettingsPsi.ShowAggressive, "PSI.Settings.Visibility.Aggressive".Translate());
+            SettingsPsi.ShowDazed = Toggle(SettingsPsi.ShowDazed, "PSI.Settings.Visibility.Dazed".Translate());
+            SettingsPsi.ShowLeave = Toggle(SettingsPsi.ShowLeave, "PSI.Settings.Visibility.Leave".Translate());
+            SettingsPsi.ShowDraft = Toggle(SettingsPsi.ShowDraft, "PSI.Settings.Visibility.Draft".Translate());
 
-            SettingsPsi.ShowIdle = GUILayout.Toggle(SettingsPsi.ShowIdle, "PSI.Settings.Visibility.Idle".Translate());
-            SettingsPsi.ShowUnarmed = GUILayout.Toggle(SettingsPsi.ShowUnarmed, "PSI.Settings.Visibility.Unarmed".Translate());
-            SettingsPsi.ShowHungry = GUILayout.Toggle(SettingsPsi.ShowHungry, "PSI.Settings.Visibility.Hungry".Translate());
-            SettingsPsi.ShowSad = GUILayout.Toggle(SettingsPsi.ShowSad, "PSI.Settings.Visibility.Sad".Translate());
-            SettingsPsi.ShowTired = GUILayout.Toggle(SettingsPsi.ShowTired, "PSI.Settings.Visibility.Tired".Translate());
+            SettingsPsi.ShowIdle = Toggle(SettingsPsi.ShowIdle, "PSI.Settings.Visibility.Idle".Translate());
+            SettingsPsi.ShowUnarmed = Toggle(SettingsPsi.ShowUnarmed, "PSI.Settings.Visibility.Unarmed".Translate());
+            SettingsPsi.ShowHungry = Toggle(SettingsPsi.ShowHungry, "PSI.Settings.Visibility.Hungry".Translate());
+            SettingsPsi.ShowSad = Toggle(SettingsPsi.ShowSad, "PSI.Settings.Visibility.Sad".Translate());
+            SettingsPsi.ShowTired = Toggle(SettingsPsi.ShowTired, "PSI.Settings.Visibility.Tired".Translate());
             //
-            SettingsPsi.ShowDisease = GUILayout.Toggle(SettingsPsi.ShowDisease, "PSI.Settings.Visibility.Sickness".Translate());
-            SettingsPsi.ShowPain = GUILayout.Toggle(SettingsPsi.ShowPain, "PSI.Settings.Visibility.Pain".Translate());
-            SettingsPsi.ShowHealth = GUILayout.Toggle(SettingsPsi.ShowHealth, "PSI.Settings.Visibility.Health".Translate());
-            SettingsPsi.ShowEffectiveness = GUILayout.Toggle(SettingsPsi.ShowEffectiveness, "PSI.Settings.Visibility.Injury".Translate());
-            SettingsPsi.ShowBloodloss = GUILayout.Toggle(SettingsPsi.ShowBloodloss, "PSI.Settings.Visibility.Bloodloss".Translate());
+            SettingsPsi.ShowDisease = Toggle(SettingsPsi.ShowDisease, "PSI.Settings.Visibility.Sickness".Translate());
+            SettingsPsi.ShowPain = Toggle(SettingsPsi.ShowPain, "PSI.Settings.Visibility.Pain".Translate());
+            SettingsPsi.ShowHealth = Toggle(SettingsPsi.ShowHealth, "PSI.Settings.Visibility.Health".Translate());
+            SettingsPsi.ShowEffectiveness = Toggle(SettingsPsi.ShowEffectiveness, "PSI.Settings.Visibility.Injury".Translate());
+            SettingsPsi.ShowBloodloss = Toggle(SettingsPsi.ShowBloodloss, "PSI.Settings.Visibility.Bloodloss".Translate());
             //
-            SettingsPsi.ShowHot = GUILayout.Toggle(SettingsPsi.ShowHot, "PSI.Settings.Visibility.Hot".Translate());
-            SettingsPsi.ShowCold = GUILayout.Toggle(SettingsPsi.ShowCold, "PSI.Settings.Visibility.Cold".Translate());
-            SettingsPsi.ShowNaked = GUILayout.Toggle(SettingsPsi.ShowNaked, "PSI.Settings.Visibility.Naked".Translate());
-            SettingsPsi.ShowDrunk = GUILayout.Toggle(SettingsPsi.ShowDrunk, "PSI.Settings.Visibility.Drunk".Translate());
-            SettingsPsi.ShowApparelHealth = GUILayout.Toggle(SettingsPsi.ShowApparelHealth, "PSI.Settings.Visibility.ApparelHealth".Translate());
+            SettingsPsi.ShowHot = Toggle(SettingsPsi.ShowHot, "PSI.Settings.Visibility.Hot".Translate());
+            SettingsPsi.ShowCold = Toggle(SettingsPsi.ShowCold, "PSI.Settings.Visibility.Cold".Translate());
+            SettingsPsi.ShowNaked = Toggle(SettingsPsi.ShowNaked, "PSI.Settings.Visibility.Naked".Translate());
+            SettingsPsi.ShowDrunk = Toggle(SettingsPsi.ShowDrunk, "PSI.Settings.Visibility.Drunk".Translate());
+            SettingsPsi.ShowApparelHealth = Toggle(SettingsPsi.ShowApparelHealth, "PSI.Settings.Visibility.ApparelHealth".Translate());
             //
-            SettingsPsi.ShowPacific = GUILayout.Toggle(SettingsPsi.ShowPacific, "PSI.Settings.Visibility.Pacific".Translate());
-            SettingsPsi.ShowNightOwl = GUILayout.Toggle(SettingsPsi.ShowNightOwl, "PSI.Settings.Visibility.NightOwl".Translate());
-            SettingsPsi.ShowGreedy = GUILayout.Toggle(SettingsPsi.ShowGreedy, "PSI.Settings.Visibility.Greedy".Translate());
-            SettingsPsi.ShowJealous = GUILayout.Toggle(SettingsPsi.ShowJealous, "PSI.Settings.Visibility.Jealous".Translate());
-            SettingsPsi.ShowLovers = GUILayout.Toggle(SettingsPsi.ShowLovers, "PSI.Settings.Visibility.Lovers".Translate());
+            SettingsPsi.ShowPacific = Toggle(SettingsPsi.ShowPacific, "PSI.Settings.Visibility.Pacific".Translate());
+            SettingsPsi.ShowNightOwl = Toggle(SettingsPsi.ShowNightOwl, "PSI.Settings.Visibility.NightOwl".Translate());
+            SettingsPsi.ShowGreedy = Toggle(SettingsPsi.ShowGreedy, "PSI.Settings.Visibility.Greedy".Translate());
+            SettingsPsi.ShowJealous = Toggle(SettingsPsi.ShowJealous, "PSI.Settings.Visibility.Jealous".Translate());
+            SettingsPsi.ShowLovers = Toggle(SettingsPsi.ShowLovers, "PSI.Settings.Visibility.Lovers".Translate());
             //
-            SettingsPsi.ShowProsthophile = GUILayout.Toggle(SettingsPsi.ShowProsthophile, "PSI.Settings.Visibility.Prosthophile".Translate());
-            SettingsPsi.ShowProsthophobe = GUILayout.Toggle(SettingsPsi.ShowProsthophobe, "PSI.Settings.Visibility.Prosthophobe".Translate());
-            SettingsPsi.ShowRoomStatus = GUILayout.Toggle(SettingsPsi.ShowRoomStatus, "PSI.Settings.Visibility.RoomStatus".Translate());
-            SettingsPsi.ShowBedroom = GUILayout.Toggle(SettingsPsi.ShowBedroom, "PSI.Settings.Visibility.Bedroom".Translate());
+            SettingsPsi.ShowProsthophile = Toggle(SettingsPsi.ShowProsthophile, "PSI.Settings.Visibility.Prosthophile".Translate());
+            SettingsPsi.ShowProsthophobe = Toggle(SettingsPsi.ShowProsthophobe, "PSI.Settings.Visibility.Prosthophobe".Translate());
+            SettingsPsi.ShowRoomStatus = Toggle(SettingsPsi.ShowRoomStatus, "PSI.Settings.Visibility.RoomStatus".Translate());
+            SettingsPsi.ShowBedroom = Toggle(SettingsPsi.ShowBedroom, "PSI.Settings.Visibility.Bedroom".Translate());
 
-            SettingsPsi.ShowDeadColonists = GUILayout.Toggle(SettingsPsi.ShowDeadColonists, "PSI.Settings.Visibility.ShowDeadColonists".Translate());
+            SettingsPsi.ShowDeadColonists = Toggle(SettingsPsi.ShowDeadColonists, "PSI.Settings.Visibility.ShowDeadColonists".Translate());
 
-            SettingsPsi.ShowPyromaniac = GUILayout.Toggle(SettingsPsi.ShowPyromaniac, "PSI.Settings.Visibility.Pyromaniac".Translate());
+            SettingsPsi.ShowPyromaniac = Toggle(SettingsPsi.ShowPyromaniac, "PSI.Settings.Visibility.Pyromaniac".Translate());
         }
 
 
 
         private void FillPagePSIOpacityAndColor()
         {
-            GUILayout.Label("PSI.Settings.IconOpacityAndColor.Header".Translate(), FontBold);
+            Label("PSI.Settings.IconOpacityAndColor.Header".Translate(), FontBold);
 
-            GUILayout.Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
-            SettingsPsi.IconOpacity = GUILayout.HorizontalSlider(SettingsPsi.IconOpacity, 0.05f, 1f);
+            Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
+            SettingsPsi.IconOpacity = HorizontalSlider(SettingsPsi.IconOpacity, 0.05f, 1f);
 
-            GUILayout.Label("PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate());
-            SettingsPsi.IconOpacityCritical = GUILayout.HorizontalSlider(SettingsPsi.IconOpacityCritical, 0f, 1f);
+            Label("PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate());
+            SettingsPsi.IconOpacityCritical = HorizontalSlider(SettingsPsi.IconOpacityCritical, 0f, 1f);
 
-            GUILayout.Toggle(SettingsPsi.UseColoredTarget, "PSI.Settings.IconOpacityAndColor.UseColoredTarget".Translate());
+            Toggle(SettingsPsi.UseColoredTarget, "PSI.Settings.IconOpacityAndColor.UseColoredTarget".Translate());
 
 
             //if (listing.DoTextButton("PSI.Settings.ResetColors".Translate()))
@@ -1110,9 +1143,9 @@ namespace ColonistBarKF
         private void FillPSIPageArrangement()
         {
 
-            GUILayout.Label("PSI.Settings.Arrangement.Header", FontBold);
+            Label("PSI.Settings.Arrangement.Header", FontBold);
 
-            if (GUILayout.Button("PSI.Settings.LoadPresetButton".Translate()))
+            if (Button("PSI.Settings.LoadPresetButton".Translate()))
             {
                 var options = new List<FloatMenuOption>();
 
@@ -1209,24 +1242,24 @@ namespace ColonistBarKF
             else if (num < 0)
                 num = 0;
 
-            GUILayout.Label("PSI.Settings.Arrangement.IconSize".Translate() + ("PSI.Settings.SizeLabel." + num).Translate());
-            SettingsPsi.IconSize = GUILayout.HorizontalSlider(SettingsPsi.IconSize, 0.5f, 2f);
+            Label("PSI.Settings.Arrangement.IconSize".Translate() + ("PSI.Settings.SizeLabel." + num).Translate());
+            SettingsPsi.IconSize = HorizontalSlider(SettingsPsi.IconSize, 0.5f, 2f);
 
-            GUILayout.Label(string.Concat("PSI.Settings.Arrangement.IconPosition".Translate(), (int)(SettingsPsi.IconDistanceX * 100.0), " , ", (int)(SettingsPsi.IconDistanceY * 100.0)));
-            SettingsPsi.IconDistanceX = GUILayout.HorizontalSlider(SettingsPsi.IconDistanceX, -2f, 2f);
-            SettingsPsi.IconDistanceY = GUILayout.HorizontalSlider(SettingsPsi.IconDistanceY, -2f, 2f);
+            Label(string.Concat("PSI.Settings.Arrangement.IconPosition".Translate(), (int)(SettingsPsi.IconDistanceX * 100.0), " , ", (int)(SettingsPsi.IconDistanceY * 100.0)));
+            SettingsPsi.IconDistanceX = HorizontalSlider(SettingsPsi.IconDistanceX, -2f, 2f);
+            SettingsPsi.IconDistanceY = HorizontalSlider(SettingsPsi.IconDistanceY, -2f, 2f);
 
-            GUILayout.Label(string.Concat("PSI.Settings.Arrangement.IconOffset".Translate(), (int)(SettingsPsi.IconOffsetX * 100.0), " , ", (int)(SettingsPsi.IconOffsetY * 100.0)));
-            SettingsPsi.IconOffsetX = GUILayout.HorizontalSlider(SettingsPsi.IconOffsetX, -2f, 2f);
-            SettingsPsi.IconOffsetY = GUILayout.HorizontalSlider(SettingsPsi.IconOffsetY, -2f, 2f);
+            Label(string.Concat("PSI.Settings.Arrangement.IconOffset".Translate(), (int)(SettingsPsi.IconOffsetX * 100.0), " , ", (int)(SettingsPsi.IconOffsetY * 100.0)));
+            SettingsPsi.IconOffsetX = HorizontalSlider(SettingsPsi.IconOffsetX, -2f, 2f);
+            SettingsPsi.IconOffsetY = HorizontalSlider(SettingsPsi.IconOffsetY, -2f, 2f);
 
-            SettingsPsi.IconsHorizontal = GUILayout.Toggle(SettingsPsi.IconsHorizontal, "PSI.Settings.Arrangement.Horizontal".Translate());
+            SettingsPsi.IconsHorizontal = Toggle(SettingsPsi.IconsHorizontal, "PSI.Settings.Arrangement.Horizontal".Translate());
 
-            SettingsPsi.IconsScreenScale = GUILayout.Toggle(SettingsPsi.IconsScreenScale, "PSI.Settings.Arrangement.ScreenScale".Translate());
+            SettingsPsi.IconsScreenScale = Toggle(SettingsPsi.IconsScreenScale, "PSI.Settings.Arrangement.ScreenScale".Translate());
 
-            GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + SettingsPsi.IconsInColumn);
+            Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + SettingsPsi.IconsInColumn);
 
-            SettingsPsi.IconsInColumn = (int)GUILayout.HorizontalSlider(SettingsPsi.IconsInColumn, 1f, 7f);
+            SettingsPsi.IconsInColumn = (int)HorizontalSlider(SettingsPsi.IconsInColumn, 1f, 7f);
 
             SavePsiSettings();
             Reinit();
@@ -1241,8 +1274,8 @@ namespace ColonistBarKF
         private void FillPSIPageLimits()
         {
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Header".Translate(), FontBold);
-            if (GUILayout.Button("PSI.Settings.LoadPresetButton".Translate()))
+            Label("PSI.Settings.Sensitivity.Header".Translate(), FontBold);
+            if (Button("PSI.Settings.LoadPresetButton".Translate()))
             {
                 var options = new List<FloatMenuOption>();
                 options.Add(new FloatMenuOption("Less Sensitive", () =>
@@ -1304,26 +1337,26 @@ namespace ColonistBarKF
             }
 
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Bleeding".Translate() + ("PSI.Settings.Sensitivity.Bleeding." + Math.Round(SettingsPsi.LimitBleedMult - 0.25)).Translate());
-            SettingsPsi.LimitBleedMult = GUILayout.HorizontalSlider(SettingsPsi.LimitBleedMult, 0.5f, 5f);
+            Label("PSI.Settings.Sensitivity.Bleeding".Translate() + ("PSI.Settings.Sensitivity.Bleeding." + Math.Round(SettingsPsi.LimitBleedMult - 0.25)).Translate());
+            SettingsPsi.LimitBleedMult = HorizontalSlider(SettingsPsi.LimitBleedMult, 0.5f, 5f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Injured".Translate() + (int)(SettingsPsi.LimitEfficiencyLess * 100.0) + "%");
-            SettingsPsi.LimitEfficiencyLess = GUILayout.HorizontalSlider(SettingsPsi.LimitEfficiencyLess, 0.01f, 0.99f);
+            Label("PSI.Settings.Sensitivity.Injured".Translate() + (int)(SettingsPsi.LimitEfficiencyLess * 100.0) + "%");
+            SettingsPsi.LimitEfficiencyLess = HorizontalSlider(SettingsPsi.LimitEfficiencyLess, 0.01f, 0.99f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Food".Translate() + (int)(SettingsPsi.LimitFoodLess * 100.0) + "%");
-            SettingsPsi.LimitFoodLess = GUILayout.HorizontalSlider(SettingsPsi.LimitFoodLess, 0.01f, 0.99f);
+            Label("PSI.Settings.Sensitivity.Food".Translate() + (int)(SettingsPsi.LimitFoodLess * 100.0) + "%");
+            SettingsPsi.LimitFoodLess = HorizontalSlider(SettingsPsi.LimitFoodLess, 0.01f, 0.99f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Mood".Translate() + (int)(SettingsPsi.LimitMoodLess * 100.0) + "%");
-            SettingsPsi.LimitMoodLess = GUILayout.HorizontalSlider(SettingsPsi.LimitMoodLess, 0.01f, 0.99f);
+            Label("PSI.Settings.Sensitivity.Mood".Translate() + (int)(SettingsPsi.LimitMoodLess * 100.0) + "%");
+            SettingsPsi.LimitMoodLess = HorizontalSlider(SettingsPsi.LimitMoodLess, 0.01f, 0.99f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Rest".Translate() + (int)(SettingsPsi.LimitRestLess * 100.0) + "%");
-            SettingsPsi.LimitRestLess = GUILayout.HorizontalSlider(SettingsPsi.LimitRestLess, 0.01f, 0.99f);
+            Label("PSI.Settings.Sensitivity.Rest".Translate() + (int)(SettingsPsi.LimitRestLess * 100.0) + "%");
+            SettingsPsi.LimitRestLess = HorizontalSlider(SettingsPsi.LimitRestLess, 0.01f, 0.99f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(SettingsPsi.LimitApparelHealthLess * 100.0) + "%");
-            SettingsPsi.LimitApparelHealthLess = GUILayout.HorizontalSlider(SettingsPsi.LimitApparelHealthLess, 0.01f, 0.99f);
+            Label("PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(SettingsPsi.LimitApparelHealthLess * 100.0) + "%");
+            SettingsPsi.LimitApparelHealthLess = HorizontalSlider(SettingsPsi.LimitApparelHealthLess, 0.01f, 0.99f);
 
-            GUILayout.Label("PSI.Settings.Sensitivity.Temperature".Translate() + (int)SettingsPsi.LimitTempComfortOffset + "C");
-            SettingsPsi.LimitTempComfortOffset = GUILayout.HorizontalSlider(SettingsPsi.LimitTempComfortOffset, -10f, 10f);
+            Label("PSI.Settings.Sensitivity.Temperature".Translate() + (int)SettingsPsi.LimitTempComfortOffset + "C");
+            SettingsPsi.LimitTempComfortOffset = HorizontalSlider(SettingsPsi.LimitTempComfortOffset, -10f, 10f);
 
             //  if (!listing.DoTextButton("PSI.Settings.ReturnButton".Translate()))
             //      return;
