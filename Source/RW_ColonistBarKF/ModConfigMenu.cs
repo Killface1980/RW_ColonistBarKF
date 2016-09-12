@@ -29,7 +29,7 @@ namespace ColonistBarKF
 
         #region Methods
 
-        private int lastupdate = -5000;
+        public static int lastupdate = -5000;
 
         public override void WindowUpdate()
         {
@@ -58,10 +58,10 @@ namespace ColonistBarKF
             SavePsiSettings();
         }
 
-        public override Vector2 InitialSize
-        {
-            get { return new Vector2(438f, 640f); }
-        }
+
+
+        public override Vector2 InitialSize => new Vector2(438f, 690f);
+
         private int mainToolbarInt = 0;
         private int psiToolbarInt = 0;
         private int barPositionInt = 0;
@@ -89,7 +89,7 @@ namespace ColonistBarKF
             "ColonistBarKF.SettingsColBar.useRight".Translate()
         };
 
-        public string[] psiColBarStrings =
+        private string[] psiColBarStrings =
 {
             "ColonistBarKF.SettingsColBar.useLeft".Translate(),
             "ColonistBarKF.SettingsColBar.useRight".Translate(),
@@ -97,7 +97,7 @@ namespace ColonistBarKF
             "ColonistBarKF.SettingsColBar.useBottom".Translate()
         };
 
-        public int MainToolbarInt
+        private int MainToolbarInt
         {
             get
             {
@@ -110,7 +110,7 @@ namespace ColonistBarKF
             }
         }
 
-        public int BarPositionInt
+        private int BarPositionInt
         {
             get
             {
@@ -165,7 +165,7 @@ namespace ColonistBarKF
             }
         }
 
-        public int PsiBarPositionInt
+        private int PsiBarPositionInt
         {
             get
             {
@@ -259,7 +259,7 @@ namespace ColonistBarKF
         }
 
 
-        public int PSIToolbarInt
+        private int PSIToolbarInt
         {
             get
             {
@@ -293,7 +293,17 @@ namespace ColonistBarKF
 
         GUIStyle hoverBox = new GUIStyle
         {
-            hover = { background = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 1)) }
+            hover = { background = ColonistBarTextures.HoverBG }
+        };
+
+        GUIStyle DarkGrayBG = new GUIStyle
+        {
+            normal = { background = ColonistBarTextures.PureDarkGray },
+        };
+
+        GUIStyle GrayBG = new GUIStyle
+        {
+            normal = { background = ColonistBarTextures.HoverBG },
         };
 
         public ColonistBarKF_Settings()
@@ -319,28 +329,37 @@ namespace ColonistBarKF
             viewRect.height -= 50f;
 
             Label("Colonist Bar KF 0.15.3", Headline);
-            Space(6f);
+            Space(Text.LineHeight);
             BeginVertical(Width(viewRect.width), Height(viewRect.height));
             MainToolbarInt = Toolbar(MainToolbarInt, mainToolbarStrings, Width(viewRect.width));
+            Space(Text.LineHeight);
 
             switch (MainToolbarInt)
             {
                 case 0:
                     {
                         Label("ColonistBarKF.SettingsColBar.Position".Translate(), FontBold);
+                        Space(Text.LineHeight);
+                        BeginVertical(DarkGrayBG);
                         BarPositionInt = Toolbar(BarPositionInt, psiPositionStrings,  Width(viewRect.width));
+                        FillPagePosition(viewRect.width);
+                        EndVertical();
+                        Space(6f);
+                        Label("", DarkGrayBG, Height(1));
+                        Space(6f);
                         Label("ColonistBarKF.SettingsColBar.PsiBarPosition".Translate(), FontBold);
                         CBKF.SettingsColBar.UsePsi = Toggle(CBKF.SettingsColBar.UsePsi, "UsePsiOnBar".Translate());
                         if (CBKF.SettingsColBar.UsePsi)
                         {
                             PsiBarPositionInt = Toolbar(PsiBarPositionInt, psiColBarStrings, Width(viewRect.width));
                         }
-                        Space(18f);
-                        FillPagePosition(viewRect.width);
-                        Space(18f);
+                        Space(6f);
+                        Label("", DarkGrayBG, Height(1));
+                        Space(6f);
                         _scrollPosition = BeginScrollView(_scrollPosition, Width(viewRect.width));
+                        BeginVertical(DarkGrayBG);
                         FillPageOptions(viewRect.width);
-
+                        EndVertical();
                     }
                     break;
                 case 1:
@@ -394,7 +413,9 @@ namespace ColonistBarKF
             EndScrollView();
 
             FlexibleSpace();
-            Space(12f);
+            Space(6f);
+            Label("", DarkGrayBG, Height(1));
+            Space(6f);
             BeginHorizontal(hoverBox);
             if (Button("ColonistBarKF.SettingsColBar.RevertSettings".Translate(), Width(viewRect.width / 2 - 10f)))
             {

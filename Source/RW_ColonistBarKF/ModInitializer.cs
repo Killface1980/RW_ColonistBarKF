@@ -70,6 +70,7 @@ namespace ColonistBarKF
         }
 
 
+        // ReSharper disable once UnusedMember.Global
         public void FixedUpdate()
         {
             if (Current.ProgramState != ProgramState.MapPlaying)
@@ -95,6 +96,7 @@ namespace ColonistBarKF
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void Start()
         {
             SettingsColBar = LoadBarSettings();

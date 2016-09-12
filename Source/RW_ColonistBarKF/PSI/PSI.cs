@@ -71,16 +71,9 @@ namespace ColonistBarKF.PSI
 
         }
 
+        // ReSharper disable once UnusedMember.Global
         public virtual void OnGUI()
         {
-            //    if (_inGame && Find.TickManager.Paused)
-            //        UpdateOptionsDialog();
-            //
-            //    if (!_inGame)
-            //        UpdateOptionsDialog();
-
-            //     if (!_inGame || Find.TickManager.Paused))
-            //         UpdateOptionsDialog();
 
             if (Current.ProgramState != ProgramState.MapPlaying)
                 return;
@@ -90,7 +83,6 @@ namespace ColonistBarKF.PSI
 
             foreach (Pawn pawn in Find.Map.mapPawns.AllPawns)
             {
-
                 if (pawn != null && pawn.RaceProps.Animal)
                     DrawAnimalIcons(pawn);
                 else if (pawn != null && (pawn.IsColonist || pawn.IsPrisonerOfColony))
@@ -100,6 +92,7 @@ namespace ColonistBarKF.PSI
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public virtual void Update()
         {
 
@@ -150,8 +143,13 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        private static void DrawIcon_posOffset(Rect rect, Vector3 posOffset, Icons icon, Color color)
+        private static void DrawIcon_posOffset(Rect rect, Vector3 posOffset, Icons icon, Color color, float rectAlpha)
         {
+            color.a *= rectAlpha;
+            Color GuiColor = GUI.color;
+            GuiColor.a = rectAlpha;
+            GUI.color = GuiColor;
+
             Material material = Materials[icon];
             if (material == null)
             {
@@ -160,7 +158,6 @@ namespace ColonistBarKF.PSI
             }
             material.color = color;
 
-            Color GuiColor = GUI.color;
 
             Rect iconRect = new Rect(rect);
 
@@ -199,13 +196,19 @@ namespace ColonistBarKF.PSI
             iconRect.x += CBKF.SettingsColBar.IconDistanceX * CBKF.SettingsColBar.IconOffsetX * posOffset.x * iconRect.width;
             iconRect.y -= CBKF.SettingsColBar.IconDistanceY * CBKF.SettingsColBar.IconOffsetY * posOffset.z * iconRect.height;
             //On Colonist
-            Rect position = new Rect(iconRect.center.x, iconRect.center.y, iconRect.width, iconRect.height);
-            position.x -= position.width * 0.5f;
-            position.y -= position.height * 0.5f;
+            //iconRect.x -= iconRect.width * 0.5f;
+            //iconRect.y -= iconRect.height * 0.5f;
 
-            GUI.DrawTexture(position, SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.3f * color.a)), ScaleMode.ScaleToFit, true);
+
+            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
             GUI.color = color;
-            GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
+            //GUILayout.BeginArea(position);
+            //GUILayout.Box(material.mainTexture);
+            //GUILayout.EndArea();
+
+            //    Rect realIcon = iconRect.ContractedBy(iconRect.width);
+
+            GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
         }
 
@@ -215,9 +218,9 @@ namespace ColonistBarKF.PSI
             DrawIcon_posOffset(bodyPos, _iconPosVectorsPSI[num], icon, color);
         }
 
-        private static void DrawIcon(Rect rect, int num, Icons icon, Color color)
+        private static void DrawIcon(Rect rect, int num, Icons icon, Color color, float rectAlpha)
         {
-            DrawIcon_posOffset(rect, _iconPosRectsBar[num], icon, color);
+            DrawIcon_posOffset(rect, _iconPosRectsBar[num], icon, color, rectAlpha);
         }
 
         private static void DrawIcon_FadeRedAlertToNeutral(Vector3 bodyPos, int num, Icons icon, float v)
@@ -226,10 +229,10 @@ namespace ColonistBarKF.PSI
             DrawIcon(bodyPos, num, icon, new Color(0.9f, v, v, SettingsPsi.IconOpacity));
         }
 
-        private static void DrawIcon_FadeRedAlertToNeutral(Rect rect, int num, Icons icon, float v)
+        private static void DrawIcon_FadeRedAlertToNeutral(Rect rect, int num, Icons icon, float v, float rectAlpha)
         {
             v = v * 0.9f; // max settings according to neutral icon
-            DrawIcon(rect, num, icon, new Color(0.9f, v, v, 1f));
+            DrawIcon(rect, num, icon, new Color(0.9f, v, v, 1f), rectAlpha);
         }
 
         private static void DrawIcon_FadeFloatWithTwoColors(Vector3 bodyPos, int num, Icons icon, float v, Color c1, Color c2)
@@ -237,9 +240,9 @@ namespace ColonistBarKF.PSI
             DrawIcon(bodyPos, num, icon, Color.Lerp(c1, c2, v));
         }
 
-        private static void DrawIcon_FadeFloatWithTwoColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2)
+        private static void DrawIcon_FadeFloatWithTwoColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2, float rectAlpha)
         {
-            DrawIcon(rect, num, icon, Color.Lerp(c1, c2, v));
+            DrawIcon(rect, num, icon, Color.Lerp(c1, c2, v), rectAlpha);
         }
 
 
@@ -248,9 +251,9 @@ namespace ColonistBarKF.PSI
             DrawIcon(bodyPos, num, icon, v < 0.5 ? Color.Lerp(c1, c2, v * 2f) : Color.Lerp(c2, c3, (float)((v - 0.5) * 2.0)));
         }
 
-        private static void DrawIcon_FadeFloatWithThreeColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3)
+        private static void DrawIcon_FadeFloatWithThreeColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3, float rectAlpha)
         {
-            DrawIcon(rect, num, icon, v < 0.5 ? Color.Lerp(c1, c2, v * 2f) : Color.Lerp(c2, c3, (float)((v - 0.5) * 2.0)));
+            DrawIcon(rect, num, icon, v < 0.5 ? Color.Lerp(c1, c2, v * 2f) : Color.Lerp(c2, c3, (float)((v - 0.5) * 2.0)), rectAlpha);
         }
 
         private static void DrawIcon_FadeFloatWithFourColorsHB(Vector3 bodyPos, int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4)
@@ -273,23 +276,23 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        private static void DrawIcon_FadeFloatWithFourColorsHB(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4)
+        private static void DrawIcon_FadeFloatWithFourColorsHB(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4, float rectAlpha)
         {
             if (v > 0.8f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5), rectAlpha);
             }
             else if (v > 0.6f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5), rectAlpha);
             }
             else if (v > 0.4f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5), rectAlpha);
             }
             else
             {
-                DrawIcon(rect, num, icon, c4);
+                DrawIcon(rect, num, icon, c4, rectAlpha);
             }
         }
 
@@ -318,27 +321,27 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        private static void DrawIcon_FadeFloatFiveColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4, Color c5)
+        private static void DrawIcon_FadeFloatFiveColors(Rect rect, int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4, Color c5, float rectAlpha)
         {
             if (v < 0.2f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c1, c2, v * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c1, c2, v * 5), rectAlpha);
             }
             else if (v < 0.4f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c2, c3, (v - 0.2f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c2, c3, (v - 0.2f) * 5), rectAlpha);
             }
             else if (v < 0.6f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c3, c4, (v - 0.4f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c3, c4, (v - 0.4f) * 5), rectAlpha);
             }
             else if (v < 0.8f)
             {
-                DrawIcon(rect, num, icon, Color.Lerp(c4, c5, (v - 0.6f) * 5));
+                DrawIcon(rect, num, icon, Color.Lerp(c4, c5, (v - 0.6f) * 5), rectAlpha);
             }
             else
             {
-                DrawIcon(rect, num, icon, c5);
+                DrawIcon(rect, num, icon, c5, rectAlpha);
             }
         }
 
@@ -667,6 +670,7 @@ namespace ColonistBarKF.PSI
             return pawn.needs.mood.thoughts.Thoughts.Any(thought => thought.def == tdef);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public virtual void FixedUpdate()
         {
             if (Current.ProgramState != ProgramState.MapPlaying)
@@ -1289,7 +1293,7 @@ namespace ColonistBarKF.PSI
 
         }
 
-        public static void DrawColonistIconsOnBar(Rect rect, Pawn colonist)
+        public static void DrawColonistIconsOnBar(Rect rect, Pawn colonist, float rectAlpha)
         {
             float opacityCritical = 1f;
             var opacity = 1f;
@@ -1333,40 +1337,40 @@ namespace ColonistBarKF.PSI
 
             //Drafted
             if (SettingsPsi.ShowDraft && colonist.drafter.Drafted)
-                DrawIcon(rect, iconNum++, Icons.Draft, colorNeutralStatusSolid);
+                DrawIcon(rect, iconNum++, Icons.Draft, colorNeutralStatusSolid, rectAlpha);
 
             if (pawnStats.MentalSanity != null)
             {
                 // Berserk
                 if (SettingsPsi.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
-                    DrawIcon(rect, iconNum++, Icons.Aggressive, colorRedAlert);
+                    DrawIcon(rect, iconNum++, Icons.Aggressive, colorRedAlert, rectAlpha);
 
                 // Binging on alcohol - needs refinement
                 if (SettingsPsi.ShowDrunk)
                 {
                     if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugMajor)
-                        DrawIcon(rect, iconNum++, Icons.Drunk, colorOrangeAlert);
+                        DrawIcon(rect, iconNum++, Icons.Drunk, colorOrangeAlert, rectAlpha);
                     if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugExtreme)
-                        DrawIcon(rect, iconNum++, Icons.Drunk, colorRedAlert);
+                        DrawIcon(rect, iconNum++, Icons.Drunk, colorRedAlert, rectAlpha);
                 }
 
                 // Give Up Exit
                 if (SettingsPsi.ShowLeave && pawnStats.MentalSanity == MentalStateDefOf.PanicFlee) // was GiveUpExit
-                    DrawIcon(rect, iconNum++, Icons.Leave, colorRedAlert);
+                    DrawIcon(rect, iconNum++, Icons.Leave, colorRedAlert, rectAlpha);
 
                 //Daze Wander
                 if (SettingsPsi.ShowDazed && pawnStats.MentalSanity == MentalStateDefOf.WanderSad) // + MentalStateDefOf.WanderPsychotic
-                    DrawIcon(rect, iconNum++, Icons.Dazed, colorYellowAlert);
+                    DrawIcon(rect, iconNum++, Icons.Dazed, colorYellowAlert, rectAlpha);
 
                 //PanicFlee
                 if (pawnStats.MentalSanity == MentalStateDefOf.PanicFlee)
-                    DrawIcon(rect, iconNum++, Icons.Panic, colorYellowAlert);
+                    DrawIcon(rect, iconNum++, Icons.Panic, colorYellowAlert, rectAlpha);
             }
 
             // Drunknes percent
             if (SettingsPsi.ShowDrunk)
                 if (pawnStats.Drunkness > 0.05)
-                    DrawIcon_FadeFloatWithThreeColors(rect, iconNum++, Icons.Drunk, pawnStats.Drunkness, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                    DrawIcon_FadeFloatWithThreeColors(rect, iconNum++, Icons.Drunk, pawnStats.Drunkness, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
 
 
             // Pacifc + Unarmed
@@ -1375,27 +1379,27 @@ namespace ColonistBarKF.PSI
                 if (colonist.skills.GetSkill(SkillDefOf.Melee).TotallyDisabled && colonist.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled)
                 {
                     if (SettingsPsi.ShowPacific)
-                        DrawIcon(rect, iconNum++, Icons.Pacific, colorNeutralStatus);
+                        DrawIcon(rect, iconNum++, Icons.Pacific, colorNeutralStatus, rectAlpha);
                 }
                 else if (SettingsPsi.ShowUnarmed && colonist.equipment.Primary == null && !colonist.IsPrisonerOfColony)
-                    DrawIcon(rect, iconNum++, Icons.Unarmed, colorNeutralStatus);
+                    DrawIcon(rect, iconNum++, Icons.Unarmed, colorNeutralStatus, rectAlpha);
             }
             // Trait Pyromaniac
             if (SettingsPsi.ShowPyromaniac && colonist.story.traits.HasTrait(TraitDef.Named("Pyromaniac")))
-                DrawIcon(rect, iconNum++, Icons.Pyromaniac, colorYellowAlert);
+                DrawIcon(rect, iconNum++, Icons.Pyromaniac, colorYellowAlert, rectAlpha);
 
             // Idle
             if (SettingsPsi.ShowIdle && colonist.mindState.IsIdle)
-                DrawIcon(rect, iconNum++, Icons.Idle, colorNeutralStatus);
+                DrawIcon(rect, iconNum++, Icons.Idle, colorNeutralStatus, rectAlpha);
 
 
             // Bad Mood
             if (SettingsPsi.ShowSad && colonist.needs.mood.CurLevel < (double)SettingsPsi.LimitMoodLess)
-                DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.Sad, colonist.needs.mood.CurLevel / SettingsPsi.LimitMoodLess);
+                DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.Sad, colonist.needs.mood.CurLevel / SettingsPsi.LimitMoodLess, rectAlpha);
 
             // Bloodloss
             if (SettingsPsi.ShowBloodloss && pawnStats.BleedRate > 0.0f)
-                DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Bloodloss, pawnStats.BleedRate, colorRedAlert, colorNeutralStatus);
+                DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Bloodloss, pawnStats.BleedRate, colorRedAlert, colorNeutralStatus, rectAlpha);
 
             //Health
             if (SettingsPsi.ShowHealth)
@@ -1405,19 +1409,19 @@ namespace ColonistBarKF.PSI
                 if (pawnStats.HasLifeThreateningDisease)
                 {
                     if (pawnHealth < pawnStats.HealthDisease)
-                        DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnHealth, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                        DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnHealth, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
 
-                    else DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnStats.HealthDisease, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                    else DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnStats.HealthDisease, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
 
                 }
                 else if (colonist.health.summaryHealth.SummaryHealthPercent < 1f)
                 {
-                    DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnHealth, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                    DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Health, pawnHealth, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
                 }
 
                 //Toxic buildup
                 if (pawnStats.ToxicBuildUp > 0.04f)
-                    DrawIcon_FadeFloatFiveColors(rect, iconNum++, Icons.Toxic, pawnStats.ToxicBuildUp, colorNeutralStatusFade, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                    DrawIcon_FadeFloatFiveColors(rect, iconNum++, Icons.Toxic, pawnStats.ToxicBuildUp, colorNeutralStatusFade, colorHealthBarGreen, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
             }
 
 
@@ -1427,11 +1431,11 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.DiseaseDisappearance < SettingsPsi.LimitDiseaseLess)
                 {
-                    DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Sickness, pawnStats.DiseaseDisappearance / SettingsPsi.LimitDiseaseLess, colorNeutralStatus, colorYellowAlert, colorOrangeAlert, colorRedAlert);
+                    DrawIcon_FadeFloatWithFourColorsHB(rect, iconNum++, Icons.Sickness, pawnStats.DiseaseDisappearance / SettingsPsi.LimitDiseaseLess, colorNeutralStatus, colorYellowAlert, colorOrangeAlert, colorRedAlert, rectAlpha);
                 }
                 else
                 {
-                    DrawIcon(rect, iconNum++, Icons.Sickness, colorNeutralStatus);
+                    DrawIcon(rect, iconNum++, Icons.Sickness, colorNeutralStatus, rectAlpha);
                 }
 
             }
@@ -1443,25 +1447,25 @@ namespace ColonistBarKF.PSI
                 if (colonist.story.traits.HasTrait(TraitDef.Named("Masochist")))
                 {
                     if (pawnStats.PainMoodLevel == 0)
-                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.4f);
+                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.4f, rectAlpha);
                     if (pawnStats.PainMoodLevel == 1)
-                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.6f);
+                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.6f, rectAlpha);
                     if (pawnStats.PainMoodLevel == 2)
-                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.8f);
+                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost * 0.8f, rectAlpha);
                     if (pawnStats.PainMoodLevel == 3)
-                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost);
+                        DrawIcon(rect, iconNum++, Icons.Pain, colorMoodBoost, rectAlpha);
                 }
                 else
                 {
                     // pain is always worse, +5 to the icon color
                     if (pawnStats.PainMoodLevel == 0)
-                        DrawIcon(rect, iconNum++, Icons.Pain, color10To06);
+                        DrawIcon(rect, iconNum++, Icons.Pain, color10To06, rectAlpha);
                     if (pawnStats.PainMoodLevel == 1)
-                        DrawIcon(rect, iconNum++, Icons.Pain, color15To11);
+                        DrawIcon(rect, iconNum++, Icons.Pain, color15To11, rectAlpha);
                     if (pawnStats.PainMoodLevel == 2)
-                        DrawIcon(rect, iconNum++, Icons.Pain, color20To16);
+                        DrawIcon(rect, iconNum++, Icons.Pain, color20To16, rectAlpha);
                     if (pawnStats.PainMoodLevel == 3)
-                        DrawIcon(rect, iconNum++, Icons.Pain, color25To21);
+                        DrawIcon(rect, iconNum++, Icons.Pain, color25To21, rectAlpha);
                 }
 
             }
@@ -1469,25 +1473,25 @@ namespace ColonistBarKF.PSI
             if (SettingsPsi.ShowDisease)
             {
                 if (colonist.health.ShouldBeTendedNow && !colonist.health.ShouldDoSurgeryNow)
-                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorOrangeAlert);
+                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorOrangeAlert, rectAlpha);
                 else if (colonist.health.ShouldBeTendedNow && colonist.health.ShouldDoSurgeryNow)
                 {
-                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorYellowAlert);
-                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorOrangeAlert);
+                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorYellowAlert, rectAlpha);
+                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorOrangeAlert, rectAlpha);
                 }
                 else if (colonist.health.ShouldDoSurgeryNow)
-                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorYellowAlert);
+                    DrawIcon(rect, iconNum++, Icons.MedicalAttention, colorYellowAlert, rectAlpha);
             }
 
             // Hungry
             if (SettingsPsi.ShowHungry && colonist.needs.food.CurLevel < (double)SettingsPsi.LimitFoodLess)
                 DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.Hungry,
-                    colonist.needs.food.CurLevel / SettingsPsi.LimitFoodLess);
+                    colonist.needs.food.CurLevel / SettingsPsi.LimitFoodLess, rectAlpha);
 
             //Tired
             if (SettingsPsi.ShowTired && colonist.needs.rest.CurLevel < (double)SettingsPsi.LimitRestLess)
                 DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.Tired,
-                    colonist.needs.rest.CurLevel / SettingsPsi.LimitRestLess);
+                    colonist.needs.rest.CurLevel / SettingsPsi.LimitRestLess, rectAlpha);
 
             // Too Cold & too hot
             if (SettingsPsi.ShowCold && pawnStats.TooCold > 0f)
@@ -1495,33 +1499,33 @@ namespace ColonistBarKF.PSI
                 if (pawnStats.TooCold >= 0f)
                 {
                     if (pawnStats.TooCold <= 1f)
-                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, pawnStats.TooCold, colorNeutralStatusFade, colorYellowAlert);
+                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, pawnStats.TooCold, colorNeutralStatusFade, colorYellowAlert, rectAlpha);
                     else if (pawnStats.TooCold <= 1.5f)
-                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, (pawnStats.TooCold - 1f) * 2f, colorYellowAlert, colorOrangeAlert);
+                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, (pawnStats.TooCold - 1f) * 2f, colorYellowAlert, colorOrangeAlert, rectAlpha);
                     else
-                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, (pawnStats.TooCold - 1.5f) * 2f, colorOrangeAlert, colorRedAlert);
+                        DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Freezing, (pawnStats.TooCold - 1.5f) * 2f, colorOrangeAlert, colorRedAlert, rectAlpha);
                 }
             }
             else if (SettingsPsi.ShowHot && pawnStats.TooHot > 0f && pawnStats.TooCold >= 0f)
             {
                 if (pawnStats.TooHot <= 1f)
-                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot, colorNeutralStatusFade, colorYellowAlert);
+                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot, colorNeutralStatusFade, colorYellowAlert, rectAlpha);
                 else if (pawnStats.TooHot <= 1.5f)
-                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot, colorYellowAlert, colorOrangeAlert);
+                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot, colorYellowAlert, colorOrangeAlert, rectAlpha);
                 else
-                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot - 1f, colorOrangeAlert, colorRedAlert);
+                    DrawIcon_FadeFloatWithTwoColors(rect, iconNum++, Icons.Hot, pawnStats.TooHot - 1f, colorOrangeAlert, colorRedAlert, rectAlpha);
             }
 
 
             // Bed status
             if (SettingsPsi.ShowBedroom && !pawnStats.HasBed)
-                DrawIcon(rect, iconNum++, Icons.Bedroom, color10To06);
+                DrawIcon(rect, iconNum++, Icons.Bedroom, color10To06, rectAlpha);
 
 
             // Usage of bed ...
             if (SettingsPsi.ShowLovers && HasMood(colonist, ThoughtDef.Named("WantToSleepWithSpouseOrLover")))
             {
-                DrawIcon(rect, iconNum++, Icons.Love, colorYellowAlert);
+                DrawIcon(rect, iconNum++, Icons.Love, colorYellowAlert, rectAlpha);
             }
 
             //    if (SettingsColBar.ShowLovers && HasMood(colonist, ThoughtDef.Named("GotSomeLovin")))
@@ -1533,64 +1537,64 @@ namespace ColonistBarKF.PSI
 
             if (SettingsPsi.ShowLovers && HasMood(colonist, ThoughtDef.Named("GotMarried")))
             {
-                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost);
+                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost, rectAlpha);
             }
 
             if (SettingsPsi.ShowLovers && HasMood(colonist, ThoughtDef.Named("HoneymoonPhase")))
             {
-                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost / 2);
+                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost / 2, rectAlpha);
             }
 
             if (SettingsPsi.ShowLovers && HasMood(colonist, ThoughtDef.Named("AttendedWedding")))
             {
-                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost / 4);
+                DrawIcon(rect, iconNum++, Icons.Marriage, colorMoodBoost / 4, rectAlpha);
             }
 
             // Naked
             if (SettingsPsi.ShowNaked && HasMood(colonist, ThoughtDef.Named("Naked")))
             {
-                DrawIcon(rect, iconNum++, Icons.Naked, color10To06);
+                DrawIcon(rect, iconNum++, Icons.Naked, color10To06, rectAlpha);
             }
 
             // Apparel
             if (SettingsPsi.ShowApparelHealth && pawnStats.ApparelHealth < (double)SettingsPsi.LimitApparelHealthLess)
             {
                 double pawnApparelHealth = pawnStats.ApparelHealth / (double)SettingsPsi.LimitApparelHealthLess;
-                DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.ApparelHealth, (float)pawnApparelHealth);
+                DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.ApparelHealth, (float)pawnApparelHealth, rectAlpha);
             }
 
             // Moods caused by traits
 
             if (SettingsPsi.ShowProsthophile && HasMood(colonist, ThoughtDef.Named("ProsthophileNoProsthetic")))
             {
-                DrawIcon(rect, iconNum++, Icons.Prosthophile, color05AndLess);
+                DrawIcon(rect, iconNum++, Icons.Prosthophile, color05AndLess, rectAlpha);
             }
 
             if (SettingsPsi.ShowProsthophobe && HasMood(colonist, ThoughtDef.Named("ProsthophobeUnhappy")))
             {
-                DrawIcon(rect, iconNum++, Icons.Prosthophobe, color10To06);
+                DrawIcon(rect, iconNum++, Icons.Prosthophobe, color10To06, rectAlpha);
             }
 
             if (SettingsPsi.ShowNightOwl && HasMood(colonist, ThoughtDef.Named("NightOwlDuringTheDay")))
             {
-                DrawIcon(rect, iconNum++, Icons.NightOwl, color10To06);
+                DrawIcon(rect, iconNum++, Icons.NightOwl, color10To06, rectAlpha);
             }
 
             if (SettingsPsi.ShowGreedy && HasMood(colonist, ThoughtDef.Named("Greedy")))
             {
-                DrawIcon(rect, iconNum++, Icons.Greedy, color10To06);
+                DrawIcon(rect, iconNum++, Icons.Greedy, color10To06, rectAlpha);
             }
 
             if (SettingsPsi.ShowJealous && HasMood(colonist, ThoughtDef.Named("Jealous")))
             {
-                DrawIcon(rect, iconNum++, Icons.Jealous, color10To06);
+                DrawIcon(rect, iconNum++, Icons.Jealous, color10To06, rectAlpha);
             }
 
 
             // Effectiveness
             if (SettingsPsi.ShowEffectiveness && pawnStats.TotalEfficiency < (double)SettingsPsi.LimitEfficiencyLess)
                 DrawIcon_FadeRedAlertToNeutral(rect, iconNum++, Icons.Effectiveness,
-                    pawnStats.TotalEfficiency / SettingsPsi.LimitEfficiencyLess);
+                    pawnStats.TotalEfficiency / SettingsPsi.LimitEfficiencyLess, rectAlpha);
 
 
 
@@ -1601,7 +1605,7 @@ namespace ColonistBarKF.PSI
 
             if (SettingsPsi.ShowLeftUnburied && HasMood(colonist, ThoughtDef.Named("ColonistLeftUnburied")))
             {
-                DrawIcon(rect, iconNum++, Icons.LeftUnburied, color10To06);
+                DrawIcon(rect, iconNum++, Icons.LeftUnburied, color10To06, rectAlpha);
             }
 
             if (SettingsPsi.ShowDeadColonists)
@@ -1620,12 +1624,12 @@ namespace ColonistBarKF.PSI
                 // not family, more whiter icon
                 if (HasMood(colonist, ThoughtDef.Named("KilledColonist")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("KilledColonyAnimal")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 #region DeathMemory
@@ -1633,34 +1637,34 @@ namespace ColonistBarKF.PSI
                 // some of those need staging - to do
                 if (HasMood(colonist, ThoughtDef.Named("KnowGuestExecuted")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("KnowColonistExecuted")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("KnowPrisonerDiedInnocent")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("KnowColonistDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
                 //Bonded animal died
                 if (HasMood(colonist, ThoughtDef.Named("BondedAnimalDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
                 // Friend / rival died
                 if (HasMood(colonist, ThoughtDef.Named("PawnWithGoodOpinionDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("PawnWithBadOpinionDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost, rectAlpha);
                 }
 
                 #endregion
@@ -1669,103 +1673,103 @@ namespace ColonistBarKF.PSI
 
                 if (HasMood(colonist, ThoughtDef.Named("MySonDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyDaughterDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyHusbandDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyWifeDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color25To21, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyFianceDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyFianceeDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyLoverDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color20To16, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyBrotherDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MySisterDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyGrandchildDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color15To11, rectAlpha);
                 }
 
                 // 10
 
                 if (HasMood(colonist, ThoughtDef.Named("MyFatherDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyMotherDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyNieceDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyNephewDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyHalfSiblingDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyAuntDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyUncleDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyGrandparentDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 if (HasMood(colonist, ThoughtDef.Named("MyCousinDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("MyKinDied")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
 
                 #endregion
@@ -1773,23 +1777,23 @@ namespace ColonistBarKF.PSI
                 //Memory misc
                 if (HasMood(colonist, ThoughtDef.Named("WitnessedDeathAlly")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("WitnessedDeathNonAlly")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color05AndLess, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("WitnessedDeathFamily")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, color10To06, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("WitnessedDeathBloodlust")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost, rectAlpha);
                 }
                 if (HasMood(colonist, ThoughtDef.Named("KilledHumanlikeBloodlust")))
                 {
-                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost);
+                    DrawIcon(rect, iconNum++, Icons.DeadColonist, colorMoodBoost, rectAlpha);
                 }
 
                 // Crowded missing since A14?
@@ -1797,11 +1801,11 @@ namespace ColonistBarKF.PSI
                 if (SettingsPsi.ShowRoomStatus && pawnStats.CrowdedMoodLevel != 0)
                 {
                     if (pawnStats.CrowdedMoodLevel == 0)
-                        DrawIcon(rect, iconNum++, Icons.Crowded, colorNeutralStatusFade);
+                        DrawIcon(rect, iconNum++, Icons.Crowded, colorNeutralStatusFade, rectAlpha);
                     if (pawnStats.CrowdedMoodLevel == 1)
-                        DrawIcon(rect, iconNum++, Icons.Crowded, colorYellowAlert);
+                        DrawIcon(rect, iconNum++, Icons.Crowded, colorYellowAlert, rectAlpha);
                     if (pawnStats.CrowdedMoodLevel == 2)
-                        DrawIcon(rect, iconNum++, Icons.Crowded, colorOrangeAlert);
+                        DrawIcon(rect, iconNum++, Icons.Crowded, colorOrangeAlert, rectAlpha);
                 }
             }
 

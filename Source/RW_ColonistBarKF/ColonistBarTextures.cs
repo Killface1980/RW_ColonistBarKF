@@ -5,6 +5,12 @@ namespace Verse
     [StaticConstructorOnStartup]
     internal class ColonistBarTextures
     {
+        public static readonly Texture2D BGTexIconPSI = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.5f));
+        public static readonly Texture2D PureDarkGray = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.15f, 1));
+
+        public static readonly Texture2D HoverBG =
+            SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 1));
+
         public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.7f));
         public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.8f, 0f, 0.7f));
         public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.85f));

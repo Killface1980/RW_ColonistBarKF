@@ -268,7 +268,7 @@ namespace ColonistBarKF
 
         private static List<Thing> tmpColonists = new List<Thing>();
 
-        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public void ColonistBarOnGUI()
         {
             if (!Find.PlaySettings.showColonistBar)
@@ -309,8 +309,8 @@ namespace ColonistBarKF
                         DrawColonist(rect, colonist);
                         if (CBKF.SettingsColBar.UsePsi)
                         {
-
-                            PSI.PSI.DrawColonistIconsOnBar(rect, colonist);
+                            float colonistRectAlpha = GetColonistRectAlpha(rect);
+                            PSI.PSI.DrawColonistIconsOnBar(rect, colonist, colonistRectAlpha);
 
                         }
                     }
@@ -321,7 +321,7 @@ namespace ColonistBarKF
 
 
         // RimWorld.ColonistBar
-        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Thing> ColonistsInScreenRect(Rect rect)
         {
 
@@ -349,7 +349,7 @@ namespace ColonistBarKF
             return tmpColonists;
         }
 
-        [Detour(typeof(ColonistBar), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public Thing ColonistAt(Vector2 pos)
         {
             Pawn pawn = null;
@@ -491,9 +491,9 @@ namespace ColonistBarKF
                 }
             }
             List<Pawn> allPawnsSpawned = Find.MapPawns.AllPawnsSpawned;
-            for (int j = 0; j < allPawnsSpawned.Count; j++)
+            foreach (Pawn pawn in allPawnsSpawned)
             {
-                Corpse corpse = allPawnsSpawned[j].carrier.CarriedThing as Corpse;
+                Corpse corpse = pawn.carrier.CarriedThing as Corpse;
                 if (corpse != null && !corpse.IsDessicated() && corpse.innerPawn.IsColonist)
                 {
                     cachedColonists.Add(corpse.innerPawn);
@@ -506,7 +506,7 @@ namespace ColonistBarKF
             colonistsDirty = false;
         }
 
-        public void SortCachedColonists()
+        private void SortCachedColonists()
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
             switch (CBKF.SettingsColBar.SortBy)
@@ -574,8 +574,8 @@ namespace ColonistBarKF
 
             Color BGColor = new Color();
 
-            Need_Mood mood = (!colonist.Dead) ? colonist.needs.mood : null;
-            MentalBreaker mb = (!colonist.Dead) ? colonist.mindState.mentalBreaker : null;
+            Need_Mood mood = !colonist.Dead ? colonist.needs.mood : null;
+            MentalBreaker mb = !colonist.Dead ? colonist.mindState.mentalBreaker : null;
 
             if (CBKF.SettingsColBar.UseMoodColors)
             {
@@ -720,25 +720,24 @@ namespace ColonistBarKF
             GUI.color = Color.white;
         }
 
-
-
-        private static readonly Color _highlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
         private void DrawWeapon(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
+            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f);
             foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
             {
                 var rect2 = rect.ContractedBy(rect.width / 3);
 
-                rect2.x += rect.width / 3 - (rect.width / 8);
-                rect2.y += rect.height / 3 - (rect.height / 8);
+                rect2.x += rect.width / 3 - rect.width / 8;
+                rect2.y += rect.height / 3 - rect.height / 8;
 
                 if (Mouse.IsOver(rect2))
                 {
-                    GUI.color = _highlightColor;
+                    GUI.color = HighlightColor;
                     GUI.DrawTexture(rect2, TexUI.HighlightTex);
                 }
 
@@ -754,14 +753,13 @@ namespace ColonistBarKF
                 }
                 // color labe by thing
 
-                var iconcolor = new Color(0.8f, 0.8f, 0.8f, colonistRectAlpha * 0.75f);
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.7f, 0.1f, 0.1f, colonistRectAlpha);
+                    GUI.color = new Color(0.7f, 0.0f, 0.0f, colonistRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.1f, 0.7f, 0.1f, colonistRectAlpha);
+                    GUI.color = new Color(0.0f, 0.7f, 0.0f, colonistRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
@@ -773,19 +771,21 @@ namespace ColonistBarKF
         }
 
 
-
-        internal static void DrawMentalThresholdExt(Rect moodRect, float threshold)
+        private static void DrawMentalThresholdExt(Rect moodRect, float threshold)
         {
             GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodExtremeCrossedTex);
         }
-        internal static void DrawMentalThresholdMaj(Rect moodRect, float threshold)
+
+        private static void DrawMentalThresholdMaj(Rect moodRect, float threshold)
         {
             GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodMajorCrossedTex);
         }
-        internal static void DrawMentalThresholdMin(Rect moodRect, float threshold)
+
+        private static void DrawMentalThresholdMin(Rect moodRect, float threshold)
         {
             GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMin + moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodMinorCrossedTex);
         }
+
         private float GetColonistRectAlpha(Rect rect)
         {
             float t;
@@ -808,7 +808,7 @@ namespace ColonistBarKF
             {
                 return;
             }
-            Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - ScaledIconSize - 1f);
+            Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - ScaledIconSize / 5 * 2 - 1f);
             bool flag = false;
             if (colonist.CurJob != null)
             {
@@ -875,10 +875,15 @@ namespace ColonistBarKF
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            Rect rect = new Rect(pos.x, pos.y, ScaledIconSize, ScaledIconSize);
+            Rect rect = new Rect(pos.x, pos.y, ScaledIconSize/5*2, ScaledIconSize/5*2);
+
+            rect.x += rect.width / 6;
+            rect.y -= rect.height / 4;
+
+
             GUI.DrawTexture(rect, icon);
             TooltipHandler.TipRegion(rect, tooltip);
-            pos.x += ScaledIconSize;
+            pos.x += ScaledIconSize / 5 * 2;
         }
 
 

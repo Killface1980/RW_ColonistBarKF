@@ -54,12 +54,12 @@ namespace ColonistBarKF.PSI
         private readonly Material[] _data = new Material[40];
         private readonly string _matLibName;
 
-        public Material this[Icons icon] => _data[(int)icon];
-
         public Materials(string matLib = "default")
         {
             _matLibName = matLib;
         }
+
+        public Material this[Icons icon] => _data[(int) icon];
 
         private Material LoadIconMat(string path, bool smooth = false)
         {
@@ -103,7 +103,7 @@ namespace ColonistBarKF.PSI
                         continue;
                     default:
                         var path = _matLibName + "/" + Enum.GetName(typeof(Icons), icons);
-                        _data[(int)icons] = LoadIconMat(path, smooth);
+                        _data[(int) icons] = LoadIconMat(path, smooth);
                         continue;
                 }
             }
