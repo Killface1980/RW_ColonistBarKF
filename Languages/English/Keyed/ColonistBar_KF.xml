@@ -4,7 +4,10 @@
   <ColonistBarKF.SettingsColonistBar>Colonist Bar</ColonistBarKF.SettingsColonistBar>
   <ColonistBarKF.SettingsPSI>Pawn State Icons</ColonistBarKF.SettingsPSI>
   <ColonistBarKF.SettingsColonistBar.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</ColonistBarKF.SettingsColonistBar.UsePsiOnBar>
-
+  
+  <ColonistBarKF.Settings.ColBarIconVisibility>Visible on bar</ColonistBarKF.Settings.ColBarIconVisibility>
+  <ColonistBarKF.Settings.PSIIconVisibility>Visible on colonist</ColonistBarKF.Settings.PSIIconVisibility>
+  
   <ColonistBarKF.SettingsColonistBar.BarPosition>Colonist Bar Position</ColonistBarKF.SettingsColonistBar.BarPosition>
   <ColonistBarKF.SettingsColonistBar.PsiBarPosition>PSI on Bar Position</ColonistBarKF.SettingsColonistBar.PsiBarPosition>
   <ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>Horizontal spacing</ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>
@@ -52,7 +55,7 @@
   <FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
   <FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
 
-  <PSI.Settings.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</PSI.Settings.UsePsiOnBar>
+  <PSI.Settings.UsePSI>Show Pawn State Icons Colonist</PSI.Settings.UsePSI>
   
   <PSI.Settings>Pawn State Icons Settings </PSI.Settings>
   <PSI.Enabled>Pawn State Icons enabled</PSI.Enabled>

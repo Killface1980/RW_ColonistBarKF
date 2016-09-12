@@ -57,7 +57,7 @@ namespace RW_ColonistBarKF
         public bool ShowHealth = true;
         public bool ShowPyromaniac = true;
 
-        public float LimitMoodLess = 0.25f;
+ //       public float LimitMoodLess = 0.25f;
         public float LimitFoodLess = 0.25f;
         public float LimitRestLess = 0.25f;
         public float LimitEfficiencyLess = 0.33f;

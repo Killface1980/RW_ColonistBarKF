@@ -27,7 +27,7 @@ namespace ColonistBarKF
     public class CBKF : MonoBehaviour
     {
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
-        public static SettingsPSI PsiSetting = new SettingsPSI();
+        public static SettingsPSI PsiSettings = new SettingsPSI();
 
         public static SettingsColonistBar LoadBarSettings(string path = "ColonistBarKF.xml")
         {
@@ -56,7 +56,7 @@ namespace ColonistBarKF
         public static void SavePsiSettings(string path = "ColonistBarPSIKF.xml")
         {
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(PsiSetting, configFolder + "/" + path);
+            XmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
         }
         private int _lastStatUpdate;
 
@@ -100,7 +100,7 @@ namespace ColonistBarKF
         public void Start()
         {
             ColBarSettings = LoadBarSettings();
-            PsiSetting = LoadPsiSettings();
+            PsiSettings = LoadPsiSettings();
             _lastStatUpdate = -5000;
 
             //PSI
