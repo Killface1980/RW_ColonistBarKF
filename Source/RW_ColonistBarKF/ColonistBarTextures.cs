@@ -6,10 +6,16 @@ namespace Verse
     internal class ColonistBarTextures
     {
         public static readonly Texture2D BGTexIconPSI = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.5f));
-        public static readonly Texture2D PureDarkGray = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.15f, 1));
+        public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.15f, 1));
 
-        public static readonly Texture2D HoverBG =
+        public static readonly Texture2D GrayHover =
             SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 1));
+
+        public static readonly Texture2D RedHover =
+     SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.0f, 0.0f, 0.35f));
+
+        public static readonly Texture2D GrayLines =
+     SolidColorMaterials.NewSolidColorTexture(new Color(0.3f, 0.3f, 0.3f, 1));
 
         public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.7f));
         public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.8f, 0f, 0.7f));

@@ -1,52 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <ColonistBarKF.SettingsColonistBar>Colonist Bar</ColonistBarKF.SettingsColonistBar>
-  <ColonistBarKF.SettingsPSI>Pawn State Icons</ColonistBarKF.SettingsPSI>
-  <ColonistBarKF.SettingsColonistBar.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</ColonistBarKF.SettingsColonistBar.UsePsiOnBar>
+  <CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
+  <CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
+  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</CBKF.Settings.UsePsiOnBar>
   
-  <ColonistBarKF.Settings.ColBarIconVisibility>Visible on bar</ColonistBarKF.Settings.ColBarIconVisibility>
-  <ColonistBarKF.Settings.PSIIconVisibility>Visible on colonist</ColonistBarKF.Settings.PSIIconVisibility>
+  <CBKF.Settings.ColBarIconVisibility>On bar</CBKF.Settings.ColBarIconVisibility>
+  <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
   
-  <ColonistBarKF.SettingsColonistBar.BarPosition>Colonist Bar Position</ColonistBarKF.SettingsColonistBar.BarPosition>
-  <ColonistBarKF.SettingsColonistBar.PsiBarPosition>PSI on Bar Position</ColonistBarKF.SettingsColonistBar.PsiBarPosition>
-  <ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>Horizontal spacing</ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>
-  <ColonistBarKF.SettingsColonistBar.BaseSpacingVertical>Vertical spacing</ColonistBarKF.SettingsColonistBar.BaseSpacingVertical>
-  <ColonistBarKF.SettingsColonistBar.BasicSize>Maximum icon size</ColonistBarKF.SettingsColonistBar.BasicSize>
-  <ColonistBarKF.SettingsColonistBar.DoubleClickTime>Double Click Time</ColonistBarKF.SettingsColonistBar.DoubleClickTime>
-  <ColonistBarKF.SettingsColonistBar.FemaleColor>Color for female colonists</ColonistBarKF.SettingsColonistBar.FemaleColor>
-  <ColonistBarKF.SettingsColonistBar.FixedScale>No scaling</ColonistBarKF.SettingsColonistBar.FixedScale>
-  <ColonistBarKF.SettingsColonistBar.MaleColor>Color for male colonists</ColonistBarKF.SettingsColonistBar.MaleColor>
-  <ColonistBarKF.SettingsColonistBar.MarginBottom>Bottom margin</ColonistBarKF.SettingsColonistBar.MarginBottom>
-  <ColonistBarKF.SettingsColonistBar.MarginEdge>Margin from screen edge</ColonistBarKF.SettingsColonistBar.MarginEdge>
-  <ColonistBarKF.SettingsColonistBar.MarginLeft>Left margin</ColonistBarKF.SettingsColonistBar.MarginLeft>
-  <ColonistBarKF.SettingsColonistBar.MarginRight>Right margin</ColonistBarKF.SettingsColonistBar.MarginRight>
-  <ColonistBarKF.SettingsColonistBar.MarginTop>Top margin</ColonistBarKF.SettingsColonistBar.MarginTop>
-  <ColonistBarKF.SettingsColonistBar.MaxColonistBarWidth>Maximum bar width</ColonistBarKF.SettingsColonistBar.MaxColonistBarWidth>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraHorizontalOffset>Camera offset horizontal</ColonistBarKF.SettingsColonistBar.PawnTextureCameraHorizontalOffset>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraVerticalOffset>Camera offset vertical</ColonistBarKF.SettingsColonistBar.PawnTextureCameraVerticalOffset>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraZoom>Camera zoom</ColonistBarKF.SettingsColonistBar.PawnTextureCameraZoom>
-  <ColonistBarKF.SettingsColonistBar.ResetColors>Reset Colors</ColonistBarKF.SettingsColonistBar.ResetColors>
-  <ColonistBarKF.SettingsColonistBar.RevertSettings>Revert bar settings</ColonistBarKF.SettingsColonistBar.RevertSettings>
-  <ColonistBarKF.SettingsColonistBar.useBottom>Bottom</ColonistBarKF.SettingsColonistBar.useBottom>
-  <ColonistBarKF.SettingsColonistBar.useGender>Use background color by gender</ColonistBarKF.SettingsColonistBar.useGender>
-  <ColonistBarKF.SettingsColonistBar.useLeft>Left</ColonistBarKF.SettingsColonistBar.useLeft>
-  <ColonistBarKF.SettingsColonistBar.useRight>Right</ColonistBarKF.SettingsColonistBar.useRight>
-  <ColonistBarKF.SettingsColonistBar.useTop>Top</ColonistBarKF.SettingsColonistBar.useTop>
-  <ColonistBarKF.SettingsColonistBar.UseMoodColors>Use mood bars</ColonistBarKF.SettingsColonistBar.UseMoodColors>
+  <CBKF.Settings.BarPosition>Colonist Bar Position</CBKF.Settings.BarPosition>
+  <CBKF.Settings.Advanced>Advanced Settings</CBKF.Settings.Advanced>
+  <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing</CBKF.Settings.BaseSpacingHorizontal>
+  <CBKF.Settings.BaseSpacingVertical>Vertical spacing</CBKF.Settings.BaseSpacingVertical>
+  <CBKF.Settings.BasicSize>Maximum icon size</CBKF.Settings.BasicSize>
+  <CBKF.Settings.DoubleClickTime>Double Click Time</CBKF.Settings.DoubleClickTime>
+  <CBKF.Settings.FemaleColor>Color for female colonists</CBKF.Settings.FemaleColor>
+  <CBKF.Settings.FixedScale>No scaling</CBKF.Settings.FixedScale>
+  <CBKF.Settings.MaleColor>Color for male colonists</CBKF.Settings.MaleColor>
+  <CBKF.Settings.MarginBottom>Bottom margin</CBKF.Settings.MarginBottom>
+  <CBKF.Settings.MarginEdge>Margin from screen edge</CBKF.Settings.MarginEdge>
+  <CBKF.Settings.MarginLeft>Left margin</CBKF.Settings.MarginLeft>
+  <CBKF.Settings.MarginRight>Right margin</CBKF.Settings.MarginRight>
+  <CBKF.Settings.MarginTop>Top margin</CBKF.Settings.MarginTop>
+  <CBKF.Settings.MaxColonistBarWidth>Maximum bar width</CBKF.Settings.MaxColonistBarWidth>
+  <CBKF.Settings.PawnTextureCameraHorizontalOffset>Camera offset horizontal</CBKF.Settings.PawnTextureCameraHorizontalOffset>
+  <CBKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</CBKF.Settings.PawnTextureCameraVerticalOffset>
+  <CBKF.Settings.PawnTextureCameraZoom>Camera zoom</CBKF.Settings.PawnTextureCameraZoom>
+  <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
+  <CBKF.Settings.RevertSettings>Revert Colonist Bar settings</CBKF.Settings.RevertSettings>
+  <PSI.Settings.RevertSettings>Revert PSI settings</PSI.Settings.RevertSettings>
+  <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
+  <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
+  <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
+  <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
+  <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
+  <CBKF.Settings.UseMoodColors>Use mood bars</CBKF.Settings.UseMoodColors>
 
-  <ColonistBarKF.SettingsColonistBar.SortBy>Sort By</ColonistBarKF.SettingsColonistBar.SortBy>
-  <ColonistBarKF.SettingsColonistBar.Vanilla>Vanilla</ColonistBarKF.SettingsColonistBar.Vanilla>
-  <ColonistBarKF.SettingsColonistBar.SexAge>Sex then Age</ColonistBarKF.SettingsColonistBar.SexAge>
-  <ColonistBarKF.SettingsColonistBar.Mood>Mood</ColonistBarKF.SettingsColonistBar.Mood>
-  <ColonistBarKF.SettingsColonistBar.Health>Health</ColonistBarKF.SettingsColonistBar.Health>
-  <ColonistBarKF.SettingsColonistBar.Medic>Medical Skill</ColonistBarKF.SettingsColonistBar.Medic>
-  <ColonistBarKF.SettingsColonistBar.Weapons>Weapons</ColonistBarKF.SettingsColonistBar.Weapons>
-  <ColonistBarKF.SettingsColonistBar.SortingOptions>Sorting Options</ColonistBarKF.SettingsColonistBar.SortingOptions>
-  <ColonistBarKF.SettingsColonistBar.UseWeaponIcons>Use Weapon Icons</ColonistBarKF.SettingsColonistBar.UseWeaponIcons>
-  <ColonistBarKF.SettingsColonistBar.ByName>By Name</ColonistBarKF.SettingsColonistBar.ByName>
-  <ColonistBarKF.SettingsColonistBar.SettingsColonistBar>Colonist Bar SettingsColonistBar</ColonistBarKF.SettingsColonistBar.SettingsColonistBar>
-  <ColonistBarKF.SettingsColonistBar.useZoomToMouse>Use ZoomToMouse</ColonistBarKF.SettingsColonistBar.useZoomToMouse>
+  <CBKF.Settings.SortBy>Sort By</CBKF.Settings.SortBy>
+  <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
+  <CBKF.Settings.SexAge>Sex then Age</CBKF.Settings.SexAge>
+  <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
+  <CBKF.Settings.Health>Health</CBKF.Settings.Health>
+  <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
+  <CBKF.Settings.Weapons>Weapons</CBKF.Settings.Weapons>
+  <CBKF.Settings.SortingOptions>Sorting Options</CBKF.Settings.SortingOptions>
+  <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
+  <CBKF.Settings.ByName>By Name</CBKF.Settings.ByName>
+  <CBKF.Settings.SettingsColonistBar>Colonist Bar Settings</CBKF.Settings.SettingsColonistBar>
+  <CBKF.Settings.useZoomToMouse>Use ZoomToMouse</CBKF.Settings.useZoomToMouse>
 
   <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Following {0}.</FollowMe.Follow>
@@ -55,12 +56,12 @@
   <FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
   <FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
 
-  <PSI.Settings.UsePSI>Show Pawn State Icons Colonist</PSI.Settings.UsePSI>
+  <PSI.Settings.UsePSI>Show Pawn State Icons on Colonist</PSI.Settings.UsePSI>
   
   <PSI.Settings>Pawn State Icons Settings </PSI.Settings>
   <PSI.Enabled>Pawn State Icons enabled</PSI.Enabled>
   <PSI.Disabled>Pawn State Icons disabled. Press F11 to reenable</PSI.Disabled>
-  <PSI.Settings.IconSet>Icon set: </PSI.Settings.IconSet>
+  <PSI.Settings.IconSet>Icon set</PSI.Settings.IconSet>
   <PSI.Settings.Advanced>Advanced</PSI.Settings.Advanced>
   <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>
   <PSI.Settings.OpacityButton>Opacity</PSI.Settings.OpacityButton>
@@ -87,7 +88,7 @@
   <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individual target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
 
   <PSI.Settings.Visibility.Header>Visibility</PSI.Settings.Visibility.Header>
-  <PSI.Settings.Visibility.TargetPoint>Target point</PSI.Settings.Visibility.TargetPoint>
+  <PSI.Settings.Visibility.TargetPoint>Show Target Point on Ground</PSI.Settings.Visibility.TargetPoint>
   <PSI.Settings.Visibility.Aggressive>Aggressive</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.Dazed>Dazed</PSI.Settings.Visibility.Dazed>
   <PSI.Settings.Visibility.Leave>Leave</PSI.Settings.Visibility.Leave>
@@ -107,7 +108,19 @@
   <PSI.Settings.Visibility.Pacific>Pacific</PSI.Settings.Visibility.Pacific>
   <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>
 
-  <PSI.Settings.Visibility.ShowDeadColonists>Show dead colonists</PSI.Settings.Visibility.ShowDeadColonists>
+  <PSI.Settings.Visibility.DeadColonists>Dead Colonists</PSI.Settings.Visibility.DeadColonists>
+  <PSI.Settings.Visibility.Sickness>Sickness</PSI.Settings.Visibility.Sickness>
+  <PSI.Settings.Visibility.Pain>Pain</PSI.Settings.Visibility.Pain>
+  <PSI.Settings.Visibility.Health>Health</PSI.Settings.Visibility.Health>
+  <PSI.Settings.Visibility.NightOwl>Night Owl</PSI.Settings.Visibility.NightOwl>
+  <PSI.Settings.Visibility.Greedy>Greedy</PSI.Settings.Visibility.Greedy>
+  <PSI.Settings.Visibility.Jealous>Jealous</PSI.Settings.Visibility.Jealous>
+  <PSI.Settings.Visibility.Lovers>Lovers</PSI.Settings.Visibility.Lovers>
+  <PSI.Settings.Visibility.Prosthophile>Prosthophile</PSI.Settings.Visibility.Prosthophile>
+  <PSI.Settings.Visibility.Prosthophobe>Prosthophobe</PSI.Settings.Visibility.Prosthophobe>
+  <PSI.Settings.Visibility.RoomStatus>Room Status</PSI.Settings.Visibility.RoomStatus>
+  <PSI.Settings.Visibility.Bedroom>Bedroom</PSI.Settings.Visibility.Bedroom>
+  <PSI.Settings.Visibility.Pyromaniac>Pyromaniac</PSI.Settings.Visibility.Pyromaniac>
 
   <PSI.Settings.Sensitivity.Header>Sensitivity</PSI.Settings.Sensitivity.Header>
   <PSI.Settings.Sensitivity.Bleeding>Bleeding: </PSI.Settings.Sensitivity.Bleeding>

@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <ColonistBarKF.SettingsColonistBar.BarPosition>Colonist Bar Position</ColonistBarKF.SettingsColonistBar.BarPosition>
-  <ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>Horizontal spacing</ColonistBarKF.SettingsColonistBar.BaseSpacingHorizontal>
-  <ColonistBarKF.SettingsColonistBar.BaseSpacingVertical>Vertical spacing</ColonistBarKF.SettingsColonistBar.BaseSpacingVertical>
-  <ColonistBarKF.SettingsColonistBar.BasicSize>Maximum icon size</ColonistBarKF.SettingsColonistBar.BasicSize>
-  <ColonistBarKF.SettingsColonistBar.DoubleClickTime>Double Click Time</ColonistBarKF.SettingsColonistBar.DoubleClickTime>
-  <ColonistBarKF.SettingsColonistBar.FemaleColor>Color for female colonists</ColonistBarKF.SettingsColonistBar.FemaleColor>
-  <ColonistBarKF.SettingsColonistBar.FixedScale>No scaling</ColonistBarKF.SettingsColonistBar.FixedScale>
-  <ColonistBarKF.SettingsColonistBar.MaleColor>Color for male colonists</ColonistBarKF.SettingsColonistBar.MaleColor>
-  <ColonistBarKF.SettingsColonistBar.MarginBottom>Bottom margin</ColonistBarKF.SettingsColonistBar.MarginBottom>
-  <ColonistBarKF.SettingsColonistBar.MarginEdge>Margin from screen edge</ColonistBarKF.SettingsColonistBar.MarginEdge>
-  <ColonistBarKF.SettingsColonistBar.MarginLeft>Left margin</ColonistBarKF.SettingsColonistBar.MarginLeft>
-  <ColonistBarKF.SettingsColonistBar.MarginRight>Right margin</ColonistBarKF.SettingsColonistBar.MarginRight>
-  <ColonistBarKF.SettingsColonistBar.MarginTop>Top margin</ColonistBarKF.SettingsColonistBar.MarginTop>
-  <ColonistBarKF.SettingsColonistBar.MaxColonistBarWidth>Maximum bar width</ColonistBarKF.SettingsColonistBar.MaxColonistBarWidth>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraHorizontalOffset>Camera offset horizontal</ColonistBarKF.SettingsColonistBar.PawnTextureCameraHorizontalOffset>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraVerticalOffset>Camera offset vertical</ColonistBarKF.SettingsColonistBar.PawnTextureCameraVerticalOffset>
-  <ColonistBarKF.SettingsColonistBar.PawnTextureCameraZoom>Camera zoom</ColonistBarKF.SettingsColonistBar.PawnTextureCameraZoom>
-  <ColonistBarKF.SettingsColonistBar.ResetColors>Reset Colors</ColonistBarKF.SettingsColonistBar.ResetColors>
-  <ColonistBarKF.SettingsColonistBar.RevertSettings>Revert bar settings</ColonistBarKF.SettingsColonistBar.RevertSettings>
-  <ColonistBarKF.SettingsColonistBar.useBottom>Bottom</ColonistBarKF.SettingsColonistBar.useBottom>
-  <ColonistBarKF.SettingsColonistBar.useGender>Use background color by gender</ColonistBarKF.SettingsColonistBar.useGender>
-  <ColonistBarKF.SettingsColonistBar.useLeft>Left</ColonistBarKF.SettingsColonistBar.useLeft>
-  <ColonistBarKF.SettingsColonistBar.useRight>Right</ColonistBarKF.SettingsColonistBar.useRight>
-  <ColonistBarKF.SettingsColonistBar.useTop>Top</ColonistBarKF.SettingsColonistBar.useTop>
-  <ColonistBarKF.SettingsColonistBar.UseMoodColors>Use mood bars</ColonistBarKF.SettingsColonistBar.UseMoodColors>
+  <CBKF.Settings.BarPosition>Colonist Bar Position</CBKF.Settings.BarPosition>
+  <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing</CBKF.Settings.BaseSpacingHorizontal>
+  <CBKF.Settings.BaseSpacingVertical>Vertical spacing</CBKF.Settings.BaseSpacingVertical>
+  <CBKF.Settings.BasicSize>Maximum icon size</CBKF.Settings.BasicSize>
+  <CBKF.Settings.DoubleClickTime>Double Click Time</CBKF.Settings.DoubleClickTime>
+  <CBKF.Settings.FemaleColor>Color for female colonists</CBKF.Settings.FemaleColor>
+  <CBKF.Settings.FixedScale>No scaling</CBKF.Settings.FixedScale>
+  <CBKF.Settings.MaleColor>Color for male colonists</CBKF.Settings.MaleColor>
+  <CBKF.Settings.MarginBottom>Bottom margin</CBKF.Settings.MarginBottom>
+  <CBKF.Settings.MarginEdge>Margin from screen edge</CBKF.Settings.MarginEdge>
+  <CBKF.Settings.MarginLeft>Left margin</CBKF.Settings.MarginLeft>
+  <CBKF.Settings.MarginRight>Right margin</CBKF.Settings.MarginRight>
+  <CBKF.Settings.MarginTop>Top margin</CBKF.Settings.MarginTop>
+  <CBKF.Settings.MaxColonistBarWidth>Maximum bar width</CBKF.Settings.MaxColonistBarWidth>
+  <CBKF.Settings.PawnTextureCameraHorizontalOffset>Camera offset horizontal</CBKF.Settings.PawnTextureCameraHorizontalOffset>
+  <CBKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</CBKF.Settings.PawnTextureCameraVerticalOffset>
+  <CBKF.Settings.PawnTextureCameraZoom>Camera zoom</CBKF.Settings.PawnTextureCameraZoom>
+  <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
+  <CBKF.Settings.RevertSettings>Revert bar settings</CBKF.Settings.RevertSettings>
+  <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
+  <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
+  <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
+  <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
+  <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
+  <CBKF.Settings.UseMoodColors>Use mood bars</CBKF.Settings.UseMoodColors>
 
-  <ColonistBarKF.SettingsColonistBar.SortBy>Sort By</ColonistBarKF.SettingsColonistBar.SortBy>
-  <ColonistBarKF.SettingsColonistBar.Vanilla>Vanilla</ColonistBarKF.SettingsColonistBar.Vanilla>
-  <ColonistBarKF.SettingsColonistBar.SexAge>Sex then Age</ColonistBarKF.SettingsColonistBar.SexAge>
-  <ColonistBarKF.SettingsColonistBar.Mood>Mood</ColonistBarKF.SettingsColonistBar.Mood>
-  <ColonistBarKF.SettingsColonistBar.Health>Health</ColonistBarKF.SettingsColonistBar.Health>
-  <ColonistBarKF.SettingsColonistBar.Medic>Medical Skill</ColonistBarKF.SettingsColonistBar.Medic>
-  <ColonistBarKF.SettingsColonistBar.Weapons>Weapons</ColonistBarKF.SettingsColonistBar.Weapons>
-  <ColonistBarKF.SettingsColonistBar.SortingOptions>Sorting Options</ColonistBarKF.SettingsColonistBar.SortingOptions>
-  <ColonistBarKF.SettingsColonistBar.UseWeaponIcons>Use Weapon Icons</ColonistBarKF.SettingsColonistBar.UseWeaponIcons>
-  <ColonistBarKF.SettingsColonistBar.ByName>By Name</ColonistBarKF.SettingsColonistBar.ByName>
-  <ColonistBarKF.SettingsColonistBar.SettingsColonistBar>Colonist Bar SettingsColonistBar</ColonistBarKF.SettingsColonistBar.SettingsColonistBar>
-  <ColonistBarKF.SettingsColonistBar.useZoomToMouse>Use ZoomToMouse</ColonistBarKF.SettingsColonistBar.useZoomToMouse>
+  <CBKF.Settings.SortBy>Sort By</CBKF.Settings.SortBy>
+  <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
+  <CBKF.Settings.SexAge>Sex then Age</CBKF.Settings.SexAge>
+  <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
+  <CBKF.Settings.Health>Health</CBKF.Settings.Health>
+  <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
+  <CBKF.Settings.Weapons>Weapons</CBKF.Settings.Weapons>
+  <CBKF.Settings.SortingOptions>Sorting Options</CBKF.Settings.SortingOptions>
+  <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
+  <CBKF.Settings.ByName>By Name</CBKF.Settings.ByName>
+  <CBKF.Settings.SettingsColonistBar>Colonist Bar SettingsColonistBar</CBKF.Settings.SettingsColonistBar>
+  <CBKF.Settings.useZoomToMouse>Use ZoomToMouse</CBKF.Settings.useZoomToMouse>
 
   <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Following {0}.</FollowMe.Follow>

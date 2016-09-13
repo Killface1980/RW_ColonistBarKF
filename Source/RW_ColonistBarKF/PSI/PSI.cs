@@ -382,17 +382,16 @@ namespace ColonistBarKF.PSI
                 int num2;
                 num1 = index / (ColBarSettings.IconsInColumn);
                 num2 = index % (ColBarSettings.IconsInColumn);
-             // if (ColBarSettings.IconsHorizontal)
-             // {
-             //     //                  int num3 = num1;
-             //     //                  num1 = num2;
-             //     //                  num2 = num3;
-             //
-             //     num2 = index / ColBarSettings.IconsInColumn;
-             //     num1 = index % ColBarSettings.IconsInColumn;
-             //
-             //
-             // }
+                if (ColBarSettings.IconsHorizontal)
+                {
+                    int num3 = num1;
+                    num1 = num2;
+                    num2 = num3;
+
+                    //   num2 = index / ColBarSettings.IconsInColumn;
+                    //   num1 = index % ColBarSettings.IconsInColumn;
+
+                }
 
                 _iconPosRectsBar[index] =
                     new Vector3(
@@ -882,7 +881,7 @@ namespace ColonistBarKF.PSI
             // Bad Mood
             if (PsiSettings.ShowSad && colonist.needs.mood.CurLevelPercentage <= mb?.BreakThresholdMinor)
                 DrawIcon_FadeRedAlertToNeutral(bodyLoc, iconNum++, Icons.Sad, colonist.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor);
-         //   if (PsiSettings.ShowSad && colonist.needs.mood.CurLevel < (double)PsiSettings.LimitMoodLess)
+            //   if (PsiSettings.ShowSad && colonist.needs.mood.CurLevel < (double)PsiSettings.LimitMoodLess)
             //DrawIcon_FadeRedAlertToNeutral(bodyLoc, iconNum++, Icons.Sad, colonist.needs.mood.CurLevel / PsiSettings.LimitMoodLess);
 
             // Bloodloss

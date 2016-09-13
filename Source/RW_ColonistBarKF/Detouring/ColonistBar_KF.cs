@@ -914,49 +914,49 @@ namespace ColonistBarKF
                 {
                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Vanilla".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
                     {
                         ColBarSettings.SortBy = vanilla;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.ByName".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
                     {
                         ColBarSettings.SortBy = byName;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.SexAge".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
                     {
                         ColBarSettings.SortBy = sexage;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Mood".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
                     {
                         ColBarSettings.SortBy = mood;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Health".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
                     {
                         ColBarSettings.SortBy = health;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Medic".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
                     {
                         ColBarSettings.SortBy = medic;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.Weapons".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
                     {
                         ColBarSettings.SortBy = weapons;
                         ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
                     }));
 
-                    floatOptionList.Add(new FloatMenuOption("ColonistBarKF.SettingsColonistBar.barSettings".Translate(), delegate
+                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate
                     {
                         Find.WindowStack.Add(new ColonistBarKF_Settings());
                     }));
-                    FloatMenu window = new FloatMenu(floatOptionList, "ColonistBarKF.SettingsColonistBar.SortingOptions".Translate());
+                    FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
                     Find.WindowStack.Add(window);
 
                     // use event so it doesn't bubble through
