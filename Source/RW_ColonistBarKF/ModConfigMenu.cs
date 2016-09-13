@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ColonistBarKF.PSI;
+using RW_ColonistBarKF;
 using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;
@@ -34,16 +35,17 @@ namespace ColonistBarKF
         public override void WindowUpdate()
         {
             Reinit(false, true);
-            if (Find.TickManager.TicksGame > lastupdate)
-            {
-                if (ColBarSettings.UseGender)
-                    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-                else
-                {
-                    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-                }
-                lastupdate = Find.TickManager.TicksGame + 1500;
-            }
+            //  if (Find.TickManager.TicksGame > lastupdate)
+            //  {
+            //
+            //    //if (ColBarSettings.UseGender)
+            //    //    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
+            //    //else
+            //    //{
+            //    //    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
+            //    //}
+            //      lastupdate = Find.TickManager.TicksGame + 1500;
+            //  }
         }
 
 
@@ -56,7 +58,7 @@ namespace ColonistBarKF
 
 
 
-        public override Vector2 InitialSize => new Vector2(520f, 690f);
+        public override Vector2 InitialSize => new Vector2(460f, 690f);
 
         private int mainToolbarInt = 0;
         private int psiToolbarInt = 0;
@@ -73,8 +75,7 @@ namespace ColonistBarKF
         {
             "PSI.Settings.ArrangementButton".Translate(),
             "PSI.Settings.OpacityButton".Translate(),
-            "PSI.Settings.IconSet".Translate(),
-     //       "PSI.Settings.VisibilityButton".Translate(),
+            "PSI.Settings.IconButton".Translate(),
             "PSI.Settings.SensitivityButton".Translate(),
         };
 
@@ -380,7 +381,7 @@ namespace ColonistBarKF
         GUIStyle hoverBox = new GUIStyle
         {
             hover = { background = ColonistBarTextures.GrayHover },
-            //   active = { textColor = Color.cyan }
+            normal = { background = ColonistBarTextures.GrayFond }
         };
 
         GUIStyle DarkGrayBG = new GUIStyle
@@ -413,10 +414,10 @@ namespace ColonistBarKF
 #endif
         {
             var viewRect = new Rect(rect);
-            viewRect.width -= 15f;
             viewRect.height -= 10f;
 
-            BeginVertical(Width(viewRect.width), Height(viewRect.height));
+            BeginArea(viewRect);
+            BeginVertical();
 
             BeginHorizontal();
             FlexibleSpace();
@@ -443,21 +444,20 @@ namespace ColonistBarKF
                         BeginVertical();
 
                         BeginHorizontal();
-                        FlexibleSpace();
                         BarPositionInt = Toolbar(BarPositionInt, psiPositionStrings);
                         FlexibleSpace();
                         EndHorizontal();
 
-
                         Space(Text.LineHeight / 2);
-                        FillPagePosition(viewRect.width);
+                        FillPagePosition();
+
                         EndVertical();
 
                         LabelHeadline("CBKF.Settings.Advanced".Translate());
 
                         BeginVertical();
                         _scrollPosition = BeginScrollView(_scrollPosition);
-                        FillPageOptions(viewRect.width);
+                        FillPageOptions();
                         Space(Text.LineHeight / 2);
                         EndScrollView();
                         EndVertical();
@@ -468,18 +468,19 @@ namespace ColonistBarKF
 
                         //                 LabelHeadline("PSI.Settings".Translate());
                         Space(Text.LineHeight);
+
                         BeginHorizontal();
                         FlexibleSpace();
-                        PSIToolbarInt = SelectionGrid(PSIToolbarInt, psiToolbarStrings, Mathf.FloorToInt(viewRect.width / 150));
+                        PSIToolbarInt = SelectionGrid(PSIToolbarInt, psiToolbarStrings, 2);
                         FlexibleSpace();
                         EndHorizontal();
 
-                        Space(Text.LineHeight / 2);
+                        Space(Text.LineHeight);
 
                         if (PSIToolbarInt == 0)
                         {
                             {
-                                FillPSIPageArrangement();
+                                FillPSIPageSizeArrangement();
                             }
                         }
                         else if (PSIToolbarInt == 1)
@@ -491,7 +492,7 @@ namespace ColonistBarKF
                         else if (PSIToolbarInt == 2)
                         {
                             {
-                                FillPagePSIShowHide(viewRect);
+                                FillPagePSIIconSet(viewRect);
                             }
                         }
                         else if (PSIToolbarInt == 3)
@@ -508,20 +509,18 @@ namespace ColonistBarKF
                         //}
                         else
                         {
-                            FillPagePSIShowHide(viewRect);
+                            FillPagePSIIconSet(viewRect);
                         }
 
                     }
                     break;
             }
-            Space(Text.LineHeight);
 
             FlexibleSpace();
             Space(Text.LineHeight / 2);
             Label("", GrayLines, Height(1));
             Space(Text.LineHeight / 2);
             BeginHorizontal();
-            FlexibleSpace();
             if (Button("CBKF.Settings.RevertSettings".Translate()))
             {
                 ResetBarSettings();
@@ -531,10 +530,11 @@ namespace ColonistBarKF
             {
                 ResetPSISettings();
             }
+            FlexibleSpace();
             EndHorizontal();
 
-
             EndVertical();
+            EndArea();
 
 #if !NoCCL
             return 1000f;
@@ -558,144 +558,16 @@ namespace ColonistBarKF
 
         private void ResetBarSettings()
         {
-            // forces the mod to update the values from the sliders. is deactivated by saving the values.
-            //SettingsColonistBar.Reloadsettings = true;
-
-            {
-                ColBarSettings.UseGender = false;
-                ColBarSettings.UseCustomMarginTopHor = false;
-                ColBarSettings.UseCustomBaseSpacingHorizontal = false;
-                ColBarSettings.UseCustomBaseSpacingVertical = false;
-                ColBarSettings.UseCustomIconSize = false;
-                ColBarSettings.UseCustomPawnTextureCameraHorizontalOffset = false;
-                ColBarSettings.UseCustomPawnTextureCameraVerticalOffset = false;
-                ColBarSettings.UseCustomPawnTextureCameraZoom = false;
-                ColBarSettings.UseCustomMarginLeftHorTop = false;
-                ColBarSettings.UseCustomMarginRightHorTop = false;
-                ColBarSettings.UseCustomMarginLeftHorBottom = false;
-                ColBarSettings.UseCustomMarginRightHorBottom = false;
-                ColBarSettings.UseBottomAlignment = false;
-                ColBarSettings.UseMoodColors = false;
-                ColBarSettings.UseWeaponIcons = false;
-                ColBarSettings.UseFixedIconScale = false;
-
-                ColBarSettings.MarginBottomHor = 21f;
-                ColBarSettings.BaseSpacingHorizontal = 24f;
-                ColBarSettings.BaseSpacingVertical = 32f;
-                ColBarSettings.BaseSizeFloat = 48f;
-                ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
-                ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
-                ColonistBar_KF.PawnTextureCameraOffset = new Vector3(0f, 0f, 0.3f);
-                ColBarSettings.PawnTextureCameraZoom = 1.28205f;
-                ColBarSettings.MaxColonistBarWidth = Screen.width - 320f;
-                ColBarSettings.FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-                ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
-#if !NoCCL
-                femaleColorField.Value = new Color(1f, 0.64f, 0.8f, 1f);
-                maleColorField.Value = new Color(0.52f, 0.75f, 0.92f, 1f);
-#endif
-                ColBarSettings.HorizontalOffset = 0f;
-                ColBarSettings.VerticalOffset = 0f;
-                ColBarSettings.UseCustomBaseSpacingVertical = false;
-                ColBarSettings.UseVerticalAlignment = false;
-                ColBarSettings.BaseSpacingVertical = 32f;
-                ColBarSettings.MaxColonistBarHeight = Screen.height - 240f;
-                ColBarSettings.UseRightAlignment = false;
-                ColBarSettings.MarginLeftHorTop = 180f;
-                ColBarSettings.MarginRightHorTop = 180f;
-                ColBarSettings.MarginLeftHorBottom = 180f;
-                ColBarSettings.MarginRightHorBottom = 180f;
-                ColBarSettings.UseCustomDoubleClickTime = false;
-                ColBarSettings.DoubleClickTime = 0.5f;
-                ColBarSettings.UseCustomMarginLeftVer = false;
-                ColBarSettings.MarginLeftVer = 21f;
-                ColBarSettings.UseCustomMarginTopVerLeft = false;
-                ColBarSettings.MarginTopVerLeft = 120f;
-                ColBarSettings.UseCustomMarginBottomVerLeft = false;
-                ColBarSettings.MarginBottomVerLeft = 120f;
-
-                ColBarSettings.UseCustomMarginTopHor = false;
-                ColBarSettings.UseCustomMarginBottomHor = false;
-                ColBarSettings.UseCustomMarginLeftHorTop = false;
-                ColBarSettings.UseCustomMarginRightHorTop = false;
-
-                ColBarSettings.UseCustomMarginTopVerLeft = false;
-                ColBarSettings.UseCustomMarginTopVerRight = false;
-                ColBarSettings.UseCustomMarginLeftVer = false;
-                ColBarSettings.UseCustomMarginRightVer = false;
-                ColBarSettings.UseCustomMarginBottomVerLeft = false;
-                ColBarSettings.UseCustomMarginBottomVerRight = false;
-                ColBarSettings.SortBy = vanilla;
-                ColBarSettings.useZoomToMouse = false;
-                ColBarSettings.moodRectScale = 0.33f;
-            }
+            ColBarSettings = new SettingsColonistBar();
         }
 
         private void ResetPSISettings()
         {
-            PsiSettings.UsePsi = true;
-            PsiSettings.IconSize = 1f;
-            PsiSettings.IconSizeMult = 1f;
-            PsiSettings.IconDistanceX = 1f;
-            PsiSettings.IconDistanceY = 1f;
-            PsiSettings.IconOffsetX = 1f;
-            PsiSettings.IconOffsetY = 1f;
-
-            PsiSettings.IconsInColumn = 3;
-            PsiSettings.IconsHorizontal = false;
-            PsiSettings.IconsScreenScale = true;
-            PsiSettings.IconSet = "default";
-
-            PsiSettings.ShowTargetPoint = true;
-            PsiSettings.ShowAggressive = true;
-            PsiSettings.ShowDazed = true;
-            PsiSettings.ShowLeave = true;
-            PsiSettings.ShowDraft = true;
-            PsiSettings.ShowIdle = true;
-            PsiSettings.ShowUnarmed = true;
-            PsiSettings.ShowHungry = true;
-            PsiSettings.ShowSad = true;
-            PsiSettings.ShowTired = true;
-            PsiSettings.ShowDisease = true;
-            PsiSettings.ShowEffectiveness = true;
-            PsiSettings.ShowBloodloss = true;
-            PsiSettings.ShowHot = true;
-            PsiSettings.ShowCold = true;
-            PsiSettings.ShowNaked = true;
-            PsiSettings.ShowDrunk = true;
-            PsiSettings.ShowApparelHealth = true;
-            PsiSettings.ShowPacific = true;
-            PsiSettings.ShowProsthophile = true;
-            PsiSettings.ShowProsthophobe = true;
-            PsiSettings.ShowNightOwl = true;
-            PsiSettings.ShowGreedy = true;
-            PsiSettings.ShowJealous = true;
-            PsiSettings.ShowLovers = true;
-            PsiSettings.ShowDeadColonists = true;
-            PsiSettings.ShowLeftUnburied = true;
-            PsiSettings.ShowRoomStatus = true;
-            PsiSettings.ShowPain = true;
-            PsiSettings.ShowBedroom = true;
-            PsiSettings.ShowHealth = true;
-            PsiSettings.ShowPyromaniac = true;
-
-            //      PsiSettings.LimitMoodLess = 0.25f;
-            PsiSettings.LimitFoodLess = 0.25f;
-            PsiSettings.LimitRestLess = 0.25f;
-            PsiSettings.LimitEfficiencyLess = 0.33f;
-            PsiSettings.LimitDiseaseLess = 1f;
-            PsiSettings.LimitBleedMult = 3f;
-            PsiSettings.LimitApparelHealthLess = 0.5f;
-            PsiSettings.LimitTempComfortOffset = 0f;
-            PsiSettings.IconOpacity = 0.7f;
-            PsiSettings.IconOpacityCritical = 0.6f;
-            PsiSettings.UseColoredTarget = true;
-
+            PsiSettings = new SettingsPSI();
         }
 
-        private void FillPagePosition(float width)
+        private void FillPagePosition()
         {
-            float colSize = width / 2 - 10f;
             #region Vertical Alignment
 
             if (ColBarSettings.UseVerticalAlignment)
@@ -705,95 +577,52 @@ namespace ColonistBarKF
 #endif
                 if (ColBarSettings.UseRightAlignment)
                 {
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginRightVer = Toggle(ColBarSettings.UseCustomMarginRightVer, "CBKF.Settings.MarginEdge".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginRightVer)
+                    BeginVertical(hoverBox);
+                    ColBarSettings.UseCustomMarginRight = Toggle(ColBarSettings.UseCustomMarginRight, "CBKF.Settings.ColonistBarOffset".Translate() +
+                       (int)ColBarSettings.MarginRightVer + ", " +
+                       (int)ColBarSettings.MarginTopVerRight + ", " +
+                       (int)ColBarSettings.MarginBottomVerRight
+                       );
+                    if (ColBarSettings.UseCustomMarginRight)
                     {
                         //    listing.Gap(3f);
-                        ColBarSettings.MarginRightVer = HorizontalSlider(ColBarSettings.MarginRightVer, 0f, Screen.width / 12, Width(colSize));
+                        ColBarSettings.MarginRightVer = HorizontalSlider(ColBarSettings.MarginRightVer, 0f, Screen.width / 12);
+                        ColBarSettings.MarginTopVerRight = HorizontalSlider(ColBarSettings.MarginTopVerRight, 0f, Screen.height * 2 / 5);
+                        ColBarSettings.MarginBottomVerRight = HorizontalSlider(ColBarSettings.MarginBottomVerRight, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
                         ColBarSettings.MarginRightVer = 21f;
-                    }
-                    // listing.Gap(3f);
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginTopVerRight = Toggle(ColBarSettings.UseCustomMarginTopVerRight, "CBKF.Settings.MarginTop".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginTopVerRight)
-                    {
-                        ColBarSettings.MarginTopVerRight = HorizontalSlider(ColBarSettings.MarginTopVerRight, 0f, Screen.height * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginTopVerRight = 120f;
-                        ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerRight - ColBarSettings.MarginBottomVerRight;
-                        ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerRight / 2 - ColBarSettings.MarginBottomVerRight / 2;
-
-                    }
-                    EndHorizontal();
-                    //  listing.Gap(3f);
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginBottomVerRight = Toggle(ColBarSettings.UseCustomMarginBottomVerRight, "CBKF.Settings.MarginBottom".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginBottomVerRight)
-                    {
-                        //     listing.Gap(3f);
-                        ColBarSettings.MarginBottomVerRight = HorizontalSlider(ColBarSettings.MarginBottomVerRight, 0f, Screen.height * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginBottomVerRight = 120f;
                         ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerRight - ColBarSettings.MarginBottomVerRight;
                         ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerRight / 2 - ColBarSettings.MarginBottomVerRight / 2;
                     }
-                    EndHorizontal();
+                    EndVertical();
+
                 }
                 else
                 {
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginLeftVer = Toggle(ColBarSettings.UseCustomMarginLeftVer, "CBKF.Settings.MarginEdge".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginLeftVer)
+                    BeginVertical(hoverBox);
+                    ColBarSettings.UseCustomMarginLeft = Toggle(ColBarSettings.UseCustomMarginLeft, "CBKF.Settings.ColonistBarOffset".Translate() +
+                       (int)ColBarSettings.MarginLeftVer + ", " +
+                       (int)ColBarSettings.MarginTopVerLeft + ", " +
+                       (int)ColBarSettings.MarginBottomVerLeft);
+                    if (ColBarSettings.UseCustomMarginLeft)
                     {
-                        //     listing.Gap(3f);
-                        ColBarSettings.MarginLeftVer = HorizontalSlider(ColBarSettings.MarginLeftVer, 0f, Screen.width / 12, Width(colSize));
+                        ColBarSettings.MarginLeftVer = HorizontalSlider(ColBarSettings.MarginLeftVer, 0f, Screen.width / 12);
+                        ColBarSettings.MarginTopVerLeft = HorizontalSlider(ColBarSettings.MarginTopVerLeft, 0f, Screen.height * 2 / 5);
+                        ColBarSettings.MarginBottomVerLeft = HorizontalSlider(ColBarSettings.MarginBottomVerLeft, 0f, Screen.height * 2 / 5);
                     }
                     else
                     {
                         ColBarSettings.MarginLeftVer = 21f;
-                    }
-                    //   listing.Gap(3f);
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginTopVerLeft = Toggle(ColBarSettings.UseCustomMarginTopVerLeft, "CBKF.Settings.MarginTop".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginTopVerLeft)
-                    {
-                        //    listing.Gap(3f);
-                        ColBarSettings.MarginTopVerLeft = HorizontalSlider(ColBarSettings.MarginTopVerLeft, 0f, Screen.height * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginTopVerLeft = 120f;
-                        ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerLeft - ColBarSettings.MarginBottomVerLeft;
-                        ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerLeft / 2 - ColBarSettings.MarginBottomVerLeft / 2;
-
-                    }
-                    EndHorizontal();
-
-                    //   listing.Gap(3f);
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginBottomVerLeft = Toggle(ColBarSettings.UseCustomMarginBottomVerLeft, "CBKF.Settings.MarginBottom".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginBottomVerLeft)
-                    {
-                        //    listing.Gap(3f);
-                        ColBarSettings.MarginBottomVerLeft = HorizontalSlider(ColBarSettings.MarginBottomVerLeft, 0f, Screen.height * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginBottomVerLeft = 120f;
                         ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerLeft - ColBarSettings.MarginBottomVerLeft;
                         ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerLeft / 2 - ColBarSettings.MarginBottomVerLeft / 2;
                     }
-                    EndHorizontal();
+                    EndVertical();
                 }
 
 
@@ -814,95 +643,56 @@ namespace ColonistBarKF
 
                 if (ColBarSettings.UseBottomAlignment)
                 {
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginBottomHor = Toggle(ColBarSettings.UseCustomMarginBottomHor, "CBKF.Settings.MarginEdge".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginBottomHor)
+                    BeginVertical(hoverBox);
+                    ColBarSettings.UseCustomMarginBottom = Toggle(ColBarSettings.UseCustomMarginBottom, "CBKF.Settings.ColonistBarOffset".Translate() +
+                       (int)ColBarSettings.MarginBottomHor + ", " +
+                       (int)ColBarSettings.MarginLeftHorBottom + ", " +
+                       (int)ColBarSettings.MarginRightHorBottom);
+
+                    if (ColBarSettings.UseCustomMarginBottom)
                     {
                         //    listing.Gap(3f);
-                        ColBarSettings.MarginBottomHor = ColBarSettings.MarginBottomHor = HorizontalSlider(ColBarSettings.MarginBottomHor, 10, Screen.height / 12, Width(colSize));
+                        ColBarSettings.MarginBottomHor = ColBarSettings.MarginBottomHor = HorizontalSlider(ColBarSettings.MarginBottomHor, 10, Screen.height / 12);
+                        ColBarSettings.MarginLeftHorBottom = HorizontalSlider(ColBarSettings.MarginLeftHorBottom, 0f, Screen.width * 2 / 5);
+                        ColBarSettings.MarginRightHorBottom = HorizontalSlider(ColBarSettings.MarginRightHorBottom, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
                         ColBarSettings.MarginBottomHor = 21f;
-                    }
-                    //   listing.Gap(3f);
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginLeftHorBottom = Toggle(ColBarSettings.UseCustomMarginLeftHorBottom, "CBKF.Settings.MarginLeft".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginLeftHorBottom)
-                    {
-                        //   listing.Gap(3f);
-                        ColBarSettings.MarginLeftHorBottom = HorizontalSlider(ColBarSettings.MarginLeftHorBottom, 0f, Screen.width * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginLeftHorBottom = 160f;
-                        ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorBottom - ColBarSettings.MarginRightHorBottom;
-                        ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorBottom / 2 - ColBarSettings.MarginRightHorBottom / 2;
-                    }
-                    //  listing.Gap(3f);
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginRightHorBottom = Toggle(ColBarSettings.UseCustomMarginRightHorBottom, "CBKF.Settings.MarginRight".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginRightHorBottom)
-                    {
-                        //      listing.Gap(3f);
-                        ColBarSettings.MarginRightHorBottom = HorizontalSlider(ColBarSettings.MarginRightHorBottom, 0f, Screen.width * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginRightHorBottom = 160f;
                         ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorBottom - ColBarSettings.MarginRightHorBottom;
                         ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorBottom / 2 - ColBarSettings.MarginRightHorBottom / 2;
                     }
-                    EndHorizontal();
-                    //    listing.Gap(3f);
+                    EndVertical();
                 }
                 else
                 {
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginTopHor = Toggle(ColBarSettings.UseCustomMarginTopHor, "CBKF.Settings.MarginEdge".Translate(), Width(colSize));
+                    BeginVertical(hoverBox);
+                    ColBarSettings.UseCustomMarginTopHor = Toggle(ColBarSettings.UseCustomMarginTopHor, "CBKF.Settings.ColonistBarOffset".Translate() +
+                       (int)ColBarSettings.MarginTopHor + ", " +
+                       (int)ColBarSettings.MarginLeftHorTop + ", " +
+                       (int)ColBarSettings.MarginRightHorTop);
+
                     if (ColBarSettings.UseCustomMarginTopHor)
                     {
                         //    listing.Gap(3f);
-                        ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 10, Screen.height / 12, Width(colSize));
+                        ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 10, Screen.height / 12);
+                        ColBarSettings.MarginLeftHorTop = HorizontalSlider(ColBarSettings.MarginLeftHorTop, 0f, Screen.width * 2 / 5);
+                        ColBarSettings.MarginRightHorTop = HorizontalSlider(ColBarSettings.MarginRightHorTop, 0f, Screen.width * 2 / 5);
                     }
                     else
                     {
                         ColBarSettings.MarginTopHor = 21f;
-                    }
-                    //  listing.Gap(3f);
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    ColBarSettings.UseCustomMarginLeftHorTop = Toggle(ColBarSettings.UseCustomMarginLeftHorTop, "CBKF.Settings.MarginLeft".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginLeftHorTop)
-                    {
-                        //    listing.Gap(3f);
-                        ColBarSettings.MarginLeftHorTop = HorizontalSlider(ColBarSettings.MarginLeftHorTop, 0f, Screen.width * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginLeftHorTop = 160f;
-                        ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop - ColBarSettings.MarginRightHorTop;
-                        ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2 - ColBarSettings.MarginRightHorTop / 2;
-                    }
-                    EndHorizontal();
-                    BeginHorizontal(hoverBox);
-                    //  listing.Gap(3f);
-
-                    ColBarSettings.UseCustomMarginRightHorTop = Toggle(ColBarSettings.UseCustomMarginRightHorTop, "CBKF.Settings.MarginRight".Translate(), Width(colSize));
-                    if (ColBarSettings.UseCustomMarginRightHorTop)
-                    {
-                        //     listing.Gap(3f);
-                        ColBarSettings.MarginRightHorTop = HorizontalSlider(ColBarSettings.MarginRightHorTop, 0f, Screen.width * 2 / 5, Width(colSize));
-                    }
-                    else
-                    {
                         ColBarSettings.MarginRightHorTop = 160f;
                         ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop - ColBarSettings.MarginRightHorTop;
                         ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2 - ColBarSettings.MarginRightHorTop / 2;
                     }
-                    EndHorizontal();
+                    //  listing.Gap(3f);
+                    EndVertical();
+
+
                     //  listing.Gap(3f);
                 }
 #if !NoCCL
@@ -912,68 +702,59 @@ namespace ColonistBarKF
             #endregion
         }
 
-        private void FillPageOptions(float width)
+        private void FillPageOptions()
         {
-            float colSize = (width - 15f) / 2 - 10f;
             #region Size + Spacing
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomIconSize = Toggle(ColBarSettings.UseCustomIconSize, "CBKF.Settings.BasicSize".Translate(), Width(colSize));
+            BeginVertical(hoverBox);
+
+            ColBarSettings.UseFixedIconScale = Toggle(ColBarSettings.UseFixedIconScale, "CBKF.Settings.FixedScale".Translate());
+
+            ColBarSettings.UseCustomIconSize = Toggle(ColBarSettings.UseCustomIconSize, "CBKF.Settings.BasicSize".Translate() +
+                (int)ColBarSettings.BaseSizeFloat + " - " +
+                (int)ColBarSettings.BaseSpacingHorizontal + ", " +
+            (int)ColBarSettings.BaseSpacingVertical
+                );
 
             if (ColBarSettings.UseCustomIconSize)
             {
-                //     listing.Gap(3f);
-                //    listing.Gap(3f);
-                ColBarSettings.BaseSizeFloat = HorizontalSlider(ColBarSettings.BaseSizeFloat, 16f, 128f, Width(colSize));
-
-                //     listing.Gap();
+                ColBarSettings.BaseSizeFloat = HorizontalSlider(ColBarSettings.BaseSizeFloat, 16f, 128f);
+                ColBarSettings.BaseSpacingHorizontal = HorizontalSlider(ColBarSettings.BaseSpacingHorizontal, 1f, 72f);
+                ColBarSettings.BaseSpacingVertical = HorizontalSlider(ColBarSettings.BaseSpacingVertical, 1f, 96f);
             }
             else
             {
                 ColBarSettings.BaseSizeFloat = 48f;
                 ColBarSettings.BaseIconSize = 20f;
-                //     listing.Gap(3f);
-            }
-            EndHorizontal();
-            ColBarSettings.UseFixedIconScale = Toggle(ColBarSettings.UseFixedIconScale, "CBKF.Settings.FixedScale".Translate(), Width(colSize));
-
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomBaseSpacingHorizontal = Toggle(ColBarSettings.UseCustomBaseSpacingHorizontal, "CBKF.Settings.BaseSpacingHorizontal".Translate(), Width(colSize));
-            if (ColBarSettings.UseCustomBaseSpacingHorizontal)
-            {
-                //      listing.Gap(3f);
-                ColBarSettings.BaseSpacingHorizontal = HorizontalSlider(ColBarSettings.BaseSpacingHorizontal, 1f, 72f, Width(colSize));
-            }
-            else
-            {
                 ColBarSettings.BaseSpacingHorizontal = 24f;
-                //      listing.Gap(3f);
-            }
-            EndHorizontal();
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomBaseSpacingVertical = Toggle(ColBarSettings.UseCustomBaseSpacingVertical, "CBKF.Settings.BaseSpacingVertical".Translate(), Width(colSize));
-            if (ColBarSettings.UseCustomBaseSpacingVertical)
-            {
-                //      listing.Gap(3f);
-                ColBarSettings.BaseSpacingVertical = HorizontalSlider(ColBarSettings.BaseSpacingVertical, 1f, 96f, Width(colSize));
-            }
-            else
-            {
                 ColBarSettings.BaseSpacingVertical = 32f;
             }
-            EndHorizontal();
+            EndVertical();
+
+
             #endregion
 
             Space(Text.LineHeight / 2);
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate(), Width(colSize));
+            BeginVertical(hoverBox);
+            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate());
             if (ColBarSettings.UseMoodColors)
             {
                 //      listing.Gap(3f);
-                ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f, Width(colSize));
+                ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f);
             }
-            EndHorizontal();
+            EndVertical();
+
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
             ColBarSettings.UseWeaponIcons = Toggle(ColBarSettings.UseWeaponIcons, "CBKF.Settings.UseWeaponIcons".Translate());
+            EndVertical();
+
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
             ColBarSettings.UseGender = Toggle(ColBarSettings.UseGender, "CBKF.Settings.useGender".Translate());
+            EndVertical();
+
             Space(Text.LineHeight / 2);
 
             #region Gender
@@ -1001,63 +782,50 @@ namespace ColonistBarKF
             #endregion
 
             #region Camera
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomPawnTextureCameraZoom = Toggle(ColBarSettings.UseCustomPawnTextureCameraZoom, "CBKF.Settings.PawnTextureCameraZoom".Translate(), Width(colSize));
-            if (ColBarSettings.UseCustomPawnTextureCameraZoom)
+            BeginVertical(hoverBox);
+            ColBarSettings.UseCustomPawnTextureCameraOffsets = Toggle(ColBarSettings.UseCustomPawnTextureCameraOffsets, "CBKF.Settings.PawnTextureCameraOffsets".Translate() +
+                ColBarSettings.PawnTextureCameraHorizontalOffset.ToString("N2") + ", " +
+                ColBarSettings.PawnTextureCameraVerticalOffset.ToString("N2") + ", " +
+                ColBarSettings.PawnTextureCameraZoom.ToString("N2")
+                );
+            if (ColBarSettings.UseCustomPawnTextureCameraOffsets)
             {
-                //    listing.Gap(3f);
-                ColBarSettings.PawnTextureCameraZoom = HorizontalSlider(ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f, Width(colSize));
-            }
-            else
-            {
-                ColBarSettings.PawnTextureCameraZoom = 1.28205f;
-            }
-            //    listing.Gap(3f);
-            EndHorizontal();
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomPawnTextureCameraHorizontalOffset = Toggle(ColBarSettings.UseCustomPawnTextureCameraHorizontalOffset, "CBKF.Settings.PawnTextureCameraHorizontalOffset".Translate(), Width(colSize));
-            if (ColBarSettings.UseCustomPawnTextureCameraHorizontalOffset)
-            {
-                //        listing.Gap(3f);
-                ColBarSettings.PawnTextureCameraHorizontalOffset = HorizontalSlider(ColBarSettings.PawnTextureCameraHorizontalOffset, 0.7f, -0.7f, Width(colSize));
+                ColBarSettings.PawnTextureCameraHorizontalOffset = HorizontalSlider(ColBarSettings.PawnTextureCameraHorizontalOffset, 0.7f, -0.7f);
+                ColBarSettings.PawnTextureCameraVerticalOffset = HorizontalSlider(ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f);
+                ColBarSettings.PawnTextureCameraZoom = HorizontalSlider(ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f);
             }
             else
             {
                 ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
-            }
-            EndHorizontal();
-
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomPawnTextureCameraVerticalOffset = Toggle(ColBarSettings.UseCustomPawnTextureCameraVerticalOffset, "CBKF.Settings.PawnTextureCameraVerticalOffset".Translate(), Width(colSize));
-            if (ColBarSettings.UseCustomPawnTextureCameraVerticalOffset)
-            {
-                //       listing.Gap(3f);
-                ColBarSettings.PawnTextureCameraVerticalOffset = HorizontalSlider(ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f, Width(colSize));
-            }
-            else
-            {
                 ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
+                ColBarSettings.PawnTextureCameraZoom = 1.28205f;
             }
-            EndHorizontal();
+
+            EndVertical();
+
+
+
             #endregion
 
             Space(Text.LineHeight / 2);
-            BeginHorizontal(hoverBox);
-            ColBarSettings.UseCustomDoubleClickTime = Toggle(ColBarSettings.UseCustomDoubleClickTime, "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2") + "s", Width(colSize));
+            BeginVertical(hoverBox);
+            ColBarSettings.UseCustomDoubleClickTime = Toggle(ColBarSettings.UseCustomDoubleClickTime, "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2") + "s");
             if (ColBarSettings.UseCustomDoubleClickTime)
             {
                 //       listing.Gap(3f);
-                ColBarSettings.DoubleClickTime = HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f, Width(colSize));
+                ColBarSettings.DoubleClickTime = HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f);
             }
             else
             {
                 ColBarSettings.DoubleClickTime = 0.5f;
             }
-            EndHorizontal();
-            Space(Text.LineHeight / 2);
-            ColBarSettings.useZoomToMouse = Toggle(ColBarSettings.useZoomToMouse, "CBKF.Settings.useZoomToMouse".Translate());
+            EndVertical();
 
-            //       GUILayout.Toggle("CBKF.Settings.useExtraIcons".Translate(), ref ColBarSettings.useExtraIcons, null);
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            ColBarSettings.useZoomToMouse = Toggle(ColBarSettings.useZoomToMouse, "CBKF.Settings.useZoomToMouse".Translate());
+            EndVertical();
         }
 
 
@@ -1084,16 +852,15 @@ namespace ColonistBarKF
 #endif
 
 
-        private void FillPagePSIShowHide(Rect viewRect)
+        private void FillPagePSIIconSet(Rect viewRect)
         {
-            BeginHorizontal();
-            FlexibleSpace();
 
-            if (Button("PSI.SettingsColonistBar.IconSet".Translate() + PsiSettings.IconSet))
+            BeginHorizontal();
+            if (Button("PSI.Settings.IconSet".Translate() + PsiSettings.IconSet))
             {
                 var options = new List<FloatMenuOption>();
 
-                options.Add(new FloatMenuOption("default_settings".Translate(), () =>
+                options.Add(new FloatMenuOption("PSI.Settings.Preset.0".Translate(), () =>
                 {
                     try
                     {
@@ -1102,10 +869,10 @@ namespace ColonistBarKF
                     }
                     catch (IOException)
                     {
-                        Log.Error("PSI.SettingsColonistBar.LoadPreset.UnableToLoad".Translate() + "default_settings");
+                        Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
                     }
                 }));
-                options.Add(new FloatMenuOption("original_settings".Translate(), () =>
+                options.Add(new FloatMenuOption("PSI.Settings.Preset.1".Translate(), () =>
                 {
                     try
                     {
@@ -1114,20 +881,20 @@ namespace ColonistBarKF
                     }
                     catch (IOException)
                     {
-                        Log.Error("PSI.SettingsColonistBar.LoadPreset.UnableToLoad".Translate() + "original_settings");
+                        Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
                     }
                 }));
 
                 Find.WindowStack.Add(new FloatMenu(options));
             }
+            Space(Text.LineHeight * 2);
+            PsiSettings.ShowTargetPoint = Toggle(PsiSettings.ShowTargetPoint, "PSI.Settings.Visibility.TargetPoint".Translate());
             FlexibleSpace();
             EndHorizontal();
 
-            Space(Text.LineHeight / 2);
 
             _iconLimit = Mathf.FloorToInt(viewRect.width / 125f);
 
-            PsiSettings.ShowTargetPoint = Toggle(PsiSettings.ShowTargetPoint, "PSI.Settings.Visibility.TargetPoint".Translate());
 
             Space(Text.LineHeight / 2);
 
@@ -1279,14 +1046,23 @@ namespace ColonistBarKF
 
             _scrollPosition = BeginScrollView(_scrollPosition);
 
-            Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate());
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.IconOpacityAndColor.Opacity".Translate() + (PsiSettings.IconOpacity * 100).ToString("N0") + " %");
             PsiSettings.IconOpacity = HorizontalSlider(PsiSettings.IconOpacity, 0.05f, 1f);
+            EndVertical();
 
-            Label("PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate());
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate() + (PsiSettings.IconOpacityCritical * 100).ToString("N0") + " %");
             PsiSettings.IconOpacityCritical = HorizontalSlider(PsiSettings.IconOpacityCritical, 0f, 1f);
+            EndVertical();
 
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
             Toggle(PsiSettings.UseColoredTarget, "PSI.Settings.IconOpacityAndColor.UseColoredTarget".Translate());
-
+            EndVertical();
 
             //if (listing.DoTextButton("PSI.Settings.ResetColors".Translate()))
             //{
@@ -1312,22 +1088,39 @@ namespace ColonistBarKF
             //      Page = "main";
         }
 
-        private void FillPSIPageArrangement()
+        private void FillPSIPageSizeArrangement()
         {
-
+            BeginVertical(hoverBox);
             ColBarSettings.UsePsi = Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
             if (ColBarSettings.UsePsi)
             {
+                Space(Text.LineHeight / 2);
+
+                BeginHorizontal();
                 PsiBarPositionInt = Toolbar(PsiBarPositionInt, psiColBarStrings);
-                Label("IconsInColumn".Translate() + ColBarSettings.IconsInColumn);
+                FlexibleSpace();
+                EndHorizontal();
+
+                Space(Text.LineHeight / 2);
+
+                Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
                 ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 3f, 7f);
             }
+            EndVertical();
+
             Space(Text.LineHeight / 2);
+            BeginVertical(hoverBox);
             PsiSettings.UsePsi = Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
             if (PsiSettings.UsePsi)
             {
+                Space(Text.LineHeight / 2);
+
+                BeginHorizontal();
                 PsiPositionInt = Toolbar(PsiPositionInt, psiColBarStrings);
+                FlexibleSpace();
+                EndHorizontal();
             }
+            EndVertical();
             Space(Text.LineHeight / 2);
 
             _scrollPosition = BeginScrollView(_scrollPosition);
@@ -1340,25 +1133,39 @@ namespace ColonistBarKF
             else if (num < 0)
                 num = 0;
 
+            BeginVertical(hoverBox);
             Label("PSI.Settings.Arrangement.IconSize".Translate() + ("PSI.Settings.SizeLabel." + num).Translate());
             PsiSettings.IconSize = HorizontalSlider(PsiSettings.IconSize, 0.5f, 2f);
+            EndVertical();
 
-            Label(string.Concat("PSI.Settings.Arrangement.IconPosition".Translate(), (int)(PsiSettings.IconDistanceX * 100.0), " , ", (int)(PsiSettings.IconDistanceY * 100.0)));
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label(string.Concat("PSI.Settings.Arrangement.IconPosition".Translate(), (int)(PsiSettings.IconDistanceX * 100.0), ", ", (int)(PsiSettings.IconDistanceY * 100.0)));
             PsiSettings.IconDistanceX = HorizontalSlider(PsiSettings.IconDistanceX, -2f, 2f);
             PsiSettings.IconDistanceY = HorizontalSlider(PsiSettings.IconDistanceY, -2f, 2f);
+            EndVertical();
 
-            Label(string.Concat("PSI.Settings.Arrangement.IconOffset".Translate(), (int)(PsiSettings.IconOffsetX * 100.0), " , ", (int)(PsiSettings.IconOffsetY * 100.0)));
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label(string.Concat("PSI.Settings.Arrangement.IconOffset".Translate(), (int)(PsiSettings.IconOffsetX * 100.0), ", ", (int)(PsiSettings.IconOffsetY * 100.0)));
             PsiSettings.IconOffsetX = HorizontalSlider(PsiSettings.IconOffsetX, -2f, 2f);
             PsiSettings.IconOffsetY = HorizontalSlider(PsiSettings.IconOffsetY, -2f, 2f);
+            EndVertical();
+
+            Space(Text.LineHeight / 2);
 
             PsiSettings.IconsHorizontal = Toggle(PsiSettings.IconsHorizontal, "PSI.Settings.Arrangement.Horizontal".Translate());
 
             PsiSettings.IconsScreenScale = Toggle(PsiSettings.IconsScreenScale, "PSI.Settings.Arrangement.ScreenScale".Translate());
 
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
             Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + PsiSettings.IconsInColumn);
-
             PsiSettings.IconsInColumn = (int)HorizontalSlider(PsiSettings.IconsInColumn, 1f, 7f);
-
+            EndVertical();
 
             //   if (!listing.DoTextButton("PSI.Settings.ReturnButton".Translate()))
             //       return;
@@ -1371,90 +1178,117 @@ namespace ColonistBarKF
 
         private void FillPSIPageSensitivity()
         {
-            _scrollPosition = BeginScrollView(_scrollPosition);
 
+            BeginHorizontal();
             if (Button("PSI.Settings.LoadPresetButton".Translate()))
             {
-                var options = new List<FloatMenuOption>();
-                options.Add(new FloatMenuOption("Less Sensitive", () =>
+                var options = new List<FloatMenuOption>
                 {
-                    try
+                    new FloatMenuOption("Less Sensitive", () =>
                     {
-                        PsiSettings.LimitBleedMult = 2f;
-                        PsiSettings.LimitDiseaseLess = 1f;
-                        PsiSettings.LimitEfficiencyLess = 0.28f;
-                        PsiSettings.LimitFoodLess = 0.2f;
-                        //        PsiSettings.LimitMoodLess = 0.2f;
-                        PsiSettings.LimitRestLess = 0.2f;
-                        PsiSettings.LimitApparelHealthLess = 0.5f;
-                        PsiSettings.LimitTempComfortOffset = 3f;
-                    }
-                    catch (IOException)
+                        try
+                        {
+                            PsiSettings.LimitBleedMult = 2f;
+                            PsiSettings.LimitDiseaseLess = 1f;
+                            PsiSettings.LimitEfficiencyLess = 0.28f;
+                            PsiSettings.LimitFoodLess = 0.2f;
+                            //        PsiSettings.LimitMoodLess = 0.2f;
+                            PsiSettings.LimitRestLess = 0.2f;
+                            PsiSettings.LimitApparelHealthLess = 0.5f;
+                            PsiSettings.LimitTempComfortOffset = 3f;
+                        }
+                        catch (IOException)
+                        {
+                            Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "Less Sensitive");
+                        }
+                    }),
+                    new FloatMenuOption("Standard", () =>
                     {
-                        Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "Less Sensitive");
-                    }
-                }));
-                options.Add(new FloatMenuOption("Standard", () =>
-                {
-                    try
+                        try
+                        {
+                            PsiSettings.LimitBleedMult = 3f;
+                            PsiSettings.LimitDiseaseLess = 1f;
+                            PsiSettings.LimitEfficiencyLess = 0.33f;
+                            PsiSettings.LimitFoodLess = 0.25f;
+                            //       PsiSettings.LimitMoodLess = 0.25f;
+                            PsiSettings.LimitRestLess = 0.25f;
+                            PsiSettings.LimitApparelHealthLess = 0.5f;
+                            PsiSettings.LimitTempComfortOffset = 0f;
+                        }
+                        catch (IOException)
+                        {
+                            Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "Standard");
+                        }
+                    }),
+                    new FloatMenuOption("More Sensitive", () =>
                     {
-                        PsiSettings.LimitBleedMult = 3f;
-                        PsiSettings.LimitDiseaseLess = 1f;
-                        PsiSettings.LimitEfficiencyLess = 0.33f;
-                        PsiSettings.LimitFoodLess = 0.25f;
-                        //       PsiSettings.LimitMoodLess = 0.25f;
-                        PsiSettings.LimitRestLess = 0.25f;
-                        PsiSettings.LimitApparelHealthLess = 0.5f;
-                        PsiSettings.LimitTempComfortOffset = 0f;
-                    }
-                    catch (IOException)
-                    {
-                        Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "Standard");
-                    }
-                }));
-                options.Add(new FloatMenuOption("More Sensitive", () =>
-                {
-                    try
-                    {
-                        PsiSettings.LimitBleedMult = 4f;
-                        PsiSettings.LimitDiseaseLess = 1f;
-                        PsiSettings.LimitEfficiencyLess = 0.45f;
-                        PsiSettings.LimitFoodLess = 0.3f;
-                        //      PsiSettings.LimitMoodLess = 0.3f;
-                        PsiSettings.LimitRestLess = 0.3f;
-                        PsiSettings.LimitApparelHealthLess = 0.5f;
-                        PsiSettings.LimitTempComfortOffset = -3f;
-                    }
-                    catch (IOException)
-                    {
-                        Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "More Sensitive");
-                    }
-                }));
+                        try
+                        {
+                            PsiSettings.LimitBleedMult = 4f;
+                            PsiSettings.LimitDiseaseLess = 1f;
+                            PsiSettings.LimitEfficiencyLess = 0.45f;
+                            PsiSettings.LimitFoodLess = 0.3f;
+                            //      PsiSettings.LimitMoodLess = 0.3f;
+                            PsiSettings.LimitRestLess = 0.3f;
+                            PsiSettings.LimitApparelHealthLess = 0.5f;
+                            PsiSettings.LimitTempComfortOffset = -3f;
+                        }
+                        catch (IOException)
+                        {
+                            Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "More Sensitive");
+                        }
+                    })
+                };
 
                 Find.WindowStack.Add(new FloatMenu(options));
             }
 
+            FlexibleSpace();
+            EndHorizontal();
 
+            Space(Text.LineHeight/2);
+
+            _scrollPosition = BeginScrollView(_scrollPosition);
+
+            BeginVertical(hoverBox);
             Label("PSI.Settings.Sensitivity.Bleeding".Translate() + ("PSI.Settings.Sensitivity.Bleeding." + Math.Round(PsiSettings.LimitBleedMult - 0.25)).Translate());
             PsiSettings.LimitBleedMult = HorizontalSlider(PsiSettings.LimitBleedMult, 0.5f, 5f);
+            EndVertical();
 
-            Label("PSI.Settings.Sensitivity.Injured".Translate() + (int)(PsiSettings.LimitEfficiencyLess * 100.0) + "%");
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.Sensitivity.Injured".Translate() + (int)(PsiSettings.LimitEfficiencyLess * 100.0) + " %");
             PsiSettings.LimitEfficiencyLess = HorizontalSlider(PsiSettings.LimitEfficiencyLess, 0.01f, 0.99f);
+            EndVertical();
 
-            Label("PSI.Settings.Sensitivity.Food".Translate() + (int)(PsiSettings.LimitFoodLess * 100.0) + "%");
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.Sensitivity.Food".Translate() + (int)(PsiSettings.LimitFoodLess * 100.0) + " %");
             PsiSettings.LimitFoodLess = HorizontalSlider(PsiSettings.LimitFoodLess, 0.01f, 0.99f);
+            EndVertical();
 
-            //     Label("PSI.Settings.Sensitivity.Mood".Translate() + (int)(PsiSettings.LimitMoodLess * 100.0) + "%");
-            //     PsiSettings.LimitMoodLess = HorizontalSlider(PsiSettings.LimitMoodLess, 0.01f, 0.99f);
+            Space(Text.LineHeight / 2);
 
-            Label("PSI.Settings.Sensitivity.Rest".Translate() + (int)(PsiSettings.LimitRestLess * 100.0) + "%");
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.Sensitivity.Rest".Translate() + (int)(PsiSettings.LimitRestLess * 100.0) + " %");
             PsiSettings.LimitRestLess = HorizontalSlider(PsiSettings.LimitRestLess, 0.01f, 0.99f);
+            EndVertical();
 
-            Label("PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(PsiSettings.LimitApparelHealthLess * 100.0) + "%");
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(PsiSettings.LimitApparelHealthLess * 100.0) + " %");
             PsiSettings.LimitApparelHealthLess = HorizontalSlider(PsiSettings.LimitApparelHealthLess, 0.01f, 0.99f);
+            EndVertical();
 
-            Label("PSI.Settings.Sensitivity.Temperature".Translate() + (int)PsiSettings.LimitTempComfortOffset + "C");
+            Space(Text.LineHeight / 2);
+
+            BeginVertical(hoverBox);
+            Label("PSI.Settings.Sensitivity.Temperature".Translate() + (int)PsiSettings.LimitTempComfortOffset + " °C");
             PsiSettings.LimitTempComfortOffset = HorizontalSlider(PsiSettings.LimitTempComfortOffset, -10f, 10f);
+            EndVertical();
 
             Space(Text.LineHeight / 2);
             EndScrollView();
@@ -1473,27 +1307,14 @@ namespace ColonistBarKF
 #endif
         {
             Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginTopHor, "useCustomMarginTopHor", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginBottomHor, "UseCustomMarginBottomHor", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginLeftHorTop, "useCustomMarginLeftHor", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginRightHorTop, "useCustomMarginRightHor", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginLeftHorBottom, "UseCustomMarginLeftHorBottom", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginRightHorBottom, "UseCustomMarginRightHorBottom", false);
-
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginTopVerLeft, "UseCustomMarginTopVerLeft", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginTopVerRight, "UseCustomMarginTopVerRight", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginLeftVer, "useCustomMarginLeftRightVer", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginRightVer, "UseCustomMarginRightVer", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginBottomVerLeft, "UseCustomMarginBottomVerLeft", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginBottomVerRight, "UseCustomMarginBottomVerRight", false);
+            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginBottom, "UseCustomMarginBottom", false);
+            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginLeft, "useCustomMarginLeftRightVer", false);
+            Scribe_Values.LookValue(ref ColBarSettings.UseCustomMarginRight, "UseCustomMarginRight", false);
 
 
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomBaseSpacingHorizontal, "useCustomBaseSpacingHorizontal", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomBaseSpacingVertical, "useCustomBaseSpacingVertical", false);
             Scribe_Values.LookValue(ref ColBarSettings.UseCustomIconSize, "useCustomIconSize", false);
             Scribe_Values.LookValue(ref ColBarSettings.UseFixedIconScale, "useFixedIconScale", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomPawnTextureCameraHorizontalOffset, "UseCustomPawnTextureCameraHorizontalOffset", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomPawnTextureCameraVerticalOffset, "useCustomPawnTextureCameraVerticalOffset", false);
-            Scribe_Values.LookValue(ref ColBarSettings.UseCustomPawnTextureCameraZoom, "useCustomPawnTextureCameraZoom", false);
+            Scribe_Values.LookValue(ref ColBarSettings.UseCustomPawnTextureCameraOffsets, "useCustomPawnTextureCameraZoom", false);
             Scribe_Values.LookValue(ref ColBarSettings.UseCustomDoubleClickTime, "useCustomDoubleClick", false);
             Scribe_Values.LookValue(ref ColBarSettings.UseGender, "useGender", false);
             Scribe_Values.LookValue(ref ColBarSettings.UseVerticalAlignment, "useVerticalAlignment", false);

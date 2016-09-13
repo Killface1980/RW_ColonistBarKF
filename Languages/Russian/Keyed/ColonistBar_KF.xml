@@ -1,63 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <CBKF.Settings.BarPosition>Colonist Bar Position</CBKF.Settings.BarPosition>
-  <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing</CBKF.Settings.BaseSpacingHorizontal>
-  <CBKF.Settings.BaseSpacingVertical>Vertical spacing</CBKF.Settings.BaseSpacingVertical>
-  <CBKF.Settings.BasicSize>Maximum icon size</CBKF.Settings.BasicSize>
-  <CBKF.Settings.DoubleClickTime>Double Click Time</CBKF.Settings.DoubleClickTime>
-  <CBKF.Settings.FemaleColor>Color for female colonists</CBKF.Settings.FemaleColor>
-  <CBKF.Settings.FixedScale>No scaling</CBKF.Settings.FixedScale>
-  <CBKF.Settings.MaleColor>Color for male colonists</CBKF.Settings.MaleColor>
-  <CBKF.Settings.MarginBottom>Bottom margin</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginEdge>Margin from screen edge</CBKF.Settings.MarginEdge>
-  <CBKF.Settings.MarginLeft>Left margin</CBKF.Settings.MarginLeft>
-  <CBKF.Settings.MarginRight>Right margin</CBKF.Settings.MarginRight>
-  <CBKF.Settings.MarginTop>Top margin</CBKF.Settings.MarginTop>
-  <CBKF.Settings.MaxColonistBarWidth>Maximum bar width</CBKF.Settings.MaxColonistBarWidth>
-  <CBKF.Settings.PawnTextureCameraHorizontalOffset>Camera offset horizontal</CBKF.Settings.PawnTextureCameraHorizontalOffset>
-  <CBKF.Settings.PawnTextureCameraVerticalOffset>Camera offset vertical</CBKF.Settings.PawnTextureCameraVerticalOffset>
-  <CBKF.Settings.PawnTextureCameraZoom>Camera zoom</CBKF.Settings.PawnTextureCameraZoom>
-  <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
-  <CBKF.Settings.RevertSettings>Revert bar settings</CBKF.Settings.RevertSettings>
-  <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
-  <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
-  <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
-  <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
-  <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
-  <CBKF.Settings.UseMoodColors>Use mood bars</CBKF.Settings.UseMoodColors>
-
-  <CBKF.Settings.SortBy>Sort By</CBKF.Settings.SortBy>
-  <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
-  <CBKF.Settings.SexAge>Sex then Age</CBKF.Settings.SexAge>
-  <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
-  <CBKF.Settings.Health>Health</CBKF.Settings.Health>
-  <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
-  <CBKF.Settings.Weapons>Weapons</CBKF.Settings.Weapons>
-  <CBKF.Settings.SortingOptions>Sorting Options</CBKF.Settings.SortingOptions>
-  <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
-  <CBKF.Settings.ByName>By Name</CBKF.Settings.ByName>
-  <CBKF.Settings.SettingsColonistBar>Colonist Bar SettingsColonistBar</CBKF.Settings.SettingsColonistBar>
-  <CBKF.Settings.useZoomToMouse>Use ZoomToMouse</CBKF.Settings.useZoomToMouse>
-
-  <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
-  <FollowMe.Follow>Following {0}.</FollowMe.Follow>
-
-  <FollowMe.RejectMultiple>Can not follow, multiple selections.</FollowMe.RejectMultiple>
-  <FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
-  <FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
 
   <PSI.Enabled>PSI включен</PSI.Enabled>
   <PSI.Disabled>PSI отключен. Нажмите F11 для включения</PSI.Disabled>
-  <PSI.Settings.IconSet>Icon set: </PSI.Settings.IconSet>
   <PSI.Settings.Advanced>Расширенные</PSI.Settings.Advanced>
-  <PSI.Settings.VisibilityButton>Видимость...</PSI.Settings.VisibilityButton>
+  <PSI.Settings.Arrangement.Header>Size &amp; Arrangement</PSI.Settings.Arrangement.Header>
+  <PSI.Settings.Arrangement.Horizontal>Arrange horizontally</PSI.Settings.Arrangement.Horizontal>
+  <PSI.Settings.Arrangement.IconOffset>Distance between: </PSI.Settings.Arrangement.IconOffset>
+  <PSI.Settings.Arrangement.IconPosition>Position: </PSI.Settings.Arrangement.IconPosition>
+  <PSI.Settings.Arrangement.IconSize>Icon size: </PSI.Settings.Arrangement.IconSize>
+  <PSI.Settings.Arrangement.IconsPerColumn>Icons per column: </PSI.Settings.Arrangement.IconsPerColumn>
+  <PSI.Settings.Arrangement.ScreenScale>Screen-scale icons</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Size and arrangement...</PSI.Settings.ArrangementButton>
-  <PSI.Settings.SensitivityButton>Чувствительность...</PSI.Settings.SensitivityButton>
-
-  <PSI.Settings.LoadPresetButton>Load preset</PSI.Settings.LoadPresetButton>
+  <PSI.Settings.IconSet>Icon set: </PSI.Settings.IconSet>
   <PSI.Settings.LoadPreset.UnableToLoad>Unable to load preset: </PSI.Settings.LoadPreset.UnableToLoad>
+  <PSI.Settings.LoadPresetButton>Load preset</PSI.Settings.LoadPresetButton>
   <PSI.Settings.ReturnButton>Вернутся</PSI.Settings.ReturnButton>
-
+  <PSI.Settings.Sensitivity.ApparelHealth>Tattered if Condition &lt; </PSI.Settings.Sensitivity.ApparelHealth>
+  <PSI.Settings.Sensitivity.Bleeding.0>very low</PSI.Settings.Sensitivity.Bleeding.0>
+  <PSI.Settings.Sensitivity.Bleeding.1>low</PSI.Settings.Sensitivity.Bleeding.1>
+  <PSI.Settings.Sensitivity.Bleeding.2>medium</PSI.Settings.Sensitivity.Bleeding.2>
+  <PSI.Settings.Sensitivity.Bleeding.3>medium</PSI.Settings.Sensitivity.Bleeding.3>
+  <PSI.Settings.Sensitivity.Bleeding.4>high</PSI.Settings.Sensitivity.Bleeding.4>
+  <PSI.Settings.Sensitivity.Bleeding.5>very high</PSI.Settings.Sensitivity.Bleeding.5>
+  <PSI.Settings.Sensitivity.Bleeding.6>very high</PSI.Settings.Sensitivity.Bleeding.6>
+  <PSI.Settings.Sensitivity.Bleeding>Bleeding: </PSI.Settings.Sensitivity.Bleeding>
+  <PSI.Settings.Sensitivity.Food>Hungry if Food &lt; </PSI.Settings.Sensitivity.Food>
+  <PSI.Settings.Sensitivity.Header>Sensitivity</PSI.Settings.Sensitivity.Header>
+  <PSI.Settings.Sensitivity.Injured>Injured if Efficiency &lt; </PSI.Settings.Sensitivity.Injured>
+  <PSI.Settings.Sensitivity.Mood>Sad if Mood &lt; </PSI.Settings.Sensitivity.Mood>
+  <PSI.Settings.Sensitivity.Rest>Tired if Rest &lt; </PSI.Settings.Sensitivity.Rest>
+  <PSI.Settings.Sensitivity.Temperature>Raise temperature range: </PSI.Settings.Sensitivity.Temperature>
+  <PSI.Settings.SensitivityButton>Чувствительность...</PSI.Settings.SensitivityButton>
   <PSI.Settings.SizeLabel.0>faintly visible</PSI.Settings.SizeLabel.0>
   <PSI.Settings.SizeLabel.1>tiny</PSI.Settings.SizeLabel.1>
   <PSI.Settings.SizeLabel.2>very small</PSI.Settings.SizeLabel.2>
@@ -67,51 +41,27 @@
   <PSI.Settings.SizeLabel.6>large</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>very large</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
-
-  <PSI.Settings.Visibility.Header>Видимость</PSI.Settings.Visibility.Header>
-  <PSI.Settings.Visibility.TargetPoint>Target point</PSI.Settings.Visibility.TargetPoint>
   <PSI.Settings.Visibility.Aggressive>Агрессия</PSI.Settings.Visibility.Aggressive>
-  <PSI.Settings.Visibility.Dazed>Dazed</PSI.Settings.Visibility.Dazed>
-  <PSI.Settings.Visibility.Leave>Leave</PSI.Settings.Visibility.Leave>
-  <PSI.Settings.Visibility.Draft>Draft</PSI.Settings.Visibility.Draft>
-  <PSI.Settings.Visibility.Idle>Idle</PSI.Settings.Visibility.Idle>
-  <PSI.Settings.Visibility.Unarmed>Безоружен</PSI.Settings.Visibility.Unarmed>
-  <PSI.Settings.Visibility.Hungry>Голод</PSI.Settings.Visibility.Hungry>
-  <PSI.Settings.Visibility.Sad>Печаль</PSI.Settings.Visibility.Sad>
-  <PSI.Settings.Visibility.Tired>Усталость</PSI.Settings.Visibility.Tired>
-  <PSI.Settings.Visibility.Disease>Болезнь</PSI.Settings.Visibility.Disease>
-  <PSI.Settings.Visibility.Injury>Injury</PSI.Settings.Visibility.Injury>
-  <PSI.Settings.Visibility.Bloodloss>Bloodloss</PSI.Settings.Visibility.Bloodloss>
-  <PSI.Settings.Visibility.Hot>Горячо</PSI.Settings.Visibility.Hot>
-  <PSI.Settings.Visibility.Cold>Холодно</PSI.Settings.Visibility.Cold>
-  <PSI.Settings.Visibility.Naked>Naked</PSI.Settings.Visibility.Naked>
-  <PSI.Settings.Visibility.Drunk>Опьянение</PSI.Settings.Visibility.Drunk>
-  <PSI.Settings.Visibility.Pacific>Pacific</PSI.Settings.Visibility.Pacific>
   <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>
+  <PSI.Settings.Visibility.Bloodloss>Bloodloss</PSI.Settings.Visibility.Bloodloss>
+  <PSI.Settings.Visibility.Cold>Холодно</PSI.Settings.Visibility.Cold>
+  <PSI.Settings.Visibility.Dazed>Dazed</PSI.Settings.Visibility.Dazed>
+  <PSI.Settings.Visibility.Disease>Болезнь</PSI.Settings.Visibility.Disease>
+  <PSI.Settings.Visibility.Draft>Draft</PSI.Settings.Visibility.Draft>
+  <PSI.Settings.Visibility.Drunk>Опьянение</PSI.Settings.Visibility.Drunk>
+  <PSI.Settings.Visibility.Header>Видимость</PSI.Settings.Visibility.Header>
+  <PSI.Settings.Visibility.Hot>Горячо</PSI.Settings.Visibility.Hot>
+  <PSI.Settings.Visibility.Hungry>Голод</PSI.Settings.Visibility.Hungry>
+  <PSI.Settings.Visibility.Idle>Idle</PSI.Settings.Visibility.Idle>
+  <PSI.Settings.Visibility.Injury>Injury</PSI.Settings.Visibility.Injury>
+  <PSI.Settings.Visibility.Leave>Leave</PSI.Settings.Visibility.Leave>
+  <PSI.Settings.Visibility.Naked>Naked</PSI.Settings.Visibility.Naked>
+  <PSI.Settings.Visibility.Pacific>Pacific</PSI.Settings.Visibility.Pacific>
+  <PSI.Settings.Visibility.Sad>Печаль</PSI.Settings.Visibility.Sad>
+  <PSI.Settings.Visibility.TargetPoint>Target point</PSI.Settings.Visibility.TargetPoint>
+  <PSI.Settings.Visibility.Tired>Усталость</PSI.Settings.Visibility.Tired>
+  <PSI.Settings.Visibility.Unarmed>Безоружен</PSI.Settings.Visibility.Unarmed>
+  <PSI.Settings.VisibilityButton>Видимость...</PSI.Settings.VisibilityButton>
 
-  <PSI.Settings.Sensitivity.Header>Sensitivity</PSI.Settings.Sensitivity.Header>
-  <PSI.Settings.Sensitivity.Bleeding>Bleeding: </PSI.Settings.Sensitivity.Bleeding>
-  <PSI.Settings.Sensitivity.Injured>Injured if Efficiency &lt; </PSI.Settings.Sensitivity.Injured>
-  <PSI.Settings.Sensitivity.Food>Hungry if Food &lt; </PSI.Settings.Sensitivity.Food>
-  <PSI.Settings.Sensitivity.Mood>Sad if Mood &lt; </PSI.Settings.Sensitivity.Mood>
-  <PSI.Settings.Sensitivity.Rest>Tired if Rest &lt; </PSI.Settings.Sensitivity.Rest>
-  <PSI.Settings.Sensitivity.ApparelHealth>Tattered if Condition &lt; </PSI.Settings.Sensitivity.ApparelHealth>
-  <PSI.Settings.Sensitivity.Temperature>Raise temperature range: </PSI.Settings.Sensitivity.Temperature>
-
-  <PSI.Settings.Sensitivity.Bleeding.0>very low</PSI.Settings.Sensitivity.Bleeding.0>
-  <PSI.Settings.Sensitivity.Bleeding.1>low</PSI.Settings.Sensitivity.Bleeding.1>
-  <PSI.Settings.Sensitivity.Bleeding.2>medium</PSI.Settings.Sensitivity.Bleeding.2>
-  <PSI.Settings.Sensitivity.Bleeding.3>medium</PSI.Settings.Sensitivity.Bleeding.3>
-  <PSI.Settings.Sensitivity.Bleeding.4>high</PSI.Settings.Sensitivity.Bleeding.4>
-  <PSI.Settings.Sensitivity.Bleeding.5>very high</PSI.Settings.Sensitivity.Bleeding.5>
-  <PSI.Settings.Sensitivity.Bleeding.6>very high</PSI.Settings.Sensitivity.Bleeding.6>
-
-  <PSI.Settings.Arrangement.Header>Size &amp; Arrangement</PSI.Settings.Arrangement.Header>
-  <PSI.Settings.Arrangement.IconSize>Icon size: </PSI.Settings.Arrangement.IconSize>
-  <PSI.Settings.Arrangement.IconPosition>Position: </PSI.Settings.Arrangement.IconPosition>
-  <PSI.Settings.Arrangement.IconOffset>Distance between: </PSI.Settings.Arrangement.IconOffset>
-  <PSI.Settings.Arrangement.Horizontal>Arrange horizontally</PSI.Settings.Arrangement.Horizontal>
-  <PSI.Settings.Arrangement.ScreenScale>Screen-scale icons</PSI.Settings.Arrangement.ScreenScale>
-  <PSI.Settings.Arrangement.IconsPerColumn>Icons per column: </PSI.Settings.Arrangement.IconsPerColumn>
 
 </LanguageData>

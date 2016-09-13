@@ -6,26 +6,13 @@ namespace ColonistBarKF
     {
         //      public static bool useCustomScale = false;
         public bool UseCustomMarginTopHor = false;
-        public bool UseCustomMarginBottomHor = false;
-        public bool UseCustomMarginLeftHorTop = false;
-        public bool UseCustomMarginLeftHorBottom = false;
-        public bool UseCustomMarginRightHorTop = false;
-        public bool UseCustomMarginRightHorBottom = false;
+        public bool UseCustomMarginBottom = false;
+        public bool UseCustomMarginLeft = false;
+        public bool UseCustomMarginRight = false;
 
-        public bool UseCustomMarginTopVerLeft = false;
-        public bool UseCustomMarginTopVerRight = false;
-        public bool UseCustomMarginLeftVer = false;
-        public bool UseCustomMarginRightVer = false;
-        public bool UseCustomMarginBottomVerLeft = false;
-        public bool UseCustomMarginBottomVerRight = false;
-
-        public bool UseCustomBaseSpacingHorizontal = false;
-        public bool UseCustomBaseSpacingVertical = false;
         public bool UseCustomIconSize = false;
         public bool UseFixedIconScale = false;
-        public bool UseCustomPawnTextureCameraHorizontalOffset = false;
-        public bool UseCustomPawnTextureCameraVerticalOffset = false;
-        public bool UseCustomPawnTextureCameraZoom = false;
+        public bool UseCustomPawnTextureCameraOffsets = false;
         public bool UseCustomDoubleClickTime = false;
         public bool UseGender = true;
         public bool UseVerticalAlignment = false;
