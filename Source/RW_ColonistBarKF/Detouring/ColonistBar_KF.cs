@@ -387,10 +387,11 @@ namespace ColonistBarKF
             Vector2 size = Size;
             int colonistsPerRow = ColonistsPerRow;
             int colonistsPerColumn = ColonistsPerColumn;
-            float spacingHorizontal = SpacingHorizontal;
-            float spacingVertical = SpacingVertical;
-            float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop;
-            float cachedDrawLocs_y = ColBarSettings.MarginTopHor;
+            float spacingHorizontal = SpacingHorizontal * RealIconScale;
+            float spacingVertical = SpacingVertical * RealIconScale;
+            float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * RealIconScale;
+            float cachedDrawLocs_y = ColBarSettings.MarginTopHor * RealIconScale;
+
             if (ColBarSettings.UseVerticalAlignment)
             {
                 cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
@@ -861,24 +862,12 @@ namespace ColonistBarKF
             {
                 DrawIcon(ColonistBarTextures.Icon_Burning, ref vector, "ActivityIconBurning".Translate());
             }
-            // custom 
-
-            //       if (SettingsColonistBar.useExtraIcons)
-            //       {
-            //           if (colonist.needs.mood.CurLevel < colonist.mindState.mentalBreaker.BreakThresholdMinor)
-            //           {
-            //               GUI.color = Color.Lerp(Color.red, Color.grey, colonist.needs.mood.CurLevel / colonist.mindState.mentalBreaker.BreakThresholdMinor);
-            //               Icon_Sad = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar_KF/Sad", true);
-            //               DrawIcon(Icon_Sad, ref vector, "Sad".Translate());
-            //               GUI.color = Color.white;
-            //           } 
-            //       }
 
         }
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            Rect rect = new Rect(pos.x, pos.y, ScaledIconSize/5*2, ScaledIconSize/5*2);
+            Rect rect = new Rect(pos.x, pos.y, ScaledIconSize / 5 * 2, ScaledIconSize / 5 * 2);
 
             rect.x += rect.width / 6;
             rect.y -= rect.height / 4;

@@ -142,7 +142,7 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        private static void DrawIcon_posOffset(Rect rect, Vector3 posOffset, Icons icon, Color color, float rectAlpha)
+        private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Icons icon, Color color, float rectAlpha)
         {
             color.a *= rectAlpha;
             Color GuiColor = GUI.color;
@@ -207,6 +207,11 @@ namespace ColonistBarKF.PSI
 
             //    Rect realIcon = iconRect.ContractedBy(iconRect.width);
 
+            iconRect.x += iconRect.width * 0.1f;
+            iconRect.y += iconRect.height * 0.1f;
+            iconRect.width *= 0.8f;
+            iconRect.height *= 0.8f;
+
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
         }
@@ -219,7 +224,7 @@ namespace ColonistBarKF.PSI
 
         private static void DrawIcon(Rect rect, int num, Icons icon, Color color, float rectAlpha)
         {
-            DrawIcon_posOffset(rect, _iconPosRectsBar[num], icon, color, rectAlpha);
+            DrawIcon_onBar(rect, _iconPosRectsBar[num], icon, color, rectAlpha);
         }
 
         private static void DrawIcon_FadeRedAlertToNeutral(Vector3 bodyPos, int num, Icons icon, float v)
