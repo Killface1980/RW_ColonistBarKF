@@ -37,12 +37,6 @@ namespace ColonistBarKF
         }
         public static void SaveBarSettings(string path = "ColonistBarKF.xml")
         {
-            if (ColBarSettings.UseGender)
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-            else
-            {
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-            }
             var configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
             XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
         }
@@ -106,6 +100,13 @@ namespace ColonistBarKF
             //PSI
             OnLevelWasLoaded(0);
             enabled = true;
+
+            if (ColBarSettings.UseGender)
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
+            else
+            {
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
+            }
 
         }
     }

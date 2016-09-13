@@ -11,7 +11,6 @@ using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;
 using static ColonistBarKF.PSI.PSI;
-using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 using static UnityEngine.GUILayout;
 
 namespace ColonistBarKF
@@ -35,6 +34,13 @@ namespace ColonistBarKF
         public override void WindowUpdate()
         {
             Reinit(false, true);
+
+            if (ColBarSettings.UseGender)
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
+            else
+            {
+                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
+            }
             //  if (Find.TickManager.TicksGame > lastupdate)
             //  {
             //

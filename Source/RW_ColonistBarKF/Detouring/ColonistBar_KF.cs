@@ -286,12 +286,7 @@ namespace ColonistBarKF
                 PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
                 PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
 
-                if (ColBarSettings.UseGender)
-                    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-                else
-                {
-                    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-                }
+
 
                 RecacheDrawLocs();
             }
