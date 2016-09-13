@@ -8,7 +8,7 @@
   <CBKF.Settings.BasicSize>Icon Size and Distance: </CBKF.Settings.BasicSize>
   <CBKF.Settings.ByName>By Name</CBKF.Settings.ByName>
   <CBKF.Settings.ColBarIconVisibility>On bar</CBKF.Settings.ColBarIconVisibility>
-  <CBKF.Settings.ColonistBarOffset>Colonist Bar Offset: </CBKF.Settings.ColonistBarOffset>
+  <CBKF.Settings.ColonistBarOffset>Colonist Bar Offsets: </CBKF.Settings.ColonistBarOffset>
   <CBKF.Settings.DoubleClickTime>Double Click Time</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Color for female colonists</CBKF.Settings.FemaleColor>
   <CBKF.Settings.FixedScale>No scaling</CBKF.Settings.FixedScale>
@@ -26,14 +26,14 @@
   <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
   <CBKF.Settings.RevertSettings>Revert Colonist Bar settings</CBKF.Settings.RevertSettings>
-  <CBKF.Settings.SettingsColonistBar>Colonist Bar Settings</CBKF.Settings.SettingsColonistBar>
+  <CBKF.Settings.SettingsColonistBar>Colonist Bar KF Settings</CBKF.Settings.SettingsColonistBar>
   <CBKF.Settings.SexAge>Sex then Age</CBKF.Settings.SexAge>
   <CBKF.Settings.SortBy>Sort By</CBKF.Settings.SortBy>
   <CBKF.Settings.SortingOptions>Sorting Options</CBKF.Settings.SortingOptions>
   <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseMoodColors>Use mood bars</CBKF.Settings.UseMoodColors>
+  <CBKF.Settings.UseMoodColors>Use mood bars: </CBKF.Settings.UseMoodColors>
   <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
@@ -130,6 +130,6 @@
   <PSI.Settings.Visibility.Tired>Tired</PSI.Settings.Visibility.Tired>
   <PSI.Settings.Visibility.Unarmed>Unarmed</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>
-  <PSI.Settings>Pawn State Icons Settings </PSI.Settings>
+  <PSI.Settings>Pawn State Icons Settings</PSI.Settings>
 
 </LanguageData>

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
-  <CBKF.Settings.Advanced>Advanced Settings</CBKF.Settings.Advanced>
+  <CBKF.Settings.Advanced>Erweiterte Einstellungen</CBKF.Settings.Advanced>
   <CBKF.Settings.BarPosition>Colonist Bar Position</CBKF.Settings.BarPosition>
-  <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing: </CBKF.Settings.BaseSpacingHorizontal>
-  <CBKF.Settings.BaseSpacingVertical>Vertical spacing: </CBKF.Settings.BaseSpacingVertical>
+  <CBKF.Settings.BaseSpacingHorizontal>Horizontaler Abstand: </CBKF.Settings.BaseSpacingHorizontal>
+  <CBKF.Settings.BaseSpacingVertical>Vertikaler Abstand: </CBKF.Settings.BaseSpacingVertical>
   <CBKF.Settings.BasicSize>Icon-Größe und Abstand: </CBKF.Settings.BasicSize>
   <CBKF.Settings.ByName>Nach Name</CBKF.Settings.ByName>
-  <CBKF.Settings.ColBarIconVisibility>On bar</CBKF.Settings.ColBarIconVisibility>
-  <CBKF.Settings.ColonistBarOffset>Abstand Rand</CBKF.Settings.ColonistBarOffset>
+  <CBKF.Settings.ColBarIconVisibility>In Leiste</CBKF.Settings.ColBarIconVisibility>
+  <CBKF.Settings.ColonistBarOffset>Abstände zu den Rändern: </CBKF.Settings.ColonistBarOffset>
   <CBKF.Settings.DoubleClickTime>Doppelklick-Intervall</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</CBKF.Settings.FemaleColor>
   <CBKF.Settings.FixedScale>Keine Skalierung</CBKF.Settings.FixedScale>
@@ -23,20 +23,20 @@
   <CBKF.Settings.Mood>Stimmung</CBKF.Settings.Mood>
   <CBKF.Settings.PawnTextureCameraOffsets>Kamera Einstellungen: </CBKF.Settings.PawnTextureCameraOffsets>
   <CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
-  <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
+  <CBKF.Settings.PSIIconVisibility>Auf Kolonist</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Farben zurücksetzen</CBKF.Settings.ResetColors>
   <CBKF.Settings.RevertSettings>Einstellungen zurücksetzen</CBKF.Settings.RevertSettings>
-  <CBKF.Settings.SettingsColonistBar>Colonist Bar Settings</CBKF.Settings.SettingsColonistBar>
+  <CBKF.Settings.SettingsColonistBar>Colonist Bar KF Einstellungen</CBKF.Settings.SettingsColonistBar>
   <CBKF.Settings.SexAge>Geschlecht dann Alter</CBKF.Settings.SexAge>
   <CBKF.Settings.SortBy>Sortieren nach</CBKF.Settings.SortBy>
   <CBKF.Settings.SortingOptions>Sortierungs-Optionen</CBKF.Settings.SortingOptions>
   <CBKF.Settings.useBottom>Unten</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Links</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseMoodColors>Zeige Stimmung im Hintergrund</CBKF.Settings.UseMoodColors>
-  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UseMoodColors>Zeige Stimmung im Hintergrund: </CBKF.Settings.UseMoodColors>
+  <CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Kolonistenleiste</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Rechts</CBKF.Settings.useRight>
-  <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
+  <CBKF.Settings.useTop>Oben</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Benutze Icons für Waffen</CBKF.Settings.UseWeaponIcons>
   <CBKF.Settings.useZoomToMouse>Benutze ZoomToMouse</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
@@ -58,18 +58,18 @@
   <PSI.Settings.Arrangement.ScreenScale>Bildschirm-skalierte Icons</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Größe &amp; Anordnung</PSI.Settings.ArrangementButton>
   <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>
-  <PSI.Settings.IconOpacityAndColor.Opacity>Basic icon opacity: </PSI.Settings.IconOpacityAndColor.Opacity>
-  <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimum opacity of critical alerts: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
-  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individual target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
-  <PSI.Settings.IconSet.IconNotAvailable>No icon available</PSI.Settings.IconSet.IconNotAvailable>
+  <PSI.Settings.IconOpacityAndColor.Opacity>Transparenz Icons: </PSI.Settings.IconOpacityAndColor.Opacity>
+  <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimale Transparenz für kritischen Zustand: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
+  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individueller Zielpunkt</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
+  <PSI.Settings.IconSet.IconNotAvailable>Kein Icon verfügbar</PSI.Settings.IconSet.IconNotAvailable>
   <PSI.Settings.IconSet>Icon Set: </PSI.Settings.IconSet>
   <PSI.Settings.LoadPreset.UnableToLoad>Konnte Voreinstellung nicht laden: </PSI.Settings.LoadPreset.UnableToLoad>
   <PSI.Settings.LoadPresetButton>Lade Voreinstellung</PSI.Settings.LoadPresetButton>
-  <PSI.Settings.OpacityButton>Opacity</PSI.Settings.OpacityButton>
-  <PSI.Settings.Preset.0>Default IconSet</PSI.Settings.Preset.0>
+  <PSI.Settings.OpacityButton>Transparenz</PSI.Settings.OpacityButton>
+  <PSI.Settings.Preset.0>Standard IconSet</PSI.Settings.Preset.0>
   <PSI.Settings.Preset.1>Original IconSet</PSI.Settings.Preset.1>
   <PSI.Settings.ReturnButton>Zurück</PSI.Settings.ReturnButton>
-  <PSI.Settings.RevertSettings>Revert PSI settings</PSI.Settings.RevertSettings>
+  <PSI.Settings.RevertSettings>Setze PSI Einstellungen zurück</PSI.Settings.RevertSettings>
   <PSI.Settings.Sensitivity.ApparelHealth>Ausgefranst wenn Zustand &lt; </PSI.Settings.Sensitivity.ApparelHealth>
   <PSI.Settings.Sensitivity.Bleeding.0>sehr niedrig</PSI.Settings.Sensitivity.Bleeding.0>
   <PSI.Settings.Sensitivity.Bleeding.1>niedrig</PSI.Settings.Sensitivity.Bleeding.1>
@@ -95,14 +95,14 @@
   <PSI.Settings.SizeLabel.6>groß</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>sehr groß</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
-  <PSI.Settings.UsePSI>Show Pawn State Icons on Colonist</PSI.Settings.UsePSI>
+  <PSI.Settings.UsePSI>Zeige Pawn State Icons auf Kolonist</PSI.Settings.UsePSI>
   <PSI.Settings.Visibility.Aggressive>Aggressiv</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>Ausgefranste Kleidung</PSI.Settings.Visibility.ApparelHealth>
-  <PSI.Settings.Visibility.Bedroom>Bedroom</PSI.Settings.Visibility.Bedroom>
+  <PSI.Settings.Visibility.Bedroom>Schlafzimmer</PSI.Settings.Visibility.Bedroom>
   <PSI.Settings.Visibility.Bloodloss>Blutverlust</PSI.Settings.Visibility.Bloodloss>
   <PSI.Settings.Visibility.Cold>Kalt</PSI.Settings.Visibility.Cold>
   <PSI.Settings.Visibility.Dazed>Verwirrt</PSI.Settings.Visibility.Dazed>
-  <PSI.Settings.Visibility.DeadColonists>Dead Colonists</PSI.Settings.Visibility.DeadColonists>
+  <PSI.Settings.Visibility.DeadColonists>Tote Kolonisten</PSI.Settings.Visibility.DeadColonists>
   <PSI.Settings.Visibility.Disease>Krankheit</PSI.Settings.Visibility.Disease>
   <PSI.Settings.Visibility.Draft>Im Anschlag</PSI.Settings.Visibility.Draft>
   <PSI.Settings.Visibility.Drunk>Betrunken</PSI.Settings.Visibility.Drunk>
@@ -115,22 +115,22 @@
   <PSI.Settings.Visibility.Injury>Verletzung</PSI.Settings.Visibility.Injury>
   <PSI.Settings.Visibility.Jealous>Jealous</PSI.Settings.Visibility.Jealous>
   <PSI.Settings.Visibility.Leave>Geht</PSI.Settings.Visibility.Leave>
-  <PSI.Settings.Visibility.Lovers>Lovers</PSI.Settings.Visibility.Lovers>
+  <PSI.Settings.Visibility.Lovers>Liebschaften</PSI.Settings.Visibility.Lovers>
   <PSI.Settings.Visibility.Naked>Nackt</PSI.Settings.Visibility.Naked>
-  <PSI.Settings.Visibility.NightOwl>Night Owl</PSI.Settings.Visibility.NightOwl>
+  <PSI.Settings.Visibility.NightOwl>Nachteule</PSI.Settings.Visibility.NightOwl>
   <PSI.Settings.Visibility.Pacific>Pazifist</PSI.Settings.Visibility.Pacific>
-  <PSI.Settings.Visibility.Pain>Pain</PSI.Settings.Visibility.Pain>
-  <PSI.Settings.Visibility.Prosthophile>Prosthophile</PSI.Settings.Visibility.Prosthophile>
-  <PSI.Settings.Visibility.Prosthophobe>Prosthophobe</PSI.Settings.Visibility.Prosthophobe>
-  <PSI.Settings.Visibility.Pyromaniac>Pyromaniac</PSI.Settings.Visibility.Pyromaniac>
-  <PSI.Settings.Visibility.RoomStatus>Room Status</PSI.Settings.Visibility.RoomStatus>
+  <PSI.Settings.Visibility.Pain>Schmerz</PSI.Settings.Visibility.Pain>
+  <PSI.Settings.Visibility.Prosthophile>Prosthophil</PSI.Settings.Visibility.Prosthophile>
+  <PSI.Settings.Visibility.Prosthophobe>Prosthophob</PSI.Settings.Visibility.Prosthophobe>
+  <PSI.Settings.Visibility.Pyromaniac>Pyromane</PSI.Settings.Visibility.Pyromaniac>
+  <PSI.Settings.Visibility.RoomStatus>Zimmer-Status</PSI.Settings.Visibility.RoomStatus>
   <PSI.Settings.Visibility.Sad>Traurig</PSI.Settings.Visibility.Sad>
-  <PSI.Settings.Visibility.Sickness>Sickness</PSI.Settings.Visibility.Sickness>
-  <PSI.Settings.Visibility.TargetPoint>Zeige Wegpunkt auf Boden</PSI.Settings.Visibility.TargetPoint>
+  <PSI.Settings.Visibility.Sickness>Krankheit</PSI.Settings.Visibility.Sickness>
+  <PSI.Settings.Visibility.TargetPoint>Zeige Zielort auf Boden</PSI.Settings.Visibility.TargetPoint>
   <PSI.Settings.Visibility.Tired>Müde</PSI.Settings.Visibility.Tired>
   <PSI.Settings.Visibility.Unarmed>Unbewaffnet</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Sichtbarkeit</PSI.Settings.VisibilityButton>
-  <PSI.Settings>Pawn State Icons Settings </PSI.Settings>
+  <PSI.Settings>Pawn State Icons Einstellungen</PSI.Settings>
 
 
 </LanguageData>

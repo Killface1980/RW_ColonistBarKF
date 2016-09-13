@@ -35,12 +35,6 @@ namespace ColonistBarKF
         {
             Reinit(false, true);
 
-            if (ColBarSettings.UseGender)
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-            else
-            {
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-            }
             //  if (Find.TickManager.TicksGame > lastupdate)
             //  {
             //
@@ -207,7 +201,6 @@ namespace ColonistBarKF
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
                         ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconsInColumn = 4;
                         ColBarSettings.IconSize = 1f;
                         ColBarSettings.IconOpacity = 0.7f;
                         ColBarSettings.IconOpacityCritical = 0.6f;
@@ -220,7 +213,6 @@ namespace ColonistBarKF
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
                         ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconsInColumn = 4;
                         ColBarSettings.IconSize = 1f;
                         ColBarSettings.IconOpacity = 0.7f;
                         ColBarSettings.IconOpacityCritical = 0.6f;
@@ -233,7 +225,6 @@ namespace ColonistBarKF
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = true;
                         ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconsInColumn = 4;
                         ColBarSettings.IconSize = 1f;
                         ColBarSettings.IconOpacity = 0.7f;
                         ColBarSettings.IconOpacityCritical = 0.6f;
@@ -246,7 +237,6 @@ namespace ColonistBarKF
                         ColBarSettings.IconOffsetY = -1;
                         ColBarSettings.IconsHorizontal = true;
                         ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconsInColumn = 4;
                         ColBarSettings.IconSize = 1f;
                         ColBarSettings.IconOpacity = 0.7f;
                         ColBarSettings.IconOpacityCritical = 0.6f;
@@ -356,15 +346,11 @@ namespace ColonistBarKF
         {
             get
             {
-                LoadBarSettings();
-                LoadPsiSettings();
                 return psiToolbarInt;
             }
 
             set
             {
-                SaveBarSettings();
-                SavePsiSettings();
                 psiToolbarInt = value;
             }
         }
@@ -741,11 +727,11 @@ namespace ColonistBarKF
 
             Space(Text.LineHeight / 2);
             BeginVertical(hoverBox);
-            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate());
+            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate() +ColBarSettings.moodRectScale.ToString("N2") + ", Alpha " + ColBarSettings.moodRectAlpha.ToString("N2"));
             if (ColBarSettings.UseMoodColors)
             {
-                //      listing.Gap(3f);
                 ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f);
+                ColBarSettings.moodRectAlpha = HorizontalSlider(ColBarSettings.moodRectAlpha, 0, 1f);
             }
             EndVertical();
 
@@ -1022,7 +1008,7 @@ namespace ColonistBarKF
 
             if (iconMaterial != null)
             {
-                Label(iconMaterial.mainTexture, Width(Text.LineHeight * 3f), Height(Text.LineHeight * 3f));
+                Label(iconMaterial.mainTexture, Width(Text.LineHeight * 2.5f), Height(Text.LineHeight * 2.5f));
             }
             else
             {
@@ -1110,7 +1096,7 @@ namespace ColonistBarKF
                 Space(Text.LineHeight / 2);
 
                 Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 3f, 7f);
+                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
             }
             EndVertical();
 
@@ -1252,7 +1238,7 @@ namespace ColonistBarKF
             FlexibleSpace();
             EndHorizontal();
 
-            Space(Text.LineHeight/2);
+            Space(Text.LineHeight / 2);
 
             _scrollPosition = BeginScrollView(_scrollPosition);
 

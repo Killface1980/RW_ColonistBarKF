@@ -55,6 +55,7 @@ namespace ColonistBarKF
 
         public bool useZoomToMouse = false;
         public float moodRectScale = 0.3f;
+        public float moodRectAlpha = 0.66f;
 
         public int MaxRows;
 

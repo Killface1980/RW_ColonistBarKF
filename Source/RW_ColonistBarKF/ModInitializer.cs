@@ -101,13 +101,6 @@ namespace ColonistBarKF
             OnLevelWasLoaded(0);
             enabled = true;
 
-            if (ColBarSettings.UseGender)
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-            else
-            {
-                ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-            }
-
         }
     }
 }

@@ -17,15 +17,15 @@ namespace Verse
         public static readonly Texture2D GrayLines =
      SolidColorMaterials.NewSolidColorTexture(new Color(0.3f, 0.3f, 0.3f, 1));
 
-        public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.7f));
-        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.8f, 0f, 0.7f));
-        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.7f, 0.7f, 0.85f));
-        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.6f, 0.1f, 0.85f));
-        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.3f, 0f, 0.85f));
-        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0f, 0f, 0.85f));
+    //    public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.6f));
+        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.8f, 0f, 0.3f));
+        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.75f));
+        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.6f, 0.1f, 0.75f));
+        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.3f, 0f, 0.75f));
+        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0f, 0f, 0.75f));
 
-        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.8f, 0.8f, 0.9f));
-        public static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.1f, 0.1f, 0.9f));
+        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.8f, 0.8f, 0.8f));
+        public static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.1f, 0.1f, 0.8f));
 
 
         //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
@@ -52,10 +52,8 @@ namespace Verse
 
         public static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning");
 
-        public static readonly Texture2D BGTexGrey = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_grey");
+        public static readonly Texture2D BGTexGrey = ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_grey");
 
-        public static readonly Texture2D BGTexVanilla = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG_vanilla");
-
-        public static Texture2D BGTex;
+        public static readonly Texture2D BGTexVanilla = ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_vanilla");
     }
 }
