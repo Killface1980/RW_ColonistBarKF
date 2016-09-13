@@ -46,9 +46,9 @@
   <FollowMe.RejectMultiple>Can not follow, multiple selections.</FollowMe.RejectMultiple>
   <FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
   <FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
-  <PSI.Disabled>PSI отключен. Нажмите F11 для включения</PSI.Disabled>
-  <PSI.Enabled>PSI включен</PSI.Enabled>
-  <PSI.Settings.Advanced>Расширенные</PSI.Settings.Advanced>
+  <PSI.Disabled>Pawn State Icons disabled. Press F11 to reenable</PSI.Disabled>
+  <PSI.Enabled>Pawn State Icons enabled</PSI.Enabled>
+  <PSI.Settings.Advanced>Advanced</PSI.Settings.Advanced>
   <PSI.Settings.Arrangement.Header>Size &amp; Arrangement</PSI.Settings.Arrangement.Header>
   <PSI.Settings.Arrangement.Horizontal>Arrange horizontally</PSI.Settings.Arrangement.Horizontal>
   <PSI.Settings.Arrangement.IconOffset>Distance between: </PSI.Settings.Arrangement.IconOffset>
@@ -56,11 +56,20 @@
   <PSI.Settings.Arrangement.IconSize>Icon size: </PSI.Settings.Arrangement.IconSize>
   <PSI.Settings.Arrangement.IconsPerColumn>Icons per column: </PSI.Settings.Arrangement.IconsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Screen-scale icons</PSI.Settings.Arrangement.ScreenScale>
-  <PSI.Settings.ArrangementButton>Size and arrangement...</PSI.Settings.ArrangementButton>
+  <PSI.Settings.ArrangementButton>Size &amp; arrangement</PSI.Settings.ArrangementButton>
+  <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>
+  <PSI.Settings.IconOpacityAndColor.Opacity>Basic icon opacity: </PSI.Settings.IconOpacityAndColor.Opacity>
+  <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimum opacity of critical alerts: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
+  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individual target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
+  <PSI.Settings.IconSet.IconNotAvailable>No icon available</PSI.Settings.IconSet.IconNotAvailable>
   <PSI.Settings.IconSet>Icon set: </PSI.Settings.IconSet>
   <PSI.Settings.LoadPreset.UnableToLoad>Unable to load preset: </PSI.Settings.LoadPreset.UnableToLoad>
   <PSI.Settings.LoadPresetButton>Load preset</PSI.Settings.LoadPresetButton>
-  <PSI.Settings.ReturnButton>Вернутся</PSI.Settings.ReturnButton>
+  <PSI.Settings.OpacityButton>Opacity</PSI.Settings.OpacityButton>
+  <PSI.Settings.Preset.0>Default IconSet</PSI.Settings.Preset.0>
+  <PSI.Settings.Preset.1>Original IconSet</PSI.Settings.Preset.1>
+  <PSI.Settings.ReturnButton>Return</PSI.Settings.ReturnButton>
+  <PSI.Settings.RevertSettings>Revert PSI settings</PSI.Settings.RevertSettings>
   <PSI.Settings.Sensitivity.ApparelHealth>Tattered if Condition &lt; </PSI.Settings.Sensitivity.ApparelHealth>
   <PSI.Settings.Sensitivity.Bleeding.0>very low</PSI.Settings.Sensitivity.Bleeding.0>
   <PSI.Settings.Sensitivity.Bleeding.1>low</PSI.Settings.Sensitivity.Bleeding.1>
@@ -76,7 +85,7 @@
   <PSI.Settings.Sensitivity.Mood>Sad if Mood &lt; </PSI.Settings.Sensitivity.Mood>
   <PSI.Settings.Sensitivity.Rest>Tired if Rest &lt; </PSI.Settings.Sensitivity.Rest>
   <PSI.Settings.Sensitivity.Temperature>Raise temperature range: </PSI.Settings.Sensitivity.Temperature>
-  <PSI.Settings.SensitivityButton>Чувствительность...</PSI.Settings.SensitivityButton>
+  <PSI.Settings.SensitivityButton>Sensitivity</PSI.Settings.SensitivityButton>
   <PSI.Settings.SizeLabel.0>faintly visible</PSI.Settings.SizeLabel.0>
   <PSI.Settings.SizeLabel.1>tiny</PSI.Settings.SizeLabel.1>
   <PSI.Settings.SizeLabel.2>very small</PSI.Settings.SizeLabel.2>
@@ -87,41 +96,40 @@
   <PSI.Settings.SizeLabel.7>very large</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
   <PSI.Settings.UsePSI>Show Pawn State Icons on Colonist</PSI.Settings.UsePSI>
-  <PSI.Settings.Visibility.Aggressive>Aggressiv</PSI.Settings.Visibility.Aggressive>
-  <PSI.Settings.Visibility.ApparelHealth>Ausgefranste Kleidung</PSI.Settings.Visibility.ApparelHealth>
+  <PSI.Settings.Visibility.Aggressive>Aggressive</PSI.Settings.Visibility.Aggressive>
+  <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Bedroom</PSI.Settings.Visibility.Bedroom>
-  <PSI.Settings.Visibility.Bloodloss>Blutverlust</PSI.Settings.Visibility.Bloodloss>
-  <PSI.Settings.Visibility.Cold>Kalt</PSI.Settings.Visibility.Cold>
-  <PSI.Settings.Visibility.Dazed>Verwirrt</PSI.Settings.Visibility.Dazed>
+  <PSI.Settings.Visibility.Bloodloss>Bloodloss</PSI.Settings.Visibility.Bloodloss>
+  <PSI.Settings.Visibility.Cold>Cold</PSI.Settings.Visibility.Cold>
+  <PSI.Settings.Visibility.Dazed>Dazed</PSI.Settings.Visibility.Dazed>
   <PSI.Settings.Visibility.DeadColonists>Dead Colonists</PSI.Settings.Visibility.DeadColonists>
-  <PSI.Settings.Visibility.Disease>Krankheit</PSI.Settings.Visibility.Disease>
-  <PSI.Settings.Visibility.Draft>Im Anschlag</PSI.Settings.Visibility.Draft>
-  <PSI.Settings.Visibility.Drunk>Betrunken</PSI.Settings.Visibility.Drunk>
+  <PSI.Settings.Visibility.Disease>Disease</PSI.Settings.Visibility.Disease>
+  <PSI.Settings.Visibility.Draft>Draft</PSI.Settings.Visibility.Draft>
+  <PSI.Settings.Visibility.Drunk>Drunk</PSI.Settings.Visibility.Drunk>
   <PSI.Settings.Visibility.Greedy>Greedy</PSI.Settings.Visibility.Greedy>
-  <PSI.Settings.Visibility.Header>Sichbarkeit</PSI.Settings.Visibility.Header>
+  <PSI.Settings.Visibility.Header>Visibility</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>Health</PSI.Settings.Visibility.Health>
-  <PSI.Settings.Visibility.Hot>Heiß</PSI.Settings.Visibility.Hot>
-  <PSI.Settings.Visibility.Hungry>Hungrig</PSI.Settings.Visibility.Hungry>
-  <PSI.Settings.Visibility.Idle>Untätig</PSI.Settings.Visibility.Idle>
-  <PSI.Settings.Visibility.Injury>Verletzung</PSI.Settings.Visibility.Injury>
+  <PSI.Settings.Visibility.Hot>Hot</PSI.Settings.Visibility.Hot>
+  <PSI.Settings.Visibility.Hungry>Hungry</PSI.Settings.Visibility.Hungry>
+  <PSI.Settings.Visibility.Idle>Idle</PSI.Settings.Visibility.Idle>
+  <PSI.Settings.Visibility.Injury>Injury</PSI.Settings.Visibility.Injury>
   <PSI.Settings.Visibility.Jealous>Jealous</PSI.Settings.Visibility.Jealous>
-  <PSI.Settings.Visibility.Leave>Geht</PSI.Settings.Visibility.Leave>
+  <PSI.Settings.Visibility.Leave>Leave</PSI.Settings.Visibility.Leave>
   <PSI.Settings.Visibility.Lovers>Lovers</PSI.Settings.Visibility.Lovers>
-  <PSI.Settings.Visibility.Naked>Nackt</PSI.Settings.Visibility.Naked>
+  <PSI.Settings.Visibility.Naked>Naked</PSI.Settings.Visibility.Naked>
   <PSI.Settings.Visibility.NightOwl>Night Owl</PSI.Settings.Visibility.NightOwl>
-  <PSI.Settings.Visibility.Pacific>Pazifist</PSI.Settings.Visibility.Pacific>
+  <PSI.Settings.Visibility.Pacific>Pacific</PSI.Settings.Visibility.Pacific>
   <PSI.Settings.Visibility.Pain>Pain</PSI.Settings.Visibility.Pain>
   <PSI.Settings.Visibility.Prosthophile>Prosthophile</PSI.Settings.Visibility.Prosthophile>
   <PSI.Settings.Visibility.Prosthophobe>Prosthophobe</PSI.Settings.Visibility.Prosthophobe>
   <PSI.Settings.Visibility.Pyromaniac>Pyromaniac</PSI.Settings.Visibility.Pyromaniac>
   <PSI.Settings.Visibility.RoomStatus>Room Status</PSI.Settings.Visibility.RoomStatus>
-  <PSI.Settings.Visibility.Sad>Traurig</PSI.Settings.Visibility.Sad>
+  <PSI.Settings.Visibility.Sad>Sad</PSI.Settings.Visibility.Sad>
   <PSI.Settings.Visibility.Sickness>Sickness</PSI.Settings.Visibility.Sickness>
-  <PSI.Settings.Visibility.TargetPoint>Zeige Wegpunkt auf Boden</PSI.Settings.Visibility.TargetPoint>
-  <PSI.Settings.Visibility.Tired>Müde</PSI.Settings.Visibility.Tired>
-  <PSI.Settings.Visibility.Unarmed>Unbewaffnet</PSI.Settings.Visibility.Unarmed>
-  <PSI.Settings.VisibilityButton>Sichtbarkeit</PSI.Settings.VisibilityButton>
+  <PSI.Settings.Visibility.TargetPoint>Show Target Point on Ground</PSI.Settings.Visibility.TargetPoint>
+  <PSI.Settings.Visibility.Tired>Tired</PSI.Settings.Visibility.Tired>
+  <PSI.Settings.Visibility.Unarmed>Unarmed</PSI.Settings.Visibility.Unarmed>
+  <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>
   <PSI.Settings>Pawn State Icons Settings </PSI.Settings>
-
 
 </LanguageData>
