@@ -461,9 +461,15 @@ namespace ColonistBarKF
                         //                 LabelHeadline("PSI.Settings".Translate());
                         Space(Text.LineHeight);
 
+
+                        int toolbarInt = Mathf.FloorToInt(viewRect.width / 150f);
+                        if (toolbarInt==0)
+                        {
+                            toolbarInt += 1;
+                        }
                         BeginHorizontal();
                         FlexibleSpace();
-                        PSIToolbarInt = SelectionGrid(PSIToolbarInt, psiToolbarStrings, 2);
+                        PSIToolbarInt = SelectionGrid(PSIToolbarInt, psiToolbarStrings, toolbarInt > psiToolbarStrings.Length ? psiToolbarStrings.Length : toolbarInt);
                         FlexibleSpace();
                         EndHorizontal();
 
@@ -727,7 +733,7 @@ namespace ColonistBarKF
 
             Space(Text.LineHeight / 2);
             BeginVertical(hoverBox);
-            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate() +ColBarSettings.moodRectScale.ToString("N2") + ", Alpha " + ColBarSettings.moodRectAlpha.ToString("N2"));
+            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate() + ColBarSettings.moodRectScale.ToString("N2") + ", Alpha " + ColBarSettings.moodRectAlpha.ToString("N2"));
             if (ColBarSettings.UseMoodColors)
             {
                 ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f);
