@@ -21,7 +21,7 @@
   <CBKF.Settings.MaxColonistBarWidth>Maximum bar width</CBKF.Settings.MaxColonistBarWidth>
   <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
-  <CBKF.Settings.PawnTextureCameraOffsets>Camera Settings: </CBKF.Settings.PawnTextureCameraOffsets>
+  <CBKF.Settings.PawnTextureCameraOffsets>Camera Offset and Zoom: </CBKF.Settings.PawnTextureCameraOffsets>
   <CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
   <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
@@ -34,7 +34,7 @@
   <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
   <CBKF.Settings.UseMoodColors>Use mood bars: </CBKF.Settings.UseMoodColors>
-  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Colonist Bar</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Bar</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
@@ -60,7 +60,7 @@
   <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>
   <PSI.Settings.IconOpacityAndColor.Opacity>Basic icon opacity: </PSI.Settings.IconOpacityAndColor.Opacity>
   <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimum opacity of critical alerts: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
-  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individual target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
+  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Coloured target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
   <PSI.Settings.IconSet.IconNotAvailable>No icon available</PSI.Settings.IconSet.IconNotAvailable>
   <PSI.Settings.IconSet>Icon set: </PSI.Settings.IconSet>
   <PSI.Settings.LoadPreset.UnableToLoad>Unable to load preset: </PSI.Settings.LoadPreset.UnableToLoad>
@@ -126,7 +126,7 @@
   <PSI.Settings.Visibility.RoomStatus>Room Status</PSI.Settings.Visibility.RoomStatus>
   <PSI.Settings.Visibility.Sad>Sad</PSI.Settings.Visibility.Sad>
   <PSI.Settings.Visibility.Sickness>Sickness</PSI.Settings.Visibility.Sickness>
-  <PSI.Settings.Visibility.TargetPoint>Show Target Point on Ground</PSI.Settings.Visibility.TargetPoint>
+  <PSI.Settings.Visibility.TargetPoint>Show target point on ground</PSI.Settings.Visibility.TargetPoint>
   <PSI.Settings.Visibility.Tired>Tired</PSI.Settings.Visibility.Tired>
   <PSI.Settings.Visibility.Unarmed>Unarmed</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>

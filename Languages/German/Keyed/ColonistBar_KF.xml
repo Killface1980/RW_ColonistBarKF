@@ -21,7 +21,7 @@
   <CBKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</CBKF.Settings.MaxColonistBarHeight>
   <CBKF.Settings.Medic>Medizin</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Stimmung</CBKF.Settings.Mood>
-  <CBKF.Settings.PawnTextureCameraOffsets>Kamera Einstellungen: </CBKF.Settings.PawnTextureCameraOffsets>
+  <CBKF.Settings.PawnTextureCameraOffsets>Kamera-Versatz und Zoom: </CBKF.Settings.PawnTextureCameraOffsets>
   <CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
   <CBKF.Settings.PSIIconVisibility>Auf Kolonist</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Farben zurücksetzen</CBKF.Settings.ResetColors>
@@ -34,7 +34,7 @@
   <CBKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Links</CBKF.Settings.useLeft>
   <CBKF.Settings.UseMoodColors>Zeige Stimmung im Hintergrund: </CBKF.Settings.UseMoodColors>
-  <CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Kolonistenleiste</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Leiste</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Rechts</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Oben</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Benutze Icons für Waffen</CBKF.Settings.UseWeaponIcons>
@@ -60,7 +60,7 @@
   <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>
   <PSI.Settings.IconOpacityAndColor.Opacity>Transparenz Icons: </PSI.Settings.IconOpacityAndColor.Opacity>
   <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimale Transparenz für kritischen Zustand: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
-  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Individueller Zielpunkt</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
+  <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Farbiger Zielpunkt</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
   <PSI.Settings.IconSet.IconNotAvailable>Kein Icon verfügbar</PSI.Settings.IconSet.IconNotAvailable>
   <PSI.Settings.IconSet>Icon Set: </PSI.Settings.IconSet>
   <PSI.Settings.LoadPreset.UnableToLoad>Konnte Voreinstellung nicht laden: </PSI.Settings.LoadPreset.UnableToLoad>

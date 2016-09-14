@@ -6,25 +6,23 @@ namespace Verse
     internal class ColonistBarTextures
     {
         public static readonly Texture2D BGTexIconPSI = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.5f));
-        public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.15f, 1));
-
-        public static readonly Texture2D GrayHover =
-            SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 1));
+        public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.07f));
+        public static readonly Texture2D DarkGrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.05f));
 
         public static readonly Texture2D RedHover =
-     SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.0f, 0.0f, 0.35f));
+     SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0, 0, 0.12f));
 
         public static readonly Texture2D GrayLines =
-     SolidColorMaterials.NewSolidColorTexture(new Color(0.3f, 0.3f, 0.3f, 1));
+     SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.25f));
 
     //    public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.6f));
-        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0.8f, 0f, 0.3f));
-        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.75f));
-        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.6f, 0.1f, 0.75f));
-        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.3f, 0f, 0.75f));
-        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0f, 0f, 0.75f));
+        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 115, 0, 153));
+        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color32(41, 41, 41, 179));
+        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 153, 0, 179));
+        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(179, 91, 0, 179));
+        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 0, 0, 179));
 
-        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.8f, 0.8f, 0.8f, 0.8f));
+        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 191, 191, 204));
         public static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.1f, 0.1f, 0.8f));
 
 

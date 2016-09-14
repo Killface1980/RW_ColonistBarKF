@@ -87,7 +87,6 @@ namespace ColonistBarKF
         public bool IconsScreenScale = true;
         public string IconSet = "default";
 
-        public bool ShowTargetPoint = true;
         public bool ShowAggressive = true;
         public bool ShowDazed = true;
         public bool ShowLeave = true;
@@ -127,10 +126,7 @@ namespace ColonistBarKF
         public float LimitDiseaseLess = 1f;
         public float LimitBleedMult = 3f;
         public float LimitApparelHealthLess = 0.5f;
-        public float LimitTempComfortOffset;
-        public float IconOpacity = 0.7f;
-        public float IconOpacityCritical = 0.6f;
-        public bool UseColoredTarget = true;
+
 
     }
 
