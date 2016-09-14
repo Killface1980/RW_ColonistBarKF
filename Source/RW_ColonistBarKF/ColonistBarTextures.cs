@@ -16,10 +16,10 @@ namespace Verse
      SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.25f));
 
     //    public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.6f));
-        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 115, 0, 153));
-        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color32(41, 41, 41, 179));
-        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 153, 0, 179));
-        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(179, 91, 0, 179));
+        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 115, 0, 165));
+        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color32(30, 30, 30, 195));
+        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 153, 0, 165));
+        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(179, 91, 0, 190));
         public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 0, 0, 179));
 
         public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 191, 191, 204));

@@ -1359,9 +1359,9 @@ namespace ColonistBarKF.PSI
 
             if (pawnStats.MentalSanity != null)
             {
-                // Berserk
-                if (ColBarSettings.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
-                    DrawIcon(rect, ref iconNum, Icons.Aggressive, colorRedAlert, rectAlpha);
+           //   // Berserk
+           //   if (ColBarSettings.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
+           //       DrawIcon(rect, ref iconNum, Icons.Aggressive, colorRedAlert, rectAlpha);
 
                 // Binging on alcohol - needs refinement
                 if (ColBarSettings.ShowDrunk)
@@ -1372,13 +1372,13 @@ namespace ColonistBarKF.PSI
                         DrawIcon(rect, ref iconNum, Icons.Drunk, colorRedAlert, rectAlpha);
                 }
 
-                // Give Up Exit
-                if (ColBarSettings.ShowLeave && pawnStats.MentalSanity == MentalStateDefOf.PanicFlee) // was GiveUpExit
-                    DrawIcon(rect, ref iconNum, Icons.Leave, colorRedAlert, rectAlpha);
-
-                //Daze Wander
-                if (ColBarSettings.ShowDazed && pawnStats.MentalSanity == MentalStateDefOf.WanderSad) // + MentalStateDefOf.WanderPsychotic
-                    DrawIcon(rect, ref iconNum, Icons.Dazed, colorYellowAlert, rectAlpha);
+     //         // Give Up Exit
+     //         if (ColBarSettings.ShowLeave && pawnStats.MentalSanity == MentalStateDefOf.PanicFlee) // was GiveUpExit
+     //             DrawIcon(rect, ref iconNum, Icons.Leave, colorRedAlert, rectAlpha);
+     //
+     //         //Daze Wander
+     //         if (ColBarSettings.ShowDazed && pawnStats.MentalSanity == MentalStateDefOf.WanderSad) // + MentalStateDefOf.WanderPsychotic
+     //             DrawIcon(rect, ref iconNum, Icons.Dazed, colorYellowAlert, rectAlpha);
 
                 //PanicFlee
                 if (pawnStats.MentalSanity == MentalStateDefOf.PanicFlee)
@@ -1406,9 +1406,9 @@ namespace ColonistBarKF.PSI
             if (ColBarSettings.ShowPyromaniac && colonist.story.traits.HasTrait(TraitDef.Named("Pyromaniac")))
                 DrawIcon(rect, ref iconNum, Icons.Pyromaniac, colorYellowAlert, rectAlpha);
 
-            // Idle
-            if (ColBarSettings.ShowIdle && colonist.mindState.IsIdle)
-                DrawIcon(rect, ref iconNum, Icons.Idle, colorNeutralStatus, rectAlpha);
+      //    // Idle
+      //    if (ColBarSettings.ShowIdle && colonist.mindState.IsIdle)
+      //        DrawIcon(rect, ref iconNum, Icons.Idle, colorNeutralStatus, rectAlpha);
 
             MentalBreaker mb = !colonist.Dead ? colonist.mindState.mentalBreaker : null;
 
