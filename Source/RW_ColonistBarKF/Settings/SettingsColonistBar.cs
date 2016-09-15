@@ -82,10 +82,6 @@ namespace ColonistBarKF
         };
         public bool UsePsi = true;
 
-        public float IconSize = 1f;
-        public float IconSizeMult = 1f;
-        public float IconDistanceX = 1f;
-        public float IconDistanceY = 1f;
         public float IconOffsetX = 1f;
         public float IconOffsetY = 1f;
 

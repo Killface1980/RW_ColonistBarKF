@@ -149,38 +149,42 @@ namespace ColonistBarKF.PSI
 
             iconRect.width /= ColBarSettings.IconsInColumn;
             iconRect.height = iconRect.width;
+            iconRect.x = rect.xMin;
+            iconRect.y = rect.yMax;
 
-            if (ColBarSettings.IconPos == SettingsColonistBar.Alignment.Left)
+
+
+            if (ColBarSettings.UsePsi)
             {
-                iconRect.x = rect.xMin - iconRect.width;
-                iconRect.y = rect.yMax - iconRect.width;
+                switch (ColBarSettings.IconPos)
+                {
+                    case SettingsColonistBar.Alignment.Left:
+                        iconRect.x = rect.xMin - iconRect.width;
+                        iconRect.y = rect.yMax - iconRect.width;
+                        break;
+                    case SettingsColonistBar.Alignment.Right:
+                        iconRect.x = rect.xMax;
+                        iconRect.y = rect.yMax - iconRect.width;
+                        break;
+                    case SettingsColonistBar.Alignment.Top:
+                        iconRect.y = rect.yMin - iconRect.width * 1.5f;
+                        break;
+                    case SettingsColonistBar.Alignment.Bottom:
+                        iconRect.y = rect.yMax + 0.5f * iconRect.width;
+                        break;
+
+                }
+
             }
-            else if (ColBarSettings.IconPos == SettingsColonistBar.Alignment.Right)
-            {
-                iconRect.x = rect.xMax;
-                iconRect.y = rect.yMax - iconRect.width;
-            }
-            else if (ColBarSettings.IconPos == SettingsColonistBar.Alignment.Top)
-            {
-                iconRect.x = rect.xMin;
-                iconRect.y = rect.yMin - iconRect.width*1.5f;
-            }
-            else if (ColBarSettings.IconPos == SettingsColonistBar.Alignment.Bottom)
-            {
-                iconRect.x = rect.xMin;
-                iconRect.y = rect.yMax + 0.5f*iconRect.width;
-            }
-            else
-            {
-                iconRect.x = rect.xMin;
-                iconRect.y = rect.yMax;
-            }
+
+
+
 
             //    iconRect.x += (-0.5f * CBKF.ColBarSettings.IconDistanceX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
 
-            iconRect.x += ColBarSettings.IconDistanceX * ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
-            iconRect.y -= ColBarSettings.IconDistanceY * ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
+            iconRect.y -= ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
             //On Colonist
             //iconRect.x -= iconRect.width * 0.5f;
             //iconRect.y -= iconRect.height * 0.5f;
@@ -532,7 +536,7 @@ namespace ColonistBarKF.PSI
             /*
             // Drunkness - DEACTIVATED FOR NOW
             pawnStats.Drunkness =  DrugUtility.DrunknessPercent(colonist);
-*/
+        */
             // Mental Sanity
             pawnStats.MentalSanity = null;
             if (colonist.mindState != null && colonist.InMentalState)
@@ -1044,20 +1048,20 @@ namespace ColonistBarKF.PSI
 
 
 
-        //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("GotMarried")))
-        //  {
-        //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost);
-        //  }
-        //
-        //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("HoneymoonPhase")))
-        //  {
-        //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost / 2);
-        //  }
-        //
-        //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("AttendedWedding")))
-        //  {
-        //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost / 4);
-        //  }
+            //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("GotMarried")))
+            //  {
+            //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost);
+            //  }
+            //
+            //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("HoneymoonPhase")))
+            //  {
+            //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost / 2);
+            //  }
+            //
+            //  if (PsiSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("AttendedWedding")))
+            //  {
+            //      DrawIcon(bodyLoc, ref iconNum, Icons.Marriage, colorMoodBoost / 4);
+            //  }
 
             // Naked
             if (PsiSettings.ShowNaked && HasMood(colonist, ThoughtDef.Named("Naked")))
@@ -1359,9 +1363,9 @@ namespace ColonistBarKF.PSI
 
             if (pawnStats.MentalSanity != null)
             {
-               // Berserk
-               if (ColBarSettings.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
-                   DrawIcon(rect, ref iconNum, Icons.Aggressive, colorRedAlert, rectAlpha);
+                // Berserk
+                if (ColBarSettings.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
+                    DrawIcon(rect, ref iconNum, Icons.Aggressive, colorRedAlert, rectAlpha);
 
                 // Binging on alcohol - needs refinement
                 if (ColBarSettings.ShowDrunk)
@@ -1375,7 +1379,7 @@ namespace ColonistBarKF.PSI
                 // Give Up Exit
                 if (ColBarSettings.ShowLeave && pawnStats.MentalSanity == MentalStateDefOf.PanicFlee) // was GiveUpExit
                     DrawIcon(rect, ref iconNum, Icons.Leave, colorRedAlert, rectAlpha);
-       
+
                 //Daze Wander
                 if (ColBarSettings.ShowDazed && pawnStats.MentalSanity == MentalStateDefOf.WanderSad) // + MentalStateDefOf.WanderPsychotic
                     DrawIcon(rect, ref iconNum, Icons.Dazed, colorYellowAlert, rectAlpha);
@@ -1406,9 +1410,9 @@ namespace ColonistBarKF.PSI
             if (ColBarSettings.ShowPyromaniac && colonist.story.traits.HasTrait(TraitDef.Named("Pyromaniac")))
                 DrawIcon(rect, ref iconNum, Icons.Pyromaniac, colorYellowAlert, rectAlpha);
 
-      //    // Idle
-      //    if (ColBarSettings.ShowIdle && colonist.mindState.IsIdle)
-      //        DrawIcon(rect, ref iconNum, Icons.Idle, colorNeutralStatus, rectAlpha);
+            //    // Idle
+            //    if (ColBarSettings.ShowIdle && colonist.mindState.IsIdle)
+            //        DrawIcon(rect, ref iconNum, Icons.Idle, colorNeutralStatus, rectAlpha);
 
             MentalBreaker mb = !colonist.Dead ? colonist.mindState.mentalBreaker : null;
 
@@ -1554,20 +1558,20 @@ namespace ColonistBarKF.PSI
 
 
 
-      //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("GotMarried")))
-      //    {
-      //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost, rectAlpha);
-      //    }
-      //
-      //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("HoneymoonPhase")))
-      //    {
-      //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost / 2, rectAlpha);
-      //    }
-      //
-      //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("AttendedWedding")))
-      //    {
-      //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost / 4, rectAlpha);
-      //    }
+            //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("GotMarried")))
+            //    {
+            //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost, rectAlpha);
+            //    }
+            //
+            //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("HoneymoonPhase")))
+            //    {
+            //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost / 2, rectAlpha);
+            //    }
+            //
+            //    if (ColBarSettings.ShowMarriage && HasMood(colonist, ThoughtDef.Named("AttendedWedding")))
+            //    {
+            //        DrawIcon(rect, ref iconNum, Icons.Marriage, colorMoodBoost / 4, rectAlpha);
+            //    }
 
             // Naked
             if (ColBarSettings.ShowNaked && HasMood(colonist, ThoughtDef.Named("Naked")))

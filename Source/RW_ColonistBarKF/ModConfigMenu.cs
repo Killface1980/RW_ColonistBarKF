@@ -188,49 +188,32 @@ namespace ColonistBarKF
 
             set
             {
-                if (value == psiBarPositionInt)
-                    return;
                 switch (value)
                 {
                     case 0:
                         ColBarSettings.IconPos = SettingsColonistBar.Alignment.Left;
-                        ColBarSettings.IconDistanceX = 1f;
-                        ColBarSettings.IconDistanceY = 1f;
                         ColBarSettings.IconOffsetX = 1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
                         ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconSize = 1f;
                         break;
                     case 1:
                         ColBarSettings.IconPos = SettingsColonistBar.Alignment.Right;
-                        ColBarSettings.IconDistanceX = -1f;
-                        ColBarSettings.IconDistanceY = 1f;
                         ColBarSettings.IconOffsetX = -1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
-                        ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconSize = 1f;
                         break;
                     case 2:
                         ColBarSettings.IconPos = SettingsColonistBar.Alignment.Top;
-                        ColBarSettings.IconDistanceX = 1f;
-                        ColBarSettings.IconDistanceY = -1;
                         ColBarSettings.IconOffsetX = -1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = true;
-                        ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconSize = 1f;
                         break;
                     case 3:
                         ColBarSettings.IconPos = SettingsColonistBar.Alignment.Bottom;
-                        ColBarSettings.IconDistanceX = 1;
-                        ColBarSettings.IconDistanceY = 1;
                         ColBarSettings.IconOffsetX = -1;
                         ColBarSettings.IconOffsetY = -1;
                         ColBarSettings.IconsHorizontal = true;
-                        ColBarSettings.IconsScreenScale = true;
-                        ColBarSettings.IconSize = 1f;
                         break;
                     default:
                         ColBarSettings.IconPos = 0;
@@ -1186,7 +1169,7 @@ namespace ColonistBarKF
                 Space(Text.LineHeight / 2);
 
                 Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 3f, 5f);
             }
             EndVertical();
 
