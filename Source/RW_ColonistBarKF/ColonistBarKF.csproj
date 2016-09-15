@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings\SettingsPSI.cs" />
-    <Compile Include="PSI\Materials.cs" />
+    <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
     <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />

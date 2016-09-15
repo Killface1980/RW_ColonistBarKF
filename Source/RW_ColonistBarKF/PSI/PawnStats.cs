@@ -5,6 +5,8 @@ namespace ColonistBarKF.PSI
 {
     internal class PawnStats
     {
+        public int IconCount;
+
         public float TotalEfficiency = 1f;
 
         public float TooCold = -1f;

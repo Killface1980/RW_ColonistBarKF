@@ -2,7 +2,7 @@
 <LanguageData>
   <CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
   <CBKF.Settings.Advanced>Erweiterte Einstellungen</CBKF.Settings.Advanced>
-  <CBKF.Settings.BarPosition>Colonist Bar Position</CBKF.Settings.BarPosition>
+  <CBKF.Settings.BarPosition>Colonist Bar Alignment</CBKF.Settings.BarPosition>
   <CBKF.Settings.BaseSpacingHorizontal>Horizontaler Abstand: </CBKF.Settings.BaseSpacingHorizontal>
   <CBKF.Settings.BaseSpacingVertical>Vertikaler Abstand: </CBKF.Settings.BaseSpacingVertical>
   <CBKF.Settings.BasicSize>Icon-Größe und Abstand: </CBKF.Settings.BasicSize>
@@ -52,7 +52,7 @@
   <PSI.Settings.Arrangement.Header>Größe &amp; Anordnung</PSI.Settings.Arrangement.Header>
   <PSI.Settings.Arrangement.Horizontal>Horizontale Anordnung</PSI.Settings.Arrangement.Horizontal>
   <PSI.Settings.Arrangement.IconOffset>Abstand dazwischen: </PSI.Settings.Arrangement.IconOffset>
-  <PSI.Settings.Arrangement.IconPosition>Position: </PSI.Settings.Arrangement.IconPosition>
+  <PSI.Settings.Arrangement.IconPosition>Alignment: </PSI.Settings.Arrangement.IconPosition>
   <PSI.Settings.Arrangement.IconSize>Icon Größe: </PSI.Settings.Arrangement.IconSize>
   <PSI.Settings.Arrangement.IconsPerColumn>Icons pro Reihe: </PSI.Settings.Arrangement.IconsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Bildschirm-skalierte Icons</PSI.Settings.Arrangement.ScreenScale>
@@ -100,7 +100,7 @@
   <PSI.Settings.Visibility.ApparelHealth>Ausgefranste Kleidung</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Schlafzimmer</PSI.Settings.Visibility.Bedroom>
   <PSI.Settings.Visibility.Bloodloss>Blutverlust</PSI.Settings.Visibility.Bloodloss>
-  <PSI.Settings.Visibility.Cold>Kalt</PSI.Settings.Visibility.Cold>
+  <PSI.Settings.Visibility.TooCold>Kalt</PSI.Settings.Visibility.TooCold>
   <PSI.Settings.Visibility.Dazed>Verwirrt</PSI.Settings.Visibility.Dazed>
   <PSI.Settings.Visibility.DeadColonists>Tote Kolonisten</PSI.Settings.Visibility.DeadColonists>
   <PSI.Settings.Visibility.Disease>Krankheit</PSI.Settings.Visibility.Disease>
@@ -109,7 +109,7 @@
   <PSI.Settings.Visibility.Greedy>Greedy</PSI.Settings.Visibility.Greedy>
   <PSI.Settings.Visibility.Header>Sichbarkeit</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>Health</PSI.Settings.Visibility.Health>
-  <PSI.Settings.Visibility.Hot>Heiß</PSI.Settings.Visibility.Hot>
+  <PSI.Settings.Visibility.TooHot>Heiß</PSI.Settings.Visibility.TooHot>
   <PSI.Settings.Visibility.Hungry>Hungrig</PSI.Settings.Visibility.Hungry>
   <PSI.Settings.Visibility.Idle>Untätig</PSI.Settings.Visibility.Idle>
   <PSI.Settings.Visibility.Injury>Verletzung</PSI.Settings.Visibility.Injury>
@@ -117,13 +117,13 @@
   <PSI.Settings.Visibility.Leave>Geht</PSI.Settings.Visibility.Leave>
   <PSI.Settings.Visibility.Lovers>Liebschaften</PSI.Settings.Visibility.Lovers>
   <PSI.Settings.Visibility.Naked>Nackt</PSI.Settings.Visibility.Naked>
-  <PSI.Settings.Visibility.NightOwl>Nachteule</PSI.Settings.Visibility.NightOwl>
+  <PSI.Settings.Visibility.NightOwl>Nachteule bei Tag</PSI.Settings.Visibility.NightOwl>
   <PSI.Settings.Visibility.Pacific>Pazifist</PSI.Settings.Visibility.Pacific>
   <PSI.Settings.Visibility.Pain>Schmerz</PSI.Settings.Visibility.Pain>
   <PSI.Settings.Visibility.Prosthophile>Prosthophil</PSI.Settings.Visibility.Prosthophile>
   <PSI.Settings.Visibility.Prosthophobe>Prosthophob</PSI.Settings.Visibility.Prosthophobe>
   <PSI.Settings.Visibility.Pyromaniac>Pyromane</PSI.Settings.Visibility.Pyromaniac>
-  <PSI.Settings.Visibility.RoomStatus>Zimmer-Status</PSI.Settings.Visibility.RoomStatus>
+  <PSI.Settings.Visibility.Crowded>Zimmer-Status</PSI.Settings.Visibility.Crowded>
   <PSI.Settings.Visibility.Sad>Traurig</PSI.Settings.Visibility.Sad>
   <PSI.Settings.Visibility.Sickness>Krankheit</PSI.Settings.Visibility.Sickness>
   <PSI.Settings.Visibility.TargetPoint>Zeige Zielort auf Boden</PSI.Settings.Visibility.TargetPoint>
@@ -132,5 +132,9 @@
   <PSI.Settings.VisibilityButton>Sichtbarkeit</PSI.Settings.VisibilityButton>
   <PSI.Settings>Pawn State Icons Einstellungen</PSI.Settings>
 
-
+  <PSI.Settings.Visibility.Panic>Panik</PSI.Settings.Visibility.Panic>
+  <PSI.Settings.Visibility.MedicalAttention>Medizinische Aufmerksamkeit</PSI.Settings.Visibility.MedicalAttention>
+  <PSI.Settings.Visibility.Toxicity>Vergiftung</PSI.Settings.Visibility.Toxicity>
+  <PSI.Settings.Visibility.LeftUnburied>Kolonist nicht begraben</PSI.Settings.Visibility.LeftUnburied>
+  <PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
 </LanguageData>

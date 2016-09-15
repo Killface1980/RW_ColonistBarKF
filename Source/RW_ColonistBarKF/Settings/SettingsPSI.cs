@@ -34,11 +34,11 @@ namespace RW_ColonistBarKF
         public bool ShowHungry = true;
         public bool ShowSad = true;
         public bool ShowTired = true;
-        public bool ShowDisease = true;
+        public bool ShowMedicalAttention = true;
         public bool ShowEffectiveness = true;
         public bool ShowBloodloss = true;
-        public bool ShowHot = true;
-        public bool ShowCold = true;
+        public bool ShowTooHot = true;
+        public bool ShowTooCold = true;
         public bool ShowNaked = true;
         public bool ShowDrunk = true;
         public bool ShowApparelHealth = true;
@@ -48,16 +48,19 @@ namespace RW_ColonistBarKF
         public bool ShowNightOwl = true;
         public bool ShowGreedy = true;
         public bool ShowJealous = true;
-        public bool ShowLovers = true;
+        public bool ShowLove = true;
         public bool ShowDeadColonists = true;
         public bool ShowLeftUnburied = true;
         public bool ShowRoomStatus = true;
         public bool ShowPain = true;
         public bool ShowBedroom = true;
+        public bool ShowToxicity = true;
         public bool ShowHealth = true;
+   //     public bool ShowMarriage = true;
         public bool ShowPyromaniac = true;
+        public bool ShowPanic = true;
 
- //       public float LimitMoodLess = 0.25f;
+        //       public float LimitMoodLess = 0.25f;
         public float LimitFoodLess = 0.25f;
         public float LimitRestLess = 0.25f;
         public float LimitEfficiencyLess = 0.33f;
