@@ -11,7 +11,7 @@
   <CBKF.Settings.ColonistBarOffset>Abstände zu den Rändern: </CBKF.Settings.ColonistBarOffset>
   <CBKF.Settings.DoubleClickTime>Doppelklick-Intervall</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</CBKF.Settings.FemaleColor>
-  <CBKF.Settings.FixedScale>Keine Skalierung</CBKF.Settings.FixedScale>
+  <CBKF.Settings.FixedScale>Benutze feste Skalierung</CBKF.Settings.FixedScale>
   <CBKF.Settings.Health>Gesundheit</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Farbe für männliche Kolonisten</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Unterer Abstand</CBKF.Settings.MarginBottom>

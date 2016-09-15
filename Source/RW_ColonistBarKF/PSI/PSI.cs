@@ -156,7 +156,7 @@ namespace ColonistBarKF.PSI
 
             if (ColBarSettings.UsePsi)
             {
-                switch (ColBarSettings.IconPos)
+                switch (ColBarSettings.ColBarPsiIconPos)
                 {
                     case SettingsColonistBar.Alignment.Left:
                         iconRect.x = rect.xMin - iconRect.width;
@@ -170,7 +170,7 @@ namespace ColonistBarKF.PSI
                         iconRect.y = rect.yMin - iconRect.width * 1.5f;
                         break;
                     case SettingsColonistBar.Alignment.Bottom:
-                        iconRect.y = rect.yMax + 0.5f * iconRect.width;
+                        iconRect.y = rect.yMax+ iconRect.height/3;
                         break;
 
                 }

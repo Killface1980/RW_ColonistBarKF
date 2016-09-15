@@ -35,7 +35,9 @@ namespace ColonistBarKF
 
         public float BaseSpacingHorizontal = 24f;
         public float BaseSpacingVertical = 32f;
-        public float BaseSizeFloat = 48f;
+        public float  BaseSizeFloat = 48f;
+        public  float  BaseSizeScale = 1f;
+        public  float CustomIconScaleFloat = 1f;
         public float BaseIconSize = 20f;
         public float PawnTextureCameraHorizontalOffset = 0f;
         public float PawnTextureCameraVerticalOffset = 0.3f;
@@ -69,7 +71,7 @@ namespace ColonistBarKF
             byName
         }
 
-        public Alignment IconPos =Alignment.Left;
+        public Alignment ColBarPsiIconPos =Alignment.Left;
 
         public Alignment ColBarPos=Alignment.Top;
 
