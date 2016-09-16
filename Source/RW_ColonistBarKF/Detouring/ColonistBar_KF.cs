@@ -67,7 +67,7 @@ namespace ColonistBarKF
                 {
                     while (true)
                     {
-                        int allowedColumnsCountForScale = GetAllowedColumnsCountForScale(CurrentScale);
+                        int allowedColumnsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
                         int num2 = ColumnsCountAssumingScale(CurrentScale);
                         if (num2 <= allowedColumnsCountForScale)
                         {
@@ -77,24 +77,6 @@ namespace ColonistBarKF
                     }
                     return CurrentScale;
                 }
-
-                if (false)
-                    if (ColBarSettings.UseCustomIconSize)
-                    {
-
-                        while (true)
-                        {
-                            int allowedRowsCountForScale = GetAllowedRowsCountForScaleModded(CurrentScale);
-                            int num2 = RowsCountAssumingScale(CurrentScale);
-                            if (num2 <= allowedRowsCountForScale)
-                            {
-                                break;
-                            }
-                            CurrentScale *= 0.95f;
-                        }
-                        return CurrentScale;
-                    }
-
 
                 while (true)
                 {
@@ -244,7 +226,7 @@ namespace ColonistBarKF
                         }
                     case 2:
                         {
-                            if (scale > 0.66f)
+                            if (scale > 0.42f)
                             {
                                 return 1;
                             }
@@ -252,7 +234,11 @@ namespace ColonistBarKF
                         }
                     case 3:
                         {
-                            if (scale > 0.75f)
+                            break;
+                        }
+                    case 4:
+                        {
+                            if (scale > 0.58f)
                             {
                                 return 1;
                             }
@@ -260,19 +246,7 @@ namespace ColonistBarKF
                             {
                                 return 2;
                             }
-                            return 3;
-                        }
-                    case 4:
-                        {
-                            if (scale > 0.8f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.6f)
-                            {
-                                return 2;
-                            }
-                            if (scale > 0.4f)
+                            if (scale > 0.42f)
                             {
                                 return 3;
                             }
@@ -280,19 +254,19 @@ namespace ColonistBarKF
                         }
                     case 5:
                         {
-                            if (scale > 0.84f)
+                            if (scale > 0.66f)
                             {
                                 return 1;
                             }
-                            if (scale > 0.68f)
+                            if (scale > 0.58f)
                             {
                                 return 2;
                             }
-                            if (scale > 0.52f)
+                            if (scale > 0.5f)
                             {
                                 return 3;
                             }
-                            if (scale > 0.36f)
+                            if (scale > 0.42f)
                             {
                                 return 4;
                             }
@@ -312,107 +286,6 @@ namespace ColonistBarKF
                 return 2;
             }
             return 3;
-        }
-
-        private static int GetAllowedColumnsCountForScale(float scale)
-        {
-
-            if (ColBarSettings.UseCustomRowCount)
-            {
-                switch (ColBarSettings.MaxRowsCustom)
-                {
-                    case 1:
-                        {
-                            return 1;
-                        }
-                    case 2:
-                        {
-                            if (scale > 0.66f)
-                            {
-                                return 1;
-                            }
-                            return 2;
-                        }
-                    case 3:
-                        {
-                            if (scale > 0.75f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.5f)
-                            {
-                                return 2;
-                            }
-                            return 3;
-                        }
-                    case 4:
-                        {
-                            if (scale > 0.8f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.6f)
-                            {
-                                return 2;
-                            }
-                            if (scale > 0.4f)
-                            {
-                                return 3;
-                            }
-                            return 4;
-                        }
-                    case 5:
-                        {
-                            if (scale > 0.84f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.68f)
-                            {
-                                return 2;
-                            }
-                            if (scale > 0.52f)
-                            {
-                                return 3;
-                            }
-                            if (scale > 0.36f)
-                            {
-                                return 4;
-                            }
-                            return 5;
-                        }
-
-                }
-            }
-
-            if (scale > 0.7f)
-            {
-                return 2;
-            }
-            if (scale > 0.6f)
-            {
-                return 3;
-            }
-            if (scale > 0.5f)
-            {
-                return 4;
-            }
-
-            return 5;
-
-        }
-
-        private static int GetAllowedRowsCountForScaleModded(float scale)
-        {
-            if (scale > 0.67f)
-            {
-                return 2;
-            }
-            if (scale > 0.34f)
-            {
-                return 3;
-            }
-            return 4;
         }
 
         private static List<Thing> tmpColonists = new List<Thing>();
@@ -460,6 +333,7 @@ namespace ColonistBarKF
                     }
                 }
             }
+
 
         }
 
@@ -888,53 +762,6 @@ namespace ColonistBarKF
 
         private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
-        private void DrawWeapon(Rect rect, Pawn colonist)
-        {
-            float colonistRectAlpha = GetColonistRectAlpha(rect);
-            Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
-            GUI.color = color;
-            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f);
-            foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
-            {
-                var rect2 = rect.ContractedBy(rect.width / 3);
-
-                rect2.x += rect.width / 3 - rect.width / 8;
-                rect2.y += rect.height / 3 - rect.height / 8;
-
-                if (Mouse.IsOver(rect2))
-                {
-                    GUI.color = HighlightColor;
-                    GUI.DrawTexture(rect2, TexUI.HighlightTex);
-                }
-
-                GUI.color = Color.white;
-                Texture2D resolvedIcon;
-                if (!thing.def.uiIconPath.NullOrEmpty())
-                {
-                    resolvedIcon = thing.def.uiIcon;
-                }
-                else
-                {
-                    resolvedIcon = thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
-                }
-                // color labe by thing
-
-                if (thing.def.IsMeleeWeapon)
-                {
-                    GUI.color = new Color(0.7f, 0.0f, 0.0f, colonistRectAlpha);
-                }
-                if (thing.def.IsRangedWeapon)
-                {
-                    GUI.color = new Color(0.0f, 0.7f, 0.0f, colonistRectAlpha);
-                }
-                Widgets.DrawBoxSolid(rect2, iconcolor);
-                Widgets.DrawBox(rect2);
-                GUI.color = Color.white;
-                var rect3 = rect2.ContractedBy(rect2.width / 8);
-
-                Widgets.DrawTextureRotated(rect3, resolvedIcon, 0);
-            }
-        }
 
         internal static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
         {
@@ -1019,6 +846,20 @@ namespace ColonistBarKF
                 //  DrawIcon(PSI.PSI.PSIMaterials[Icons.Idle].mainTexture as Texture2D, ref vector, "ActivityIconIdle".Translate());
                 DrawIcon(ColonistBarTextures.Icon_Idle, ref vector, "ActivityIconIdle".Translate());
             }
+            if (false)
+            {
+                PawnStats pawnStats;
+                if (colonist.Dead || colonist.holder != null || !PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats) ||
+                    colonist.drafter == null || colonist.skills == null)
+                    return;
+
+                if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugMajor || pawnStats.MentalSanity == MentalStateDefOf.BingingDrugExtreme)
+                {
+                    Material material = PSI.PSI.PSIMaterials[Icons.Drunk];
+                    DrawIcon(material.mainTexture as Texture2D, ref vector, colonist.MentalStateDef.LabelCap);
+                }
+            }
+
             if (colonist.IsBurning())
             {
                 DrawIcon(ColonistBarTextures.Icon_Burning, ref vector, "ActivityIconBurning".Translate());
@@ -1027,11 +868,59 @@ namespace ColonistBarKF
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            float num = ColBarSettings.BaseIconSize * Scale;
+            float num = ColBarSettings.BaseSizeFloat * 0.4f * Scale;
             Rect rect = new Rect(pos.x, pos.y, num, num);
             GUI.DrawTexture(rect, icon);
             TooltipHandler.TipRegion(rect, tooltip);
             pos.x += num;
+        }
+
+        private void DrawWeapon(Rect rect, Pawn colonist)
+        {
+            float colonistRectAlpha = GetColonistRectAlpha(rect);
+            Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
+            GUI.color = color;
+            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f*colonistRectAlpha);
+            foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
+            {
+                var rect2 = rect.ContractedBy(rect.width / 3);
+
+                rect2.x += rect.width / 3 - rect.width / 8;
+                rect2.y += rect.height / 3 - rect.height / 8;
+
+                if (Mouse.IsOver(rect2))
+                {
+                    GUI.color = HighlightColor;
+                    GUI.DrawTexture(rect2, TexUI.HighlightTex);
+                }
+
+                GUI.color = color;
+                Texture2D resolvedIcon;
+                if (!thing.def.uiIconPath.NullOrEmpty())
+                {
+                    resolvedIcon = thing.def.uiIcon;
+                }
+                else
+                {
+                    resolvedIcon = thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
+                }
+                // color labe by thing
+
+                if (thing.def.IsMeleeWeapon)
+                {
+                    GUI.color = new Color(0.7f, 0.0f, 0.0f, colonistRectAlpha);
+                }
+                if (thing.def.IsRangedWeapon)
+                {
+                    GUI.color = new Color(0.0f, 0.7f, 0.0f, colonistRectAlpha);
+                }
+                Widgets.DrawBoxSolid(rect2, iconcolor);
+                Widgets.DrawBox(rect2);
+                GUI.color = color;
+                var rect3 = rect2.ContractedBy(rect2.width / 8);
+
+                Widgets.DrawTextureRotated(rect3, resolvedIcon, 0);
+            }
         }
 
 
@@ -1115,7 +1004,7 @@ namespace ColonistBarKF
             }
             float num = 0.4f * Scale;
             Vector2 textureSize = new Vector2(ColonistBarTextures.SelectedTex.width * num, ColonistBarTextures.SelectedTex.height * num);
-            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, ColBarSettings.BaseIconSize * Scale);
+            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
             int num2 = 90;
             for (int i = 0; i < 4; i++)
             {

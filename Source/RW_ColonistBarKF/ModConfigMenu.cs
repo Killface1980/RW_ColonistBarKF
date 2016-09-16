@@ -546,6 +546,8 @@ namespace ColonistBarKF
 
         private void FillPageMain()
         {
+            #region Colonist bar position
+
             #region Vertical Alignment
 
             if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
@@ -559,7 +561,7 @@ namespace ColonistBarKF
                 if (ColBarSettings.UseCustomMarginRight)
                 {
                     Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginRightVer = HorizontalSlider(ColBarSettings.MarginRightVer, 0f, Screen.width / 12);
+                    ColBarSettings.MarginRightVer = HorizontalSlider(ColBarSettings.MarginRightVer, 0f, Screen.width / 6);
                     ColBarSettings.MarginTopVerRight = HorizontalSlider(ColBarSettings.MarginTopVerRight, 0f, Screen.height * 2 / 5);
                     ColBarSettings.MarginBottomVerRight = HorizontalSlider(ColBarSettings.MarginBottomVerRight, 0f, Screen.height * 2 / 5);
                 }
@@ -585,7 +587,7 @@ namespace ColonistBarKF
                 if (ColBarSettings.UseCustomMarginLeft)
                 {
                     Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginLeftVer = HorizontalSlider(ColBarSettings.MarginLeftVer, 0f, Screen.width / 12);
+                    ColBarSettings.MarginLeftVer = HorizontalSlider(ColBarSettings.MarginLeftVer, 0f, Screen.width / 6);
                     ColBarSettings.MarginTopVerLeft = HorizontalSlider(ColBarSettings.MarginTopVerLeft, 0f, Screen.height * 2 / 5);
                     ColBarSettings.MarginBottomVerLeft = HorizontalSlider(ColBarSettings.MarginBottomVerLeft, 0f, Screen.height * 2 / 5);
                 }
@@ -624,7 +626,7 @@ namespace ColonistBarKF
                 if (ColBarSettings.UseCustomMarginBottom)
                 {
                     Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginBottomHor = ColBarSettings.MarginBottomHor = HorizontalSlider(ColBarSettings.MarginBottomHor, 10, Screen.height / 12);
+                    ColBarSettings.MarginBottomHor = ColBarSettings.MarginBottomHor = HorizontalSlider(ColBarSettings.MarginBottomHor, 10, Screen.height / 6);
                     ColBarSettings.MarginLeftHorBottom = HorizontalSlider(ColBarSettings.MarginLeftHorBottom, 0f, Screen.width * 2 / 5);
                     ColBarSettings.MarginRightHorBottom = HorizontalSlider(ColBarSettings.MarginRightHorBottom, 0f, Screen.width * 2 / 5);
                 }
@@ -650,7 +652,7 @@ namespace ColonistBarKF
                 if (ColBarSettings.UseCustomMarginTopHor)
                 {
                     Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 10, Screen.height / 12);
+                    ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 10, Screen.height / 6);
                     ColBarSettings.MarginLeftHorTop = HorizontalSlider(ColBarSettings.MarginLeftHorTop, 0f, Screen.width * 2 / 5);
                     ColBarSettings.MarginRightHorTop = HorizontalSlider(ColBarSettings.MarginRightHorTop, 0f, Screen.width * 2 / 5);
                 }
@@ -673,8 +675,23 @@ namespace ColonistBarKF
 #endif
 
             #endregion
+            #endregion
+
+
+
+            #region Max Rows
+            BeginVertical(_fondBoxes);
+            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "PSI.Settings.Arrangement.MaxRowCount".Translate() + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
+            if (ColBarSettings.UseCustomRowCount)
+            {
+                ColBarSettings.MaxRowsCustom = (int)HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
+            }
+            EndVertical();
+            #endregion
 
             #region Various
+
+
 
             BeginVertical(_fondBoxes);
 
@@ -711,33 +728,12 @@ namespace ColonistBarKF
             #region Size + Spacing
             BeginVertical(_fondBoxes);
 
-            Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.MaxRowsCustom);
-            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "CBKF.Settings.CustomRowCount".Translate());
-            if (ColBarSettings.UseCustomRowCount)
-            {
-                ColBarSettings.MaxRowsCustom = (int)HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
-            }
-
-            Space(12);
-
             ColBarSettings.UseCustomIconSize = Toggle(ColBarSettings.UseCustomIconSize, "CBKF.Settings.BasicSize".Translate() +
                 (ColBarSettings.BaseSizeFloat).ToString("N0") + " px, " +
-                (ColBarSettings.UseFixedIconScale? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, " : (ColonistBar_KF.CurrentScale * 100).ToString("N0") + " %, " )+
+                (ColBarSettings.UseFixedIconScale ? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, " : (ColonistBar_KF.CurrentScale * 100).ToString("N0") + " %, ") +
                 (int)ColBarSettings.BaseSpacingHorizontal + " x, " +
             (int)ColBarSettings.BaseSpacingVertical + " y"
                 );
-
-            Space(Text.LineHeight / 2);
-
-            ColBarSettings.UseFixedIconScale = Toggle(ColBarSettings.UseFixedIconScale, "CBKF.Settings.FixedScale".Translate());
-            if (ColBarSettings.UseFixedIconScale)
-            {
-                ColBarSettings.FixedIconScaleFloat = HorizontalSlider(ColBarSettings.FixedIconScaleFloat, 0.2f, 2.5f);
-            }
-            else
-            {
-                ColBarSettings.FixedIconScaleFloat = 1f;
-            }
 
             if (ColBarSettings.UseCustomIconSize)
             {
@@ -755,6 +751,17 @@ namespace ColonistBarKF
                 ColBarSettings.BaseSpacingVertical = 32f;
             }
 
+            #region Fixed Scaling
+            ColBarSettings.UseFixedIconScale = Toggle(ColBarSettings.UseFixedIconScale, "CBKF.Settings.FixedScale".Translate());
+            if (ColBarSettings.UseFixedIconScale)
+            {
+                ColBarSettings.FixedIconScaleFloat = HorizontalSlider(ColBarSettings.FixedIconScaleFloat, 0.2f, 2.5f);
+            }
+            else
+            {
+                ColBarSettings.FixedIconScaleFloat = 1f;
+            }
+            #endregion
 
             EndVertical();
 
