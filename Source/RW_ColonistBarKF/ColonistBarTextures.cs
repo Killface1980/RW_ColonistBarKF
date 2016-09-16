@@ -15,20 +15,18 @@ namespace Verse
         public static readonly Texture2D GrayLines =
      SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.25f));
 
-    //    public static readonly Texture2D MoodBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.6f));
-        public static readonly Texture2D MoodGoodTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 115, 0, 255));
-        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color32(30, 30, 30, 255));
-        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 153, 0, 255));
-        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(179, 91, 0, 255));
-        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color32(153, 0, 0, 255));
+        public static readonly Texture2D MoodTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.8f, 0.85f, 0.5f));
+        public static readonly Texture2D MoodNeutral = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.2f, 0.8f));
+        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.85f, 0.85f, 0.2f, 0.4f));
+        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.55f, 0.05f, 0.75f));
+        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.95f, 0.15f, 0.00f, 0.8f));
+        public static readonly Texture2D MoodExtremeCrossedBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.9f, 0.1f, 0.00f, 0.45f));
 
-        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color32(0, 191, 191, 255));
-        public static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.1f, 0.1f, 0.8f));
+        public static readonly Texture2D MoodTargetTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.9f, 0.95f, 0.7f));
+        public static readonly Texture2D MoodBreakTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.2f, 0.22f, 0.8f));
 
 
-        //   private static Texture2D BGTex = ContentFinder<Texture2D>.Get("UI/Widgets/DesButBG", true);
-        //   private static readonly Texture2D BGTex = Command.BGTex;
-    //    public static Texture2D BGTex = Command.BGTex;
+
 
         public static readonly Texture2D SelectedTex = ContentFinder<Texture2D>.Get("UI/Overlays/SelectionBracketGUI");
 

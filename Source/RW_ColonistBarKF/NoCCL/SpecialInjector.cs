@@ -32,7 +32,7 @@ namespace ColonistBarKF.NoCCL
             if (injector.Inject()) Log.Message(AssemblyName + " injected.");
             else Log.Error(AssemblyName + " failed to get injected properly.");
 
-            GameObject initializer = new GameObject("CBKFMapComponentInjector");
+            GameObject initializer = new GameObject("MapComponentInjector");
             initializer.AddComponent<MapComponentInjector>();
             Object.DontDestroyOnLoad(initializer);
         }

@@ -45,6 +45,9 @@ namespace ColonistBarKF
 
         public override void WindowUpdate()
         {
+            ColonistBar_KF.BaseSize = new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
+            ColonistBar_KF.PawnTextureSize = new Vector2(ColBarSettings.BaseSizeFloat - 2f, ColBarSettings.BaseSizeFloat * 1.5f);
+
             Reinit(false, true);
 
             //  if (Find.TickManager.TicksGame > lastupdate)
@@ -708,9 +711,18 @@ namespace ColonistBarKF
             #region Size + Spacing
             BeginVertical(_fondBoxes);
 
+            Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.MaxRowsCustom);
+            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "CBKF.Settings.CustomRowCount".Translate());
+            if (ColBarSettings.UseCustomRowCount)
+            {
+                ColBarSettings.MaxRowsCustom = (int)HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
+            }
+
+            Space(12);
+
             ColBarSettings.UseCustomIconSize = Toggle(ColBarSettings.UseCustomIconSize, "CBKF.Settings.BasicSize".Translate() +
-                (ColBarSettings.CustomIconScaleFloat*48).ToString("N0") + " px, " +
-                (ColBarSettings.BaseSizeScale * 100).ToString("N0") + " %, " +
+                (ColBarSettings.BaseSizeFloat).ToString("N0") + " px, " +
+                (ColBarSettings.UseFixedIconScale? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, " : (ColonistBar_KF.CurrentScale * 100).ToString("N0") + " %, " )+
                 (int)ColBarSettings.BaseSpacingHorizontal + " x, " +
             (int)ColBarSettings.BaseSpacingVertical + " y"
                 );
@@ -720,26 +732,25 @@ namespace ColonistBarKF
             ColBarSettings.UseFixedIconScale = Toggle(ColBarSettings.UseFixedIconScale, "CBKF.Settings.FixedScale".Translate());
             if (ColBarSettings.UseFixedIconScale)
             {
-                ColBarSettings.BaseSizeScale = HorizontalSlider(ColBarSettings.BaseSizeScale, 0.2f, 2.5f);
+                ColBarSettings.FixedIconScaleFloat = HorizontalSlider(ColBarSettings.FixedIconScaleFloat, 0.2f, 2.5f);
             }
             else
             {
-                    ColBarSettings.BaseSizeScale = 1f;
+                ColBarSettings.FixedIconScaleFloat = 1f;
             }
 
             if (ColBarSettings.UseCustomIconSize)
             {
                 Space(Text.LineHeight / 2);
 
-                ColBarSettings.CustomIconScaleFloat = HorizontalSlider(ColBarSettings.CustomIconScaleFloat, 0.2f, 2.5f);
+                ColBarSettings.BaseSizeFloat = HorizontalSlider(ColBarSettings.BaseSizeFloat, 24f, 128f);
 
                 ColBarSettings.BaseSpacingHorizontal = HorizontalSlider(ColBarSettings.BaseSpacingHorizontal, 1f, 72f);
                 ColBarSettings.BaseSpacingVertical = HorizontalSlider(ColBarSettings.BaseSpacingVertical, 1f, 96f);
             }
             else
             {
-                ColBarSettings.CustomIconScaleFloat = 1f;
-                ColBarSettings.BaseIconSize = 20f;
+                ColBarSettings.BaseSizeFloat = 48f;
                 ColBarSettings.BaseSpacingHorizontal = 24f;
                 ColBarSettings.BaseSpacingVertical = 32f;
             }

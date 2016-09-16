@@ -18,6 +18,7 @@ namespace ColonistBarKF
 
         public bool UseMoodColors = true;
         public bool UseWeaponIcons = true;
+        public bool UseCustomRowCount = false;
 
         public float MarginTopHor = 21f;
         public float MarginBottomHor = 21f;
@@ -36,9 +37,8 @@ namespace ColonistBarKF
         public float BaseSpacingHorizontal = 24f;
         public float BaseSpacingVertical = 32f;
         public float  BaseSizeFloat = 48f;
-        public  float  BaseSizeScale = 1f;
-        public  float CustomIconScaleFloat = 1f;
         public float BaseIconSize = 20f;
+        public  float  FixedIconScaleFloat = 1f;
         public float PawnTextureCameraHorizontalOffset = 0f;
         public float PawnTextureCameraVerticalOffset = 0.3f;
         public float PawnTextureCameraZoom = 1.28205f;
@@ -49,14 +49,14 @@ namespace ColonistBarKF
         public float HorizontalOffset = 0f;
 
 
-        public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-        public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+        public readonly Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+        public readonly Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
         public bool useZoomToMouse = false;
         public float moodRectScale = 0.3f;
         public float moodRectAlpha = 0.66f;
 
-        public int MaxRows;
+        public int MaxRowsCustom =3;
 
         public SortByWhat SortBy;
 

@@ -170,7 +170,7 @@ namespace ColonistBarKF.PSI
                         iconRect.y = rect.yMin - iconRect.width * 1.5f;
                         break;
                     case SettingsColonistBar.Alignment.Bottom:
-                        iconRect.y = rect.yMax+ iconRect.height/3;
+                        iconRect.y = rect.yMax+ iconRect.height*0.75f;
                         break;
 
                 }
