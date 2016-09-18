@@ -9,9 +9,9 @@ namespace ColonistBarKF
     {
         // backing private fields / properties
         private const BindingFlags all = (BindingFlags)60;
-        private FieldInfo curSize_FI = typeof(CameraDriver).GetField("rootSize", all);
-        private FieldInfo desSize_FI = typeof(CameraDriver).GetField("desiredSize", all);
-        private MethodInfo curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", all).GetGetMethod(true);
+        private readonly FieldInfo curSize_FI = typeof(CameraDriver).GetField("rootSize", all);
+        private readonly FieldInfo desSize_FI = typeof(CameraDriver).GetField("desiredSize", all);
+        private readonly MethodInfo curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", all).GetGetMethod(true);
 
         // tolerance for zoom
         private float tolerance = .1f;
@@ -22,9 +22,9 @@ namespace ColonistBarKF
         private Vector3 MouseMapOffset => LastMouseMapPosition - CurrentMouseMapPosition;
 
         // reflection helpers
-        public float CurrentSize => (float)curSize_FI.GetValue(Current.CameraDriver);
-        public float DesiredSize => (float)desSize_FI.GetValue(Current.CameraDriver);
-        public Vector3 CurrentRealPosition => (Vector3)curPos.Invoke(Current.CameraDriver, null);
+        private float CurrentSize => (float)curSize_FI.GetValue(Current.CameraDriver);
+        private float DesiredSize => (float)desSize_FI.GetValue(Current.CameraDriver);
+        private Vector3 CurrentRealPosition => (Vector3)curPos.Invoke(Current.CameraDriver, null);
 
         public override void MapComponentUpdate()
         {

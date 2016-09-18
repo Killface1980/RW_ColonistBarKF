@@ -780,7 +780,7 @@ namespace ColonistBarKF.PSI
 
         private static void DrawColonistIcons(Pawn colonist)
         {
-            var opacity = PsiSettings.IconOpacity;
+            float opacity = PsiSettings.IconOpacity;
 
             float opacityCritical = PsiSettings.IconOpacityCritical;
 
@@ -1326,7 +1326,7 @@ namespace ColonistBarKF.PSI
         public static void DrawColonistIconsOnBar(Rect rect, Pawn colonist, float rectAlpha)
         {
             float opacityCritical = 1f;
-            var opacity = 1f;
+            float opacity = 1f;
 
             Color color25To21 = new Color(0.8f, 0f, 0f, opacity);
 
@@ -1357,7 +1357,7 @@ namespace ColonistBarKF.PSI
 
             Color colorYellowAlert = new Color(color15To11.r, color15To11.g, color15To11.b, opacityCritical + (1 - opacityCritical) * opacity);
 
-            var iconNum = 0;
+            int iconNum = 0;
 
             PawnStats pawnStats;
             if (colonist.Dead || colonist.holder != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||

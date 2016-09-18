@@ -63,7 +63,7 @@ namespace ColonistBarKF.PSI
 
         private Material LoadIconMat(string path, bool smooth = false)
         {
-            var tex = ContentFinder<Texture2D>.Get("UI/Overlays/PawnStateIcons/" + path, false);
+            Texture2D tex = ContentFinder<Texture2D>.Get("UI/Overlays/PawnStateIcons/" + path, false);
             Material material;
             if (tex == null)
             {
@@ -94,7 +94,7 @@ namespace ColonistBarKF.PSI
 
         public void ReloadTextures(bool smooth = false)
         {
-            foreach (var icons in Enum.GetValues(typeof(Icons)).Cast<Icons>())
+            foreach (Icons icons in Enum.GetValues(typeof(Icons)).Cast<Icons>())
             {
                 switch (icons)
                 {
@@ -102,7 +102,7 @@ namespace ColonistBarKF.PSI
                     case Icons.Length:
                         continue;
                     default:
-                        var path = _matLibName + "/" + Enum.GetName(typeof(Icons), icons);
+                        string path = _matLibName + "/" + Enum.GetName(typeof(Icons), icons);
                         _data[(int) icons] = LoadIconMat(path, smooth);
                         continue;
                 }

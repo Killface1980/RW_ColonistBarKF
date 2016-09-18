@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -14,21 +15,22 @@ namespace ColonistBarKF
         private static bool _currentlyFollowing;
         private static Thing _followedThing;
         private bool _enabled = true;
+        private static bool _cameraHasJumpedAtLeastOnce = false;
 
-        private KeyBindingDef[] _followBreakingKeyBindingDefs = {
+        private readonly KeyBindingDef[] _followBreakingKeyBindingDefs = {
             KeyBindingDefOf.MapDollyDown,
             KeyBindingDefOf.MapDollyUp,
             KeyBindingDefOf.MapDollyRight,
             KeyBindingDefOf.MapDollyLeft
         };
 
-        private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
+        private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
         #endregion Fields
 
         #region Properties
 
-        public static string FollowedLabel
+        private static string FollowedLabel
         {
             get
             {
@@ -53,7 +55,7 @@ namespace ColonistBarKF
                  Event.current.button == 2)
             {
                 // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
-                var pos = Input.mousePosition;
+                Vector3 pos = Input.mousePosition;
                 pos.y = Screen.height - pos.y;
                 Thing thing = Find.ColonistBar.ColonistAt(pos);
                 if (thing != null)
@@ -99,6 +101,8 @@ namespace ColonistBarKF
             if (!_currentlyFollowing || _followedThing == null)
                 return;
 
+            Vector3 newCameraPosition;
+
             if (!_followedThing.Spawned && _followedThing.holder != null)
             {
                 // thing is in some sort of container
@@ -107,23 +111,56 @@ namespace ColonistBarKF
                 // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
                 Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
                 if (tracker != null)
-                    Find.CameraDriver.JumpTo(tracker.pawn.DrawPos);
+                    newCameraPosition = tracker.pawn.DrawPos;
 
                 // otherwise the holder int location will have to do
                 else
-                    Find.CameraDriver.JumpTo(holder.GetPosition());
+                    newCameraPosition = holder.GetPosition().ToVector3Shifted();
             }
 
             // thing is spawned in world, just use the things drawPos
             else if (_followedThing.Spawned)
-                Find.CameraDriver.JumpTo(_followedThing.DrawPos);
+                newCameraPosition = _followedThing.DrawPos;
 
             // we've lost track of whatever it was we were following
             else
+            {
+
                 StopFollow();
+                return;
+            }
+            // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
+            // before starting to compare positions
+            if (_cameraHasJumpedAtLeastOnce)
+            {
+                // the actual location of the camera right now
+                var currentCameraPosition = Find.CameraDriver.MapPosition;
+
+                // the location the camera has been requested to be at
+                var requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+
+                // these normally stay in sync while following is active, since we were the last to request where the camera should go.
+                // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
+                // following our thing.
+                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 || Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
+                {
+                    StopFollow();
+                    return;
+                }
+            }
+
+            Find.CameraDriver.JumpTo(newCameraPosition);
+            _cameraHasJumpedAtLeastOnce = true;
         }
 
-        public static void TryStartFollow(Thing thing)
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static Vector3 GetRequestedCameraPosition()
+        {
+            var cameraDriver = Find.CameraDriver;
+            return (Vector3)_cameraDriverRootPosField.GetValue(cameraDriver);
+        }
+
+        private static void TryStartFollow(Thing thing)
         {
             if (!_currentlyFollowing && thing == null)
             {
@@ -173,8 +210,8 @@ namespace ColonistBarKF
             if (!_currentlyFollowing)
                 return;
 
-            var mousePosition = Input.mousePosition;
-            var screenCorners = new[]
+            Vector3 mousePosition = Input.mousePosition;
+            Rect[] screenCorners = new[]
             {
                 new Rect(0f, 0f, 200f, 200f),
                 new Rect(Screen.width - 250, 0f, 255f, 255f),
@@ -189,6 +226,7 @@ namespace ColonistBarKF
             {
                 StopFollow();
             }
+
         }
     }
 }

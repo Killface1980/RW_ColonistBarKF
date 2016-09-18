@@ -80,7 +80,7 @@ namespace ColonistBarKF
 
                 while (true)
                 {
-                    var allowedRowsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
+                    int allowedRowsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
 
                     int rowsCountAssumingScale = RowsCountAssumingScale(CurrentScale);
                     if (rowsCountAssumingScale <= allowedRowsCountForScale)
@@ -204,7 +204,7 @@ namespace ColonistBarKF
             get
             {
                 int maxCount = 0;
-                foreach (var colonist in PSI.PSI._statsDict)
+                foreach (KeyValuePair<Pawn, PawnStats> colonist in PSI.PSI._statsDict)
                 {
                     if (colonist.Value.IconCount > maxCount)
                         maxCount = colonist.Value.IconCount;
@@ -226,7 +226,7 @@ namespace ColonistBarKF
                         }
                     case 2:
                         {
-                            if (scale > 0.42f)
+                            if (scale > 0.58f)
                             {
                                 return 1;
                             }
@@ -254,19 +254,19 @@ namespace ColonistBarKF
                         }
                     case 5:
                         {
-                            if (scale > 0.66f)
+                            if (scale > 0.58f)
                             {
                                 return 1;
                             }
-                            if (scale > 0.58f)
+                            if (scale > 0.5f)
                             {
                                 return 2;
                             }
-                            if (scale > 0.5f)
+                            if (scale > 0.42f)
                             {
                                 return 3;
                             }
-                            if (scale > 0.42f)
+                            if (scale > 0.34f)
                             {
                                 return 4;
                             }
@@ -884,10 +884,10 @@ namespace ColonistBarKF
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
-            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f * colonistRectAlpha);
+            Color iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f * colonistRectAlpha);
             foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
             {
-                var rect2 = rect.ContractedBy(rect.width / 3);
+                Rect rect2 = rect.ContractedBy(rect.width / 3);
 
                 rect2.x += rect.width / 3 - rect.width / 8;
                 rect2.y += rect.height / 3 - rect.height / 8;
@@ -921,7 +921,7 @@ namespace ColonistBarKF
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
                 GUI.color = color;
-                var rect3 = rect2.ContractedBy(rect2.width / 8);
+                Rect rect3 = rect2.ContractedBy(rect2.width / 8);
 
                 Widgets.DrawTextureRotated(rect3, resolvedIcon, 0);
             }
@@ -955,7 +955,7 @@ namespace ColonistBarKF
 
                     if (clickedColonist != null && SelPawn != null && SelPawn != clickedColonist)
                     {
-                        foreach (var choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
+                        foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
                         {
                             floatOptionList.Add(choice);
                         }

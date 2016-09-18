@@ -28,7 +28,7 @@ namespace ColonistBarKF.NoCCL
 
         private static void Inject()
         {
-            var injector = new CB_SpecialInjector();
+            CB_SpecialInjector injector = new CB_SpecialInjector();
             if (injector.Inject()) Log.Message(AssemblyName + " injected.");
             else Log.Error(AssemblyName + " failed to get injected properly.");
 

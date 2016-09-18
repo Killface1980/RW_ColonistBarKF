@@ -80,12 +80,13 @@ namespace ColonistBarKF
         private int psiBarPositionInt = 0;
         private int psiPositionInt = 0;
 
-        public string[] mainToolbarStrings =
+        private readonly string[] mainToolbarStrings =
             {
             "CBKF.Settings.ColonistBar".Translate(),
             "CBKF.Settings.PSI".Translate()
         };
-        public string[] psiToolbarStrings =
+
+        private readonly string[] psiToolbarStrings =
         {
             "PSI.Settings.ArrangementButton".Translate(),
             "PSI.Settings.OpacityButton".Translate(),
@@ -379,7 +380,7 @@ namespace ColonistBarKF
         public override float DoWindowContents(Rect rect)
 #endif
         {
-            var viewRect = new Rect(rect);
+            Rect viewRect = new Rect(rect);
             viewRect.x += 15f;
             viewRect.width -= 30f;
             viewRect.height -= 15f;
@@ -870,7 +871,7 @@ namespace ColonistBarKF
             BeginHorizontal();
             if (Button("PSI.Settings.IconSet".Translate() + PsiSettings.IconSet))
             {
-                var options = new List<FloatMenuOption>();
+                List<FloatMenuOption> options = new List<FloatMenuOption>();
 
                 options.Add(new FloatMenuOption("PSI.Settings.Preset.0".Translate(), () =>
                 {
@@ -1202,7 +1203,7 @@ namespace ColonistBarKF
                 Space(Text.LineHeight / 2);
 
                 Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 3f, 5f);
+                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
             }
             EndVertical();
 
@@ -1235,7 +1236,7 @@ namespace ColonistBarKF
                 Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + PsiSettings.IconsInColumn);
                 PsiSettings.IconsInColumn = (int)HorizontalSlider(PsiSettings.IconsInColumn, 1f, 7f);
 
-                var num = (int)(PsiSettings.IconSize * 4.5);
+                int num = (int)(PsiSettings.IconSize * 4.5);
 
                 if (num > 8)
                     num = 8;
@@ -1286,7 +1287,7 @@ namespace ColonistBarKF
             BeginHorizontal();
             if (Button("PSI.Settings.LoadPresetButton".Translate()))
             {
-                var options = new List<FloatMenuOption>
+                List<FloatMenuOption> options = new List<FloatMenuOption>
                 {
                     new FloatMenuOption("Less Sensitive", () =>
                     {

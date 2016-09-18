@@ -9,8 +9,8 @@ namespace ColonistBarKF       // Replace with yours.
     [StaticConstructorOnStartup]
     public class MapComponentInjector : MonoBehaviour
     {
-        private static Type followMe = typeof(MapComponent_FollowMe);
-        private static Type zoomToMouse = typeof(MapComponent_ZoomToMouse);
+        private static readonly Type followMe = typeof(MapComponent_FollowMe);
+        private static readonly Type zoomToMouse = typeof(MapComponent_ZoomToMouse);
 
 
         #region No editing required
