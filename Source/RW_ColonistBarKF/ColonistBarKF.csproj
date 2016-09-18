@@ -7,8 +7,8 @@
     <ProjectGuid>{CB1E0C5B-5B96-4CD0-8451-466093507D62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RW_ColonistBarKF</RootNamespace>
-    <AssemblyName>RW_ColonistBarKF</AssemblyName>
+    <RootNamespace>ColonistBarKF</RootNamespace>
+    <AssemblyName>ColonistBarKF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>

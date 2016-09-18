@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ColonistBarKF.PSI;
-using RW_ColonistBarKF;
 using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;

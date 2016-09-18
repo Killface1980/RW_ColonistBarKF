@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using RimWorld;
-using RW_ColonistBarKF;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -170,7 +169,7 @@ namespace ColonistBarKF.PSI
                         iconRect.y = rect.yMin - iconRect.width * 1.5f;
                         break;
                     case SettingsColonistBar.Alignment.Bottom:
-                        iconRect.y = rect.yMax+ iconRect.height*0.75f;
+                        iconRect.y = rect.yMax + iconRect.height * 0.75f;
                         break;
 
                 }
@@ -577,6 +576,13 @@ namespace ColonistBarKF.PSI
                         {
                             pawnStats.ToxicBuildUp = hediff.Severity;
                         }
+                        else
+                        {
+                            if (!hediff.FullyHealableOnlyByTend())
+                            {
+                                continue;
+                            }
+                        }
 
                         if (hediff.def.defName.Equals("WoundInfection") || hediff.def.defName.Equals("Flu") || hediff.def.defName.Equals("Plague") || hediff.def.defName.Equals("Malaria") || hediff.def.defName.Equals("SleepingSickness"))
                         {
@@ -588,11 +594,12 @@ namespace ColonistBarKF.PSI
                         }
 
 
+
                         if (!hediff.Visible) continue;
 
                         if (!hediff.def.PossibleToDevelopImmunity()) continue;
 
-                        if (hediff.CurStage == null) continue;
+                        if (hediff.CurStage?.capMods == null) continue;
 
                         if (!hediff.CurStage.everVisible) continue;
 

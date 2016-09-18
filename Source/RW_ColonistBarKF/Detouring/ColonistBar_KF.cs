@@ -639,8 +639,12 @@ namespace ColonistBarKF
 
             Color BGColor = new Color();
 
-            Need_Mood mood = (!colonist.Dead) ? colonist.needs.mood : null;
-            MentalBreaker mb = (!colonist.Dead) ? colonist.mindState.mentalBreaker : null;
+            Need_Mood mood;
+            if (!colonist.Dead) mood = colonist.needs.mood;
+            else mood = null;
+            MentalBreaker mb;
+            if (!colonist.Dead) mb = colonist.mindState.mentalBreaker;
+            else mb = null;
 
             if (ColBarSettings.UseMoodColors)
             {
@@ -880,7 +884,7 @@ namespace ColonistBarKF
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
-            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f*colonistRectAlpha);
+            var iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f * colonistRectAlpha);
             foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
             {
                 var rect2 = rect.ContractedBy(rect.width / 3);
@@ -923,6 +927,7 @@ namespace ColonistBarKF
             }
         }
 
+        private Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
         private void HandleColonistClicks(Rect rect, Pawn colonist)
         {
@@ -943,9 +948,22 @@ namespace ColonistBarKF
             }
             if (Mouse.IsOver(rect) && Event.current.button == 1)
             {
+
                 if (Event.current.type == EventType.MouseDown)
                 {
                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                    if (clickedColonist != null && SelPawn != null && SelPawn != clickedColonist)
+                    {
+                        foreach (var choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
+                        {
+                            floatOptionList.Add(choice);
+                        }
+                        floatOptionList.Add(new FloatMenuOption("--------------------", delegate
+                        {
+                        }));
+
+                    }
 
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
                     {
@@ -1012,5 +1030,8 @@ namespace ColonistBarKF
                 num2 += 90;
             }
         }
+
+
+
     }
 }
