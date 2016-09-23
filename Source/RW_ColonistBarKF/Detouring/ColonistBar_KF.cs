@@ -8,6 +8,7 @@ using UnityEngine;
 using Verse;
 using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 using static ColonistBarKF.CBKF;
+using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
 {
@@ -28,6 +29,7 @@ namespace ColonistBarKF
 
         private float clickedAt;
 
+        public static float SpacingLabel = 25f;
 
         // custom test
 
@@ -63,7 +65,7 @@ namespace ColonistBarKF
                     return ColBarSettings.FixedIconScaleFloat;
                 }
 
-                if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Left || ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+                if (ColBarSettings.ColBarPos == Alignment.Left || ColBarSettings.ColBarPos == Alignment.Right)
                 {
                     while (true)
                     {
@@ -103,16 +105,25 @@ namespace ColonistBarKF
 
         private float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
 
+        private float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
+
         private float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
 
         private static float SpacingHorizontalMoodBarAssumingScale(float scale)
         {
-            if (ColBarSettings.UseMoodColors)
+            if (ColBarSettings.UseMoodColors && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
                 return ColBarSettings.BaseSizeFloat / 4 * scale;
 
             return 0f;
         }
 
+        private static float SpacingVerticalgMoodBarAssumingScale(float scale)
+        {
+            if (ColBarSettings.UseMoodColors &&
+                (ColBarSettings.MoodBarPos == Alignment.Bottom || ColBarSettings.MoodBarPos == Alignment.Top))
+                return ColBarSettings.BaseSizeFloat / 4 * scale;
+            return 0f;
+        }
 
         private int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
 
@@ -137,7 +148,7 @@ namespace ColonistBarKF
 
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Bottom)
+            if (ColBarSettings.ColBarPos == Alignment.Bottom)
             {
                 ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorBottom - ColBarSettings.MarginRightHorBottom;
                 ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorBottom / 2 - ColBarSettings.MarginRightHorBottom / 2;
@@ -154,7 +165,7 @@ namespace ColonistBarKF
 
         private static int ColonistsPerColumnAssumingScale(float scale)
         {
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+            if (ColBarSettings.ColBarPos == Alignment.Right)
             {
                 ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerRight - ColBarSettings.MarginBottomVerRight;
                 ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerRight / 2 - ColBarSettings.MarginBottomVerRight / 2;
@@ -181,7 +192,7 @@ namespace ColonistBarKF
         private static float SpacingHorizontalPSIAssumingScale(float scale)
         {
             if (ColBarSettings.UsePsi)
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Left || ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Right)
+                if (ColBarSettings.ColBarPsiIconPos == Alignment.Left || ColBarSettings.ColBarPsiIconPos == Alignment.Right)
                 {
 
                     return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * scale * PsiRowsOnBar;
@@ -192,7 +203,7 @@ namespace ColonistBarKF
         private static float SpacingVerticalPSIAssumingScale(float scale)
         {
             if (ColBarSettings.UsePsi)
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Top)
+                if (ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == Alignment.Top)
                 {
                     return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * scale * PsiRowsOnBar;
                 }
@@ -226,7 +237,7 @@ namespace ColonistBarKF
                         }
                     case 2:
                         {
-                            if (scale > 0.58f)
+                            if (scale > 0.54f)
                             {
                                 return 1;
                             }
@@ -234,19 +245,27 @@ namespace ColonistBarKF
                         }
                     case 3:
                         {
-                            break;
-                        }
-                    case 4:
-                        {
-                            if (scale > 0.58f)
+                            if (scale > 0.66f)
                             {
                                 return 1;
                             }
-                            if (scale > 0.5f)
+                            if (scale > 0.54f)
                             {
                                 return 2;
                             }
-                            if (scale > 0.42f)
+                            return 3;
+                        }
+                    case 4:
+                        {
+                            if (scale > 0.78f)
+                            {
+                                return 1;
+                            }
+                            if (scale > 0.66f)
+                            {
+                                return 2;
+                            }
+                            if (scale > 0.54f)
                             {
                                 return 3;
                             }
@@ -254,19 +273,19 @@ namespace ColonistBarKF
                         }
                     case 5:
                         {
-                            if (scale > 0.58f)
+                            if (scale > 0.9f)
                             {
                                 return 1;
                             }
-                            if (scale > 0.5f)
+                            if (scale > 0.78f)
                             {
                                 return 2;
                             }
-                            if (scale > 0.42f)
+                            if (scale > 0.66f)
                             {
                                 return 3;
                             }
-                            if (scale > 0.34f)
+                            if (scale > 0.54f)
                             {
                                 return 4;
                             }
@@ -404,7 +423,7 @@ namespace ColonistBarKF
             int colonistsPerRow = ColonistsPerRow;
             int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
-            float spacingVertical = SpacingVertical + SpacingPSIVertical;
+            float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical + SpacingLabel;
 
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
@@ -412,19 +431,21 @@ namespace ColonistBarKF
 
             switch (ColBarSettings.ColBarPos)
             {
-                case SettingsColonistBar.Alignment.Left:
+                case Alignment.Left:
                     cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
                     break;
 
-                case SettingsColonistBar.Alignment.Right:
+                case Alignment.Right:
                     cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
                     break;
 
-                case SettingsColonistBar.Alignment.Bottom:
+                case Alignment.Top:
+                    break;
+
+                case Alignment.Bottom:
                     cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
                     break;
-                case SettingsColonistBar.Alignment.Top:
-                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -433,7 +454,7 @@ namespace ColonistBarKF
 
             #region Horizontal Alignment
 
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Left || ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+            if (ColBarSettings.ColBarPos == Alignment.Left || ColBarSettings.ColBarPos == Alignment.Right)
                 for (int i = 0; i < cachedColonists.Count; i++)
                 {
                     //         Debug.Log("Colonists count: " + i);
@@ -446,11 +467,11 @@ namespace ColonistBarKF
                         if (ColBarSettings.UsePsi)
                             ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
                         if (ColBarSettings.UseMoodColors)
-                            cachedDrawLocs_x -= size.x / 8;
+                            ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
                         if (i != 0)
                         {
-                            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+                            if (ColBarSettings.ColBarPos == Alignment.Right)
                             {
                                 cachedDrawLocs_x -= size.x + spacingHorizontal;
                             }
@@ -490,12 +511,12 @@ namespace ColonistBarKF
                             ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
                         if (ColBarSettings.UseMoodColors)
-                            cachedDrawLocs_x -= size.x / 8;
+                            ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
 
                         if (i != 0)
                         {
-                            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Bottom)
+                            if (ColBarSettings.ColBarPos == Alignment.Bottom)
                             {
                                 cachedDrawLocs_y -= size.y + spacingVertical;
                             }
@@ -522,22 +543,45 @@ namespace ColonistBarKF
         {
             switch (ColBarSettings.ColBarPsiIconPos)
             {
-                case SettingsColonistBar.Alignment.Left:
+                case Alignment.Left:
                     cachedDrawLocs_x += size.x / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
                     break;
 
-                case SettingsColonistBar.Alignment.Right:
+                case Alignment.Right:
                     cachedDrawLocs_x -= size.x / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
                     break;
 
-                case SettingsColonistBar.Alignment.Bottom:
+                case Alignment.Bottom:
                     //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
                     break;
-                case SettingsColonistBar.Alignment.Top:
+                case Alignment.Top:
                     cachedDrawLocs_y += size.y / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
                     break;
             }
         }
+
+        private static void ModifyBasicDrawLocsForMoodBar(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
+        {
+            switch (ColBarSettings.MoodBarPos)
+            {
+                case Alignment.Left:
+                    cachedDrawLocs_x += size.x / 8;
+                    break;
+
+                case Alignment.Right:
+                    cachedDrawLocs_x -= size.x / 8;
+                    break;
+
+                case Alignment.Top:
+                    cachedDrawLocs_y += size.y / 8;
+                    break;
+
+                case Alignment.Bottom:
+                    //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
+                    break;
+            }
+        }
+
 
         private void CheckRecacheColonistsRaw()
         {
@@ -649,7 +693,30 @@ namespace ColonistBarKF
             if (ColBarSettings.UseMoodColors)
             {
                 // draw mood border
-                Rect moodBorderRect = new Rect(rect.x, rect.y, rect.width * 1.25f, rect.height);
+                Rect moodBorderRect = new Rect(rect);
+
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Alignment.Right:
+                        moodBorderRect.x = rect.xMax;
+                        moodBorderRect.width /= 4;
+                        break;
+                    case Alignment.Left:
+                        moodBorderRect.x = rect.xMin - rect.width / 4;
+                        moodBorderRect.width /= 4;
+                        break;
+                    case Alignment.Top:
+                        moodBorderRect.x = rect.xMin;
+                        moodBorderRect.y = rect.yMin - rect.height / 4;
+                        moodBorderRect.height /= 4;
+                        break;
+                    case Alignment.Bottom:
+                        moodBorderRect.x = rect.xMin;
+                        moodBorderRect.y = moodBorderRect.yMax + SpacingLabel;
+                        moodBorderRect.height /= 4;
+                        break;
+                }
+
 
                 if (mood != null && mb != null)
                 {
@@ -704,36 +771,81 @@ namespace ColonistBarKF
             {
                 //         Rect moodRect = new Rect(rect.xMax, rect.y, rect.width/4, rect.height);
                 Rect moodRect = rect.ContractedBy(2.0f);
-                moodRect.x = rect.xMax;
-                moodRect.width /= 4;
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Alignment.Right:
+                        moodRect.x = rect.xMax;
+                        moodRect.width /= 4;
+                        break;
+                    case Alignment.Left:
+                        moodRect.x = rect.xMin - rect.width / 4;
+                        moodRect.width /= 4;
+                        break;
+                    case Alignment.Top:
+                        moodRect.x = rect.xMin;
+                        moodRect.y = rect.yMin - rect.height / 4;
+                        moodRect.height /= 4;
+                        break;
+                    case Alignment.Bottom:
+                        moodRect.x = rect.xMin;
+                        moodRect.y = moodRect.yMax + SpacingLabel;
+                        moodRect.height /= 4;
+                        break;
+                }
+
 
                 if (mood != null && mb != null)
                 {
                     if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
+                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
+                        else
+                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
+                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
+                        else
+                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
                     }
                     else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
                     {
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
+                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
+                        else
+                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
                     }
                     else
                     {
                         GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedBGTex);
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
+                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
+                        else
+                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
                     }
 
                     DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
                     DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
                     DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
 
-                    GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
-
-                    GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
+                    switch (ColBarSettings.MoodBarPos)
+                    {
+                        case Alignment.Left:
+                        case Alignment.Right:
+                            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
+                            break;
+                        case Alignment.Top:
+                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2), ColonistBarTextures.MoodTargetTex);
+                            break;
+                        case Alignment.Bottom:
+                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2), ColonistBarTextures.MoodTargetTex);
+                            break;
+                    }
                 }
 
             }
@@ -769,7 +881,11 @@ namespace ColonistBarKF
 
         internal static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
         {
-            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodBreakTex);
+            if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodBreakTex);
+            else
+                GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * threshold, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodBreakTex);
+
             /*if (currentMood <= threshold)
 			{
 				GUI.DrawTexture(new Rect(moodRect.xMax-4, moodRect.yMax - moodRect.height * threshold, 8, 2), MoodBreakCrossedTex);
@@ -1030,8 +1146,6 @@ namespace ColonistBarKF
                 num2 += 90;
             }
         }
-
-
 
     }
 }

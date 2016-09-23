@@ -54,7 +54,7 @@
   <PSI.Settings.Arrangement.IconOffset>Abstand dazwischen: </PSI.Settings.Arrangement.IconOffset>
   <PSI.Settings.Arrangement.IconPosition>Alignment: </PSI.Settings.Arrangement.IconPosition>
   <PSI.Settings.Arrangement.IconSize>Icon Größe: </PSI.Settings.Arrangement.IconSize>
-  <PSI.Settings.Arrangement.IconsPerColumn>Icons pro Reihe: </PSI.Settings.Arrangement.IconsPerColumn>
+  <PSI.Settings.Arrangement.IconsPerColumn>Icons pro Reihe/Spalte: </PSI.Settings.Arrangement.IconsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Bildschirm-skalierte Icons</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Größe &amp; Anordnung</PSI.Settings.ArrangementButton>
   <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>

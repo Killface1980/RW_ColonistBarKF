@@ -78,6 +78,7 @@ namespace ColonistBarKF
         private int psiToolbarInt = 0;
         private int barPositionInt = 0;
         private int psiBarPositionInt = 0;
+        private int moodBarPositionInt = 0;
         private int psiPositionInt = 0;
 
         private readonly string[] mainToolbarStrings =
@@ -120,19 +121,19 @@ namespace ColonistBarKF
         {
             get
             {
-                if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Left)
+                if (ColBarSettings.ColBarPos == Position.Alignment.Left)
                 {
                     barPositionInt = 0;
                 }
-                if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+                if (ColBarSettings.ColBarPos == Position.Alignment.Right)
                 {
                     barPositionInt = 1;
                 }
-                if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Top)
+                if (ColBarSettings.ColBarPos == Position.Alignment.Top)
                 {
                     barPositionInt = 2;
                 }
-                if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Bottom)
+                if (ColBarSettings.ColBarPos == Position.Alignment.Bottom)
                 {
                     barPositionInt = 3;
                 }
@@ -144,20 +145,20 @@ namespace ColonistBarKF
                 switch (value)
                 {
                     case 0:
-                        ColBarSettings.ColBarPos = SettingsColonistBar.Alignment.Left;
+                        ColBarSettings.ColBarPos = Position.Alignment.Left;
                         break;
                     case 1:
-                        ColBarSettings.ColBarPos = SettingsColonistBar.Alignment.Right;
+                        ColBarSettings.ColBarPos = Position.Alignment.Right;
 
                         break;
                     case 2:
-                        ColBarSettings.ColBarPos = SettingsColonistBar.Alignment.Top;
+                        ColBarSettings.ColBarPos = Position.Alignment.Top;
                         break;
                     case 3:
-                        ColBarSettings.ColBarPos = SettingsColonistBar.Alignment.Bottom;
+                        ColBarSettings.ColBarPos = Position.Alignment.Bottom;
                         break;
                     default:
-                        ColBarSettings.ColBarPos = SettingsColonistBar.Alignment.Left;
+                        ColBarSettings.ColBarPos = Position.Alignment.Left;
                         break;
                 }
 
@@ -170,19 +171,19 @@ namespace ColonistBarKF
             get
             {
 
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Left)
+                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left)
                 {
                     psiBarPositionInt = 0;
                 }
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Right)
+                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right)
                 {
                     psiBarPositionInt = 1;
                 }
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Top)
+                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Top)
                 {
                     psiBarPositionInt = 2;
                 }
-                if (ColBarSettings.ColBarPsiIconPos == SettingsColonistBar.Alignment.Bottom)
+                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom)
                 {
                     psiBarPositionInt = 3;
                 }
@@ -194,26 +195,26 @@ namespace ColonistBarKF
                 switch (value)
                 {
                     case 0:
-                        ColBarSettings.ColBarPsiIconPos = SettingsColonistBar.Alignment.Left;
+                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Left;
                         ColBarSettings.IconOffsetX = 1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
                         ColBarSettings.IconsScreenScale = true;
                         break;
                     case 1:
-                        ColBarSettings.ColBarPsiIconPos = SettingsColonistBar.Alignment.Right;
+                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Right;
                         ColBarSettings.IconOffsetX = -1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = false;
                         break;
                     case 2:
-                        ColBarSettings.ColBarPsiIconPos = SettingsColonistBar.Alignment.Top;
+                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Top;
                         ColBarSettings.IconOffsetX = -1f;
                         ColBarSettings.IconOffsetY = 1f;
                         ColBarSettings.IconsHorizontal = true;
                         break;
                     case 3:
-                        ColBarSettings.ColBarPsiIconPos = SettingsColonistBar.Alignment.Bottom;
+                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Bottom;
                         ColBarSettings.IconOffsetX = -1;
                         ColBarSettings.IconOffsetY = -1;
                         ColBarSettings.IconsHorizontal = true;
@@ -226,6 +227,55 @@ namespace ColonistBarKF
                 psiBarPositionInt = value;
             }
         }
+
+        private int MoodBarPositionInt
+        {
+            get
+            {
+
+                if (ColBarSettings.MoodBarPos == Position.Alignment.Left)
+                {
+                    moodBarPositionInt = 0;
+                }
+                if (ColBarSettings.MoodBarPos == Position.Alignment.Right)
+                {
+                    moodBarPositionInt = 1;
+                }
+                if (ColBarSettings.MoodBarPos == Position.Alignment.Top)
+                {
+                    moodBarPositionInt = 2;
+                }
+                if (ColBarSettings.MoodBarPos == Position.Alignment.Bottom)
+                {
+                    moodBarPositionInt = 3;
+                }
+                return moodBarPositionInt;
+            }
+
+            set
+            {
+                switch (value)
+                {
+                    case 0:
+                        ColBarSettings.MoodBarPos = Position.Alignment.Left;
+                        break;
+                    case 1:
+                        ColBarSettings.MoodBarPos = Position.Alignment.Right;
+                        break;
+                    case 2:
+                        ColBarSettings.MoodBarPos = Position.Alignment.Top;
+                        break;
+                    case 3:
+                        ColBarSettings.MoodBarPos = Position.Alignment.Bottom;
+                        break;
+                    default:
+                        ColBarSettings.MoodBarPos = Position.Alignment.Right;
+                        break;
+                }
+                moodBarPositionInt = value;
+            }
+        }
+
 
         private int PsiPositionInt
         {
@@ -550,7 +600,7 @@ namespace ColonistBarKF
 
             #region Vertical Alignment
 
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Right)
+            if (ColBarSettings.ColBarPos == Position.Alignment.Right)
             {
                 BeginVertical(_fondBoxes);
                 ColBarSettings.UseCustomMarginRight = Toggle(ColBarSettings.UseCustomMarginRight, "CBKF.Settings.ColonistBarOffset".Translate() +
@@ -576,7 +626,7 @@ namespace ColonistBarKF
                 EndVertical();
 
             }
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Left)
+            if (ColBarSettings.ColBarPos == Position.Alignment.Left)
             {
                 BeginVertical(_fondBoxes);
                 ColBarSettings.UseCustomMarginLeft = Toggle(ColBarSettings.UseCustomMarginLeft, "CBKF.Settings.ColonistBarOffset".Translate() +
@@ -614,7 +664,7 @@ namespace ColonistBarKF
             #region Horizontal alignment
 
 
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Bottom)
+            if (ColBarSettings.ColBarPos == Position.Alignment.Bottom)
             {
                 BeginVertical(_fondBoxes);
                 ColBarSettings.UseCustomMarginBottom = Toggle(ColBarSettings.UseCustomMarginBottom, "CBKF.Settings.ColonistBarOffset".Translate() +
@@ -640,7 +690,7 @@ namespace ColonistBarKF
                 }
                 EndVertical();
             }
-            if (ColBarSettings.ColBarPos == SettingsColonistBar.Alignment.Top)
+            if (ColBarSettings.ColBarPos == Position.Alignment.Top)
             {
                 BeginVertical(_fondBoxes);
                 ColBarSettings.UseCustomMarginTopHor = Toggle(ColBarSettings.UseCustomMarginTopHor, "CBKF.Settings.ColonistBarOffset".Translate() +
@@ -681,7 +731,7 @@ namespace ColonistBarKF
 
             #region Max Rows
             BeginVertical(_fondBoxes);
-            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "PSI.Settings.Arrangement.MaxRowCount".Translate() + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
+            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "PSI.Settings.Arrangement.IconsPerColumn".Translate() + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
             if (ColBarSettings.UseCustomRowCount)
             {
                 ColBarSettings.MaxRowsCustom = (int)HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
@@ -805,6 +855,19 @@ namespace ColonistBarKF
 
             if (ColBarSettings.UseMoodColors)
             {
+
+                    Space(Text.LineHeight / 2);
+
+                    BeginHorizontal();
+                    MoodBarPositionInt = Toolbar(MoodBarPositionInt, positionStrings);
+                    FlexibleSpace();
+                    EndHorizontal();
+
+                    Space(Text.LineHeight / 2);
+
+                    Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
+                    ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+                
                 Space(Text.LineHeight / 2);
                 ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f);
                 ColBarSettings.moodRectAlpha = HorizontalSlider(ColBarSettings.moodRectAlpha, 0, 1f);

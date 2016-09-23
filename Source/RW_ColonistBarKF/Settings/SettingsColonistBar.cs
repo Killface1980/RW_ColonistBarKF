@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
 {
@@ -74,13 +75,10 @@ namespace ColonistBarKF
 
         public Alignment ColBarPos=Alignment.Top;
 
-        public enum Alignment
-        {
-            Left,
-            Right,
-            Top,
-            Bottom
-        };
+        public Alignment MoodBarPos=Alignment.Right;
+
+
+
         public bool UsePsi = true;
 
         public float IconOffsetX = 1f;
@@ -133,8 +131,6 @@ namespace ColonistBarKF
         public float LimitDiseaseLess = 1f;
         public float LimitBleedMult = 3f;
         public float LimitApparelHealthLess = 0.5f;
-
-
     }
 
 }

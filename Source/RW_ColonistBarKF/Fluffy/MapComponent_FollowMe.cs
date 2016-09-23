@@ -125,7 +125,6 @@ namespace ColonistBarKF
             // we've lost track of whatever it was we were following
             else
             {
-
                 StopFollow();
                 return;
             }
@@ -202,6 +201,8 @@ namespace ColonistBarKF
             if (!_currentlyFollowing)
                 return;
             if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
+                StopFollow();
+            if (Event.current.type == EventType.mouseDown &&Event.current.button == 2)
                 StopFollow();
         }
 
