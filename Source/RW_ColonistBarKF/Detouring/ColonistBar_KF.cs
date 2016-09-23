@@ -29,7 +29,7 @@ namespace ColonistBarKF
 
         private float clickedAt;
 
-        public static float SpacingLabel = 25f;
+        public static float SpacingLabel = 20f;
 
         // custom test
 
@@ -423,7 +423,7 @@ namespace ColonistBarKF
             int colonistsPerRow = ColonistsPerRow;
             int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
-            float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical + SpacingLabel;
+            float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
 
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
@@ -461,7 +461,7 @@ namespace ColonistBarKF
                     if (i % colonistsPerColumn == 0)
                     {
                         int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedColonists.Count - i);
-                        float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * spacingVertical;
+                        float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * (spacingVertical + SpacingLabel);
                         cachedDrawLocs_y = (Screen.height - num4) / 2f + ColBarSettings.VerticalOffset;
 
                         if (ColBarSettings.UsePsi)
@@ -484,7 +484,7 @@ namespace ColonistBarKF
                     }
                     else
                     {
-                        cachedDrawLocs_y += size.y + spacingVertical;
+                        cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
                     }
                     cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
 
@@ -518,11 +518,11 @@ namespace ColonistBarKF
                         {
                             if (ColBarSettings.ColBarPos == Alignment.Bottom)
                             {
-                                cachedDrawLocs_y -= size.y + spacingVertical;
+                                cachedDrawLocs_y -= size.y + spacingVertical + SpacingLabel;
                             }
                             else
                             {
-                                cachedDrawLocs_y += size.y + spacingVertical;
+                                cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
                             }
                         }
                     }

@@ -174,7 +174,7 @@ namespace ColonistBarKF.PSI
                         iconRect.y -= rect.height / 4;
                     break;
                 case Alignment.Bottom:
-                    iconRect.y = rect.yMax + +ColonistBar_KF.SpacingLabel;
+                    iconRect.y = rect.yMax + ColonistBar_KF.SpacingLabel;
                     if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Bottom)
                         iconRect.y += rect.height / 4;
                     break;
