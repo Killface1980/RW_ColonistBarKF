@@ -85,7 +85,7 @@ namespace ColonistBarKF.PSI
             {
                 if (pawn != null && pawn.RaceProps.Animal)
                     DrawAnimalIcons(pawn);
-                else if (pawn != null && (pawn.IsColonist || pawn.IsPrisonerOfColony))
+                else if (pawn != null && (pawn.IsColonist || pawn.IsPrisoner))
                 {
                     DrawColonistIcons(pawn);
                 }
@@ -822,8 +822,7 @@ namespace ColonistBarKF.PSI
             int iconNum = 0;
 
             PawnStats pawnStats;
-            if (colonist.Dead || colonist.holder != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||
-                colonist.drafter == null || colonist.skills == null)
+            if (colonist.Dead || colonist.holder != null || !_statsDict.TryGetValue(colonist, out pawnStats))
                 return;
 
             Vector3 bodyLoc = colonist.DrawPos;
@@ -860,7 +859,7 @@ namespace ColonistBarKF.PSI
             }
 
             //Drafted
-            if (PsiSettings.ShowDraft && colonist.drafter.Drafted)
+            if (PsiSettings.ShowDraft && colonist.drafter !=null && colonist.drafter.Drafted)
                 DrawIconOnBar(bodyLoc, ref iconNum, Icons.Draft, colorNeutralStatusSolid);
 
             if (pawnStats.MentalSanity != null)
@@ -900,12 +899,12 @@ namespace ColonistBarKF.PSI
             // Pacifc + Unarmed
             if (PsiSettings.ShowPacific || PsiSettings.ShowUnarmed)
             {
-                if (colonist.skills.GetSkill(SkillDefOf.Melee).TotallyDisabled && colonist.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled)
+                if (colonist.skills != null &&colonist.skills.GetSkill(SkillDefOf.Melee).TotallyDisabled && colonist.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled)
                 {
                     if (PsiSettings.ShowPacific)
                         DrawIconOnBar(bodyLoc, ref iconNum, Icons.Pacific, colorNeutralStatus);
                 }
-                else if (PsiSettings.ShowUnarmed && colonist.equipment.Primary == null && !colonist.IsPrisonerOfColony)
+                else if (PsiSettings.ShowUnarmed && colonist.equipment.Primary == null && !colonist.IsPrisoner)
                     DrawIconOnBar(bodyLoc, ref iconNum, Icons.Unarmed, colorNeutralStatus);
             }
             // Trait Pyromaniac
@@ -1417,7 +1416,7 @@ namespace ColonistBarKF.PSI
                     if (ColBarSettings.ShowPacific)
                         DrawIconOnBar(rect, ref iconNum, Icons.Pacific, colorNeutralStatus, rectAlpha);
                 }
-                else if (ColBarSettings.ShowUnarmed && colonist.equipment.Primary == null && !colonist.IsPrisonerOfColony)
+                else if (ColBarSettings.ShowUnarmed && colonist.equipment.Primary == null && !colonist.IsPrisoner)
                     DrawIconOnBar(rect, ref iconNum, Icons.Unarmed, colorNeutralStatus, rectAlpha);
             }
             // Trait Pyromaniac
