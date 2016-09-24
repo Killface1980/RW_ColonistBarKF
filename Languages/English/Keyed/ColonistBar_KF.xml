@@ -96,6 +96,7 @@
   <PSI.Settings.SizeLabel.7>very large</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
   <PSI.Settings.UsePSI>Show Pawn State Icons on Colonist</PSI.Settings.UsePSI>
+  <PSI.Settings.UsePSIOnPrisoner>Show Pawn State Icons on Prisoner</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Aggressive</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Bedroom</PSI.Settings.Visibility.Bedroom>

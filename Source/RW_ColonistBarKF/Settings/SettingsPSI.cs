@@ -11,6 +11,7 @@ namespace ColonistBarKF
         // PSI settings
         public int IconAlignment = 0;
             public bool UsePsi = true;
+            public bool UsePsiOnPrisoner = true;
 
         public float IconSize = 1f;
         public float IconSizeMult = 1f;

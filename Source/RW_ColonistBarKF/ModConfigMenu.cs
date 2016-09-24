@@ -1276,17 +1276,17 @@ namespace ColonistBarKF
 
             BeginVertical(_fondBoxes);
             PsiSettings.UsePsi = Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
-            if (PsiSettings.UsePsi)
+            PsiSettings.UsePsiOnPrisoner = Toggle(PsiSettings.UsePsiOnPrisoner, "PSI.Settings.UsePSIOnPrisoner".Translate());
+
+            if ( PsiSettings.UsePsi || PsiSettings.UsePsiOnPrisoner)
             {
+                
                 Space(Text.LineHeight / 2);
 
                 BeginHorizontal();
                 PsiPositionInt = Toolbar(PsiPositionInt, positionStrings);
                 FlexibleSpace();
                 EndHorizontal();
-
-
-
 
                 Space(Text.LineHeight / 2);
 

@@ -85,7 +85,7 @@ namespace ColonistBarKF.PSI
             {
                 if (pawn != null && pawn.RaceProps.Animal)
                     DrawAnimalIcons(pawn);
-                else if (pawn != null && (pawn.IsColonist || pawn.IsPrisoner))
+                else if (pawn != null && (pawn.IsColonist || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
                 {
                     DrawColonistIcons(pawn);
                 }
