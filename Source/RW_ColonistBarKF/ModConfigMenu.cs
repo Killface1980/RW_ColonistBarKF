@@ -5,6 +5,7 @@ using CommunityCoreLibrary.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ColonistBarKF.ColorPicker;
 using ColonistBarKF.PSI;
 using UnityEngine;
 using Verse;
@@ -880,53 +881,47 @@ namespace ColonistBarKF
             #region Gender
 
 
-#if !NoCCL
-            if (barSettings.UseGender)
+            if (ColBarSettings.UseGender)
             {
-            //    listing.Gap(3f);
-                float indent = 24f;
-                DrawMCMRegion(new Rect(indent, listing.CurHeight, listing.ColumnWidth - indent, 64f));
-                listing.Gap(72f);
-                listing.ColumnWidth = columnwidth / 2;
-                listing.Indent();
-                if (GUILayout.Button("CBKF.Settings.ResetColors".Translate()))
+
+                if (Button("CBKF.Settings.FemaleColor".Translate()))
                 {
-                    femaleColorField.Value = new Color(1f, 0.64f, 0.8f, 1f);
-                    maleColorField.Value = new Color(0.52f, 0.75f, 0.92f, 1f);
+                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                    {
+                    }
+                    Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
+                    {
+                        ColBarSettings.FemaleColor = colourWrapper.Color;
+                    }, false, true)
+                    {
+                        initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
+                    });
                 }
-                listing.Undent();
-                listing.ColumnWidth = columnwidth;
-                listing.Gap();
+
+                if (Button("CBKF.Settings.MaleColor".Translate()))
+                {
+                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                    {
+                    }
+                    Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
+                    {
+                        ColBarSettings.MaleColor = colourWrapper.Color;
+                    }, false, true)
+                    {
+                        initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
+                    });
+                }
+
+                if (Button("CBKF.Settings.ResetColors".Translate()))
+                {
+                    ColBarSettings.FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+                    ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+                }
             }
-#endif
             #endregion
 
 
         }
-
-
-
-#if !NoCCL
-        private void DrawMCMRegion(Rect InRect)
-        {
-            Rect row = InRect;
-            row.height = 24f;
-
-            femaleColorField.Draw(row);
-            barSettings.FemaleColor = femaleColorField.Value;
-
-            row.y += 30f;
-
-            maleColorField.Draw(row);
-            barSettings.MaleColor = maleColorField.Value;
-        }
-#endif
-
-#if !NoCCL
-        private LabeledInput_Color femaleColorField = new LabeledInput_Color(barSettings.FemaleColor, "CBKF.Settings.FemaleColor".Translate());
-        private LabeledInput_Color maleColorField = new LabeledInput_Color(barSettings.MaleColor, "CBKF.Settings.MaleColor".Translate());
-#endif
-
 
         private void FillPagePSIIconSet(Rect viewRect)
         {
@@ -1063,6 +1058,7 @@ namespace ColonistBarKF
         }
 
         private static int _iconLimit;
+        private static ColorWrapper colourWrapper;
 
         private void DrawCheckboxArea(string iconName, Material iconMaterial, ref bool colBarBool, ref bool psiBarBool, ref int iconInRow)
         {

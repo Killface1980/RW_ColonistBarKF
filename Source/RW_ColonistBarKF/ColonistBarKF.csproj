@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="ColorPicker\ColorHelper.cs" />
+    <Compile Include="ColorPicker\ColorWrapper.cs" />
+    <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />

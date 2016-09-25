@@ -78,14 +78,14 @@ namespace ColonistBarKF.PSI
             if (Current.ProgramState != ProgramState.MapPlaying)
                 return;
 
-            if (!PsiSettings.UsePsi)
+            if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
                 return;
 
             foreach (Pawn pawn in Find.Map.mapPawns.AllPawns)
             {
                 if (pawn != null && pawn.RaceProps.Animal)
                     DrawAnimalIcons(pawn);
-                else if (pawn != null && (pawn.IsColonist || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
+                else if (pawn != null && ((PsiSettings.UsePsi && pawn.IsColonist) || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
                 {
                     DrawColonistIcons(pawn);
                 }
@@ -859,7 +859,7 @@ namespace ColonistBarKF.PSI
             }
 
             //Drafted
-            if (PsiSettings.ShowDraft && colonist.drafter !=null && colonist.drafter.Drafted)
+            if (PsiSettings.ShowDraft && colonist.drafter != null && colonist.drafter.Drafted)
                 DrawIconOnBar(bodyLoc, ref iconNum, Icons.Draft, colorNeutralStatusSolid);
 
             if (pawnStats.MentalSanity != null)
@@ -899,7 +899,7 @@ namespace ColonistBarKF.PSI
             // Pacifc + Unarmed
             if (PsiSettings.ShowPacific || PsiSettings.ShowUnarmed)
             {
-                if (colonist.skills != null &&colonist.skills.GetSkill(SkillDefOf.Melee).TotallyDisabled && colonist.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled)
+                if (colonist.skills != null && colonist.skills.GetSkill(SkillDefOf.Melee).TotallyDisabled && colonist.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled)
                 {
                     if (PsiSettings.ShowPacific)
                         DrawIconOnBar(bodyLoc, ref iconNum, Icons.Pacific, colorNeutralStatus);

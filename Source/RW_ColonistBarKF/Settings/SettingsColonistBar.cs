@@ -49,8 +49,8 @@ namespace ColonistBarKF
         public float HorizontalOffset = 0f;
 
 
-        public readonly Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-        public readonly Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+        public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+        public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
         public bool useZoomToMouse = false;
         public float moodRectScale = 0.3f;
