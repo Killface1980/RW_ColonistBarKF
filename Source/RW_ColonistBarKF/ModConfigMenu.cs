@@ -703,7 +703,7 @@ namespace ColonistBarKF
                 if (ColBarSettings.UseCustomMarginTopHor)
                 {
                     Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 10, Screen.height / 6);
+                    ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 0f, Screen.height / 6);
                     ColBarSettings.MarginLeftHorTop = HorizontalSlider(ColBarSettings.MarginLeftHorTop, 0f, Screen.width * 2 / 5);
                     ColBarSettings.MarginRightHorTop = HorizontalSlider(ColBarSettings.MarginRightHorTop, 0f, Screen.width * 2 / 5);
                 }
@@ -732,7 +732,7 @@ namespace ColonistBarKF
 
             #region Max Rows
             BeginVertical(_fondBoxes);
-            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "PSI.Settings.Arrangement.IconsPerColumn".Translate() + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
+            ColBarSettings.UseCustomRowCount = Toggle(ColBarSettings.UseCustomRowCount, "PSI.Settings.Arrangement.ColonistsPerColumn".Translate() + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
             if (ColBarSettings.UseCustomRowCount)
             {
                 ColBarSettings.MaxRowsCustom = (int)HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
@@ -752,6 +752,8 @@ namespace ColonistBarKF
 
             ColBarSettings.useZoomToMouse = Toggle(ColBarSettings.useZoomToMouse, "CBKF.Settings.useZoomToMouse".Translate());
 
+            Label("FollowMe.MiddleClick".Translate());
+
             #region DoubleClickTime
 
             ColBarSettings.UseCustomDoubleClickTime = Toggle(ColBarSettings.UseCustomDoubleClickTime, "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2") + " s");
@@ -767,6 +769,44 @@ namespace ColonistBarKF
             }
 
             #endregion
+
+            #region PSI on Bar
+            BeginVertical(_fondBoxes);
+            ColBarSettings.UsePsi = Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
+            if (ColBarSettings.UsePsi)
+            {
+                BeginHorizontal();
+                PsiBarPositionInt = Toolbar(PsiBarPositionInt, positionStrings);
+                FlexibleSpace();
+                EndHorizontal();
+
+                Space(Text.LineHeight / 2);
+
+                Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
+                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+            }
+            EndVertical();
+
+            #endregion
+
+
+            #region Mood Bar
+
+            BeginVertical(_fondBoxes);
+            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate());
+
+            if (ColBarSettings.UseMoodColors)
+            {
+                BeginHorizontal();
+                MoodBarPositionInt = Toolbar(MoodBarPositionInt, positionStrings);
+                FlexibleSpace();
+                EndHorizontal();
+            }
+
+            EndVertical();
+
+            #endregion
+
 
             EndVertical();
 
@@ -846,78 +886,49 @@ namespace ColonistBarKF
 
 
 
-            #region Mood Bar
 
-            BeginVertical(_fondBoxes);
-            ColBarSettings.UseMoodColors = Toggle(ColBarSettings.UseMoodColors, "CBKF.Settings.UseMoodColors".Translate() +
-                (ColBarSettings.moodRectScale * 100.0).ToString("N0") + " %, " +
-                ColBarSettings.moodRectAlpha.ToString("N2") + " a"
-                );
-
-            if (ColBarSettings.UseMoodColors)
-            {
-
-                    Space(Text.LineHeight / 2);
-
-                    BeginHorizontal();
-                    MoodBarPositionInt = Toolbar(MoodBarPositionInt, positionStrings);
-                    FlexibleSpace();
-                    EndHorizontal();
-
-                    Space(Text.LineHeight / 2);
-
-                    Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                    ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
-                
-                Space(Text.LineHeight / 2);
-                ColBarSettings.moodRectScale = HorizontalSlider(ColBarSettings.moodRectScale, 0.33f, 1f);
-                ColBarSettings.moodRectAlpha = HorizontalSlider(ColBarSettings.moodRectAlpha, 0, 1f);
-            }
-            EndVertical();
-
-            #endregion
 
 
             #region Gender
 
 
-            if (ColBarSettings.UseGender)
-            {
-
-                if (Button("CBKF.Settings.FemaleColor".Translate()))
-                {
-                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
-                    {
-                    }
-                    Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
-                    {
-                        ColBarSettings.FemaleColor = colourWrapper.Color;
-                    }, false, true)
-                    {
-                        initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
-                    });
-                }
-
-                if (Button("CBKF.Settings.MaleColor".Translate()))
-                {
-                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
-                    {
-                    }
-                    Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
-                    {
-                        ColBarSettings.MaleColor = colourWrapper.Color;
-                    }, false, true)
-                    {
-                        initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
-                    });
-                }
-
-                if (Button("CBKF.Settings.ResetColors".Translate()))
-                {
-                    ColBarSettings.FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-                    ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
-                }
-            }
+          //if (ColBarSettings.UseGender)
+          //{
+          //
+          //    if (Button("CBKF.Settings.FemaleColor".Translate()))
+          //    {
+          //        while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+          //        {
+          //        }
+          //        Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
+          //        {
+          //            ColBarSettings.FemaleColor = colourWrapper.Color;
+          //        }, false, true)
+          //        {
+          //            initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
+          //        });
+          //    }
+          //
+          //    if (Button("CBKF.Settings.MaleColor".Translate()))
+          //    {
+          //        while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+          //        {
+          //        }
+          //        Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
+          //        {
+          //            ColBarSettings.MaleColor = colourWrapper.Color;
+          //        }, false, true)
+          //        {
+          //            initialPosition = new Vector2(windowRect.xMax + 10f, windowRect.yMin),
+          //        });
+          //    }
+          //
+          //    if (Button("CBKF.Settings.ResetColors".Translate()))
+          //    {
+          //        ColBarSettings.FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+          //        ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
+          //    }
+          //}
             #endregion
 
 
@@ -1247,26 +1258,6 @@ namespace ColonistBarKF
 
             _scrollPosition = BeginScrollView(_scrollPosition);
 
-            #region PSI on Bar
-            BeginVertical(_fondBoxes);
-            ColBarSettings.UsePsi = Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
-            if (ColBarSettings.UsePsi)
-            {
-                Space(Text.LineHeight / 2);
-
-                BeginHorizontal();
-                PsiBarPositionInt = Toolbar(PsiBarPositionInt, positionStrings);
-                FlexibleSpace();
-                EndHorizontal();
-
-                Space(Text.LineHeight / 2);
-
-                Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
-            }
-            EndVertical();
-
-            #endregion
 
             #region PSI on Colonist
 

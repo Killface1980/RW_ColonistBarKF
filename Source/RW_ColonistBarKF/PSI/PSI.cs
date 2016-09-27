@@ -78,8 +78,8 @@ namespace ColonistBarKF.PSI
             if (Current.ProgramState != ProgramState.MapPlaying)
                 return;
 
-            if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
-                return;
+          //if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
+          //    return;
 
             foreach (Pawn pawn in Find.Map.mapPawns.AllPawns)
             {
@@ -182,10 +182,6 @@ namespace ColonistBarKF.PSI
             }
 
 
-
-
-
-
             //    iconRect.x += (-0.5f * CBKF.ColBarSettings.IconDistanceX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
 
@@ -199,13 +195,6 @@ namespace ColonistBarKF.PSI
             GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
             GUI.color = color;
 
-
-            //GUILayout.BeginArea(position);
-            //GUILayout.Box(material.mainTexture);
-            //GUILayout.EndArea();
-
-            //    Rect realIcon = iconRect.ContractedBy(iconRect.width);
-
             iconRect.x += iconRect.width * 0.1f;
             iconRect.y += iconRect.height * 0.1f;
             iconRect.width *= 0.8f;
@@ -213,6 +202,7 @@ namespace ColonistBarKF.PSI
 
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
+
         }
 
 

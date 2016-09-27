@@ -2,7 +2,7 @@
 <LanguageData>
   <CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
   <CBKF.Settings.Advanced>Advanced Settings</CBKF.Settings.Advanced>
-  <CBKF.Settings.BarPosition>Colonist Bar Alignment</CBKF.Settings.BarPosition>
+  <CBKF.Settings.BarPosition>Colonist Bar Main Settings</CBKF.Settings.BarPosition>
   <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing: </CBKF.Settings.BaseSpacingHorizontal>
   <CBKF.Settings.BaseSpacingVertical>Vertical spacing: </CBKF.Settings.BaseSpacingVertical>
   <CBKF.Settings.BasicSize>Icon Size and Distance: </CBKF.Settings.BasicSize>
@@ -22,7 +22,7 @@
   <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
   <CBKF.Settings.PawnTextureCameraOffsets>Camera Offset and Zoom: </CBKF.Settings.PawnTextureCameraOffsets>
-  <CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
+  <CBKF.Settings.PSI>Pawn State Icons™</CBKF.Settings.PSI>
   <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Reset Colors</CBKF.Settings.ResetColors>
   <CBKF.Settings.RevertSettings>Revert Colonist Bar settings</CBKF.Settings.RevertSettings>
@@ -33,14 +33,15 @@
   <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseMoodColors>Use mood bars: </CBKF.Settings.UseMoodColors>
-  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons on Bar</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UseMoodColors>Use MoodBars™: </CBKF.Settings.UseMoodColors>
+  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons™ on Bar</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
-  <CBKF.Settings.useZoomToMouse>Use ZoomToMouse</CBKF.Settings.useZoomToMouse>
+  <CBKF.Settings.useZoomToMouse>Use ZoomToMouse™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>Weapons</CBKF.Settings.Weapons>
+  <FollowMe.MiddleClick>Middle click on colonist to start FollowMe™</FollowMe.MiddleClick>
   <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Following {0}.</FollowMe.Follow>
   <FollowMe.RejectMultiple>Can not follow, multiple selections.</FollowMe.RejectMultiple>
@@ -55,9 +56,10 @@
   <PSI.Settings.Arrangement.IconPosition>Alignment: </PSI.Settings.Arrangement.IconPosition>
   <PSI.Settings.Arrangement.IconSize>Icon size: </PSI.Settings.Arrangement.IconSize>
   <PSI.Settings.Arrangement.IconsPerColumn>Icons per column/row: </PSI.Settings.Arrangement.IconsPerColumn>
+  <PSI.Settings.Arrangement.ColonistsPerColumn>Max columns/rows for colonists: </PSI.Settings.Arrangement.ColonistsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Screen-scale icons</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Size &amp; arrangement</PSI.Settings.ArrangementButton>
-  <PSI.Settings.IconButton>Pawn State Icons</PSI.Settings.IconButton>
+  <PSI.Settings.IconButton>Pawn State Icons™</PSI.Settings.IconButton>
   <PSI.Settings.IconOpacityAndColor.Opacity>Basic icon opacity: </PSI.Settings.IconOpacityAndColor.Opacity>
   <PSI.Settings.IconOpacityAndColor.OpacityCritical>Minimum opacity of critical alerts: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
   <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Coloured target point</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
@@ -69,7 +71,7 @@
   <PSI.Settings.Preset.0>Default IconSet</PSI.Settings.Preset.0>
   <PSI.Settings.Preset.1>Original IconSet</PSI.Settings.Preset.1>
   <PSI.Settings.ReturnButton>Return</PSI.Settings.ReturnButton>
-  <PSI.Settings.RevertSettings>Revert PSI settings</PSI.Settings.RevertSettings>
+  <PSI.Settings.RevertSettings>Revert PSI™ settings</PSI.Settings.RevertSettings>
   <PSI.Settings.Sensitivity.ApparelHealth>Tattered if Condition &lt; </PSI.Settings.Sensitivity.ApparelHealth>
   <PSI.Settings.Sensitivity.Bleeding.0>very low</PSI.Settings.Sensitivity.Bleeding.0>
   <PSI.Settings.Sensitivity.Bleeding.1>low</PSI.Settings.Sensitivity.Bleeding.1>
@@ -95,8 +97,8 @@
   <PSI.Settings.SizeLabel.6>large</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>very large</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
-  <PSI.Settings.UsePSI>Show Pawn State Icons on Colonist</PSI.Settings.UsePSI>
-  <PSI.Settings.UsePSIOnPrisoner>Show Pawn State Icons on Prisoner</PSI.Settings.UsePSIOnPrisoner>
+  <PSI.Settings.UsePSI>Show Pawn State Icons™ on Colonist</PSI.Settings.UsePSI>
+  <PSI.Settings.UsePSIOnPrisoner>Show Pawn State Icons™ on Prisoner</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Aggressive</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Bedroom</PSI.Settings.Visibility.Bedroom>
@@ -110,7 +112,7 @@
   <PSI.Settings.Visibility.Greedy>Greedy</PSI.Settings.Visibility.Greedy>
   <PSI.Settings.Visibility.Header>Visibility</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>Health</PSI.Settings.Visibility.Health>
-  <PSI.Settings.Visibility.TooHot>TooHot</PSI.Settings.Visibility.TooHot>
+  <PSI.Settings.Visibility.TooHot>Too Hot</PSI.Settings.Visibility.TooHot>
   <PSI.Settings.Visibility.Hungry>Hungry</PSI.Settings.Visibility.Hungry>
   <PSI.Settings.Visibility.Idle>Idle</PSI.Settings.Visibility.Idle>
   <PSI.Settings.Visibility.Injury>Injury</PSI.Settings.Visibility.Injury>
@@ -131,7 +133,7 @@
   <PSI.Settings.Visibility.Tired>Tired</PSI.Settings.Visibility.Tired>
   <PSI.Settings.Visibility.Unarmed>Unarmed</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>
-  <PSI.Settings>Pawn State Icons Settings</PSI.Settings>
+  <PSI.Settings>Pawn State Icons™ Settings</PSI.Settings>
 
   <PSI.Settings.Visibility.Panic>Panic</PSI.Settings.Visibility.Panic>
   <PSI.Settings.Visibility.MedicalAttention>Medical Attention</PSI.Settings.Visibility.MedicalAttention>

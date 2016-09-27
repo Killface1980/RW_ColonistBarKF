@@ -5,7 +5,8 @@
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
   <targetVersion>0.15.1284</targetVersion>
   <description>
-    More options for the Colonist Bar.
+    More options for the Colonist Bar, including new status icons and a mood bar.
+    
     Allows custom placement of the bar, as well as advanced scaling and sorting functionality.
     All options available with Right Mouse Button click on any icon.
     FollowMe™ functionality via Middle Mouse Button click.
@@ -13,5 +14,6 @@
     Includes a modified version of the mood bar from 'MuzzyUtils™' by muzzy
     Includes 'FollowMe™' functionality by Fluffy with updated code by alexschrod
     Includes 'ZoomToMouse™' functionality by Fluffy
+    Includes an updated and expanded version of 'Pawn State Icons™' by Dan Sadler
   </description>
 </ModMetaData>

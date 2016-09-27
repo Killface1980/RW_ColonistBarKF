@@ -555,7 +555,7 @@ namespace ColonistBarKF
                     //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
                     break;
                 case Alignment.Top:
-                    cachedDrawLocs_y += size.y / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
+                    cachedDrawLocs_y += size.y / ColBarSettings.IconsInColumn * PsiRowsOnBar;
                     break;
             }
         }
@@ -1000,19 +1000,13 @@ namespace ColonistBarKF
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
-            Color iconcolor = new Color(0.8f, 0.8f, 0.8f, 0.75f * colonistRectAlpha);
-            foreach (ThingWithComps thing in colonist.equipment.AllEquipment)
+            if (colonist?.equipment.Primary != null)
             {
+                var thing = colonist.equipment.Primary;
                 Rect rect2 = rect.ContractedBy(rect.width / 3);
 
-                rect2.x += rect.width / 3 - rect.width / 8;
-                rect2.y += rect.height / 3 - rect.height / 8;
-
-                if (Mouse.IsOver(rect2))
-                {
-                    GUI.color = HighlightColor;
-                    GUI.DrawTexture(rect2, TexUI.HighlightTex);
-                }
+                rect2.x = rect.xMax - rect2.width - rect.width / 12;
+                rect2.y = rect.yMax - rect2.height - rect.height / 12;
 
                 GUI.color = color;
                 Texture2D resolvedIcon;
@@ -1025,14 +1019,17 @@ namespace ColonistBarKF
                     resolvedIcon = thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
                 }
                 // color labe by thing
+                Color iconcolor = new Color();
 
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.7f, 0.0f, 0.0f, colonistRectAlpha);
+                    GUI.color = new Color(0.85f, 0.2f, 0.2f, colonistRectAlpha);
+                    iconcolor = new Color(0.3f, 0.1f, 0.1f, 0.75f * colonistRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.0f, 0.7f, 0.0f, colonistRectAlpha);
+                    GUI.color = new Color(0.15f, 0.3f, 0.85f, colonistRectAlpha);
+                    iconcolor = new Color(0.075f, 0.15f, 0.3f, 0.75f * colonistRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
@@ -1040,6 +1037,13 @@ namespace ColonistBarKF
                 Rect rect3 = rect2.ContractedBy(rect2.width / 8);
 
                 Widgets.DrawTextureRotated(rect3, resolvedIcon, 0);
+                if (Mouse.IsOver(rect2))
+                {
+                    GUI.color = HighlightColor;
+                    GUI.DrawTexture(rect2, TexUI.HighlightTex);
+                }
+                TooltipHandler.TipRegion(rect2, thing.def.LabelCap);
+
             }
         }
 
