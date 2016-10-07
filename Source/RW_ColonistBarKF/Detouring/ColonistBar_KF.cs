@@ -1024,12 +1024,12 @@ namespace ColonistBarKF
                 if (thing.def.IsMeleeWeapon)
                 {
                     GUI.color = new Color(0.85f, 0.2f, 0.2f, colonistRectAlpha);
-                    iconcolor = new Color(0.3f, 0.1f, 0.1f, 0.75f * colonistRectAlpha);
+                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.75f * colonistRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
                     GUI.color = new Color(0.15f, 0.3f, 0.85f, colonistRectAlpha);
-                    iconcolor = new Color(0.075f, 0.15f, 0.3f, 0.75f * colonistRectAlpha);
+                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.75f * colonistRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
