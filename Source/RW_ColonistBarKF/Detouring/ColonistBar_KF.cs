@@ -838,12 +838,12 @@ namespace ColonistBarKF
                             GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
                             break;
                         case Alignment.Top:
-                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
-                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2), ColonistBarTextures.MoodTargetTex);
                             break;
                         case Alignment.Bottom:
-                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
-                            GUI.DrawTexture(new Rect(moodRect.xMax - moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
+                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2), ColonistBarTextures.MoodTargetTex);
                             break;
                     }
                 }

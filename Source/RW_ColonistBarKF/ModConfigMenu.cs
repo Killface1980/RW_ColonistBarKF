@@ -73,7 +73,10 @@ namespace ColonistBarKF
 
 
 
-        public override Vector2 InitialSize => new Vector2(512f, 690f);
+        public override Vector2 InitialSize
+        {
+            get { return new Vector2(512f, 590f); }
+        }
 
         private int mainToolbarInt = 0;
         private int psiToolbarInt = 0;
