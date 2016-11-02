@@ -626,50 +626,49 @@ namespace ColonistBarKF
             {
                 case vanilla:
                     cachedColonists.SortBy(x => x.thingIDNumber);
+                    SaveBarSettings();
                     break;
 
                 case byName:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 case sexage:
                     orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 case health:
                     orderedEnumerable = cachedColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 case mood:
                     orderedEnumerable = cachedColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 case weapons:
-                    //orderedEnumerable = cachedColonists
-                    //    .OrderByDescending(x => x.equipment.Primary != null && x.equipment.Primary.def.IsMeleeWeapon)
-                    //    .ThenByDescending(x => x.equipment.Primary != null && x.equipment.Primary.def.IsRangedWeapon);
-
                     orderedEnumerable = cachedColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
-                        //.GetSkill(SkillDefOf.Melee).level)
                         .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-                    //                    .ThenByDescending(d => d.skills.GetSkill(SkillDefOf.Shooting).level);
-
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 case medic:
-
                     orderedEnumerable = cachedColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-
                     cachedColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
                     break;
 
                 default:
                     cachedColonists.SortBy(x => x.thingIDNumber);
+                    SaveBarSettings();
                     break;
             }
         }
