@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using ColonistBarKF.PSI;
+
 using RimWorld;
+
 using UnityEngine;
+
 using Verse;
-using static ColonistBarKF.SettingsColonistBar.SortByWhat;
+
 using static ColonistBarKF.CBKF;
 using static ColonistBarKF.Position;
+using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 
 namespace ColonistBarKF
 {
@@ -428,27 +432,29 @@ namespace ColonistBarKF
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
 
+            if (!ColBarSettings.UseMoodBarBG)
+                switch (ColBarSettings.ColBarPos)
+                {
+                    case Alignment.Left:
+                        cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
+                        break;
 
-            switch (ColBarSettings.ColBarPos)
-            {
-                case Alignment.Left:
-                    cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
-                    break;
+                    case Alignment.Right:
+                        cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
+                        break;
 
-                case Alignment.Right:
-                    cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
-                    break;
+                    case Alignment.Top:
+                        break;
 
-                case Alignment.Top:
-                    break;
+                    case Alignment.Bottom:
+                        cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
+                        break;
 
-                case Alignment.Bottom:
-                    cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
-                    break;
+                    default:
+                        break;
+                        //throw new ArgumentOutOfRangeException();
+                }
 
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
 
             cachedDrawLocs.Clear();
 
@@ -562,24 +568,25 @@ namespace ColonistBarKF
 
         private static void ModifyBasicDrawLocsForMoodBar(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
         {
-            switch (ColBarSettings.MoodBarPos)
-            {
-                case Alignment.Left:
-                    cachedDrawLocs_x += size.x / 8;
-                    break;
+            if (!ColBarSettings.UseMoodBarBG)
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Alignment.Left:
+                        cachedDrawLocs_x += size.x / 8;
+                        break;
 
-                case Alignment.Right:
-                    cachedDrawLocs_x -= size.x / 8;
-                    break;
+                    case Alignment.Right:
+                        cachedDrawLocs_x -= size.x / 8;
+                        break;
 
-                case Alignment.Top:
-                    cachedDrawLocs_y += size.y / 8;
-                    break;
+                    case Alignment.Top:
+                        cachedDrawLocs_y += size.y / 8;
+                        break;
 
-                case Alignment.Bottom:
-                    //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
-                    break;
-            }
+                    case Alignment.Bottom:
+                        //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
+                        break;
+                }
         }
 
 
@@ -683,37 +690,52 @@ namespace ColonistBarKF
             Color BGColor = new Color();
 
             Need_Mood mood;
-            if (!colonist.Dead) mood = colonist.needs.mood;
-            else mood = null;
             MentalBreaker mb;
-            if (!colonist.Dead) mb = colonist.mindState.mentalBreaker;
-            else mb = null;
+
+            if (colonist.needs != null && colonist.needs.mood != null)
+            {
+                mb = colonist.mindState.mentalBreaker;
+                mood = colonist.needs.mood;
+            }
+            else
+            {
+                mood = null;
+                mb = null;
+            }
 
             if (ColBarSettings.UseMoodColors)
             {
                 // draw mood border
                 Rect moodBorderRect = new Rect(rect);
 
-                switch (ColBarSettings.MoodBarPos)
+                if (!ColBarSettings.UseMoodBarBG)
                 {
-                    case Alignment.Right:
-                        moodBorderRect.x = rect.xMax;
-                        moodBorderRect.width /= 4;
-                        break;
-                    case Alignment.Left:
-                        moodBorderRect.x = rect.xMin - rect.width / 4;
-                        moodBorderRect.width /= 4;
-                        break;
-                    case Alignment.Top:
-                        moodBorderRect.x = rect.xMin;
-                        moodBorderRect.y = rect.yMin - rect.height / 4;
-                        moodBorderRect.height /= 4;
-                        break;
-                    case Alignment.Bottom:
-                        moodBorderRect.x = rect.xMin;
-                        moodBorderRect.y = moodBorderRect.yMax + SpacingLabel;
-                        moodBorderRect.height /= 4;
-                        break;
+                    switch (ColBarSettings.MoodBarPos)
+                    {
+                        case Alignment.Right:
+                            moodBorderRect.x = rect.xMax;
+                            moodBorderRect.width /= 4;
+                            break;
+                        case Alignment.Left:
+                            moodBorderRect.x = rect.xMin - rect.width / 4;
+                            moodBorderRect.width /= 4;
+                            break;
+                        case Alignment.Top:
+                            moodBorderRect.x = rect.xMin;
+                            moodBorderRect.y = rect.yMin - rect.height / 4;
+                            moodBorderRect.height /= 4;
+                            break;
+                        case Alignment.Bottom:
+                            moodBorderRect.x = rect.xMin;
+                            moodBorderRect.y = moodBorderRect.yMax + SpacingLabel;
+                            moodBorderRect.height /= 4;
+                            break;
+                    }
+                }
+                else
+                {
+                    moodBorderRect.x = rect.x;
+                    moodBorderRect.width = rect.width;
                 }
 
 

@@ -12,7 +12,6 @@ namespace ColonistBarKF
             Left,
             Right,
             Top,
-            Bottom
-        }
+            Bottom        }
     }
 }
