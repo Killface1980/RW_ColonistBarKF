@@ -28,13 +28,13 @@ namespace ColonistBarKF
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
         public static SettingsPSI PsiSettings = new SettingsPSI();
 
-        private static SettingsColonistBar LoadBarSettings(string path = "ColonistBarKF.xml")
+        private static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
             SettingsColonistBar result = XmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
             return result;
         }
-        public static void SaveBarSettings(string path = "ColonistBarKF.xml")
+        public static void SaveBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
             XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
@@ -67,12 +67,12 @@ namespace ColonistBarKF
         // ReSharper disable once UnusedMember.Global
         public void FixedUpdate()
         {
-            if (Current.ProgramState != ProgramState.MapPlaying)
+            if (Current.ProgramState != ProgramState.Playing)
                 return;
 
             if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
             {
-                ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                Find.ColonistBar.MarkColonistsDirty();
                 _lastStatUpdate = Find.TickManager.TicksGame;
             }
 
@@ -85,7 +85,7 @@ namespace ColonistBarKF
                 _reinjectNeeded = false;
                 _reinjectTime = 0.0f;
                 _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
-                _psiObject.AddComponent<PSI.PSI>();
+                //    _psiObject.AddComponent<PSI.PSI>();
                 Log.Message("PSI Injected!!");
             }
         }
@@ -93,6 +93,11 @@ namespace ColonistBarKF
         // ReSharper disable once UnusedMember.Global
         public void Start()
         {
+            GameObject initializer = new GameObject("MapComponentInjectorCBKF");
+            initializer.AddComponent<MapComponentInjector>();
+            Object.DontDestroyOnLoad(initializer);
+
+
             ColBarSettings = LoadBarSettings();
             PsiSettings = LoadPsiSettings();
             _lastStatUpdate = -5000;
@@ -100,6 +105,7 @@ namespace ColonistBarKF
             //PSI
             OnLevelWasLoaded(0);
             enabled = true;
+
 
         }
     }

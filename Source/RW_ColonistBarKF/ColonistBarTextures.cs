@@ -5,6 +5,9 @@ namespace Verse
     [StaticConstructorOnStartup]
     internal class ColonistBarTextures
     {
+        public static float SpacingLabel = 20f;
+        public static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        public static readonly Texture2D BGTex = Command.BGTex;
         public static readonly Texture2D BGTexIconPSI = SolidColorMaterials.NewSolidColorTexture(new Color(0, 0, 0, 0.5f));
         public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.07f));
         public static readonly Texture2D DarkGrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.05f));

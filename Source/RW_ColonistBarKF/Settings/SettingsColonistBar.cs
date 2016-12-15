@@ -12,9 +12,9 @@ namespace ColonistBarKF
 
         public float BaseSpacingVertical = 32f;
 
-        public Alignment ColBarPos = Alignment.Top;
+        public Position.Alignment ColBarPos = Position.Alignment.Top;
 
-        public Alignment ColBarPsiIconPos = Alignment.Left;
+        public Position.Alignment ColBarPsiIconPos = Position.Alignment.Left;
 
         public float DoubleClickTime = 0.5f;
 
@@ -81,7 +81,7 @@ namespace ColonistBarKF
 
         public int MaxRowsCustom = 3;
 
-        public Alignment MoodBarPos = Alignment.Right;
+        public Position.Alignment MoodBarPos = Position.Alignment.Right;
 
         public float moodRectAlpha = 0.66f;
 

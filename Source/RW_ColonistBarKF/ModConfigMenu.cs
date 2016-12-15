@@ -14,11 +14,18 @@ namespace ColonistBarKF
     using System.Collections.Generic;
     using System.IO;
 
+    using ColonistBarKF;
     using ColonistBarKF.PSI;
+
+    using global::ColonistBarKF.PSI;
+
+    using RimWorld;
 
     using UnityEngine;
 
     using Verse;
+
+    using static ColonistBarKF.MapComponentInjector;
 
 #if !NoCCL
     public class ModConfigMenu : ModConfigurationMenu
@@ -44,6 +51,7 @@ namespace ColonistBarKF
             this.resizeable = true;
             this.onlyOneOfTypeAllowed = true;
         }
+
 
         public override void WindowUpdate()
         {
@@ -249,7 +257,6 @@ namespace ColonistBarKF
                        ? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, "
                        : (ColonistBar_KF.CurrentScale * 100).ToString("N0") + " %, ")
                 + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
-
             if (ColBarSettings.UseCustomIconSize)
             {
                 Space(Text.LineHeight / 2);

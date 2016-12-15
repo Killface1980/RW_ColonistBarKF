@@ -9,6 +9,7 @@ using static ColonistBarKF.Position;
 
 namespace ColonistBarKF.PSI
 {
+    using static MapComponentInjector;
 
     internal class PSI : MonoBehaviour
     {
@@ -75,13 +76,13 @@ namespace ColonistBarKF.PSI
         public virtual void OnGUI()
         {
 
-            if (Current.ProgramState != ProgramState.MapPlaying)
+            if (Current.ProgramState != ProgramState.Playing)
                 return;
 
           //if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
           //    return;
 
-            foreach (Pawn pawn in Find.Map.mapPawns.AllPawns)
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisoners)
             {
                 if (pawn != null && pawn.RaceProps.Animal)
                     DrawAnimalIcons(pawn);
@@ -118,12 +119,12 @@ namespace ColonistBarKF.PSI
             if (PsiSettings.IconsScreenScale)
             {
                 wordscale = 45f;
-                vectorAtBody = bodyPos.ToScreenPosition();
+                vectorAtBody = bodyPos.MapToUIPosition();
                 vectorAtBody.x += posOffset.x * 45f;
                 vectorAtBody.y -= posOffset.z * 45f;
             }
             else
-                vectorAtBody = (bodyPos + posOffset).ToScreenPosition();
+                vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
 
 
             float num2 = wordscale * (PsiSettings.IconSizeMult * 0.5f);
@@ -156,26 +157,26 @@ namespace ColonistBarKF.PSI
 
             switch (ColBarSettings.ColBarPsiIconPos)
             {
-                case Alignment.Left:
+                case Position.Alignment.Left:
                     iconRect.x = rect.xMin - iconRect.width;
                     iconRect.y = rect.yMax - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Left)
+                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Position.Alignment.Left)
                         iconRect.x -= rect.width / 4;
                     break;
-                case Alignment.Right:
+                case Position.Alignment.Right:
                     iconRect.x = rect.xMax;
                     iconRect.y = rect.yMax - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Right)
+                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Position.Alignment.Right)
                         iconRect.x += rect.width / 4;
                     break;
-                case Alignment.Top:
+                case Position.Alignment.Top:
                     iconRect.y = rect.yMin - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Top)
+                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Position.Alignment.Top)
                         iconRect.y -= rect.height / 4;
                     break;
-                case Alignment.Bottom:
-                    iconRect.y = rect.yMax + ColonistBar_KF.SpacingLabel;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Bottom)
+                case Position.Alignment.Bottom:
+                    iconRect.y = rect.yMax + ColonistBarTextures.SpacingLabel;
+                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Position.Alignment.Bottom)
                         iconRect.y += rect.height / 4;
                     break;
 
@@ -456,7 +457,7 @@ namespace ColonistBarKF.PSI
             {
                 JobDriver curDriver = colonist.jobs.curDriver;
                 Job curJob = colonist.jobs.curJob;
-                TargetInfo targetInfo = curJob.targetA;
+                LocalTargetInfo targetInfo = curJob.targetA;
                 if (curDriver is JobDriver_HaulToContainer || curDriver is JobDriver_HaulToCell ||
                     curDriver is JobDriver_FoodDeliver || curDriver is JobDriver_FoodFeedPatient ||
                     curDriver is JobDriver_TakeToBed)
@@ -476,7 +477,7 @@ namespace ColonistBarKF.PSI
                         targetInfo = curJob.targetB;
                     }
                 }
-                if (curDriver is JobDriver_Hunt && colonist.carrier?.CarriedThing != null)
+                if (curDriver is JobDriver_Hunt && colonist.carryTracker.CarriedThing != null)
                 {
                     targetInfo = curJob.targetB;
                 }
@@ -514,7 +515,7 @@ namespace ColonistBarKF.PSI
             }
 
             // temperature
-            float temperatureForCell = GenTemperature.GetTemperatureForCell(colonist.Position);
+            float temperatureForCell = GenTemperature.GetTemperatureForCell(colonist.Position, colonist.Map);
 
             pawnStats.TooCold =
                 (float)
@@ -550,7 +551,7 @@ namespace ColonistBarKF.PSI
                 pawnStats.IsSick = colonist.health.hediffSet.AnyHediffMakesSickThought;
 
 
-            if (pawnStats.IsSick && colonist.SelectableNow() && !colonist.Destroyed && colonist.playerSettings.medCare >= 0)
+            if (pawnStats.IsSick  && !colonist.Destroyed && colonist.playerSettings.medCare >= 0)
             {
                 if (colonist.health?.hediffSet?.hediffs != null)
                 {
@@ -573,13 +574,7 @@ namespace ColonistBarKF.PSI
                         {
                             pawnStats.ToxicBuildUp = hediff.Severity;
                         }
-                        else
-                        {
-                            if (!hediff.FullyHealableOnlyByTend())
-                            {
-                                continue;
-                            }
-                        }
+
 
                         if (hediff.def.defName.Equals("WoundInfection") || hediff.def.defName.Equals("Flu") || hediff.def.defName.Equals("Plague") || hediff.def.defName.Equals("Malaria") || hediff.def.defName.Equals("SleepingSickness"))
                         {
@@ -601,8 +596,6 @@ namespace ColonistBarKF.PSI
                         if (!hediff.CurStage.everVisible) continue;
 
                         if (hediff.FullyImmune()) continue;
-
-                        if (hediff.def.naturallyHealed) continue;
 
                         if (!hediff.def.makesSickThought) continue;
 
@@ -636,7 +629,7 @@ namespace ColonistBarKF.PSI
 
             // Bleed rate
             if (colonist.health?.hediffSet != null)
-                pawnStats.BleedRate = Mathf.Clamp01(colonist.health.hediffSet.BleedingRate * PsiSettings.LimitBleedMult);
+                pawnStats.BleedRate = Mathf.Clamp01(colonist.health.hediffSet.BleedRateTotal * PsiSettings.LimitBleedMult);
 
 
             // Bed status
@@ -691,7 +684,7 @@ namespace ColonistBarKF.PSI
         // ReSharper disable once UnusedMember.Global
         public virtual void FixedUpdate()
         {
-            if (Current.ProgramState != ProgramState.MapPlaying)
+            if (Current.ProgramState != ProgramState.Playing)
                 return;
 
             _fDelta += Time.fixedDeltaTime;
@@ -700,10 +693,10 @@ namespace ColonistBarKF.PSI
                 return;
             _fDelta = 0.0;
 
-            foreach (Pawn pawn in Find.Map.mapPawns.FreeColonistsAndPrisoners) //.FreeColonistsAndPrisoners)
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisoners) //.FreeColonistsAndPrisoners)
                                                                                //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
             {
-                if (!pawn.SelectableNow() || pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null) continue;
+                if (!pawn.CurrentlyUsable() || pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null) continue;
                 try
                 {
                     UpdateColonistStats(pawn);
@@ -764,8 +757,10 @@ namespace ColonistBarKF.PSI
             float transparancy = PsiSettings.IconOpacity;
             Color colorRedAlert = new Color(1f, 0f, 0f, transparancy);
 
-            if (animal.Dead || animal.holder != null)
+            if (animal.Dead || animal.holdingContainer != null)
+            {
                 return;
+            }
             Vector3 drawPos = animal.DrawPos;
 
             if (!PsiSettings.ShowAggressive || animal.MentalStateDef != MentalStateDefOf.Berserk && animal.MentalStateDef != MentalStateDefOf.Manhunter)
@@ -811,8 +806,8 @@ namespace ColonistBarKF.PSI
 
             int iconNum = 0;
 
-            PawnStats pawnStats;
-            if (colonist.Dead || colonist.holder != null || !_statsDict.TryGetValue(colonist, out pawnStats))
+            PawnStats pawnStats = null;
+            if (colonist.Dead || colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats))
                 return;
 
             Vector3 bodyLoc = colonist.DrawPos;
@@ -988,15 +983,9 @@ namespace ColonistBarKF.PSI
 
             if (PsiSettings.ShowMedicalAttention)
             {
-                if (colonist.health.ShouldBeTendedNow && !colonist.health.ShouldDoSurgeryNow)
+                if (HealthAIUtility.ShouldBeTendedNow(colonist))
                     DrawIconOnBar(bodyLoc, ref iconNum, Icons.MedicalAttention, colorOrangeAlert);
-                else if (colonist.health.ShouldBeTendedNow && colonist.health.ShouldDoSurgeryNow)
-                {
-                    DrawIconOnBar(bodyLoc, ref iconNum, Icons.MedicalAttention, colorYellowAlert);
-                    DrawIconOnBar(bodyLoc, ref iconNum, Icons.MedicalAttention, colorOrangeAlert);
-                }
-                else if (colonist.health.ShouldDoSurgeryNow)
-                    DrawIconOnBar(bodyLoc, ref iconNum, Icons.MedicalAttention, colorYellowAlert);
+
             }
 
             // Hungry
@@ -1345,7 +1334,7 @@ namespace ColonistBarKF.PSI
 
             Color colorHealthBarGreen = new Color(0f, 0.8f, 0f, opacity * 0.5f);
 
-            Color colorRedAlert = new Color(0.8f, 0, 0, opacityCritical + (1 - opacityCritical) * opacity);
+            Color colorRedAlert = new Color(0.8f, 0f, 0f, opacityCritical + (1 - opacityCritical) * opacity);
 
             //            Color colorRedAlert = new Color(color25To21.r, color25To21.g, color25To21.b, opacityCritical + (1 - opacityCritical) * opacity);
 
@@ -1355,8 +1344,8 @@ namespace ColonistBarKF.PSI
 
             int iconNum = 0;
 
-            PawnStats pawnStats;
-            if (colonist.Dead || colonist.holder != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||
+            PawnStats pawnStats =null;
+            if (colonist.Dead || colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||
                 colonist.drafter == null || colonist.skills == null)
                 return;
 
@@ -1370,14 +1359,14 @@ namespace ColonistBarKF.PSI
                 if (ColBarSettings.ShowAggressive && pawnStats.MentalSanity == MentalStateDefOf.Berserk)
                     DrawIconOnBar(rect, ref iconNum, Icons.Aggressive, colorRedAlert, rectAlpha);
 
-                // Binging on alcohol - needs refinement
-                if (ColBarSettings.ShowDrunk)
-                {
-                    if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugMajor)
-                        DrawIconOnBar(rect, ref iconNum, Icons.Drunk, colorOrangeAlert, rectAlpha);
-                    if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugExtreme)
-                        DrawIconOnBar(rect, ref iconNum, Icons.Drunk, colorRedAlert, rectAlpha);
-                }
+              //// Binging on alcohol - needs refinement
+              //if (ColBarSettings.ShowDrunk)
+              //{
+              //    if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugMajor)
+              //        DrawIconOnBar(rect, ref iconNum, Icons.Drunk, colorOrangeAlert, rectAlpha);
+              //    if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugExtreme)
+              //        DrawIconOnBar(rect, ref iconNum, Icons.Drunk, colorRedAlert, rectAlpha);
+              //}
 
                 // Give Up Exit
                 if (ColBarSettings.ShowLeave && pawnStats.MentalSanity == MentalStateDefOf.PanicFlee) // was GiveUpExit
@@ -1498,15 +1487,9 @@ namespace ColonistBarKF.PSI
 
             if (ColBarSettings.ShowMedicalAttention)
             {
-                if (colonist.health.ShouldBeTendedNow && !colonist.health.ShouldDoSurgeryNow)
+                if (HealthAIUtility.ShouldBeTendedNow(colonist))
                     DrawIconOnBar(rect, ref iconNum, Icons.MedicalAttention, colorOrangeAlert, rectAlpha);
-                else if (colonist.health.ShouldBeTendedNow && colonist.health.ShouldDoSurgeryNow)
-                {
-                    DrawIconOnBar(rect, ref iconNum, Icons.MedicalAttention, colorYellowAlert, rectAlpha);
-                    DrawIconOnBar(rect, ref iconNum, Icons.MedicalAttention, colorOrangeAlert, rectAlpha);
-                }
-                else if (colonist.health.ShouldDoSurgeryNow)
-                    DrawIconOnBar(rect, ref iconNum, Icons.MedicalAttention, colorYellowAlert, rectAlpha);
+               
             }
 
             // Hungry

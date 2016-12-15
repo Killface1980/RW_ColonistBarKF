@@ -30,6 +30,12 @@ namespace ColonistBarKF
 
         #region Properties
 
+        public MapComponent_FollowMe(Map map)
+            : base(map)
+        {
+            this._enabled = true;
+        }
+
         private static string FollowedLabel
         {
             get
@@ -57,7 +63,7 @@ namespace ColonistBarKF
                 // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
                 Vector3 pos = Input.mousePosition;
                 pos.y = Screen.height - pos.y;
-                Thing thing = Find.ColonistBar.ColonistAt(pos);
+                Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
                 if (thing != null)
                 {
                     // start following
@@ -103,10 +109,10 @@ namespace ColonistBarKF
 
             Vector3 newCameraPosition;
 
-            if (!_followedThing.Spawned && _followedThing.holder != null)
+            if (!_followedThing.Spawned && _followedThing.holdingContainer != null)
             {
                 // thing is in some sort of container
-                IThingContainerOwner holder = _followedThing.holder.owner;
+                IThingContainerOwner holder = _followedThing.holdingContainer.owner;
 
                 // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
                 Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;

@@ -61,6 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="Detouring\_ColonistBarDrawLocsFinder.cs" />
+    <Compile Include="Detouring\_ColonistBar.cs" />
+    <Compile Include="Detouring\_ColonistBarColonistDrawer.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Settings\SettingsColonistBar.cs" />
-    <Compile Include="Detouring\ColonistBar_KF.cs" />
+    <None Include="Detouring\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +101,12 @@
     <Content Include="..\..\Defs\ThingDefs\Injector.xml">
       <Link>Defs\Injector.xml</Link>
     </Content>
+    <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\ChineseTraditional\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\ChineseTraditional\ColonistBar_KF.xml</Link>
+    </Content>
     <Content Include="..\..\Languages\English\Keyed\ColonistBar_KF.xml">
       <Link>Languages\English\ColonistBar_KF.xml</Link>
     </Content>
@@ -108,6 +117,7 @@
       <Link>Languages\Russian\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

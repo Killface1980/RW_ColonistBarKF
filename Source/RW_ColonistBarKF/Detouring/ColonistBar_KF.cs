@@ -16,6 +16,8 @@ using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 
 namespace ColonistBarKF
 {
+    using RimWorld.Planet;
+
     public class ColonistBar_KF
     {
 
@@ -311,8 +313,6 @@ namespace ColonistBarKF
             return 3;
         }
 
-        private static List<Thing> tmpColonists = new List<Thing>();
-
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InconsistentNaming
@@ -364,7 +364,7 @@ namespace ColonistBarKF
         // RimWorld.ColonistBar
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
-        public List<Thing> ColonistsInScreenRect(Rect rect)
+        public List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
 
             tmpColonists.Clear();
@@ -376,7 +376,7 @@ namespace ColonistBarKF
                     Thing thing;
                     if (cachedColonists[i].Dead)
                     {
-                        thing = cachedColonists[i].corpse;
+                        thing = cachedColonists[i].Corpse;
                     }
                     else
                     {
@@ -392,7 +392,7 @@ namespace ColonistBarKF
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public Thing ColonistAt(Vector2 pos)
+        public Thing ColonistOrCorpseAt(Vector2 pos)
         {
             Pawn pawn = null;
             RecacheDrawLocs();
@@ -407,7 +407,7 @@ namespace ColonistBarKF
             Thing thing;
             if (pawn != null && pawn.Dead)
             {
-                thing = pawn.corpse;
+                thing = pawn.Corpse;
             }
             else
             {
@@ -592,89 +592,137 @@ namespace ColonistBarKF
 
         private void CheckRecacheColonistsRaw()
         {
-            if (!colonistsDirty)
+            if (!this.colonistsDirty)
             {
                 return;
             }
-            cachedColonists.Clear();
-
-            cachedColonists.AddRange(Find.MapPawns.FreeColonists);
-
-            List<Thing> list = Find.ListerThings.ThingsInGroup(ThingRequestGroup.Corpse);
-            foreach (Thing t in list)
+            this.colonistsDirty = false;
+            this.cachedColonists.Clear();
+            if (Find.PlaySettings.showColonistBar)
             {
-                if (t.IsDessicated()) continue;
-                Pawn innerPawn = ((Corpse)t).innerPawn;
-                if (innerPawn.IsColonist)
+                tmpMaps.Clear();
+                tmpMaps.AddRange(Find.Maps);
+                tmpMaps.SortBy((Map x) => !x.IsPlayerHome, (Map x) => x.uniqueID);
+                int num = 0;
+                for (int i = 0; i < tmpMaps.Count; i++)
                 {
-                    cachedColonists.Add(innerPawn);
+                    tmpPawns.Clear();
+                    tmpPawns.AddRange(tmpMaps[i].mapPawns.FreeColonists);
+                    List<Thing> list = tmpMaps[i].listerThings.ThingsInGroup(ThingRequestGroup.Corpse);
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        if (!list[j].IsDessicated())
+                        {
+                            Pawn innerPawn = ((Corpse)list[j]).InnerPawn;
+                            if (innerPawn != null)
+                            {
+                                if (innerPawn.IsColonist)
+                                {
+                                    tmpPawns.Add(innerPawn);
+                                }
+                            }
+                        }
+                    }
+                    List<Pawn> allPawnsSpawned = tmpMaps[i].mapPawns.AllPawnsSpawned;
+                    for (int k = 0; k < allPawnsSpawned.Count; k++)
+                    {
+                        Corpse corpse = allPawnsSpawned[k].carryTracker.CarriedThing as Corpse;
+                        if (corpse != null && !corpse.IsDessicated() && corpse.InnerPawn.IsColonist)
+                        {
+                            tmpPawns.Add(corpse.InnerPawn);
+                        }
+                    }
+                    tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                    for (int l = 0; l < tmpPawns.Count; l++)
+                    {
+                        this.cachedColonists.Add(tmpPawns[l]);
+                    }
+                    if (!tmpPawns.Any<Pawn>())
+                    {
+                        this.cachedColonists.Add(tmpPawns[i]);
+                    }
+                    num++;
+                }
+                tmpCaravans.Clear();
+                tmpCaravans.AddRange(Find.WorldObjects.Caravans);
+                tmpCaravans.SortBy((Caravan x) => x.ID);
+                for (int m = 0; m < tmpCaravans.Count; m++)
+                {
+                    if (tmpCaravans[m].IsPlayerControlled)
+                    {
+                        tmpPawns.Clear();
+                        tmpPawns.AddRange(tmpCaravans[m].PawnsListForReading);
+                        //  tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                        this.SortCachedColonists(ref tmpPawns);
+                        for (int n = 0; n < tmpPawns.Count; n++)
+                        {
+                            if (tmpPawns[n].IsColonist)
+                            {
+                                this.cachedColonists.Add(tmpPawns[n]);
+                            }
+                        }
+                        num++;
+                    }
                 }
             }
-            List<Pawn> allPawnsSpawned = Find.MapPawns.AllPawnsSpawned;
-            foreach (Pawn pawn in allPawnsSpawned)
-            {
-                Corpse corpse = pawn.carrier.CarriedThing as Corpse;
-                if (corpse != null && !corpse.IsDessicated() && corpse.innerPawn.IsColonist)
-                {
-                    cachedColonists.Add(corpse.innerPawn);
-                }
-            }
-
-            SortCachedColonists();
-
-            pawnLabelsCache.Clear();
-            colonistsDirty = false;
+            Notify_RecachedEntries();
+            tmpPawns.Clear();
+            tmpMaps.Clear();
+            tmpCaravans.Clear();
         }
-
-        private void SortCachedColonists()
+        public void Notify_RecachedEntries()
+        {
+            this.pawnLabelsCache.Clear();
+        }
+        private void SortCachedColonists(ref List<Pawn>tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
             switch (ColBarSettings.SortBy)
             {
                 case vanilla:
-                    cachedColonists.SortBy(x => x.thingIDNumber);
+                    tmpColonists.SortBy(x => x.thingIDNumber);
                     SaveBarSettings();
                     break;
 
                 case byName:
-                    orderedEnumerable = cachedColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
-                    cachedColonists = orderedEnumerable.ToList();
+                    orderedEnumerable = tmpColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case sexage:
-                    orderedEnumerable = cachedColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
-                    cachedColonists = orderedEnumerable.ToList();
+                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case health:
-                    orderedEnumerable = cachedColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
-                    cachedColonists = orderedEnumerable.ToList();
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case mood:
-                    orderedEnumerable = cachedColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
-                    cachedColonists = orderedEnumerable.ToList();
+                    orderedEnumerable = tmpColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case weapons:
-                    orderedEnumerable = cachedColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
+                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
                         .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-                    cachedColonists = orderedEnumerable.ToList();
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case medic:
-                    orderedEnumerable = cachedColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                    cachedColonists = orderedEnumerable.ToList();
+                    orderedEnumerable = tmpColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 default:
-                    cachedColonists.SortBy(x => x.thingIDNumber);
+                    tmpColonists.SortBy(x => x.thingIDNumber);
                     SaveBarSettings();
                     break;
             }
@@ -683,7 +731,7 @@ namespace ColonistBarKF
         private void DrawColonist(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
-            bool colonistAlive = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.corpse);
+            bool colonistAlive = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
             GUI.color = color;
 
@@ -893,7 +941,7 @@ namespace ColonistBarKF
             }
             //       float num = 4f * Scale;
             Vector2 pos = new Vector2(rect.center.x, rect.yMax + 1f * Scale);
-            GenWorldUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
+            GenMapUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
         }
 
@@ -990,7 +1038,7 @@ namespace ColonistBarKF
             if (false)
             {
                 PawnStats pawnStats;
-                if (colonist.Dead || colonist.holder != null || !PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats) ||
+                if (colonist.Dead || colonist.holdingContainer != null || !PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats) ||
                     colonist.drafter == null || colonist.skills == null)
                     return;
 
@@ -1109,39 +1157,39 @@ namespace ColonistBarKF
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
                     {
                         ColBarSettings.SortBy = vanilla;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
                     {
                         ColBarSettings.SortBy = byName;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
 
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
                     {
                         ColBarSettings.SortBy = sexage;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
 
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
                     {
                         ColBarSettings.SortBy = mood;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
                     {
                         ColBarSettings.SortBy = health;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
                     {
                         ColBarSettings.SortBy = medic;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
                     {
                         ColBarSettings.SortBy = weapons;
-                        ((UIRootMap)Find.UIRoot).colonistBar.MarkColonistsListDirty();
+                        MarkColonistsDirty();
                     }));
 
                     floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
@@ -1154,23 +1202,48 @@ namespace ColonistBarKF
             }
         }
 
+        public void MarkColonistsDirty()
+        {
+            this.colonistsDirty = true;
+        }
+        private static Vector2[] bracketLocs = new Vector2[4];
+
+        private static List<Pawn> tmpPawns = new List<Pawn>();
+
+        private static List<Map> tmpMaps = new List<Map>();
+
+        private static List<Caravan> tmpCaravans = new List<Caravan>();
+
+        private static List<Pawn> tmpColonistsInOrder = new List<Pawn>();
+
+        private static List<Pair<Thing, Map>> tmpColonistsWithMap = new List<Pair<Thing, Map>>();
+
+        private static List<Thing> tmpColonists = new List<Thing>();
+
+        private static List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
+
+        private static List<Pawn> tmpCaravanPawns = new List<Pawn>();
         private void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
         {
-            Thing thing = colonist;
+            Thing obj = colonist;
             if (colonist.Dead)
             {
-                thing = colonist.corpse;
+                obj = colonist.Corpse;
             }
             float num = 0.4f * Scale;
-            Vector2 textureSize = new Vector2(ColonistBarTextures.SelectedTex.width * num, ColonistBarTextures.SelectedTex.height * num);
-            Vector3[] array = SelectionDrawer.SelectionBracketPartsPos(thing, rect.center, rect.size, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
-            int num2 = 90;
-            for (int i = 0; i < 4; i++)
-            {
-                Widgets.DrawTextureRotated(new Vector2(array[i].x, array[i].z), ColonistBarTextures.SelectedTex, num2, num);
-                num2 += 90;
-            }
+            Vector2 textureSize = new Vector2((float)SelectionDrawerUtility.SelectedTexGUI.width * num, (float)SelectionDrawerUtility.SelectedTexGUI.height * num);
+            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI<object>(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
+            this.DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
+        private void DrawSelectionOverlayOnGUI(Vector2[] bracketLocs, float selectedTexScale)
+        {
+            int num = 90;
+            for (int i = 0; i < 4; i++)
+            {
+                Widgets.DrawTextureRotated(bracketLocs[i], SelectionDrawerUtility.SelectedTexGUI, (float)num, selectedTexScale);
+                num += 90;
+            }
+        }
     }
 }

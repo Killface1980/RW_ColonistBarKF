@@ -12,6 +12,7 @@ using CommunityCoreLibrary;
 
 namespace ColonistBarKF
 {
+    using global::ColonistBarKF.NoCCL;
 
     public class CB_SpecialInjector : SpecialInjector
     {
@@ -40,10 +41,13 @@ namespace ColonistBarKF
                             MethodInfo sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);
                             if (sourceMethod == null)
                             {
-                                Log.Error(string.Format("ColonistBarKF :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
+                                Log.Error(string.Format("ColonistBar_KF :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
                                 return false;
                             }
-                            if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;
+                            if (!Detours.TryDetourFromTo(sourceMethod, targetMethod))
+                            {
+                                return false;
+                            }
                         }
                     }
                 }

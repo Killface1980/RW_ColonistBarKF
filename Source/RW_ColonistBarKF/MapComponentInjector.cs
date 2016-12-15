@@ -18,23 +18,23 @@ namespace ColonistBarKF       // Replace with yours.
 
         public void FixedUpdate()
         {
-            if (Current.ProgramState != ProgramState.MapPlaying)
+            if (Current.ProgramState != ProgramState.Playing)
             {
                 return;
             }
 
 
-            if (Find.Map.components.FindAll(c => c.GetType() == followMe).Count == 0)
+            if (Find.VisibleMap.components.FindAll(c => c.GetType() == followMe).Count == 0)
             {
-                Find.Map.components.Add((MapComponent)Activator.CreateInstance(followMe));
+                Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(followMe));
 
-                Log.Message("ColonistBarKF :: Added FollowMe to the map.");
+                Log.Message("ColonistBar_KF :: Added FollowMe to the map.");
             }
-            if (Find.Map.components.FindAll(c => c.GetType() == zoomToMouse).Count == 0)
+            if (Find.VisibleMap.components.FindAll(c => c.GetType() == zoomToMouse).Count == 0)
             {
-                Find.Map.components.Add((MapComponent)Activator.CreateInstance(zoomToMouse));
+                Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(zoomToMouse));
 
-                Log.Message("ColonistBarKF :: Added ZoomToMouse to the map.");
+                Log.Message("ColonistBar_KF :: Added ZoomToMouse to the map.");
             }
             Destroy(this);
         }

@@ -18,7 +18,7 @@ namespace ColonistBarKF
 
         // helpers
         private Vector3 LastMouseMapPosition = Vector3.zero;
-        private Vector3 CurrentMouseMapPosition => Gen.MouseMapPosVector3();
+        private Vector3 CurrentMouseMapPosition => UI.MouseMapPosition();
         private Vector3 MouseMapOffset => LastMouseMapPosition - CurrentMouseMapPosition;
 
         // reflection helpers
@@ -43,6 +43,11 @@ namespace ColonistBarKF
                 // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
                 // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.
             }
+        }
+
+        public MapComponent_ZoomToMouse(Map map)
+            : base(map)
+        {
         }
     }
 }
