@@ -98,9 +98,6 @@
       <Link>Defs\Initializer.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\ThingDefs\Injector.xml">
-      <Link>Defs\Injector.xml</Link>
-    </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>
     </Content>

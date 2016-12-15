@@ -6,6 +6,7 @@ using Verse;
 
 namespace ColonistBarKF
 {
+    using System.Linq;
     using System.Reflection;
 
     using global::ColonistBarKF;
@@ -19,7 +20,7 @@ namespace ColonistBarKF
     using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 
     [StaticConstructorOnStartup]
-    public class ColonistBar_KF 
+    public class ColonistBar_KF
     {
 
         public const float BaseSelectedTexJump = 20f;
@@ -366,6 +367,16 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public void ColonistBarOnGUI()
         {
+            //KF
+            if (Event.current.type == EventType.Layout)
+            {
+                BaseSize.x = ColBarSettings.BaseSizeFloat;
+                BaseSize.y = ColBarSettings.BaseSizeFloat;
+                PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
+                PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
+            }
+            //end
+
             if (Event.current.type != EventType.Layout)
             {
                 List<ColonistBar.Entry> entries = this.Entries;
@@ -452,12 +463,13 @@ namespace ColonistBarKF
                             ColonistBar_KF.tmpPawns.Add(corpse.InnerPawn);
                         }
                     }
-                    ColonistBar_KF.tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                    //    ColonistBar_KF.tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                    SortCachedColonists(ref tmpPawns);
                     for (int l = 0; l < ColonistBar_KF.tmpPawns.Count; l++)
                     {
                         this.cachedEntries.Add(new ColonistBar.Entry(ColonistBar_KF.tmpPawns[l], ColonistBar_KF.tmpMaps[i], num));
                     }
-                    if (!ColonistBar_KF.tmpPawns.Any<Pawn>())
+                    if (!GenCollection.Any<Pawn>(ColonistBar_KF.tmpPawns))
                     {
                         this.cachedEntries.Add(new ColonistBar.Entry(null, ColonistBar_KF.tmpMaps[i], num));
                     }
@@ -501,12 +513,14 @@ namespace ColonistBarKF
             return 1f;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public bool AnyColonistOrCorpseAt(Vector2 pos)
         {
             ColonistBar.Entry entry;
             return this.TryGetEntryAt(pos, out entry) && entry.pawn != null;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
             List<Vector2> drawLocs = this.DrawLocs;
@@ -525,6 +539,62 @@ namespace ColonistBarKF
             return false;
         }
 
+        private void SortCachedColonists(ref List<Pawn> tmpColonists)
+        {
+            IOrderedEnumerable<Pawn> orderedEnumerable = null;
+            switch (ColBarSettings.SortBy)
+            {
+                case vanilla:
+                    tmpColonists.SortBy(x => x.thingIDNumber);
+                    SaveBarSettings();
+                    break;
+
+                case byName:
+                    orderedEnumerable = tmpColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case sexage:
+                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case health:
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case mood:
+                    orderedEnumerable = tmpColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case weapons:
+                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
+                        .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case medic:
+                    orderedEnumerable = tmpColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                default:
+                    tmpColonists.SortBy(x => x.thingIDNumber);
+                    SaveBarSettings();
+                    break;
+            }
+        }
+
+
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Pawn> GetColonistsInOrder()
         {
             List<ColonistBar.Entry> entries = this.Entries;
@@ -568,13 +638,13 @@ namespace ColonistBarKF
             }
             if (WorldRendererUtility.WorldRenderedNow)
             {
-                if (ColonistBar_KF.tmpColonistsWithMap.Any((Pair<Thing, Map> x) => x.Second == null))
+                if (GenCollection.Any(ColonistBar_KF.tmpColonistsWithMap, (Pair<Thing, Map> x) => x.Second == null))
                 {
                     ColonistBar_KF.tmpColonistsWithMap.RemoveAll((Pair<Thing, Map> x) => x.Second != null);
                     goto IL_1A1;
                 }
             }
-            if (ColonistBar_KF.tmpColonistsWithMap.Any((Pair<Thing, Map> x) => x.Second == Find.VisibleMap))
+            if (GenCollection.Any(ColonistBar_KF.tmpColonistsWithMap, (Pair<Thing, Map> x) => x.Second == Find.VisibleMap))
             {
                 ColonistBar_KF.tmpColonistsWithMap.RemoveAll((Pair<Thing, Map> x) => x.Second != Find.VisibleMap);
             }
@@ -588,6 +658,7 @@ namespace ColonistBarKF
             return ColonistBar_KF.tmpColonists;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Thing> MapColonistsOrCorpsesInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpMapColonistsOrCorpsesInScreenRect.Clear();
@@ -602,6 +673,7 @@ namespace ColonistBarKF
             return ColonistBar_KF.tmpMapColonistsOrCorpsesInScreenRect;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpCaravanPawns.Clear();
@@ -617,6 +689,7 @@ namespace ColonistBarKF
             return ColonistBar_KF.tmpCaravanPawns;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpCaravans.Clear();
@@ -628,6 +701,7 @@ namespace ColonistBarKF
             return ColonistBar_KF.tmpCaravans;
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public Caravan CaravanMemberCaravanAt(Vector2 at)
         {
             Pawn pawn = this.ColonistOrCorpseAt(at) as Pawn;

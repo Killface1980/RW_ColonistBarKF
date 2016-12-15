@@ -17,8 +17,6 @@ namespace ColonistBarKF
     using ColonistBarKF;
     using ColonistBarKF.PSI;
 
-    using global::ColonistBarKF.PSI;
-
     using RimWorld;
 
     using UnityEngine;

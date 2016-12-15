@@ -9,6 +9,7 @@ namespace ColonistBarKF       // Replace with yours.
     [StaticConstructorOnStartup]
     public class MapComponentInjector : MonoBehaviour
     {
+        //ToDo: reactivate follow me, throws errors
         private static readonly Type followMe = typeof(MapComponent_FollowMe);
         private static readonly Type zoomToMouse = typeof(MapComponent_ZoomToMouse);
 
@@ -23,20 +24,23 @@ namespace ColonistBarKF       // Replace with yours.
                 return;
             }
 
-
-            if (Find.VisibleMap.components.FindAll(c => c.GetType() == followMe).Count == 0)
+            //ToDo: also here!
+            if (false)
             {
-                Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(followMe));
+                if (Find.VisibleMap.components.FindAll(c => c.GetType() == followMe).Count == 0)
+                {
+                    Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(followMe));
 
-                Log.Message("ColonistBar_KF :: Added FollowMe to the map.");
-            }
-            if (Find.VisibleMap.components.FindAll(c => c.GetType() == zoomToMouse).Count == 0)
-            {
-                Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(zoomToMouse));
+                    Log.Message("ColonistBar_KF :: Added FollowMe to the map.");
+                }
+                if (Find.VisibleMap.components.FindAll(c => c.GetType() == zoomToMouse).Count == 0)
+                {
+                    Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(zoomToMouse));
 
-                Log.Message("ColonistBar_KF :: Added ZoomToMouse to the map.");
-            }
-            Destroy(this);
+                    Log.Message("ColonistBar_KF :: Added ZoomToMouse to the map.");
+                }
+
+            }            Destroy(this);
         }
 
     }

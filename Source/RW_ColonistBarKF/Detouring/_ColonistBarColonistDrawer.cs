@@ -106,6 +106,10 @@ namespace ColonistBarKF
             {
                 DrawWeapon(rect, colonist, entryRectAlpha);
             }
+            if (ColBarSettings.UsePsi)
+            {
+                PSI.PSI.DrawColonistIconsOnBar(rect, colonist, entryRectAlpha);
+            }
             //PSI end
             GUI.color = new Color(1f, 1f, 1f, entryRectAlpha * 0.8f);
             this.DrawIcons(rect, colonist);

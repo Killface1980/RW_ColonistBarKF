@@ -159,6 +159,7 @@ namespace ColonistBarKF
         }
 
         private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+
         private static Vector3 GetRequestedCameraPosition()
         {
             var cameraDriver = Find.CameraDriver;
