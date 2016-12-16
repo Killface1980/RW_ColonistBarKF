@@ -33,6 +33,7 @@ namespace ColonistBarKF
         public MapComponent_FollowMe(Map map)
             : base(map)
         {
+            this.map = map;
             this._enabled = true;
         }
 

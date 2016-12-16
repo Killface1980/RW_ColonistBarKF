@@ -48,6 +48,7 @@ namespace ColonistBarKF
         public MapComponent_ZoomToMouse(Map map)
             : base(map)
         {
+            this.map = map;
         }
     }
 }

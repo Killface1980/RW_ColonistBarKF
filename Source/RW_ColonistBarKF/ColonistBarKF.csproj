@@ -50,10 +50,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -90,9 +86,6 @@
     <Content Include="..\..\About\About.xml">
       <Link>Defs\About.xml</Link>
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
-      <Link>Defs\ModHelper.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>Defs\Initializer.xml</Link>

@@ -82,7 +82,7 @@ namespace ColonistBarKF
             bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
-            GUI.DrawTexture(rect, ColonistBar_KF.BGTex);
+            GUI.DrawTexture(rect, ColonistBarTextures.BGTex);
             if (colonist.needs != null && colonist.needs.mood != null)
             {
                 Rect position = rect.ContractedBy(2f);

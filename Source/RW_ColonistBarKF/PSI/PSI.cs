@@ -32,7 +32,6 @@ namespace ColonistBarKF.PSI
             Reinit();
         }
 
-
         public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
         {
             _pawnCapacities = new[]
@@ -77,6 +76,11 @@ namespace ColonistBarKF.PSI
 
             if (Current.ProgramState != ProgramState.Playing)
                 return;
+
+            if (Find.VisibleMap == null)
+            {
+                return;
+            }
 
             //if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
             //    return;
@@ -575,10 +579,10 @@ namespace ColonistBarKF.PSI
                         }
                         else
                         {
-                          //if (!hediff.FullyHealableOnlyByTend())
-                          //{
-                          //    continue;
-                          //}
+                            //if (!hediff.FullyHealableOnlyByTend())
+                            //{
+                            //    continue;
+                            //}
                         }
 
                         if (hediff.def.defName.Equals("WoundInfection") || hediff.def.defName.Equals("Flu") || hediff.def.defName.Equals("Plague") || hediff.def.defName.Equals("Malaria") || hediff.def.defName.Equals("SleepingSickness"))
@@ -602,7 +606,7 @@ namespace ColonistBarKF.PSI
 
                         if (hediff.FullyImmune()) continue;
 
-                       // if (hediff.def.naturallyHealed) continue;
+                        // if (hediff.def.naturallyHealed) continue;
 
                         if (!hediff.def.makesSickThought) continue;
 
@@ -701,7 +705,7 @@ namespace ColonistBarKF.PSI
             _fDelta = 0.0;
 
             foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisoners) //.FreeColonistsAndPrisoners)
-                                                                               //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
+                                                                                 //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
             {
                 if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null) continue;
                 try
