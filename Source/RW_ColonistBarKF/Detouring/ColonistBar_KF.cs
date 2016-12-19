@@ -18,22 +18,22 @@ namespace ColonistBarKF
 {
     using RimWorld.Planet;
 
-    public class ColonistBar_KF
+    public static class ColonistBar_KF
     {
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-        private List<Pawn> cachedColonists = new List<Pawn>();
+        private static List<Pawn> cachedColonists = new List<Pawn>();
 
-        private List<Vector2> cachedDrawLocs = new List<Vector2>();
+        private static List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        private bool colonistsDirty = true;
+        private static bool colonistsDirty = true;
 
-        private Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
+        private static Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
 
-        private Pawn clickedColonist;
+        private static Pawn clickedColonist;
 
-        private float clickedAt;
+        private static float clickedAt;
 
         public static float SpacingLabel = 20f;
 
@@ -60,7 +60,7 @@ namespace ColonistBarKF
 
         public static float CurrentScale;
 
-        private float Scale
+        private static float Scale
         {
             get
             {
@@ -101,19 +101,19 @@ namespace ColonistBarKF
             }
         }
 
-        private Vector2 Size => SizeAssumingScale(Scale);
+        private static Vector2 Size => SizeAssumingScale(Scale);
 
-        private float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
+        private static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
 
-        private float SpacingVertical => SpacingVerticalAssumingScale(Scale);
+        private static float SpacingVertical => SpacingVerticalAssumingScale(Scale);
 
-        private float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
+        private static float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
 
-        private float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
+        private static float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
 
-        private float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
+        private static float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
 
-        private float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
+        private static float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
 
         private static float SpacingHorizontalMoodBarAssumingScale(float scale)
         {
@@ -131,9 +131,9 @@ namespace ColonistBarKF
             return 0f;
         }
 
-        private int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
+        private static int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
 
-        private int ColonistsPerColumn => ColonistsPerColumnAssumingScale(Scale);
+        private static int ColonistsPerColumn => ColonistsPerColumnAssumingScale(Scale);
 
         private static Vector2 SizeAssumingScale(float scale)
         {
@@ -142,12 +142,12 @@ namespace ColonistBarKF
             return BaseSize * scale;
         }
 
-        private int RowsCountAssumingScale(float scale)
+        private static int RowsCountAssumingScale(float scale)
         {
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
 
-        private int ColumnsCountAssumingScale(float scale)
+        private static int ColumnsCountAssumingScale(float scale)
         {
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerColumnAssumingScale(scale));
         }
@@ -316,7 +316,7 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InconsistentNaming
-        public void ColonistBarOnGUI()
+        public static void ColonistBarOnGUI()
         {
             if (!Find.PlaySettings.showColonistBar)
             {
@@ -364,7 +364,7 @@ namespace ColonistBarKF
         // RimWorld.ColonistBar
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
-        public List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
+        public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
 
             tmpColonists.Clear();
@@ -392,7 +392,7 @@ namespace ColonistBarKF
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public Thing ColonistOrCorpseAt(Vector2 pos)
+        public static Thing ColonistOrCorpseAt(Vector2 pos)
         {
             Pawn pawn = null;
             RecacheDrawLocs();
@@ -420,7 +420,7 @@ namespace ColonistBarKF
             return null;
         }
 
-        public void RecacheDrawLocs()
+        public static void RecacheDrawLocs()
         {
             CheckRecacheColonistsRaw();
             Vector2 size = Size;
@@ -590,14 +590,14 @@ namespace ColonistBarKF
         }
 
 
-        private void CheckRecacheColonistsRaw()
+        private static void CheckRecacheColonistsRaw()
         {
-            if (!this.colonistsDirty)
+            if (!colonistsDirty)
             {
                 return;
             }
-            this.colonistsDirty = false;
-            this.cachedColonists.Clear();
+            colonistsDirty = false;
+            cachedColonists.Clear();
             if (Find.PlaySettings.showColonistBar)
             {
                 tmpMaps.Clear();
@@ -635,11 +635,11 @@ namespace ColonistBarKF
                     tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
                     for (int l = 0; l < tmpPawns.Count; l++)
                     {
-                        this.cachedColonists.Add(tmpPawns[l]);
+                        cachedColonists.Add(tmpPawns[l]);
                     }
                     if (!tmpPawns.Any<Pawn>())
                     {
-                        this.cachedColonists.Add(tmpPawns[i]);
+                        cachedColonists.Add(tmpPawns[i]);
                     }
                     num++;
                 }
@@ -653,12 +653,12 @@ namespace ColonistBarKF
                         tmpPawns.Clear();
                         tmpPawns.AddRange(tmpCaravans[m].PawnsListForReading);
                         //  tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
-                        this.SortCachedColonists(ref tmpPawns);
+                        SortCachedColonists(ref tmpPawns);
                         for (int n = 0; n < tmpPawns.Count; n++)
                         {
                             if (tmpPawns[n].IsColonist)
                             {
-                                this.cachedColonists.Add(tmpPawns[n]);
+                                cachedColonists.Add(tmpPawns[n]);
                             }
                         }
                         num++;
@@ -670,11 +670,11 @@ namespace ColonistBarKF
             tmpMaps.Clear();
             tmpCaravans.Clear();
         }
-        public void Notify_RecachedEntries()
+        public static void Notify_RecachedEntries()
         {
-            this.pawnLabelsCache.Clear();
+            pawnLabelsCache.Clear();
         }
-        private void SortCachedColonists(ref List<Pawn>tmpColonists)
+        private static void SortCachedColonists(ref List<Pawn>tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
             switch (ColBarSettings.SortBy)
@@ -728,7 +728,7 @@ namespace ColonistBarKF
             }
         }
 
-        private void DrawColonist(Rect rect, Pawn colonist)
+        private static void DrawColonist(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             bool colonistAlive = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
@@ -961,7 +961,7 @@ namespace ColonistBarKF
 			}*/
         }
 
-        private float GetColonistRectAlpha(Rect rect)
+        private static float GetColonistRectAlpha(Rect rect)
         {
             float t;
             if (Messages.CollidesWithAnyMessage(rect, out t))
@@ -971,13 +971,13 @@ namespace ColonistBarKF
             return 1f;
         }
 
-        private Rect GetPawnTextureRect(float x, float y)
+        private static Rect GetPawnTextureRect(float x, float y)
         {
             Vector2 vector = PawnTextureSize * Scale;
             return new Rect(x + 1f, y - (vector.y - Size.y) - 1f, vector.x, vector.y);
         }
 
-        private void DrawIcons(Rect rect, Pawn colonist)
+        private static void DrawIcons(Rect rect, Pawn colonist)
         {
             if (colonist.Dead)
             {
@@ -1055,7 +1055,7 @@ namespace ColonistBarKF
             }
         }
 
-        private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
+        private static void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
             float num = ColBarSettings.BaseSizeFloat * 0.4f * Scale;
             Rect rect = new Rect(pos.x, pos.y, num, num);
@@ -1064,7 +1064,7 @@ namespace ColonistBarKF
             pos.x += num;
         }
 
-        private void DrawWeapon(Rect rect, Pawn colonist)
+        private static void DrawWeapon(Rect rect, Pawn colonist)
         {
             float colonistRectAlpha = GetColonistRectAlpha(rect);
             Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
@@ -1116,9 +1116,9 @@ namespace ColonistBarKF
             }
         }
 
-        private Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
+        private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
-        private void HandleColonistClicks(Rect rect, Pawn colonist)
+        private static void HandleColonistClicks(Rect rect, Pawn colonist)
         {
             if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
@@ -1202,9 +1202,9 @@ namespace ColonistBarKF
             }
         }
 
-        public void MarkColonistsDirty()
+        public static void MarkColonistsDirty()
         {
-            this.colonistsDirty = true;
+            colonistsDirty = true;
         }
         private static Vector2[] bracketLocs = new Vector2[4];
 
@@ -1223,7 +1223,7 @@ namespace ColonistBarKF
         private static List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
         private static List<Pawn> tmpCaravanPawns = new List<Pawn>();
-        private void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
+        private static void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
         {
             Thing obj = colonist;
             if (colonist.Dead)
@@ -1233,10 +1233,10 @@ namespace ColonistBarKF
             float num = 0.4f * Scale;
             Vector2 textureSize = new Vector2((float)SelectionDrawerUtility.SelectedTexGUI.width * num, (float)SelectionDrawerUtility.SelectedTexGUI.height * num);
             SelectionDrawerUtility.CalculateSelectionBracketPositionsUI<object>(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
-            this.DrawSelectionOverlayOnGUI(bracketLocs, num);
+            DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
-        private void DrawSelectionOverlayOnGUI(Vector2[] bracketLocs, float selectedTexScale)
+        private static void DrawSelectionOverlayOnGUI(Vector2[] bracketLocs, float selectedTexScale)
         {
             int num = 90;
             for (int i = 0; i < 4; i++)

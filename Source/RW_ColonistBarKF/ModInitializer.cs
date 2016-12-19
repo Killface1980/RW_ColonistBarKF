@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using HugsLib.Source.Detour;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -22,6 +23,7 @@ namespace ColonistBarKF
 
         protected override void FillTab() { }
     }
+
 
     public class CBKF : MonoBehaviour
     {
@@ -100,6 +102,7 @@ namespace ColonistBarKF
             //PSI
             OnLevelWasLoaded(0);
             enabled = true;
+
 
         }
     }

@@ -656,40 +656,14 @@ namespace ColonistBarKF.PSI
 
             pawnStats.PainMoodLevel = -1;
 
-            // Moods
-
-            if (colonist.needs.mood.thoughts.Thoughts != null)
-            {
-                int i;
-                for (i = 0; i < colonist.needs.mood.thoughts.Thoughts.Count; i++)
-                {
-                    Thought thoughtDef = colonist.needs.mood.thoughts.Thoughts[i];
-                    if (thoughtDef.CurStage != null)
-                    {
-                        if (thoughtDef.def.defName.Equals("Crowded"))
-                        {
-                            pawnStats.CrowdedMoodLevel = thoughtDef.CurStageIndex;
-                        }
-                        else
-                        {
-                            pawnStats.CrowdedMoodLevel = -1;
-                        }
-                        if (thoughtDef.def.defName.Equals("Pain") || thoughtDef.def.defName.Equals("MasochistPain"))
-                        {
-                            pawnStats.PainMoodLevel = thoughtDef.CurStageIndex;
-
-                        }
-                        else pawnStats.PainMoodLevel = -1;
-                    }
-                }
-            }
+   
 
             _statsDict[colonist] = pawnStats;
         }
 
         public static bool HasMood(Pawn pawn, ThoughtDef tdef)
         {
-            return pawn.needs.mood.thoughts.Thoughts.Any(thought => thought.def == tdef);
+            return pawn.needs.mood.thoughts.situational.Equals(tdef);
         }
 
         // ReSharper disable once UnusedMember.Global
