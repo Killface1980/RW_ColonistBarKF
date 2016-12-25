@@ -33,7 +33,7 @@
   <CBKF.Settings.useBottom>Bottom</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseMoodColors>Use MoodBars™: </CBKF.Settings.UseMoodColors>
+  <CBKF.Settings.UseExternalMoodBar>Use external MoodBars™: </CBKF.Settings.UseExternalMoodBar>
   <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons™ on Bar</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>

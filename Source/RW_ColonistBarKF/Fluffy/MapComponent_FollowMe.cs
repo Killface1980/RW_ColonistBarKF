@@ -34,7 +34,7 @@ namespace ColonistBarKF
             : base(map)
         {
             this.map = map;
-            this._enabled = true;
+            _enabled = true;
         }
 
         private static string FollowedLabel
@@ -64,7 +64,7 @@ namespace ColonistBarKF
                 // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
                 Vector3 pos = Input.mousePosition;
                 pos.y = Screen.height - pos.y;
-                Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
+                Thing thing = ColonistBar_KF.ColonistOrCorpseAt(pos);
                 if (thing != null)
                 {
                     // start following

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -82,16 +83,24 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
+
+
             //if (!PsiSettings.UsePsi || !PsiSettings.UsePsiOnPrisoner)
             //    return;
 
-            foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawns)
+            if (!WorldRendererUtility.WorldRenderedNow)
             {
-                if (pawn != null && pawn.RaceProps.Animal)
-                    DrawAnimalIcons(pawn);
-                else if (pawn != null && ((PsiSettings.UsePsi && pawn.IsColonist) || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
+                foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawns)
                 {
-                    DrawColonistIcons(pawn);
+                    if (useGUILayout)
+                    {
+                        if (pawn != null && pawn.RaceProps.Animal)
+                            DrawAnimalIcons(pawn);
+                        else if (pawn != null && ((PsiSettings.UsePsi && pawn.IsColonist) || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
+                        {
+                            DrawColonistIcons(pawn);
+                        }
+                    }
                 }
             }
         }
@@ -163,23 +172,23 @@ namespace ColonistBarKF.PSI
                 case Alignment.Left:
                     iconRect.x = rect.xMin - iconRect.width;
                     iconRect.y = rect.yMax - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Left)
+                    if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Left)
                         iconRect.x -= rect.width / 4;
                     break;
                 case Alignment.Right:
                     iconRect.x = rect.xMax;
                     iconRect.y = rect.yMax - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Right)
+                    if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Right)
                         iconRect.x += rect.width / 4;
                     break;
                 case Alignment.Top:
                     iconRect.y = rect.yMin - iconRect.width;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Top)
+                    if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Top)
                         iconRect.y -= rect.height / 4;
                     break;
                 case Alignment.Bottom:
                     iconRect.y = rect.yMax + ColonistBarTextures.SpacingLabel;
-                    if (ColBarSettings.UseMoodColors && ColBarSettings.MoodBarPos == Alignment.Bottom)
+                    if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Bottom)
                         iconRect.y += rect.height / 4;
                     break;
 
@@ -656,7 +665,7 @@ namespace ColonistBarKF.PSI
 
             pawnStats.PainMoodLevel = -1;
 
-   
+
 
             _statsDict[colonist] = pawnStats;
         }

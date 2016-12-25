@@ -33,7 +33,7 @@
   <CBKF.Settings.useBottom>底端</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>按性别使用背景颜色</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>左侧</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseMoodColors>使用心情栏™: </CBKF.Settings.UseMoodColors>
+  <CBKF.Settings.UseExternalMoodBar>使用心情栏™: </CBKF.Settings.UseExternalMoodBar>
   <CBKF.Settings.UsePsiOnBar>展示人物状态图标™ 在头像上</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>右侧</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>顶部</CBKF.Settings.useTop>

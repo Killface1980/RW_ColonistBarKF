@@ -443,7 +443,7 @@ namespace ColonistBarKF.ColorPicker
                 if (Widgets.ButtonText(okRect, "OK"))
                 {
                     Apply();
-                    this.Close();
+                    Close();
                 }
                 if (Widgets.ButtonText(applyRect, "Apply"))
                 {
@@ -452,7 +452,7 @@ namespace ColonistBarKF.ColorPicker
                 }
                 if (Widgets.ButtonText(cancelRect, "Cancel"))
                 {
-                    this.Close();
+                    Close();
                 }
             }
 
@@ -751,7 +751,7 @@ namespace ColonistBarKF.ColorPicker
             // draw presets and interactivity.
             public void DrawPresetBoxes()
             {
-                // TODO: this.
+                // TODO: 
             }
 
             #endregion Methods

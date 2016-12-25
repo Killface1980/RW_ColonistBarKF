@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using HugsLib.Source.Detour;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -74,7 +73,7 @@ namespace ColonistBarKF
 
             if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
             {
-                Find.ColonistBar.MarkColonistsDirty();
+                ColonistBar_KF.MarkColonistsDirty();
                 _lastStatUpdate = Find.TickManager.TicksGame;
             }
 

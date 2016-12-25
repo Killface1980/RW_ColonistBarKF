@@ -71,8 +71,8 @@ namespace ColonistBarKF
         {
             get
             {
-                this.CheckRecacheEntries();
-                return this.cachedEntries;
+                CheckRecacheEntries();
+                return cachedEntries;
             }
         }
 
@@ -80,7 +80,7 @@ namespace ColonistBarKF
         {
             get
             {
-                List<ColonistBar.Entry> entries = this.Entries;
+                List<ColonistBar.Entry> entries = Entries;
                 int num = -1;
                 for (int i = 0; i < entries.Count; i++)
                 {
@@ -133,7 +133,7 @@ namespace ColonistBarKF
                     return CurrentScale;
 
                 }
-                return this.cachedScale;
+                return cachedScale;
             }
         }
         private int RowsCountAssumingScale(float scale)
@@ -336,7 +336,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return this.cachedDrawLocs;
+                return cachedDrawLocs;
             }
         }
 
@@ -344,7 +344,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return ColonistBar_KF.BaseSize * this.Scale;
+                return ColonistBar_KF.BaseSize * Scale;
             }
         }
 
@@ -352,7 +352,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return 24f * this.Scale;
+                return 24f * Scale;
             }
         }
 
@@ -361,7 +361,7 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public void MarkColonistsDirty()
         {
-            this.entriesDirty = true;
+            entriesDirty = true;
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
@@ -379,42 +379,42 @@ namespace ColonistBarKF
 
             if (Event.current.type != EventType.Layout)
             {
-                List<ColonistBar.Entry> entries = this.Entries;
+                List<ColonistBar.Entry> entries = Entries;
                 int num = -1;
-                bool showGroupFrames = this.ShowGroupFrames;
-                for (int i = 0; i < this.cachedDrawLocs.Count; i++)
+                bool showGroupFrames = ShowGroupFrames;
+                for (int i = 0; i < cachedDrawLocs.Count; i++)
                 {
-                    Rect rect = new Rect(this.cachedDrawLocs[i].x, this.cachedDrawLocs[i].y, this.Size.x, this.Size.y);
+                    Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
                     ColonistBar.Entry entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
                     if (entry.pawn != null)
                     {
-                        this.drawerKF.HandleClicks(rect, entry.pawn);
+                        drawerKF.HandleClicks(rect, entry.pawn);
                     }
                     if (Event.current.type == EventType.Repaint)
                     {
                         if (flag && showGroupFrames)
                         {
-                            this.drawerKF.DrawGroupFrame(entry.group);
+                            drawerKF.DrawGroupFrame(entry.group);
                         }
                         if (entry.pawn != null)
                         {
-                            this.drawerKF.DrawColonist(rect, entry.pawn, entry.map);
+                            drawerKF.DrawColonist(rect, entry.pawn, entry.map);
                         }
                     }
                 }
                 num = -1;
                 if (showGroupFrames)
                 {
-                    for (int j = 0; j < this.cachedDrawLocs.Count; j++)
+                    for (int j = 0; j < cachedDrawLocs.Count; j++)
                     {
                         ColonistBar.Entry entry2 = entries[j];
                         bool flag2 = num != entry2.group;
                         num = entry2.group;
                         if (flag2)
                         {
-                            this.drawerKF.HandleGroupFrameClicks(entry2.group);
+                            drawerKF.HandleGroupFrameClicks(entry2.group);
                         }
                     }
                 }
@@ -423,12 +423,12 @@ namespace ColonistBarKF
 
         private void CheckRecacheEntries()
         {
-            if (!this.entriesDirty)
+            if (!entriesDirty)
             {
                 return;
             }
-            this.entriesDirty = false;
-            this.cachedEntries.Clear();
+            entriesDirty = false;
+            cachedEntries.Clear();
             if (Find.PlaySettings.showColonistBar)
             {
                 ColonistBar_KF.tmpMaps.Clear();
@@ -467,11 +467,11 @@ namespace ColonistBarKF
                     SortCachedColonists(ref tmpPawns);
                     for (int l = 0; l < ColonistBar_KF.tmpPawns.Count; l++)
                     {
-                        this.cachedEntries.Add(new ColonistBar.Entry(ColonistBar_KF.tmpPawns[l], ColonistBar_KF.tmpMaps[i], num));
+                        cachedEntries.Add(new ColonistBar.Entry(ColonistBar_KF.tmpPawns[l], ColonistBar_KF.tmpMaps[i], num));
                     }
                     if (!GenCollection.Any<Pawn>(ColonistBar_KF.tmpPawns))
                     {
-                        this.cachedEntries.Add(new ColonistBar.Entry(null, ColonistBar_KF.tmpMaps[i], num));
+                        cachedEntries.Add(new ColonistBar.Entry(null, ColonistBar_KF.tmpMaps[i], num));
                     }
                     num++;
                 }
@@ -489,18 +489,18 @@ namespace ColonistBarKF
                         {
                             if (ColonistBar_KF.tmpPawns[n].IsColonist)
                             {
-                                this.cachedEntries.Add(new ColonistBar.Entry(ColonistBar_KF.tmpPawns[n], null, num));
+                                cachedEntries.Add(new ColonistBar.Entry(ColonistBar_KF.tmpPawns[n], null, num));
                             }
                         }
                         num++;
                     }
                 }
             }
-            this.drawerKF.Notify_RecachedEntries();
+            drawerKF.Notify_RecachedEntries();
             ColonistBar_KF.tmpPawns.Clear();
             ColonistBar_KF.tmpMaps.Clear();
             ColonistBar_KF.tmpCaravans.Clear();
-            this.drawLocsFinderKf.CalculateDrawLocs(this.cachedDrawLocs, out this.cachedScale);
+            drawLocsFinderKf.CalculateDrawLocs(cachedDrawLocs, out cachedScale);
         }
 
         public float GetEntryRectAlpha(Rect rect)
@@ -517,15 +517,15 @@ namespace ColonistBarKF
         public bool AnyColonistOrCorpseAt(Vector2 pos)
         {
             ColonistBar.Entry entry;
-            return this.TryGetEntryAt(pos, out entry) && entry.pawn != null;
+            return TryGetEntryAt(pos, out entry) && entry.pawn != null;
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
-            List<Vector2> drawLocs = this.DrawLocs;
-            List<ColonistBar.Entry> entries = this.Entries;
-            Vector2 size = this.Size;
+            List<Vector2> drawLocs = DrawLocs;
+            List<ColonistBar.Entry> entries = Entries;
+            Vector2 size = Size;
             for (int i = 0; i < drawLocs.Count; i++)
             {
                 Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y);
@@ -597,7 +597,7 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Pawn> GetColonistsInOrder()
         {
-            List<ColonistBar.Entry> entries = this.Entries;
+            List<ColonistBar.Entry> entries = Entries;
             ColonistBar_KF.tmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {
@@ -612,9 +612,9 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
-            List<Vector2> drawLocs = this.DrawLocs;
-            List<ColonistBar.Entry> entries = this.Entries;
-            Vector2 size = this.Size;
+            List<Vector2> drawLocs = DrawLocs;
+            List<ColonistBar.Entry> entries = Entries;
+            Vector2 size = Size;
             ColonistBar_KF.tmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
             {
@@ -662,7 +662,7 @@ namespace ColonistBarKF
         public List<Thing> MapColonistsOrCorpsesInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpMapColonistsOrCorpsesInScreenRect.Clear();
-            List<Thing> list = this.ColonistsOrCorpsesInScreenRect(rect);
+            List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].Spawned)
@@ -677,7 +677,7 @@ namespace ColonistBarKF
         public List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpCaravanPawns.Clear();
-            List<Thing> list = this.ColonistsOrCorpsesInScreenRect(rect);
+            List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
                 Pawn pawn = list[i] as Pawn;
@@ -693,7 +693,7 @@ namespace ColonistBarKF
         public List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
         {
             ColonistBar_KF.tmpCaravans.Clear();
-            List<Pawn> list = this.CaravanMembersInScreenRect(rect);
+            List<Pawn> list = CaravanMembersInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
                 ColonistBar_KF.tmpCaravans.Add(list[i].GetCaravan());
@@ -704,7 +704,7 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public Caravan CaravanMemberCaravanAt(Vector2 at)
         {
-            Pawn pawn = this.ColonistOrCorpseAt(at) as Pawn;
+            Pawn pawn = ColonistOrCorpseAt(at) as Pawn;
             if (pawn != null && pawn.IsCaravanMember())
             {
                 return pawn.GetCaravan();
@@ -716,7 +716,7 @@ namespace ColonistBarKF
         public Thing ColonistOrCorpseAt(Vector2 pos)
         {
             ColonistBar.Entry entry;
-            if (!this.TryGetEntryAt(pos, out entry))
+            if (!TryGetEntryAt(pos, out entry))
             {
                 return null;
             }

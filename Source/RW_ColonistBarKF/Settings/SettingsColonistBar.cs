@@ -183,9 +183,7 @@ namespace ColonistBarKF
 
         public bool UseGender = true;
 
-        public bool UseMoodBarBG;
-
-        public bool UseMoodColors = true;
+        public bool UseExternalMoodBar = true;
 
         public bool UsePsi = true;
 

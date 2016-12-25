@@ -606,23 +606,9 @@ namespace ColonistBarKF
             #region Mood Bar
 
             BeginVertical(this._fondBoxes);
-            ColBarSettings.UseMoodColors = Toggle(
-                ColBarSettings.UseMoodColors,
-                "CBKF.Settings.UseMoodColors".Translate());
-
-            if (ColBarSettings.UseMoodColors)
-            {
-                ColBarSettings.UseMoodBarBG = Toggle(
-                    ColBarSettings.UseMoodBarBG,
-                    "CBKF.Settings.UseMoodBarBG".Translate());
-                if (!ColBarSettings.UseMoodBarBG)
-                {
-                    BeginHorizontal();
-                    this.MoodBarPositionInt = Toolbar(this.MoodBarPositionInt, this.positionStrings);
-                    FlexibleSpace();
-                    EndHorizontal();
-                }
-            }
+            ColBarSettings.UseExternalMoodBar = Toggle(
+                ColBarSettings.UseExternalMoodBar,
+                "CBKF.Settings.UseExternalMoodBar".Translate());
 
             EndVertical();
 
@@ -1610,7 +1596,7 @@ namespace ColonistBarKF
 
             BeginHorizontal();
             FlexibleSpace();
-            Label("Colonist Bar KF 0.15.3", this._headline);
+            Label("Colonist Bar KF 0.16.0", this._headline);
             FlexibleSpace();
             EndHorizontal();
 

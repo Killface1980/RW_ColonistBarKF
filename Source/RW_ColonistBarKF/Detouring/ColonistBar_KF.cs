@@ -1,33 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using ColonistBarKF.PSI;
-
 using RimWorld;
-
+using RimWorld.Planet;
 using UnityEngine;
-
 using Verse;
-
+using Verse.Sound;
 using static ColonistBarKF.CBKF;
 using static ColonistBarKF.Position;
-using static ColonistBarKF.SettingsColonistBar.SortByWhat;
 
 namespace ColonistBarKF
 {
-    using RimWorld.Planet;
-
     public static class ColonistBar_KF
     {
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-        private static List<Pawn> cachedColonists = new List<Pawn>();
+        private static List<ColonistBar.Entry> cachedEntries = new List<ColonistBar.Entry>();
 
         private static List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        private static bool colonistsDirty = true;
+        private static bool entriesDirty = true;
 
         private static Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
 
@@ -117,7 +111,7 @@ namespace ColonistBarKF
 
         private static float SpacingHorizontalMoodBarAssumingScale(float scale)
         {
-            if (ColBarSettings.UseMoodColors && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
+            if (ColBarSettings.UseExternalMoodBar && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
                 return ColBarSettings.BaseSizeFloat / 4 * scale;
 
             return 0f;
@@ -125,7 +119,7 @@ namespace ColonistBarKF
 
         private static float SpacingVerticalgMoodBarAssumingScale(float scale)
         {
-            if (ColBarSettings.UseMoodColors &&
+            if (ColBarSettings.UseExternalMoodBar &&
                 (ColBarSettings.MoodBarPos == Alignment.Bottom || ColBarSettings.MoodBarPos == Alignment.Top))
                 return ColBarSettings.BaseSizeFloat / 4 * scale;
             return 0f;
@@ -314,11 +308,26 @@ namespace ColonistBarKF
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        public static List<Pawn> GetColonistsInOrder()
+        {
+            List<ColonistBar.Entry> entries = Entries;
+            tmpColonistsInOrder.Clear();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].pawn != null)
+                {
+                    tmpColonistsInOrder.Add(entries[i].pawn);
+                }
+            }
+            return tmpColonistsInOrder;
+        }
+
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InconsistentNaming
         public static void ColonistBarOnGUI()
         {
-            if (!Find.PlaySettings.showColonistBar)
+            if (!Visible)
             {
                 return;
             }
@@ -333,96 +342,303 @@ namespace ColonistBarKF
 
                 RecacheDrawLocs();
             }
-            else
-            {
-                for (int i = 0; i < cachedDrawLocs.Count; i++)
-                {
-                    Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
-                    //
-                    Pawn colonist = cachedColonists[i];
 
-                    //
-                    HandleColonistClicks(rect, colonist);
+
+            if (Event.current.type != EventType.Layout)
+            {
+            List<Vector2> drawLocs = cachedDrawLocs;
+                List<ColonistBar.Entry> entries = Entries;
+                int num = -1;
+                bool showGroupFrames = ShowGroupFrames;
+                for (int i = 0; i < drawLocs.Count; i++)
+                {
+                    Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, Size.x, Size.y);
+                    ColonistBar.Entry entry = entries[i];
+                    bool flag = num != entry.group;
+                    num = entry.group;
+                    if (entry.pawn != null)
+                    {
+                        HandleClicks(rect, entry.pawn);
+                    }
                     if (Event.current.type == EventType.Repaint)
                     {
-                        //Widgets.DrawShadowAround(rect);
-                        DrawColonist(rect, colonist);
-
-                        if (ColBarSettings.UsePsi)
+                        if (flag && showGroupFrames)
                         {
-                            float colonistRectAlpha = GetColonistRectAlpha(rect);
-                            PSI.PSI.DrawColonistIconsOnBar(rect, colonist, colonistRectAlpha);
+                            DrawGroupFrame(entry.group);
+                        }
+                        if (entry.pawn != null)
+                        {
+                            DrawColonist(rect, entry.pawn, entry.map);
+                            if (ColBarSettings.UsePsi)
+                            {
+                                float entryRectAlpha = GetEntryRectAlpha(rect);
+                                ApplyEntryInAnotherMapAlphaFactor(entry.map, ref entryRectAlpha);
+                                PSI.PSI.DrawColonistIconsOnBar(rect, entry.pawn, entryRectAlpha);
+                            }
                         }
                     }
                 }
+                num = -1;
+                if (showGroupFrames)
+                {
+                    for (int j = 0; j < drawLocs.Count; j++)
+                    {
+                        ColonistBar.Entry entry2 = entries[j];
+                        bool flag2 = num != entry2.group;
+                        num = entry2.group;
+                        if (flag2)
+                        {
+                            HandleGroupFrameClicks(entry2.group);
+                        }
+                    }
+                }
+
             }
+        }
+
+        // RimWorld.ColonistBarColonistDrawer
+        public static void HandleGroupFrameClicks(int group)
+        {
+            Rect rect = GroupFrameRect(group);
+            if (Mouse.IsOver(rect))
+            {
+                bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
+                if (Event.current.type == EventType.MouseDown && Event.current.button == 1)
+                {
+                    Event.current.Use();
+                }
+                else if (Event.current.type == EventType.MouseUp)
+                {
+                    if (Event.current.button == 0)
+                    {
+                        if (!AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
+                        {
+                            if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive) || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
+                            {
+                                Find.Selector.dragBox.active = false;
+                                Find.WorldSelector.dragBox.active = false;
+                                ColonistBar.Entry entry = Entries.Find(x => x.@group == @group);
+                                Map map = entry.map;
+                                if (map == null)
+                                {
+                                    if (Find.MainTabsRoot.OpenTab == MainTabDefOf.World)
+                                    {
+                                        JumpToTargetUtility.TrySelect(entry.pawn);
+                                    }
+                                    else
+                                    {
+                                        JumpToTargetUtility.TryJumpAndSelect(entry.pawn);
+                                    }
+                                }
+                                else
+                                {
+                                    if (!JumpToTargetUtility.CloseWorldTab() && Current.Game.VisibleMap != map)
+                                    {
+                                        SoundDefOf.MapSelected.PlayOneShotOnCamera();
+                                    }
+                                    Current.Game.VisibleMap = map;
+                                }
+                            }
+                        }
+                    }
+                  //else if (Event.current.button == 1)
+                  //{
+                  //    ColonistBar.Entry entry2 = Entries.Find(x => x.group == group);
+                  //    if (entry2.map != null)
+                  //    {
+                  //        JumpToTargetUtility.TryJumpAndSelect(JumpToTargetUtility.GetGlobalTargetInfoForMap(entry2.map));
+                  //    }
+                  //    else if (entry2.pawn != null)
+                  //    {
+                  //        JumpToTargetUtility.TryJumpAndSelect(entry2.pawn);
+                  //    }
+                  //}
+                }
+            }
+        }
+
+        public static bool AnyColonistOrCorpseAt(Vector2 pos)
+        {
+            ColonistBar.Entry entry;
+            return TryGetEntryAt(pos, out entry) && entry.pawn != null;
+        }
+
+        // RimWorld.ColonistBar
+        public static bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
+        {
+            List<Vector2> drawLocs = cachedDrawLocs;
+            List<ColonistBar.Entry> entries = Entries;
+            Vector2 size = Size;
+            for (int i = 0; i < drawLocs.Count; i++)
+            {
+                Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y);
+                if (rect.Contains(pos))
+                {
+                    entry = entries[i];
+                    return true;
+                }
+            }
+            entry = default(ColonistBar.Entry);
+            return false;
+        }
 
 
+        // RimWorld.ColonistBarColonistDrawer
+        private static Rect GroupFrameRect(int group)
+        {
+            float pos_x = 99999f;
+            float width = 0f;
+            float height = 0f;
+            List<ColonistBar.Entry> entries = Entries;
+            List<Vector2> drawLocs = cachedDrawLocs;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].group == group)
+                {
+                    pos_x = Mathf.Min(pos_x, drawLocs[i].x) ;
+                    width = Mathf.Max(width, drawLocs[i].x + Size.x);
+                    height = Mathf.Max(height, drawLocs[i].y + Size.y);
+                }
+            }
+            return new Rect(pos_x, 0f, width - pos_x, height).ContractedBy(-12f * Scale);
+        }
+
+
+
+        // RimWorld.ColonistBarColonistDrawer
+        public static void DrawGroupFrame(int group)
+        {
+            Rect position = GroupFrameRect(group);
+            List<ColonistBar.Entry> entries = Entries;
+            Map map = entries.Find(x => x.group == group).map;
+            float alpha;
+            if (map == null)
+            {
+                if (WorldRendererUtility.WorldRenderedNow)
+                {
+                    alpha = 1f;
+                }
+                else
+                {
+                    alpha = 0.75f;
+                }
+            }
+            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+            {
+                alpha = 0.75f;
+            }
+            else
+            {
+                alpha = 1f;
+            }
+            Widgets.DrawRectFast(position, new Color(0.5f, 0.5f, 0.5f, 0.4f * alpha), null);
         }
 
 
         // RimWorld.ColonistBar
-        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        private static bool ShowGroupFrames
+        {
+            get
+            {
+                List<ColonistBar.Entry> entries = Entries;
+                int num = -1;
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    num = Mathf.Max(num, entries[i].group);
+                }
+                return num >= 1;
+            }
+        }
+
+
+        // RimWorld.ColonistBar
         // ReSharper disable once UnusedMember.Global
+        // RimWorld.ColonistBar
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
-
-            tmpColonists.Clear();
-            RecacheDrawLocs();
-            for (int i = 0; i < cachedDrawLocs.Count; i++)
+            List<Vector2> drawLocs = cachedDrawLocs;
+            List<ColonistBar.Entry> entries = Entries;
+            Vector2 size = Size;
+            tmpColonistsWithMap.Clear();
+            for (int i = 0; i < drawLocs.Count; i++)
             {
-                if (rect.Overlaps(new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y)))
+                if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
                 {
-                    Thing thing;
-                    if (cachedColonists[i].Dead)
+                    Pawn pawn = entries[i].pawn;
+                    if (pawn != null)
                     {
-                        thing = cachedColonists[i].Corpse;
-                    }
-                    else
-                    {
-                        thing = cachedColonists[i];
-                    }
-                    if (thing != null && thing.Spawned)
-                    {
-                        tmpColonists.Add(thing);
+                        Thing first;
+                        if (pawn.Dead && pawn.Corpse != null && pawn.Corpse.MapHeld != null)
+                        {
+                            first = pawn.Corpse;
+                        }
+                        else
+                        {
+                            first = pawn;
+                        }
+                        tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].map));
                     }
                 }
             }
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                if (tmpColonistsWithMap.Any(x => x.Second == null))
+                {
+                    tmpColonistsWithMap.RemoveAll(x => x.Second != null);
+                    goto IL_1A1;
+                }
+            }
+            if (tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+            {
+                tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+            }
+            IL_1A1:
+            tmpColonists.Clear();
+            for (int j = 0; j < tmpColonistsWithMap.Count; j++)
+            {
+                tmpColonists.Add(tmpColonistsWithMap[j].First);
+            }
+            tmpColonistsWithMap.Clear();
             return tmpColonists;
         }
 
+        public static List<ColonistBar.Entry> Entries
+        {
+            get
+            {
+                CheckRecacheEntries();
+                return cachedEntries;
+            }
+        }
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Thing ColonistOrCorpseAt(Vector2 pos)
         {
-            Pawn pawn = null;
-            RecacheDrawLocs();
-            for (int i = 0; i < cachedDrawLocs.Count; i++)
+            if (!Visible)
             {
-                Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
-                if (rect.Contains(pos))
-                {
-                    pawn = cachedColonists[i];
-                }
+                return null;
             }
-            Thing thing;
-            if (pawn != null && pawn.Dead)
+            ColonistBar.Entry entry;
+            if (!TryGetEntryAt(pos, out entry))
             {
-                thing = pawn.Corpse;
+                return null;
+            }
+
+            Pawn pawn = entry.pawn;
+            Thing result;
+            if (pawn != null && pawn.Dead && pawn.Corpse != null && pawn.Corpse.MapHeld != null)
+            {
+                result = pawn.Corpse;
             }
             else
             {
-                thing = pawn;
+                result = pawn;
             }
-            if (thing != null && thing.Spawned)
-            {
-                return thing;
-            }
-            return null;
+            return result;
         }
 
         public static void RecacheDrawLocs()
         {
-            CheckRecacheColonistsRaw();
+            CheckRecacheEntries();
             Vector2 size = Size;
             int colonistsPerRow = ColonistsPerRow;
             int colonistsPerColumn = ColonistsPerColumn;
@@ -432,47 +648,23 @@ namespace ColonistBarKF
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
 
-            if (!ColBarSettings.UseMoodBarBG)
-                switch (ColBarSettings.ColBarPos)
-                {
-                    case Alignment.Left:
-                        cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
-                        break;
-
-                    case Alignment.Right:
-                        cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
-                        break;
-
-                    case Alignment.Top:
-                        break;
-
-                    case Alignment.Bottom:
-                        cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
-                        break;
-
-                    default:
-                        break;
-                        //throw new ArgumentOutOfRangeException();
-                }
-
-
             cachedDrawLocs.Clear();
 
             #region Horizontal Alignment
 
             if (ColBarSettings.ColBarPos == Alignment.Left || ColBarSettings.ColBarPos == Alignment.Right)
-                for (int i = 0; i < cachedColonists.Count; i++)
+                for (int i = 0; i < cachedEntries.Count; i++)
                 {
                     //         Debug.Log("Colonists count: " + i);
                     if (i % colonistsPerColumn == 0)
                     {
-                        int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedColonists.Count - i);
+                        int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedEntries.Count - i);
                         float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * (spacingVertical + SpacingLabel);
                         cachedDrawLocs_y = (Screen.height - num4) / 2f + ColBarSettings.VerticalOffset;
 
                         if (ColBarSettings.UsePsi)
                             ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
-                        if (ColBarSettings.UseMoodColors)
+                        if (ColBarSettings.UseExternalMoodBar)
                             ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
                         if (i != 0)
@@ -494,29 +686,29 @@ namespace ColonistBarKF
                     }
                     cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
 
-                    //      Debug.Log("MaxColonistBarHeight:" + SettingsColonistBar.MaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
+                    //      Debug.Log("MaxColonistBarHeight:" + SettingsMaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
                     //
                     //      Debug.Log("colonistsPerRow " + colonistsPerRow);
                     //      Debug.Log("colonistsPerColumn " + colonistsPerColumn);
                     //      Debug.Log("cachedDrawLocs_x: " + cachedDrawLocs_x);
                     //      Debug.Log("cachedDrawLocs_y: " + cachedDrawLocs_y);
-                    //      Debug.Log("cachedColonists: " + i);
+                    //      Debug.Log("cachedEntries: " + i);
                 }
             #endregion
             #region Vertical
             else
-                for (int i = 0; i < cachedColonists.Count; i++)
+                for (int i = 0; i < cachedEntries.Count; i++)
                 {
                     if (i % colonistsPerRow == 0)
                     {
-                        int maxColInRow = Mathf.Min(colonistsPerRow, cachedColonists.Count - i);
+                        int maxColInRow = Mathf.Min(colonistsPerRow, cachedEntries.Count - i);
                         float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
                         cachedDrawLocs_x = (Screen.width - num4) / 2f + ColBarSettings.HorizontalOffset;
 
                         if (ColBarSettings.UsePsi)
                             ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
-                        if (ColBarSettings.UseMoodColors)
+                        if (ColBarSettings.UseExternalMoodBar)
                             ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
 
@@ -568,7 +760,6 @@ namespace ColonistBarKF
 
         private static void ModifyBasicDrawLocsForMoodBar(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
         {
-            if (!ColBarSettings.UseMoodBarBG)
                 switch (ColBarSettings.MoodBarPos)
                 {
                     case Alignment.Left:
@@ -590,19 +781,19 @@ namespace ColonistBarKF
         }
 
 
-        private static void CheckRecacheColonistsRaw()
+        private static void CheckRecacheEntries()
         {
-            if (!colonistsDirty)
+            if (!entriesDirty)
             {
                 return;
             }
-            colonistsDirty = false;
-            cachedColonists.Clear();
+            entriesDirty = false;
+            cachedEntries.Clear();
             if (Find.PlaySettings.showColonistBar)
             {
                 tmpMaps.Clear();
                 tmpMaps.AddRange(Find.Maps);
-                tmpMaps.SortBy((Map x) => !x.IsPlayerHome, (Map x) => x.uniqueID);
+                tmpMaps.SortBy(x => !x.IsPlayerHome, x => x.uniqueID);
                 int num = 0;
                 for (int i = 0; i < tmpMaps.Count; i++)
                 {
@@ -632,20 +823,21 @@ namespace ColonistBarKF
                             tmpPawns.Add(corpse.InnerPawn);
                         }
                     }
-                    tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                    //         tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
+                    SortCachedColonists(ref tmpPawns);
                     for (int l = 0; l < tmpPawns.Count; l++)
                     {
-                        cachedColonists.Add(tmpPawns[l]);
+                        cachedEntries.Add(new ColonistBar.Entry(tmpPawns[l], tmpMaps[i], num));
                     }
-                    if (!tmpPawns.Any<Pawn>())
+                    if (!tmpPawns.Any())
                     {
-                        cachedColonists.Add(tmpPawns[i]);
+                        cachedEntries.Add(new ColonistBar.Entry(null, tmpMaps[i], num));
                     }
                     num++;
                 }
                 tmpCaravans.Clear();
                 tmpCaravans.AddRange(Find.WorldObjects.Caravans);
-                tmpCaravans.SortBy((Caravan x) => x.ID);
+                tmpCaravans.SortBy(x => x.ID);
                 for (int m = 0; m < tmpCaravans.Count; m++)
                 {
                     if (tmpCaravans[m].IsPlayerControlled)
@@ -658,64 +850,107 @@ namespace ColonistBarKF
                         {
                             if (tmpPawns[n].IsColonist)
                             {
-                                cachedColonists.Add(tmpPawns[n]);
+                                cachedEntries.Add(new ColonistBar.Entry(tmpPawns[n], null, num));
                             }
                         }
                         num++;
                     }
                 }
             }
+            RecacheDrawLocs();
             Notify_RecachedEntries();
             tmpPawns.Clear();
             tmpMaps.Clear();
             tmpCaravans.Clear();
+            CalculateColonistsInGroup();
         }
+
+        private static List<int> entriesInGroup = new List<int>();
+
+        private static void CalculateColonistsInGroup()
+        {
+            entriesInGroup.Clear();
+            List<ColonistBar.Entry> entries = Entries;
+            int num = CalculateGroupsCount();
+            for (int i = 0; i < num; i++)
+            {
+                entriesInGroup.Add(0);
+            }
+            for (int j = 0; j < entries.Count; j++)
+            {
+                List<int> list;
+                List<int> expr_49 = list = entriesInGroup;
+                int num2;
+                int expr_5C = num2 = entries[j].group;
+                num2 = list[num2];
+                expr_49[expr_5C] = num2 + 1;
+            }
+        }
+
+        // RimWorld.ColonistBarDrawLocsFinder
+        private static int CalculateGroupsCount()
+        {
+            List<ColonistBar.Entry> entries = Entries;
+            int num = -1;
+            int num2 = 0;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (num != entries[i].group)
+                {
+                    num2++;
+                    num = entries[i].group;
+                }
+            }
+            return num2;
+        }
+
+
         public static void Notify_RecachedEntries()
         {
             pawnLabelsCache.Clear();
         }
-        private static void SortCachedColonists(ref List<Pawn>tmpColonists)
+        private static void SortCachedColonists(ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
             switch (ColBarSettings.SortBy)
             {
-                case vanilla:
+                case SettingsColonistBar.SortByWhat.vanilla:
                     tmpColonists.SortBy(x => x.thingIDNumber);
                     SaveBarSettings();
                     break;
 
-                case byName:
+                case SettingsColonistBar.SortByWhat.byName:
                     orderedEnumerable = tmpColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
-                case sexage:
+                case SettingsColonistBar.SortByWhat.sexage:
                     orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
-                case health:
+                case SettingsColonistBar.SortByWhat.health:
                     orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
-                case mood:
+                case SettingsColonistBar.SortByWhat.mood:
                     orderedEnumerable = tmpColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
-                case weapons:
+                case SettingsColonistBar.SortByWhat.weapons:
                     orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
                         .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
-                case medic:
+                case SettingsColonistBar.SortByWhat.medic:
                     orderedEnumerable = tmpColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
@@ -728,11 +963,14 @@ namespace ColonistBarKF
             }
         }
 
-        private static void DrawColonist(Rect rect, Pawn colonist)
+        public static void DrawColonist(Rect rect, Pawn colonist, Map pawnMap)
         {
-            float colonistRectAlpha = GetColonistRectAlpha(rect);
-            bool colonistAlive = !colonist.Dead ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
-            Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
+            float entryRectAlpha = GetEntryRectAlpha(rect);
+            ApplyEntryInAnotherMapAlphaFactor(pawnMap, ref entryRectAlpha);
+
+            bool colonistAlive = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
+
+            Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
 
             Color BGColor = new Color();
@@ -751,13 +989,12 @@ namespace ColonistBarKF
                 mb = null;
             }
 
-            if (ColBarSettings.UseMoodColors)
+            if (ColBarSettings.UseExternalMoodBar)
             {
                 // draw mood border
                 Rect moodBorderRect = new Rect(rect);
 
-                if (!ColBarSettings.UseMoodBarBG)
-                {
+
                     switch (ColBarSettings.MoodBarPos)
                     {
                         case Alignment.Right:
@@ -779,12 +1016,8 @@ namespace ColonistBarKF
                             moodBorderRect.height /= 4;
                             break;
                     }
-                }
-                else
-                {
-                    moodBorderRect.x = rect.x;
-                    moodBorderRect.width = rect.width;
-                }
+                
+
 
 
                 if (mood != null && mb != null)
@@ -812,6 +1045,7 @@ namespace ColonistBarKF
             }
 
 
+
             if (ColBarSettings.UseGender)
             {
                 if (colonist.gender == Gender.Male)
@@ -826,7 +1060,7 @@ namespace ColonistBarKF
                 if (colonist.Dead)
                     BGColor = BGColor * Color.gray;
 
-                BGColor.a = colonistRectAlpha;
+                BGColor.a = entryRectAlpha;
 
                 GUI.color = BGColor;
             }
@@ -836,103 +1070,44 @@ namespace ColonistBarKF
 
             GUI.color = color;
 
-            if (ColBarSettings.UseMoodColors)
+            if (ColBarSettings.UseExternalMoodBar)
             {
                 //         Rect moodRect = new Rect(rect.xMax, rect.y, rect.width/4, rect.height);
-                Rect moodRect = rect.ContractedBy(2.0f);
-                switch (ColBarSettings.MoodBarPos)
+                DrawExternalMoodRect(rect, mood, mb);
+            }
+            else
+            {
+                if (colonist.needs != null && colonist.needs.mood != null)
                 {
-                    case Alignment.Right:
-                        moodRect.x = rect.xMax;
-                        moodRect.width /= 4;
-                        break;
-                    case Alignment.Left:
-                        moodRect.x = rect.xMin - rect.width / 4;
-                        moodRect.width /= 4;
-                        break;
-                    case Alignment.Top:
-                        moodRect.x = rect.xMin;
-                        moodRect.y = rect.yMin - rect.height / 4;
-                        moodRect.height /= 4;
-                        break;
-                    case Alignment.Bottom:
-                        moodRect.x = rect.xMin;
-                        moodRect.y = moodRect.yMax + SpacingLabel;
-                        moodRect.height /= 4;
-                        break;
+                    Rect position = rect.ContractedBy(2f);
+                    float num = position.height * colonist.needs.mood.CurLevelPercentage;
+                    position.yMin = position.yMax - num;
+                    position.height = num;
+                    GUI.DrawTexture(position, ColonistBarTextures.MoodBGTex);
                 }
-
-
-                if (mood != null && mb != null)
-                {
-                    if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
-                    {
-                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
-                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
-                        else
-                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
-                    }
-                    else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
-                    {
-                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
-                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
-                        else
-                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
-                    }
-                    else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
-                    {
-                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
-                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
-                        else
-                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
-                    }
-                    else
-                    {
-                        GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedBGTex);
-                        if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
-                            GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
-                        else
-                            GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
-                    }
-
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
-                    DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
-
-                    switch (ColBarSettings.MoodBarPos)
-                    {
-                        case Alignment.Left:
-                        case Alignment.Right:
-                            GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1), ColonistBarTextures.MoodTargetTex);
-                            GUI.DrawTexture(new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3), ColonistBarTextures.MoodTargetTex);
-                            break;
-                        case Alignment.Top:
-                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
-                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2), ColonistBarTextures.MoodTargetTex);
-                            break;
-                        case Alignment.Bottom:
-                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodTargetTex);
-                            GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2), ColonistBarTextures.MoodTargetTex);
-                            break;
-                    }
-                }
-
             }
 
 
-            if (colonistAlive)
+
+            Rect rect2 = rect.ContractedBy(-2f * Scale);
+
+            if (colonistAlive && !WorldRendererUtility.WorldRenderedNow)
             {
-                DrawSelectionOverlayOnGUI(colonist, rect.ContractedBy(-2f * Scale));
+                DrawSelectionOverlayOnGUI(colonist, rect2);
+            }
+            else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember() && Find.WorldSelector.IsSelected(colonist.GetCaravan()))
+            {
+                DrawCaravanSelectionOverlayOnGUI(colonist.GetCaravan(), rect2);
             }
 
             GUI.DrawTexture(GetPawnTextureRect(rect.x, rect.y), PortraitsCache.Get(colonist, PawnTextureSize, PawnTextureCameraOffset, ColBarSettings.PawnTextureCameraZoom));
 
             if (ColBarSettings.UseWeaponIcons)
             {
-                DrawWeapon(rect, colonist);
+                DrawWeaponIcon(rect, colonist);
             }
 
-            GUI.color = new Color(1f, 1f, 1f, colonistRectAlpha * 0.8f);
+            GUI.color = new Color(1f, 1f, 1f, entryRectAlpha * 0.8f);
             DrawIcons(rect, colonist);
             GUI.color = color;
             if (colonist.Dead)
@@ -941,9 +1116,129 @@ namespace ColonistBarKF
             }
             //       float num = 4f * Scale;
             Vector2 pos = new Vector2(rect.center.x, rect.yMax + 1f * Scale);
-            GenMapUI.DrawPawnLabel(colonist, pos, colonistRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
+            GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha, rect.width + SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
         }
+
+        private static void DrawExternalMoodRect(Rect rect, Need_Mood mood, MentalBreaker mb)
+        {
+            Rect moodRect = rect.ContractedBy(2.0f);
+            switch (ColBarSettings.MoodBarPos)
+            {
+                case Alignment.Right:
+                    moodRect.x = rect.xMax;
+                    moodRect.width /= 4;
+                    break;
+                case Alignment.Left:
+                    moodRect.x = rect.xMin - rect.width/4;
+                    moodRect.width /= 4;
+                    break;
+                case Alignment.Top:
+                    moodRect.x = rect.xMin;
+                    moodRect.y = rect.yMin - rect.height/4;
+                    moodRect.height /= 4;
+                    break;
+                case Alignment.Bottom:
+                    moodRect.x = rect.xMin;
+                    moodRect.y = moodRect.yMax + SpacingLabel;
+                    moodRect.height /= 4;
+                    break;
+            }
+
+            if (mood != null && mb != null)
+            {
+                if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
+                {
+                    if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
+                    else
+                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
+                }
+                else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
+                {
+                    if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
+                    else
+                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
+                }
+                else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
+                {
+                    if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
+                    else
+                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
+                }
+                else
+                {
+                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedBGTex);
+                    if (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right)
+                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
+                    else
+                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
+                }
+
+                DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
+                DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
+                DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
+
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Alignment.Left:
+                    case Alignment.Right:
+                        GUI.DrawTexture(
+                            new Rect(moodRect.x, moodRect.yMax - moodRect.height*mood.CurInstantLevelPercentage, moodRect.width,
+                                1), ColonistBarTextures.MoodTargetTex);
+                        GUI.DrawTexture(
+                            new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height*mood.CurInstantLevelPercentage - 1, 2, 3),
+                            ColonistBarTextures.MoodTargetTex);
+                        break;
+                    case Alignment.Top:
+                        GUI.DrawTexture(
+                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
+                            ColonistBarTextures.MoodTargetTex);
+                        GUI.DrawTexture(
+                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2),
+                            ColonistBarTextures.MoodTargetTex);
+                        break;
+                    case Alignment.Bottom:
+                        GUI.DrawTexture(
+                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
+                            ColonistBarTextures.MoodTargetTex);
+                        GUI.DrawTexture(
+                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2),
+                            ColonistBarTextures.MoodTargetTex);
+                        break;
+                }
+            }
+        }
+
+        // RimWorld.ColonistBarColonistDrawer
+        private static void DrawCaravanSelectionOverlayOnGUI(Caravan caravan, Rect rect)
+        {
+            float num = 0.4f * Scale;
+            Vector2 textureSize = new Vector2(SelectionDrawerUtility.SelectedTexGUI.width * num, SelectionDrawerUtility.SelectedTexGUI.height * num);
+            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, caravan, rect, WorldSelectionDrawer.SelectTimes, textureSize, 20f * Scale);
+            DrawSelectionOverlayOnGUI(bracketLocs, num);
+        }
+
+
+        // RimWorld.ColonistBarColonistDrawer
+        private static void ApplyEntryInAnotherMapAlphaFactor(Map map, ref float alpha)
+        {
+            if (map == null)
+            {
+                if (!WorldRendererUtility.WorldRenderedNow)
+                {
+                    alpha = Mathf.Min(alpha, 0.4f);
+                }
+            }
+            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+            {
+                alpha = Mathf.Min(alpha, 0.4f);
+            }
+        }
+
+
 
         private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
@@ -961,7 +1256,7 @@ namespace ColonistBarKF
 			}*/
         }
 
-        private static float GetColonistRectAlpha(Rect rect)
+        private static float GetEntryRectAlpha(Rect rect)
         {
             float t;
             if (Messages.CollidesWithAnyMessage(rect, out t))
@@ -1064,10 +1359,11 @@ namespace ColonistBarKF
             pos.x += num;
         }
 
-        private static void DrawWeapon(Rect rect, Pawn colonist)
+        private static void DrawWeaponIcon(Rect rect, Pawn colonist)
         {
-            float colonistRectAlpha = GetColonistRectAlpha(rect);
-            Color color = new Color(1f, 1f, 1f, colonistRectAlpha);
+            float entryRectAlpha = GetEntryRectAlpha(rect);
+            ApplyEntryInAnotherMapAlphaFactor(colonist.Map, ref entryRectAlpha);
+            Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
             if (colonist?.equipment.Primary != null)
             {
@@ -1092,13 +1388,13 @@ namespace ColonistBarKF
 
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.85f, 0.2f, 0.2f, colonistRectAlpha);
-                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.75f * colonistRectAlpha);
+                    GUI.color = new Color(0.85f, 0.2f, 0.2f, entryRectAlpha);
+                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.75f * entryRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.15f, 0.3f, 0.85f, colonistRectAlpha);
-                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.75f * colonistRectAlpha);
+                    GUI.color = new Color(0.15f, 0.3f, 0.85f, entryRectAlpha);
+                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.75f * entryRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
@@ -1118,94 +1414,114 @@ namespace ColonistBarKF
 
         private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
-        private static void HandleColonistClicks(Rect rect, Pawn colonist)
+        private static void HandleClicks(Rect rect, Pawn colonist)
         {
-            if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
+            if (Mouse.IsOver(rect))
             {
-                if (clickedColonist == colonist && Time.time - clickedAt < ColBarSettings.DoubleClickTime)
-                {
-                    // use event so it doesn't bubble through
-                    Event.current.Use();
-                    JumpToTargetUtility.TryJump(colonist);
-                    clickedColonist = null;
-                }
-                else
-                {
-                    clickedColonist = colonist;
-                    clickedAt = Time.time;
-                }
-            }
-            if (Mouse.IsOver(rect) && Event.current.button == 1)
-            {
-
                 if (Event.current.type == EventType.MouseDown)
                 {
-                    List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
-
-                    if (clickedColonist != null && SelPawn != null && SelPawn != clickedColonist)
+                    if (Event.current.button == 0)
                     {
-                        foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
+                        if (clickedColonist == colonist && Time.time - clickedAt < ColBarSettings.DoubleClickTime)
                         {
-                            floatOptionList.Add(choice);
+                            // use event so it doesn't bubble through
+                            Event.current.Use();
+                            JumpToTargetUtility.TryJump(colonist);
+                            clickedColonist = null;
                         }
-                        floatOptionList.Add(new FloatMenuOption("--------------------", delegate
+                        else
                         {
-                        }));
+                            clickedColonist = colonist;
+                            clickedAt = Time.time;
+                        }
+                    }
+                    else if (Event.current.button == 1)
+                    {
+                        if (Event.current.type == EventType.MouseDown)
+                        {
+                            List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                            if (clickedColonist != null && SelPawn != null && SelPawn != clickedColonist)
+                            {
+                                foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
+                                {
+                                    floatOptionList.Add(choice);
+                                }
+                                floatOptionList.Add(new FloatMenuOption("--------------------", delegate
+                                {
+                                }));
+
+                            }
+
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medic;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
+                            {
+                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
+                                MarkColonistsDirty();
+                                CheckRecacheEntries();
+                            }));
+
+                            floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
+                            FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
+                            Find.WindowStack.Add(window);
+
+                            // use event so it doesn't bubble through
+                            Event.current.Use();
+                        }
 
                     }
-
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = vanilla;
-                        MarkColonistsDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = byName;
-                        MarkColonistsDirty();
-                    }));
-
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = sexage;
-                        MarkColonistsDirty();
-                    }));
-
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = mood;
-                        MarkColonistsDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = health;
-                        MarkColonistsDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = medic;
-                        MarkColonistsDirty();
-                    }));
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
-                    {
-                        ColBarSettings.SortBy = weapons;
-                        MarkColonistsDirty();
-                    }));
-
-                    floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
-                    FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
-                    Find.WindowStack.Add(window);
-
-                    // use event so it doesn't bubble through
-                    Event.current.Use();
                 }
+
             }
+
+
         }
 
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static void MarkColonistsDirty()
         {
-            colonistsDirty = true;
+            entriesDirty = true;
         }
+
+
+
         private static Vector2[] bracketLocs = new Vector2[4];
 
         private static List<Pawn> tmpPawns = new List<Pawn>();
@@ -1223,6 +1539,15 @@ namespace ColonistBarKF
         private static List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
         private static List<Pawn> tmpCaravanPawns = new List<Pawn>();
+        // RimWorld.ColonistBar
+        private static bool Visible
+        {
+            get
+            {
+                return UI.screenWidth >= 1000 && UI.screenHeight >= 760;
+            }
+        }
+
         private static void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
         {
             Thing obj = colonist;
@@ -1231,8 +1556,8 @@ namespace ColonistBarKF
                 obj = colonist.Corpse;
             }
             float num = 0.4f * Scale;
-            Vector2 textureSize = new Vector2((float)SelectionDrawerUtility.SelectedTexGUI.width * num, (float)SelectionDrawerUtility.SelectedTexGUI.height * num);
-            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI<object>(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
+            Vector2 textureSize = new Vector2(SelectionDrawerUtility.SelectedTexGUI.width * num, SelectionDrawerUtility.SelectedTexGUI.height * num);
+            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * Scale);
             DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
@@ -1241,9 +1566,80 @@ namespace ColonistBarKF
             int num = 90;
             for (int i = 0; i < 4; i++)
             {
-                Widgets.DrawTextureRotated(bracketLocs[i], SelectionDrawerUtility.SelectedTexGUI, (float)num, selectedTexScale);
+                Widgets.DrawTextureRotated(bracketLocs[i], SelectionDrawerUtility.SelectedTexGUI, num, selectedTexScale);
                 num += 90;
             }
         }
+
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        public static Caravan CaravanMemberCaravanAt(Vector2 at)
+        {
+            if (!Visible)
+            {
+                return null;
+            }
+            Pawn pawn = ColonistOrCorpseAt(at) as Pawn;
+            if (pawn != null && pawn.IsCaravanMember())
+            {
+                return pawn.GetCaravan();
+            }
+            return null;
+        }
+
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        public static List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
+        {
+            tmpCaravans.Clear();
+            if (!Visible)
+            {
+                return tmpCaravans;
+            }
+            List<Pawn> list = CaravanMembersInScreenRect(rect);
+            for (int i = 0; i < list.Count; i++)
+            {
+                tmpCaravans.Add(list[i].GetCaravan());
+            }
+            return tmpCaravans;
+        }
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
+        {
+            tmpCaravanPawns.Clear();
+            if (!Visible)
+            {
+                return tmpCaravanPawns;
+            }
+            List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
+            for (int i = 0; i < list.Count; i++)
+            {
+                Pawn pawn = list[i] as Pawn;
+                if (pawn != null && pawn.IsCaravanMember())
+                {
+                    tmpCaravanPawns.Add(pawn);
+                }
+            }
+            return tmpCaravanPawns;
+        }
+
+        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        public static List<Thing> MapColonistsOrCorpsesInScreenRect(Rect rect)
+        {
+            tmpMapColonistsOrCorpsesInScreenRect.Clear();
+            if (!Visible)
+            {
+                return tmpMapColonistsOrCorpsesInScreenRect;
+            }
+            List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].Spawned)
+                {
+                    tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
+                }
+            }
+            return tmpMapColonistsOrCorpsesInScreenRect;
+        }
+
+
     }
 }
