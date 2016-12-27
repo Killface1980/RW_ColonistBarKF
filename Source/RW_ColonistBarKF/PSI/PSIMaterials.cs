@@ -35,7 +35,7 @@ namespace ColonistBarKF.PSI
         Prosthophile,
         Prosthophobe,
         Pyromaniac,
-        Crowded,
+        CabinFever,
         Sad,
         Sickness,
         Tired,

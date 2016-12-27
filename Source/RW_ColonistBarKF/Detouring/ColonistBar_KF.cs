@@ -346,7 +346,7 @@ namespace ColonistBarKF
 
             if (Event.current.type != EventType.Layout)
             {
-            List<Vector2> drawLocs = cachedDrawLocs;
+                List<Vector2> drawLocs = cachedDrawLocs;
                 List<ColonistBar.Entry> entries = Entries;
                 int num = -1;
                 bool showGroupFrames = ShowGroupFrames;
@@ -441,18 +441,18 @@ namespace ColonistBarKF
                             }
                         }
                     }
-                  //else if (Event.current.button == 1)
-                  //{
-                  //    ColonistBar.Entry entry2 = Entries.Find(x => x.group == group);
-                  //    if (entry2.map != null)
-                  //    {
-                  //        JumpToTargetUtility.TryJumpAndSelect(JumpToTargetUtility.GetGlobalTargetInfoForMap(entry2.map));
-                  //    }
-                  //    else if (entry2.pawn != null)
-                  //    {
-                  //        JumpToTargetUtility.TryJumpAndSelect(entry2.pawn);
-                  //    }
-                  //}
+                    //else if (Event.current.button == 1)
+                    //{
+                    //    ColonistBar.Entry entry2 = Entries.Find(x => x.group == group);
+                    //    if (entry2.map != null)
+                    //    {
+                    //        JumpToTargetUtility.TryJumpAndSelect(JumpToTargetUtility.GetGlobalTargetInfoForMap(entry2.map));
+                    //    }
+                    //    else if (entry2.pawn != null)
+                    //    {
+                    //        JumpToTargetUtility.TryJumpAndSelect(entry2.pawn);
+                    //    }
+                    //}
                 }
             }
         }
@@ -495,7 +495,7 @@ namespace ColonistBarKF
             {
                 if (entries[i].group == group)
                 {
-                    pos_x = Mathf.Min(pos_x, drawLocs[i].x) ;
+                    pos_x = Mathf.Min(pos_x, drawLocs[i].x);
                     width = Mathf.Max(width, drawLocs[i].x + Size.x);
                     height = Mathf.Max(height, drawLocs[i].y + Size.y);
                 }
@@ -760,24 +760,24 @@ namespace ColonistBarKF
 
         private static void ModifyBasicDrawLocsForMoodBar(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
         {
-                switch (ColBarSettings.MoodBarPos)
-                {
-                    case Alignment.Left:
-                        cachedDrawLocs_x += size.x / 8;
-                        break;
+            switch (ColBarSettings.MoodBarPos)
+            {
+                case Alignment.Left:
+                    cachedDrawLocs_x += size.x / 8;
+                    break;
 
-                    case Alignment.Right:
-                        cachedDrawLocs_x -= size.x / 8;
-                        break;
+                case Alignment.Right:
+                    cachedDrawLocs_x -= size.x / 8;
+                    break;
 
-                    case Alignment.Top:
-                        cachedDrawLocs_y += size.y / 8;
-                        break;
+                case Alignment.Top:
+                    cachedDrawLocs_y += size.y / 8;
+                    break;
 
-                    case Alignment.Bottom:
-                        //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
-                        break;
-                }
+                case Alignment.Bottom:
+                    //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
+                    break;
+            }
         }
 
 
@@ -995,30 +995,27 @@ namespace ColonistBarKF
                 Rect moodBorderRect = new Rect(rect);
 
 
-                    switch (ColBarSettings.MoodBarPos)
-                    {
-                        case Alignment.Right:
-                            moodBorderRect.x = rect.xMax;
-                            moodBorderRect.width /= 4;
-                            break;
-                        case Alignment.Left:
-                            moodBorderRect.x = rect.xMin - rect.width / 4;
-                            moodBorderRect.width /= 4;
-                            break;
-                        case Alignment.Top:
-                            moodBorderRect.x = rect.xMin;
-                            moodBorderRect.y = rect.yMin - rect.height / 4;
-                            moodBorderRect.height /= 4;
-                            break;
-                        case Alignment.Bottom:
-                            moodBorderRect.x = rect.xMin;
-                            moodBorderRect.y = moodBorderRect.yMax + SpacingLabel;
-                            moodBorderRect.height /= 4;
-                            break;
-                    }
-                
-
-
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Alignment.Right:
+                        moodBorderRect.x = rect.xMax;
+                        moodBorderRect.width /= 4;
+                        break;
+                    case Alignment.Left:
+                        moodBorderRect.x = rect.xMin - rect.width / 4;
+                        moodBorderRect.width /= 4;
+                        break;
+                    case Alignment.Top:
+                        moodBorderRect.x = rect.xMin;
+                        moodBorderRect.y = rect.yMin - rect.height / 4;
+                        moodBorderRect.height /= 4;
+                        break;
+                    case Alignment.Bottom:
+                        moodBorderRect.x = rect.xMin;
+                        moodBorderRect.y = moodBorderRect.yMax + SpacingLabel;
+                        moodBorderRect.height /= 4;
+                        break;
+                }
 
                 if (mood != null && mb != null)
                 {
@@ -1130,12 +1127,12 @@ namespace ColonistBarKF
                     moodRect.width /= 4;
                     break;
                 case Alignment.Left:
-                    moodRect.x = rect.xMin - rect.width/4;
+                    moodRect.x = rect.xMin - rect.width / 4;
                     moodRect.width /= 4;
                     break;
                 case Alignment.Top:
                     moodRect.x = rect.xMin;
-                    moodRect.y = rect.yMin - rect.height/4;
+                    moodRect.y = rect.yMin - rect.height / 4;
                     moodRect.height /= 4;
                     break;
                 case Alignment.Bottom:
@@ -1186,26 +1183,26 @@ namespace ColonistBarKF
                     case Alignment.Left:
                     case Alignment.Right:
                         GUI.DrawTexture(
-                            new Rect(moodRect.x, moodRect.yMax - moodRect.height*mood.CurInstantLevelPercentage, moodRect.width,
+                            new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width,
                                 1), ColonistBarTextures.MoodTargetTex);
                         GUI.DrawTexture(
-                            new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height*mood.CurInstantLevelPercentage - 1, 2, 3),
+                            new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3),
                             ColonistBarTextures.MoodTargetTex);
                         break;
                     case Alignment.Top:
                         GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
+                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
                             ColonistBarTextures.MoodTargetTex);
                         GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2),
+                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2),
                             ColonistBarTextures.MoodTargetTex);
                         break;
                     case Alignment.Bottom:
                         GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
+                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
                             ColonistBarTextures.MoodTargetTex);
                         GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width*mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2),
+                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2),
                             ColonistBarTextures.MoodTargetTex);
                         break;
                 }

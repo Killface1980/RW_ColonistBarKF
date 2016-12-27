@@ -101,7 +101,7 @@ namespace ColonistBarKF
 
         public bool ShowBloodloss = true;
 
-        public bool ShowCrowded = true;
+        public bool ShowCabinFever = true;
 
         public bool ShowDazed = true;
 

@@ -27,7 +27,7 @@ namespace ColonistBarKF.PSI
 
         public bool IsSick = false;
 
-        public int CrowdedMoodLevel = 0;
+        public int CabinFeverMoodLevel = 0;
 
         public int PainMoodLevel = 0;
 

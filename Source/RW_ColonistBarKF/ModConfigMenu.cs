@@ -244,7 +244,7 @@ namespace ColonistBarKF
 
         private void FillPageAdvanced()
         {
-            
+
 
             BeginVertical(this._fondBoxes);
 
@@ -289,7 +289,7 @@ namespace ColonistBarKF
 
             EndVertical();
 
-            
+
 
             #region Camera
 
@@ -361,7 +361,7 @@ namespace ColonistBarKF
 
         private void FillPageMain()
         {
-            
+
 
             #region Vertical Alignment
 
@@ -529,7 +529,7 @@ namespace ColonistBarKF
 
             #endregion
 
-            
+
 
             #region Max Rows
 
@@ -609,6 +609,14 @@ namespace ColonistBarKF
             ColBarSettings.UseExternalMoodBar = Toggle(
                 ColBarSettings.UseExternalMoodBar,
                 "CBKF.Settings.UseExternalMoodBar".Translate());
+
+            if (ColBarSettings.UseExternalMoodBar)
+            {
+                BeginHorizontal();
+                MoodBarPositionInt = Toolbar(this.MoodBarPositionInt, this.positionStrings);
+                FlexibleSpace();
+                EndHorizontal();
+            }
 
             EndVertical();
 
@@ -831,10 +839,10 @@ namespace ColonistBarKF
                 ref PsiSettings.ShowLeftUnburied,
                 ref num);
             this.DrawCheckboxArea(
-                "PSI.Settings.Visibility.Crowded".Translate(),
-                PSIMaterials[Icons.Crowded],
-                ref ColBarSettings.ShowCrowded,
-                ref PsiSettings.ShowRoomStatus,
+                "PSI.Settings.Visibility.CabinFever".Translate(),
+                PSIMaterials[Icons.CabinFever],
+                ref ColBarSettings.ShowCabinFever,
+                ref PsiSettings.ShowCabinFever,
                 ref num);
 
             this.DrawCheckboxArea(
@@ -922,7 +930,7 @@ namespace ColonistBarKF
             // //
             // PsiSettings.ShowProsthophile = Toggle(PsiSettings.ShowProsthophile, "PSI.Settings.Visibility.Prosthophile".Translate());
             // PsiSettings.ShowProsthophobe = Toggle(PsiSettings.ShowProsthophobe, "PSI.Settings.Visibility.Prosthophobe".Translate());
-            // PsiSettings.ShowCrowded = Toggle(PsiSettings.ShowCrowded, "PSI.Settings.Visibility.Crowded".Translate());
+            // PsiSettings.ShowCabinFever = Toggle(PsiSettings.ShowCabinFever, "PSI.Settings.Visibility.CabinFever".Translate());
             // PsiSettings.ShowBedroom = Toggle(PsiSettings.ShowBedroom, "PSI.Settings.Visibility.Bedroom".Translate());
             // PsiSettings.ShowDeadColonists = Toggle(PsiSettings.ShowDeadColonists, "PSI.Settings.Visibility.ShowDeadColonists".Translate());
             // PsiSettings.ShowPyromaniac = Toggle(PsiSettings.ShowPyromaniac, "PSI.Settings.Visibility.Pyromaniac".Translate());
@@ -1099,7 +1107,7 @@ namespace ColonistBarKF
         {
             this._scrollPosition = BeginScrollView(this._scrollPosition);
 
-            
+
 
             BeginVertical(this._fondBoxes);
             PsiSettings.UsePsi = Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
@@ -1164,7 +1172,7 @@ namespace ColonistBarKF
 
             EndVertical();
 
-            
+
 
             EndScrollView();
         }
@@ -1535,45 +1543,45 @@ namespace ColonistBarKF
         }
 
         readonly GUIStyle _fontBold = new GUIStyle
-                                          {
-                                              fontStyle = FontStyle.Bold,
-                                              normal = {
-                                                          textColor = Color.white 
+        {
+            fontStyle = FontStyle.Bold,
+            normal = {
+                                                          textColor = Color.white
                                                        },
-                                              padding = new RectOffset(0, 0, 5, 0),
-                                          };
+            padding = new RectOffset(0, 0, 5, 0),
+        };
 
         readonly GUIStyle _headline = new GUIStyle
-                                          {
-                                              fontStyle = FontStyle.Bold,
-                                              fontSize = 16,
-                                              normal = {
-                                                          textColor = Color.white 
+        {
+            fontStyle = FontStyle.Bold,
+            fontSize = 16,
+            normal = {
+                                                          textColor = Color.white
                                                        },
-                                              padding = new RectOffset(0, 0, 12, 6),
-                                          };
+            padding = new RectOffset(0, 0, 12, 6),
+        };
 
         readonly GUIStyle _fondBoxes = new GUIStyle
-                                           {
-                                               normal = {
-                                                           background = ColonistBarTextures.DarkGrayFond 
+        {
+            normal = {
+                                                           background = ColonistBarTextures.DarkGrayFond
                                                         },
-                                               hover = {
-                                                          background = ColonistBarTextures.GrayFond 
+            hover = {
+                                                          background = ColonistBarTextures.GrayFond
                                                        },
-                                               padding = new RectOffset(15, 15, 6, 10),
-                                               margin = new RectOffset(0, 0, 10, 10)
-                                           };
+            padding = new RectOffset(15, 15, 6, 10),
+            margin = new RectOffset(0, 0, 10, 10)
+        };
 
         readonly GUIStyle _fondImages = new GUIStyle
-                                            {
-                                                normal = {
-                                                            background = ColonistBarTextures.DarkGrayFond 
+        {
+            normal = {
+                                                            background = ColonistBarTextures.DarkGrayFond
                                                          },
-                                                hover = {
-                                                           background = ColonistBarTextures.RedHover 
+            hover = {
+                                                           background = ColonistBarTextures.RedHover
                                                         },
-                                            };
+        };
 
         readonly GUIStyle _darkGrayBgImage = new GUIStyle { normal = { background = ColonistBarTextures.GrayFond }, };
 

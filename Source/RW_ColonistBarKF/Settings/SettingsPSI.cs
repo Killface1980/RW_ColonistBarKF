@@ -52,7 +52,7 @@ namespace ColonistBarKF
         public bool ShowLove = true;
         public bool ShowDeadColonists = true;
         public bool ShowLeftUnburied = true;
-        public bool ShowRoomStatus = true;
+        public bool ShowCabinFever = true;
         public bool ShowPain = true;
         public bool ShowBedroom = true;
         public bool ShowToxicity = true;
@@ -72,7 +72,6 @@ namespace ColonistBarKF
         public float IconOpacity = 0.7f;
         public float IconOpacityCritical = 0.6f;
         public bool UseColoredTarget = true;
-
     }
 
 }
