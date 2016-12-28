@@ -1386,12 +1386,12 @@ namespace ColonistBarKF
                 if (thing.def.IsMeleeWeapon)
                 {
                     GUI.color = new Color(0.85f, 0.2f, 0.2f, entryRectAlpha);
-                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.75f * entryRectAlpha);
+                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.95f * entryRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
                     GUI.color = new Color(0.15f, 0.3f, 0.85f, entryRectAlpha);
-                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.75f * entryRectAlpha);
+                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.95f * entryRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
@@ -1410,6 +1410,8 @@ namespace ColonistBarKF
         }
 
         private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
+
+        private static int clickCount = 0;
 
         private static void HandleClicks(Rect rect, Pawn colonist)
         {
@@ -1430,6 +1432,7 @@ namespace ColonistBarKF
                         {
                             clickedColonist = colonist;
                             clickedAt = Time.time;
+                            clickCount++;
                         }
                     }
                     else if (Event.current.button == 1)
@@ -1449,7 +1452,11 @@ namespace ColonistBarKF
                                 }));
 
                             }
+                            floatOptionList.Add(new FloatMenuOption("FollowMe™", delegate
+                            {
+                                MapComponent_FollowMe.TryStartFollow(colonist);
 
+                            }));
                             floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
                             {
                                 ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;

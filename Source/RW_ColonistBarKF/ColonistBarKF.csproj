@@ -60,6 +60,7 @@
     <None Include="Detouring\_ColonistBarDrawLocsFinder.cs" />
     <None Include="Detouring\_ColonistBar.cs" />
     <None Include="Detouring\_ColonistBarColonistDrawer.cs" />
+    <Compile Include="ColorsPSI.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />

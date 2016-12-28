@@ -167,7 +167,7 @@ namespace ColonistBarKF
             return (Vector3)_cameraDriverRootPosField.GetValue(cameraDriver);
         }
 
-        private static void TryStartFollow(Thing thing)
+        public static void TryStartFollow(Thing thing)
         {
             if (!_currentlyFollowing && thing == null)
             {
