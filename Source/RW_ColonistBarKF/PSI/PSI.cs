@@ -674,7 +674,8 @@ namespace ColonistBarKF.PSI
 
         private static bool HasMood(Pawn pawn, ThoughtDef tdef)
         {
-            return pawn.needs.mood.thoughts.situational.Equals(tdef);
+            return pawn.needs.mood.thoughts.DistinctThoughtGroups().Any((thought) => thought.def == tdef);
+
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -751,8 +752,7 @@ namespace ColonistBarKF.PSI
         private static void DrawAnimalIcons(Pawn animal)
         {
             float transparancy = PsiSettings.IconOpacity;
-            Color colorRedAlert = new Color(1f, 0f, 0f, transparancy);
-
+            
             if (animal.Dead || animal.holdingContainer != null)
                 return;
             Vector3 drawPos = animal.DrawPos;
@@ -761,7 +761,7 @@ namespace ColonistBarKF.PSI
                 return;
             Vector3 bodyPos = drawPos;
             int num = 0;
-            DrawIconOnColonist(bodyPos, ref num, Icons.Aggressive, colorRedAlert, PsiSettings.IconOpacityCritical+ (1 - PsiSettings.IconOpacityCritical) * PsiSettings.IconOpacity);
+            DrawIconOnColonist(bodyPos, ref num, Icons.Aggressive, ColorRedAlert, PsiSettings.IconOpacityCritical+ (1 - PsiSettings.IconOpacityCritical) * PsiSettings.IconOpacity);
         }
 
         private static void DrawColonistIcons(Pawn colonist)
