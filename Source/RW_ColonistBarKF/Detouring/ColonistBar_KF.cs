@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ColonistBarKF.PSI;
@@ -645,8 +646,30 @@ namespace ColonistBarKF
             float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
             float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
 
+
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
+
+            switch (ColBarSettings.ColBarPos)
+            {
+                case Alignment.Left:
+                    cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
+                    break;
+
+                case Alignment.Right:
+                    cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
+                    break;
+
+                case Alignment.Top:
+                    break;
+
+                case Alignment.Bottom:
+                    cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
+                    break;
+
+                default:
+                   break;
+            }
 
             cachedDrawLocs.Clear();
 
@@ -659,8 +682,8 @@ namespace ColonistBarKF
                     if (i % colonistsPerColumn == 0)
                     {
                         int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedEntries.Count - i);
-                        float num4 = maxColInColumn * size.y + (maxColInColumn - 1) * (spacingVertical + SpacingLabel);
-                        cachedDrawLocs_y = (Screen.height - num4) / 2f + ColBarSettings.VerticalOffset;
+                        float barHeight = maxColInColumn * size.y + (maxColInColumn - 1) * (spacingVertical + SpacingLabel);
+                        cachedDrawLocs_y = (Screen.height - barHeight) / 2f + ColBarSettings.VerticalOffset;
 
                         if (ColBarSettings.UsePsi)
                             ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);

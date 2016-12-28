@@ -440,7 +440,10 @@ namespace ColonistBarKF.PSI
                 _statsDict.Add(colonist, new PawnStats());
             }
 
-            if (colonist == null) return;
+            if (colonist == null)
+            {
+                return;
+            }
 
             PawnStats pawnStats = _statsDict[colonist];
 
@@ -688,12 +691,11 @@ namespace ColonistBarKF.PSI
 
             _fDelta += Time.fixedDeltaTime;
 
-            if (_fDelta < 0.1)
+            if (_fDelta < 0.2)
                 return;
             _fDelta = 0.0;
 
-            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
-                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
             {
                 if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null) continue;
                 try
