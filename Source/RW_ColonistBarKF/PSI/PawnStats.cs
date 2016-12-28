@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace ColonistBarKF.PSI
@@ -38,5 +40,6 @@ namespace ColonistBarKF.PSI
         public float HealthDisease = 1f;
 
         public bool HasLifeThreateningDisease = false;
+        public List<Thought> thoughts;
     }
 }

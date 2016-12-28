@@ -11,9 +11,9 @@ namespace ColonistBarKF
     [StaticConstructorOnStartup]
     public static class ColorsPSI
     {
-        public static Color Color25To21 = new Color(0.8f, 0f, 0f);
+        public static Color Color25To21 = new Color(0.9f, 0f, 0f);
 
-        public static Color Color20To16 = new Color(0.9f, 0.45f, 0f);
+        public static Color Color20To16 = new Color(1f, 0.5f, 0f);
 
         public static Color Color15To11 = new Color(0.95f, 0.95f, 0f);
 
@@ -32,7 +32,7 @@ namespace ColonistBarKF
         public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f * 0.5f);
 
 
-        public static Color ColorRedAlert = new Color(0.8f, 0, 0);
+        public static Color ColorRedAlert = new Color(0.9f, 0, 0);
 
         public static Color ColorOrangeAlert = Color20To16;
 
