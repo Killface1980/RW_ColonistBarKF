@@ -50,7 +50,7 @@ namespace ColonistBarKF
         public bool ShowGreedy = true;
         public bool ShowJealous = true;
         public bool ShowLove = true;
-        public bool ShowDeadColonists = true;
+        public bool ShowDeadColonists = false;
         public bool ShowLeftUnburied = true;
         public bool ShowCabinFever = true;
         public bool ShowPain = true;

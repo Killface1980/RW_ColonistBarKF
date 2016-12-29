@@ -42,12 +42,7 @@ namespace ColonistBarKF
 
         public float LimitDiseaseLess = 1f;
 
-        public float LimitEfficiencyLess = 0.33f;
-
         // public float LimitMoodLess = 0.25f;
-        public float LimitFoodLess = 0.25f;
-
-        public float LimitRestLess = 0.25f;
 
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 

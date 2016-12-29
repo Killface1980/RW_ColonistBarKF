@@ -370,11 +370,11 @@ namespace ColonistBarKF
                         if (entry.pawn != null)
                         {
                             DrawColonist(rect, entry.pawn, entry.map);
-                            if (ColBarSettings.UsePsi)
+                            if (ColBarSettings.UsePsi || PsiSettings.UsePsi)
                             {
                                 float entryRectAlpha = GetEntryRectAlpha(rect);
                                 ApplyEntryInAnotherMapAlphaFactor(entry.map, ref entryRectAlpha);
-                                PSI.PSI.DrawColonistIconsOnBar(rect, entry.pawn, entryRectAlpha);
+                                PSI.PSI.DrawColonistIcons(rect, entry.pawn, entryRectAlpha);
                             }
                         }
                     }
@@ -1299,20 +1299,20 @@ namespace ColonistBarKF
                 return;
             }
             Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - rect.width / 5 * 2 - 1f);
-            bool flag = false;
+            bool attacking = false;
             if (colonist.CurJob != null)
             {
                 JobDef def = colonist.CurJob.def;
                 if (def == JobDefOf.AttackMelee || def == JobDefOf.AttackStatic)
                 {
-                    flag = true;
+                    attacking = true;
                 }
                 else if (def == JobDefOf.WaitCombat)
                 {
                     Stance_Busy stance_Busy = colonist.stances.curStance as Stance_Busy;
                     if (stance_Busy != null && stance_Busy.focusTarg.IsValid)
                     {
-                        flag = true;
+                        attacking = true;
                     }
                 }
             }
@@ -1341,7 +1341,7 @@ namespace ColonistBarKF
                 //      DrawIcon(PSI.PSI.PSIMaterials[Icons.Leave].mainTexture as Texture2D, ref vector, "ActivityIconFleeing".Translate());
                 DrawIcon(ColonistBarTextures.Icon_Fleeing, ref vector, "ActivityIconFleeing".Translate());
             }
-            else if (flag)
+            else if (attacking)
             {
                 DrawIcon(ColonistBarTextures.Icon_Attacking, ref vector, "ActivityIconAttacking".Translate());
             }

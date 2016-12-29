@@ -51,6 +51,7 @@ namespace ColonistBarKF.PSI
 
     internal class Materials
     {
+
         private readonly Material[] _data = new Material[40];
         private readonly string _matLibName;
 

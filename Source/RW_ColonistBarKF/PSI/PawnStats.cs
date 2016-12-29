@@ -40,6 +40,8 @@ namespace ColonistBarKF.PSI
         public float HealthDisease = 1f;
 
         public bool HasLifeThreateningDisease = false;
+
         public List<Thought> thoughts;
+        public int lastStatUpdate = 0;
     }
 }
