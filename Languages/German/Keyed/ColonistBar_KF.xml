@@ -33,7 +33,8 @@
   <CBKF.Settings.useBottom>Unten</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Links</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseExternalMoodBar>Zeige externe Stimmungsleiste™: </CBKF.Settings.UseExternalMoodBar>
+  <CBKF.Settings.UseNewMood>Benutze neue Launeleiste™</CBKF.Settings.UseNewMood>
+  <CBKF.Settings.UseExternalMoodBar>Zeige externe Launeleiste™: </CBKF.Settings.UseExternalMoodBar>
   <CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Leiste</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Rechts</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Oben</CBKF.Settings.useTop>

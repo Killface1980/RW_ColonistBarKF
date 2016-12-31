@@ -341,6 +341,7 @@ namespace ColonistBarKF
                 PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
                 PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
 
+                MarkColonistsDirty();
                 RecacheDrawLocs();
             }
 
@@ -668,7 +669,7 @@ namespace ColonistBarKF
                     break;
 
                 default:
-                   break;
+                    break;
             }
 
             cachedDrawLocs.Clear();
@@ -1012,12 +1013,10 @@ namespace ColonistBarKF
                 mb = null;
             }
 
+            Rect moodBorderRect = new Rect(rect);
             if (ColBarSettings.UseExternalMoodBar)
             {
                 // draw mood border
-                Rect moodBorderRect = new Rect(rect);
-
-
                 switch (ColBarSettings.MoodBarPos)
                 {
                     case Alignment.Right:
@@ -1039,28 +1038,29 @@ namespace ColonistBarKF
                         moodBorderRect.height /= 4;
                         break;
                 }
+            }
 
-                if (mood != null && mb != null)
+            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
+            if (mood != null && mb != null)
+            {
+                if (mood.CurLevelPercentage <= mb.BreakThresholdExtreme)
                 {
-                    if (mood.CurLevelPercentage <= mb.BreakThresholdExtreme)
-                    {
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodExtremeCrossedTex);
-                    }
-                    else if (mood.CurLevelPercentage <= mb.BreakThresholdMajor)
-                    {
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMajorCrossedTex);
-                    }
-                    else if (mood.CurLevelPercentage <= mb.BreakThresholdMinor)
-                    {
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMinorCrossedTex);
-                    }
-                    else
-                    {
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                    }
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodExtremeCrossedTex);
+                }
+                else if (mood.CurLevelPercentage <= mb.BreakThresholdMajor)
+                {
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMajorCrossedTex);
+                }
+                else if (mood.CurLevelPercentage <= mb.BreakThresholdMinor)
+                {
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMinorCrossedTex);
+                }
+                else
+                {
+                    GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
                 }
             }
 
@@ -1090,10 +1090,10 @@ namespace ColonistBarKF
 
             GUI.color = color;
 
-            if (ColBarSettings.UseExternalMoodBar)
+            if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
             {
-                //         Rect moodRect = new Rect(rect.xMax, rect.y, rect.width/4, rect.height);
-                DrawExternalMoodRect(rect, mood, mb);
+                Rect moodRect = moodBorderRect.ContractedBy(2f);
+                DrawNewMoodRect(moodRect, mood, mb);
             }
             else
             {
@@ -1140,30 +1140,8 @@ namespace ColonistBarKF
             GUI.color = Color.white;
         }
 
-        private static void DrawExternalMoodRect(Rect rect, Need_Mood mood, MentalBreaker mb)
+        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb)
         {
-            Rect moodRect = rect.ContractedBy(2.0f);
-            switch (ColBarSettings.MoodBarPos)
-            {
-                case Alignment.Right:
-                    moodRect.x = rect.xMax;
-                    moodRect.width /= 4;
-                    break;
-                case Alignment.Left:
-                    moodRect.x = rect.xMin - rect.width / 4;
-                    moodRect.width /= 4;
-                    break;
-                case Alignment.Top:
-                    moodRect.x = rect.xMin;
-                    moodRect.y = rect.yMin - rect.height / 4;
-                    moodRect.height /= 4;
-                    break;
-                case Alignment.Bottom:
-                    moodRect.x = rect.xMin;
-                    moodRect.y = moodRect.yMax + SpacingLabel;
-                    moodRect.height /= 4;
-                    break;
-            }
 
             if (mood != null && mb != null)
             {

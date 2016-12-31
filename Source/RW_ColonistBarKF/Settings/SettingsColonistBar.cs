@@ -204,5 +204,7 @@ namespace ColonistBarKF
 
             byName
         }
+
+        public bool UseNewMood = true;
     }
 }

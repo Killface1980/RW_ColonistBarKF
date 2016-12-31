@@ -606,6 +606,9 @@ namespace ColonistBarKF
             #region Mood Bar
 
             BeginVertical(this._fondBoxes);
+            ColBarSettings.UseNewMood = Toggle(
+                ColBarSettings.UseNewMood,
+                "CBKF.Settings.UseNewMood".Translate());
             ColBarSettings.UseExternalMoodBar = Toggle(
                 ColBarSettings.UseExternalMoodBar,
                 "CBKF.Settings.UseExternalMoodBar".Translate());

@@ -74,7 +74,7 @@
     <Compile Include="CB_SpecialInjector.cs" />
     <Compile Include="MapComponentInjector.cs" />
     <Compile Include="ColonistBarTextures.cs" />
-    <Compile Include="DetourAttribute.cs" />
+    <Compile Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="Fluffy\MapComponent_FollowMe.cs" />
     <Compile Include="Fluffy\MapComponent_ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />

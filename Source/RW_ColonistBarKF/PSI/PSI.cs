@@ -447,7 +447,7 @@ namespace ColonistBarKF.PSI
 
             PawnStats pawnStats = _statsDict[colonist];
 
-            if (pawnStats.lastStatUpdate + Rand.Range(100, 800) > Find.TickManager.TicksGame)
+            if (pawnStats.lastStatUpdate + Rand.Range(20, 60) > Find.TickManager.TicksGame)
                 return;
 
             pawnStats.thoughts = colonist.needs.mood.thoughts.DistinctThoughtGroups();
@@ -481,7 +481,7 @@ namespace ColonistBarKF.PSI
                 LocalTargetInfo targetInfo = curJob.targetA;
                 if (curDriver is JobDriver_HaulToContainer || curDriver is JobDriver_HaulToCell ||
                     curDriver is JobDriver_FoodDeliver || curDriver is JobDriver_FoodFeedPatient ||
-                    curDriver is JobDriver_TakeToBed)
+                    curDriver is JobDriver_TakeToBed || curDriver is JobDriver_TakeBeerOutOfFermentingBarrel)
                 {
                     targetInfo = curJob.targetB;
                 }
@@ -695,7 +695,7 @@ namespace ColonistBarKF.PSI
 
             _fDelta += Time.fixedDeltaTime;
 
-            if (_fDelta < 0.2)
+            if (_fDelta < 0.1)
                 return;
             _fDelta = 0.0;
 
