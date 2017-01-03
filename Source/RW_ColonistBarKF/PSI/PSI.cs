@@ -769,6 +769,8 @@ namespace ColonistBarKF.PSI
                 return;
             if (!animal.InAggroMentalState)
                 return;
+            if (!animal.Spawned)
+                return;
 
             Vector3 drawPos = animal.DrawPos;
             Vector3 bodyPos = drawPos;
@@ -784,7 +786,7 @@ namespace ColonistBarKF.PSI
             int iconNum = 0;
 
             PawnStats pawnStats;
-            if (colonist.Dead || colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats))
+            if (colonist.Dead || colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats) || !colonist.Spawned)
                 return;
 
             Vector3 bodyLoc = colonist.DrawPos;
@@ -1139,7 +1141,6 @@ namespace ColonistBarKF.PSI
                     }
                 }
             }
-            if (!WorldRendererUtility.WorldRenderedNow)
                 if (HealthAIUtility.ShouldBeTendedNowUrgent(colonist))
                 {
                     if (ColBarSettings.ShowMedicalAttention)
