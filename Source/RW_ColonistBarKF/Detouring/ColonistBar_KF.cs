@@ -1276,7 +1276,9 @@ namespace ColonistBarKF
             {
                 return;
             }
-            Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - rect.width / 5 * 2 - 1f);
+
+
+                Vector2 vector = new Vector2(rect.x + 1f, rect.yMax - rect.width / 5 * 2 - 1f);
             bool attacking = false;
             if (colonist.CurJob != null)
             {

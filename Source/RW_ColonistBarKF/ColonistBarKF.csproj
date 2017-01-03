@@ -48,6 +48,10 @@
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HugsLib">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
@@ -66,6 +70,7 @@
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="Detouring\_Selector.cs" />
     <Compile Include="Detouring\_WorldSelector.cs" />
+    <Compile Include="NoCCL\Class1.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />

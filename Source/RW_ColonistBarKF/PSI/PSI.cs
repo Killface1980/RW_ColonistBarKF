@@ -223,6 +223,9 @@ namespace ColonistBarKF.PSI
 
         private static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icons icon, Color color, float opacity)
         {
+            if (WorldRendererUtility.WorldRenderedNow)
+                return;
+
             Material material = PSIMaterials[icon];
             if (material == null)
             {
@@ -758,7 +761,7 @@ namespace ColonistBarKF.PSI
         #region Draw Icons
 
         private static readonly float viewOpacityCrit = PsiSettings.IconOpacityCritical +
-                                         (1 - PsiSettings.IconOpacityCritical)*PsiSettings.IconOpacity;
+                                         (1 - PsiSettings.IconOpacityCritical) * PsiSettings.IconOpacity;
 
         private static void DrawAnimalIcons(Pawn animal)
         {
@@ -770,7 +773,7 @@ namespace ColonistBarKF.PSI
             Vector3 drawPos = animal.DrawPos;
             Vector3 bodyPos = drawPos;
             int num = 0;
-            DrawIconOnColonist(bodyPos, ref num, Icons.Aggressive, ColorRedAlert,viewOpacityCrit);
+            DrawIconOnColonist(bodyPos, ref num, Icons.Aggressive, ColorRedAlert, viewOpacityCrit);
         }
 
         public static void DrawColonistIcons(Rect rect, Pawn colonist, float rectAlpha)
@@ -969,10 +972,10 @@ namespace ColonistBarKF.PSI
             {
                 if (ColBarSettings.ShowSad)
                     DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.Sad,
-                        colonist.needs.mood.CurLevelPercentage/mb.BreakThresholdMinor, rectAlpha);
+                        colonist.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor, rectAlpha);
                 if (PsiSettings.ShowSad)
                     DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.Sad,
-                        colonist.needs.mood.CurLevelPercentage/mb.BreakThresholdMinor, viewOpacityCrit);
+                        colonist.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor, viewOpacityCrit);
             }
             //   if (PsiSettings.ShowSad && colonist.needs.mood.CurLevel < (double)PsiSettings.LimitMoodLess)
             //DrawIcon_FadeRedAlertToNeutral(bodyLoc, iconNum, Icons.Sad, colonist.needs.mood.CurLevel / PsiSettings.LimitMoodLess);
@@ -1053,11 +1056,11 @@ namespace ColonistBarKF.PSI
                 {
                     if (ColBarSettings.ShowMedicalAttention)
                         DrawIcon_FadeFloatWithFourColorsHB(rect, ref barIconNum, Icons.Sickness,
-                            pawnStats.DiseaseDisappearance/ColBarSettings.LimitDiseaseLess, ColorNeutralStatus,
+                            pawnStats.DiseaseDisappearance / ColBarSettings.LimitDiseaseLess, ColorNeutralStatus,
                             ColorYellowAlert, ColorOrangeAlert, ColorRedAlert, rectAlpha);
                     if (PsiSettings.ShowMedicalAttention)
                         DrawIcon_FadeFloatWithFourColorsHB(bodyLoc, ref iconNum, Icons.Sickness,
-                            pawnStats.DiseaseDisappearance/PsiSettings.LimitDiseaseLess, ColorNeutralStatus,
+                            pawnStats.DiseaseDisappearance / PsiSettings.LimitDiseaseLess, ColorNeutralStatus,
                             ColorYellowAlert, ColorOrangeAlert, ColorRedAlert, viewOpacityCrit);
                 }
                 else
@@ -1077,23 +1080,23 @@ namespace ColonistBarKF.PSI
                     if (pawnStats.PainMoodLevel == 0)
                     {
                         if (ColBarSettings.ShowPain)
-                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost*0.4f, rectAlpha);
+                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost * 0.4f, rectAlpha);
                         if (PsiSettings.ShowPain)
-                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost*0.4f, viewOpacity);
+                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost * 0.4f, viewOpacity);
                     }
                     if (pawnStats.PainMoodLevel == 1)
                     {
                         if (ColBarSettings.ShowPain)
-                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost*0.6f, rectAlpha);
+                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost * 0.6f, rectAlpha);
                         if (PsiSettings.ShowPain)
-                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost*0.6f, viewOpacity);
+                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost * 0.6f, viewOpacity);
                     }
                     if (pawnStats.PainMoodLevel == 2)
                     {
                         if (ColBarSettings.ShowPain)
-                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost*0.8f, rectAlpha);
+                            DrawIconOnBar(rect, ref barIconNum, Icons.Pain, ColorMoodBoost * 0.8f, rectAlpha);
                         if (PsiSettings.ShowPain)
-                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost*0.8f, viewOpacity);
+                            DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Pain, ColorMoodBoost * 0.8f, viewOpacity);
                     }
                     if (pawnStats.PainMoodLevel == 3)
                     {
@@ -1136,57 +1139,60 @@ namespace ColonistBarKF.PSI
                     }
                 }
             }
-            if (HealthAIUtility.ShouldBeTendedNowUrgent(colonist))
-            {
-                if (ColBarSettings.ShowMedicalAttention)
-                    DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha);
-                if (PsiSettings.ShowMedicalAttention)
+            if (!WorldRendererUtility.WorldRenderedNow)
+                if (HealthAIUtility.ShouldBeTendedNowUrgent(colonist))
                 {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorRedAlert, viewOpacityCrit);
+                    if (ColBarSettings.ShowMedicalAttention)
+                        DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha);
+                    if (PsiSettings.ShowMedicalAttention)
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorRedAlert, viewOpacityCrit);
+                    }
                 }
-            }
-            else if (HealthAIUtility.ShouldBeTendedNow(colonist))
-            {
-                if (ColBarSettings.ShowMedicalAttention)
+                else if (HealthAIUtility.ShouldBeTendedNow(colonist))
                 {
-                    DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
+                    if (ColBarSettings.ShowMedicalAttention)
+                    {
+                        DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
+                    }
+                    if (PsiSettings.ShowMedicalAttention)
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, viewOpacityCrit);
+                    }
                 }
-                if (PsiSettings.ShowMedicalAttention)
+                else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(colonist))
                 {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, viewOpacityCrit);
+                    if (ColBarSettings.ShowMedicalAttention)
+                    {
+                        DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
+                    }
+                    if (PsiSettings.ShowMedicalAttention)
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, viewOpacityCrit);
+                    }
                 }
-            }
-            else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(colonist))
-            {
-                if (ColBarSettings.ShowMedicalAttention)
-                    DrawIconOnBar(rect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
-                if (PsiSettings.ShowMedicalAttention)
-                {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, viewOpacityCrit);
-                }
-            }
 
             // Hungry
-            if (colonist.needs.food.CurLevel < (double) PsiSettings.LimitFoodLess)
+            if (colonist.needs.food.CurLevel < (double)PsiSettings.LimitFoodLess)
             {
                 if (ColBarSettings.ShowHungry)
                     DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.Hungry,
-                        colonist.needs.food.CurLevel/PsiSettings.LimitFoodLess, rectAlpha);
+                        colonist.needs.food.CurLevel / PsiSettings.LimitFoodLess, rectAlpha);
                 if (PsiSettings.ShowHungry)
                     DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.Hungry,
-                        colonist.needs.food.CurLevel/PsiSettings.LimitFoodLess, viewOpacityCrit);
+                        colonist.needs.food.CurLevel / PsiSettings.LimitFoodLess, viewOpacityCrit);
             }
 
             //Tired
-            if (colonist.needs.rest.CurLevel < (double) PsiSettings.LimitRestLess)
+            if (colonist.needs.rest.CurLevel < (double)PsiSettings.LimitRestLess)
             {
-                if (ColBarSettings.ShowTired && colonist.needs.rest.CurLevel < (double) PsiSettings.LimitRestLess)
+                if (ColBarSettings.ShowTired && colonist.needs.rest.CurLevel < (double)PsiSettings.LimitRestLess)
                     DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.Tired,
-                        colonist.needs.rest.CurLevel/PsiSettings.LimitRestLess, rectAlpha);
+                        colonist.needs.rest.CurLevel / PsiSettings.LimitRestLess, rectAlpha);
 
                 if (PsiSettings.ShowTired)
                     DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.Tired,
-                        colonist.needs.rest.CurLevel/PsiSettings.LimitRestLess, viewOpacityCrit);
+                        colonist.needs.rest.CurLevel / PsiSettings.LimitRestLess, viewOpacityCrit);
             }
 
             // Too Cold & too hot
@@ -1204,11 +1210,11 @@ namespace ColonistBarKF.PSI
                 else if (pawnStats.TooCold <= 1.5f)
                 {
                     if (ColBarSettings.ShowTooCold)
-                        DrawIcon_FadeFloatWithTwoColors(rect, ref barIconNum, Icons.TooCold, (pawnStats.TooCold - 1f)*2f,
+                        DrawIcon_FadeFloatWithTwoColors(rect, ref barIconNum, Icons.TooCold, (pawnStats.TooCold - 1f) * 2f,
                             ColorYellowAlert, ColorOrangeAlert, rectAlpha);
                     if (PsiSettings.ShowTooCold)
                     {
-                        DrawIcon_FadeFloatWithTwoColors(bodyLoc, ref iconNum, Icons.TooCold, (pawnStats.TooCold - 1f)*2f,
+                        DrawIcon_FadeFloatWithTwoColors(bodyLoc, ref iconNum, Icons.TooCold, (pawnStats.TooCold - 1f) * 2f,
                             ColorYellowAlert, ColorOrangeAlert, viewOpacityCrit);
                     }
                 }
@@ -1216,11 +1222,11 @@ namespace ColonistBarKF.PSI
                 {
                     if (ColBarSettings.ShowTooCold)
                         DrawIcon_FadeFloatWithTwoColors(rect, ref barIconNum, Icons.TooCold,
-                            (pawnStats.TooCold - 1.5f)*2f, ColorOrangeAlert, ColorRedAlert, rectAlpha);
+                            (pawnStats.TooCold - 1.5f) * 2f, ColorOrangeAlert, ColorRedAlert, rectAlpha);
                     if (PsiSettings.ShowTooCold)
                     {
                         DrawIcon_FadeFloatWithTwoColors(bodyLoc, ref iconNum, Icons.TooCold,
-                            (pawnStats.TooCold - 1.5f)*2f, ColorOrangeAlert, ColorRedAlert, viewOpacityCrit);
+                            (pawnStats.TooCold - 1.5f) * 2f, ColorOrangeAlert, ColorRedAlert, viewOpacityCrit);
                     }
                 }
             }
@@ -1310,18 +1316,18 @@ namespace ColonistBarKF.PSI
             }
 
             // Apparel
-            if (pawnStats.ApparelHealth < (double) PsiSettings.LimitApparelHealthLess)
+            if (pawnStats.ApparelHealth < (double)PsiSettings.LimitApparelHealthLess)
             {
                 if (ColBarSettings.ShowApparelHealth)
                 {
-                    double pawnApparelHealth = pawnStats.ApparelHealth/(double) ColBarSettings.LimitApparelHealthLess;
-                    DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.ApparelHealth, (float) pawnApparelHealth,
+                    double pawnApparelHealth = pawnStats.ApparelHealth / (double)ColBarSettings.LimitApparelHealthLess;
+                    DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.ApparelHealth, (float)pawnApparelHealth,
                         rectAlpha);
                 }
                 if (PsiSettings.ShowApparelHealth)
                 {
-                    double pawnApparelHealth = pawnStats.ApparelHealth/(double) PsiSettings.LimitApparelHealthLess;
-                    DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.ApparelHealth, (float) pawnApparelHealth,
+                    double pawnApparelHealth = pawnStats.ApparelHealth / (double)PsiSettings.LimitApparelHealthLess;
+                    DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.ApparelHealth, (float)pawnApparelHealth,
                         viewOpacityCrit);
                 }
             }
@@ -1390,16 +1396,16 @@ namespace ColonistBarKF.PSI
 
 
             // Effectiveness
-            if (pawnStats.TotalEfficiency < (double) PsiSettings.LimitEfficiencyLess)
+            if (pawnStats.TotalEfficiency < (double)PsiSettings.LimitEfficiencyLess)
             {
                 if (ColBarSettings.ShowEffectiveness)
                     DrawIcon_FadeRedAlertToNeutral(rect, ref barIconNum, Icons.Effectiveness,
-                        pawnStats.TotalEfficiency/PsiSettings.LimitEfficiencyLess, rectAlpha);
+                        pawnStats.TotalEfficiency / PsiSettings.LimitEfficiencyLess, rectAlpha);
 
                 if (PsiSettings.ShowEffectiveness)
                 {
                     DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.Effectiveness,
-                        pawnStats.TotalEfficiency/PsiSettings.LimitEfficiencyLess, viewOpacityCrit);
+                        pawnStats.TotalEfficiency / PsiSettings.LimitEfficiencyLess, viewOpacityCrit);
                 }
             }
 
