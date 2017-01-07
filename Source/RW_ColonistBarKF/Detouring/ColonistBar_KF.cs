@@ -1082,17 +1082,17 @@ namespace ColonistBarKF
 
             GUI.color = color;
 
-            if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
+            if (colonist.needs != null && colonist.needs.mood != null)
             {
-                if (pawnStats != null)
+                if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                 {
-                    Rect moodRect = moodBorderRect.ContractedBy(2f);
-                    DrawNewMoodRect(moodRect, pawnStats.mood, pawnStats.mb);
+                    if (pawnStats != null)
+                    {
+                        Rect moodRect = moodBorderRect.ContractedBy(2f);
+                        DrawNewMoodRect(moodRect, pawnStats.mood, pawnStats.mb);
+                    }
                 }
-            }
-            else
-            {
-                if (colonist.needs != null && colonist.needs.mood != null)
+                else
                 {
                     Rect position = rect.ContractedBy(2f);
                     float num = position.height * colonist.needs.mood.CurLevelPercentage;
