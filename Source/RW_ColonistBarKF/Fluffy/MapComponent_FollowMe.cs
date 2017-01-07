@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using HugsLib.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -35,6 +36,7 @@ namespace ColonistBarKF
         {
             this.map = map;
             _enabled = true;
+            this.EnsureIsActive();
         }
 
         private static string FollowedLabel
@@ -56,25 +58,25 @@ namespace ColonistBarKF
 
         #endregion Properties
 
-        public override void MapComponentOnGUI()
-        {
-            if (Event.current.type == EventType.mouseDown &&
-                 Event.current.button == 2)
-            {
-                // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
-                Vector3 pos = Input.mousePosition;
-                pos.y = Screen.height - pos.y;
-                Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
-                if (thing != null)
-                {
-                    // start following
-                    TryStartFollow(thing);
-
-                    // use event so it doesn't bubble through
-                    Event.current.Use();
-                }
-            }
-        }
+      //public override void MapComponentOnGUI()
+      //{
+      //    if (Event.current.type == EventType.mouseDown &&
+      //         Event.current.button == 2)
+      //    {
+      //        // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
+      //        Vector3 pos = Input.mousePosition;
+      //        pos.y = Screen.height - pos.y;
+      //        Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
+      //        if (thing != null)
+      //        {
+      //            // start following
+      //            TryStartFollow(thing);
+      //
+      //            // use event so it doesn't bubble through
+      //            Event.current.Use();
+      //        }
+      //    }
+      //}
 
         // Called every frame when the mod is enabled.
         public override void MapComponentUpdate()
@@ -209,8 +211,6 @@ namespace ColonistBarKF
             if (!_currentlyFollowing)
                 return;
             if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
-                StopFollow();
-            if (Event.current.type == EventType.mouseDown &&Event.current.button == 2)
                 StopFollow();
         }
 

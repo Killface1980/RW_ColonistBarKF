@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using HugsLib.Utils;
 using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;
@@ -49,6 +50,7 @@ namespace ColonistBarKF
             : base(map)
         {
             this.map = map;
+            this.EnsureIsActive();
         }
     }
 }

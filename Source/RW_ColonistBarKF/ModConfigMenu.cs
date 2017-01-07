@@ -582,26 +582,6 @@ namespace ColonistBarKF
 
             #endregion
 
-            #region PSI on Bar
-
-            BeginVertical(this._fondBoxes);
-            ColBarSettings.UsePsi = Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
-            if (ColBarSettings.UsePsi)
-            {
-                BeginHorizontal();
-                this.PsiBarPositionInt = Toolbar(this.PsiBarPositionInt, this.positionStrings);
-                FlexibleSpace();
-                EndHorizontal();
-
-                Space(Text.LineHeight / 2);
-
-                Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
-            }
-
-            EndVertical();
-
-            #endregion
 
             #region Mood Bar
 
@@ -949,14 +929,14 @@ namespace ColonistBarKF
             Label(
                 "PSI.Settings.IconOpacityAndColor.Opacity".Translate() + (PsiSettings.IconOpacity * 100).ToString("N0")
                 + " %");
-            PsiSettings.IconOpacity = HorizontalSlider(PsiSettings.IconOpacity, 0.05f, 1f);
+            PsiSettings.IconOpacity = HorizontalSlider(PsiSettings.IconOpacity, 0.1f, 1f);
             EndVertical();
 
             BeginVertical(this._fondBoxes);
             Label(
                 "PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate()
                 + (PsiSettings.IconOpacityCritical * 100).ToString("N0") + " %");
-            PsiSettings.IconOpacityCritical = HorizontalSlider(PsiSettings.IconOpacityCritical, 0f, 1f);
+            PsiSettings.IconOpacityCritical = HorizontalSlider(PsiSettings.IconOpacityCritical, 0.1f, 1f);
             EndVertical();
 
             // if (listing.DoTextButton("PSI.Settings.ResetColors".Translate()))
@@ -1111,6 +1091,26 @@ namespace ColonistBarKF
             this._scrollPosition = BeginScrollView(this._scrollPosition);
 
 
+
+            #region PSI on Bar
+
+            BeginVertical(this._fondBoxes);
+            ColBarSettings.UsePsi = Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
+            if (ColBarSettings.UsePsi)
+            {
+                BeginHorizontal();
+                this.PsiBarPositionInt = Toolbar(this.PsiBarPositionInt, this.positionStrings);
+                FlexibleSpace();
+                EndHorizontal();
+
+                Space(Text.LineHeight / 2);
+
+                Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
+                ColBarSettings.IconsInColumn = (int)HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+            }
+            EndVertical();
+
+            #endregion
 
             BeginVertical(this._fondBoxes);
             PsiSettings.UsePsi = Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
@@ -1480,8 +1480,8 @@ namespace ColonistBarKF
                         PsiSettings.IconsScreenScale = true;
                         PsiSettings.IconsInColumn = 3;
                         PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.7f;
-                        PsiSettings.IconOpacityCritical = 0.6f;
+                        PsiSettings.IconOpacity = 0.5f;
+                        PsiSettings.IconOpacityCritical = 0.8f;
                         break;
                     case 1:
                         PsiSettings.IconAlignment = value;
@@ -1493,8 +1493,8 @@ namespace ColonistBarKF
                         PsiSettings.IconsScreenScale = true;
                         PsiSettings.IconsInColumn = 3;
                         PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.7f;
-                        PsiSettings.IconOpacityCritical = 0.6f;
+                        PsiSettings.IconOpacity = 0.5f;
+                        PsiSettings.IconOpacityCritical = 0.8f;
                         break;
                     case 2:
                         PsiSettings.IconAlignment = value;
@@ -1506,8 +1506,8 @@ namespace ColonistBarKF
                         PsiSettings.IconsScreenScale = true;
                         PsiSettings.IconsInColumn = 3;
                         PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.7f;
-                        PsiSettings.IconOpacityCritical = 0.6f;
+                        PsiSettings.IconOpacity = 0.5f;
+                        PsiSettings.IconOpacityCritical = 0.8f;
                         break;
                     case 3:
                         PsiSettings.IconAlignment = value;
@@ -1519,8 +1519,8 @@ namespace ColonistBarKF
                         PsiSettings.IconsScreenScale = true;
                         PsiSettings.IconsInColumn = 4;
                         PsiSettings.IconSize = 1.084302f;
-                        PsiSettings.IconOpacity = 0.7f;
-                        PsiSettings.IconOpacityCritical = 0.6f;
+                        PsiSettings.IconOpacity = 0.5f;
+                        PsiSettings.IconOpacityCritical = 0.8f;
                         break;
                     default:
                         PsiSettings.IconAlignment = 0;

@@ -10,8 +10,8 @@ namespace ColonistBarKF
 
         // PSI settings
         public int IconAlignment = 0;
-            public bool UsePsi = true;
-            public bool UsePsiOnPrisoner = true;
+        public bool UsePsi = true;
+        public bool UsePsiOnPrisoner = true;
 
         public float IconSize = 1f;
         public float IconSizeMult = 1f;
@@ -57,7 +57,7 @@ namespace ColonistBarKF
         public bool ShowBedroom = true;
         public bool ShowToxicity = true;
         public bool ShowHealth = true;
-   //     public bool ShowMarriage = true;
+        //     public bool ShowMarriage = true;
         public bool ShowPyromaniac = true;
         public bool ShowPanic = true;
 
@@ -72,6 +72,8 @@ namespace ColonistBarKF
         public float IconOpacity = 0.7f;
         public float IconOpacityCritical = 0.6f;
         public bool UseColoredTarget = true;
+
+
     }
 
 }
