@@ -805,7 +805,7 @@ namespace ColonistBarKF.PSI
         {
 
             PawnStats pawnStats;
-            if (colonist.Dead || colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats))
+            if (colonist.Dead || !colonist.Spawned|| colonist.holdingContainer != null || !_statsDict.TryGetValue(colonist, out pawnStats))
                 return;
 
             if (Find.TickManager.TicksGame  > pawnStats.lastStatUpdate + Rand.Range(30, 90))

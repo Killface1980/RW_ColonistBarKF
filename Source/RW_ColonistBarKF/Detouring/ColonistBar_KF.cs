@@ -1444,14 +1444,15 @@ namespace ColonistBarKF
                             {
                                 floatOptionList.Add(choice);
                             }
-                            floatOptionList.Add(new FloatMenuOption("--------------------", delegate
-                            {
-                            }));
+                            if (floatOptionList.Any())
+                                floatOptionList.Add(new FloatMenuOption("--------------------", delegate
+                                {
+                                }));
 
                         }
                         floatOptionList.Add(new FloatMenuOption("FollowMe™", delegate
                         {
-                            MapComponent_FollowMe.TryStartFollow(colonist);
+                            FollowMe.TryStartFollow(colonist);
 
                         }));
                         floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
@@ -1508,15 +1509,16 @@ namespace ColonistBarKF
 
 
                     }
-                    else if (Event.current.button == 2)
-                    {
-                        // start following
-                        MapComponent_FollowMe.TryStartFollow(colonist);
+                }
 
-                        // use event so it doesn't bubble through
-                        Event.current.Use();
-                    }
+                if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
+                {
 
+                    // start following
+                    FollowMe.TryStartFollow(colonist);
+
+                    // use event so it doesn't bubble through
+                    Event.current.Use();
 
                 }
 

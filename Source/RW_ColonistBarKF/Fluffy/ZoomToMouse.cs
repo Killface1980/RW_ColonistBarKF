@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
-using HugsLib.Utils;
 using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF
 {
-    public class MapComponent_ZoomToMouse : MapComponent
+    public class ZoomToMouse : MonoBehaviour
     {
         // backing private fields / properties
         private const BindingFlags all = (BindingFlags)60;
@@ -27,7 +26,7 @@ namespace ColonistBarKF
         private float DesiredSize => (float)desSize_FI.GetValue(Current.CameraDriver);
         private Vector3 CurrentRealPosition => (Vector3)curPos.Invoke(Current.CameraDriver, null);
 
-        public override void MapComponentUpdate()
+        public  void FixedUpdate()
         {
             if (CBKF.ColBarSettings.useZoomToMouse)
             {
@@ -46,11 +45,5 @@ namespace ColonistBarKF
             }
         }
 
-        public MapComponent_ZoomToMouse(Map map)
-            : base(map)
-        {
-            this.map = map;
-            this.EnsureIsActive();
-        }
     }
 }

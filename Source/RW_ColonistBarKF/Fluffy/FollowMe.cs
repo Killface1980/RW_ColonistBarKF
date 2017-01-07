@@ -1,45 +1,45 @@
-﻿using System;
+﻿// Karel Kroeze
+// FollowMe.cs
+// 2016-12-27
+
+using System;
 using System.Linq;
 using System.Reflection;
-using HugsLib.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace ColonistBarKF
 {
-    public class MapComponent_FollowMe : MapComponent
+    public class FollowMe : MonoBehaviour
     {
-
-        #region Fields
+        public FollowMe()
+        {
+            
+        }
 
         private static bool _currentlyFollowing;
         private static Thing _followedThing;
-        private bool _enabled = true;
-        private static bool _cameraHasJumpedAtLeastOnce = false;
+        private static bool _cameraHasJumpedAtLeastOnce;
 
-        private readonly KeyBindingDef[] _followBreakingKeyBindingDefs = {
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos",
+                                                                                                       BindingFlags
+                                                                                                           .Instance |
+                                                                                                       BindingFlags
+                                                                                                           .NonPublic);
+        private static bool _enabled = true;
+
+        private KeyBindingDef[] _followBreakingKeyBindingDefs =
+        {
             KeyBindingDefOf.MapDollyDown,
             KeyBindingDefOf.MapDollyUp,
             KeyBindingDefOf.MapDollyRight,
             KeyBindingDefOf.MapDollyLeft
         };
 
-        private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
+        private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
-        #endregion Fields
-
-        #region Properties
-
-        public MapComponent_FollowMe(Map map)
-            : base(map)
-        {
-            this.map = map;
-            _enabled = true;
-            this.EnsureIsActive();
-        }
-
-        private static string FollowedLabel
+        public static string FollowedLabel
         {
             get
             {
@@ -47,23 +47,24 @@ namespace ColonistBarKF
                 {
                     return String.Empty;
                 }
-                Pawn pawn = _followedThing as Pawn;
+
+                var pawn = _followedThing as Pawn;
                 if (pawn != null)
                 {
                     return pawn.NameStringShort;
                 }
+
                 return _followedThing.LabelCap;
             }
         }
 
-        #endregion Properties
-
+        // OnGUI is only called if the current map is active.
       //public override void MapComponentOnGUI()
       //{
-      //    if (Event.current.type == EventType.mouseDown &&
+      //    if (Event.current.type == EventType.MouseDown &&
       //         Event.current.button == 2)
       //    {
-      //        // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
+      //        // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
       //        Vector3 pos = Input.mousePosition;
       //        pos.y = Screen.height - pos.y;
       //        Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
@@ -78,10 +79,14 @@ namespace ColonistBarKF
       //    }
       //}
 
-        // Called every frame when the mod is enabled.
-        public override void MapComponentUpdate()
+        // Called every frame when the mod is enabled, regardless of which map we're looking at
+        public  void FixedUpdate()
         {
             if (!_enabled)
+                return;
+
+            // cop out if this is not the visible map.
+            if (Find.VisibleMap == null)
                 return;
 
             try
@@ -111,25 +116,34 @@ namespace ColonistBarKF
                 return;
 
             Vector3 newCameraPosition;
-
+            Map newMap;
             if (!_followedThing.Spawned && _followedThing.holdingContainer != null)
             {
                 // thing is in some sort of container
                 IThingContainerOwner holder = _followedThing.holdingContainer.owner;
 
                 // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
-                Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
+                var tracker = holder as Pawn_CarryTracker;
                 if (tracker != null)
+                {
                     newCameraPosition = tracker.pawn.DrawPos;
+                    newMap = tracker.pawn.MapHeld;
+                }
 
                 // otherwise the holder int location will have to do
                 else
+                {
                     newCameraPosition = holder.GetPosition().ToVector3Shifted();
+                    newMap = holder.GetMap();
+                }
             }
 
             // thing is spawned in world, just use the things drawPos
             else if (_followedThing.Spawned)
+            {
                 newCameraPosition = _followedThing.DrawPos;
+                newMap = _followedThing.MapHeld;
+            }
 
             // we've lost track of whatever it was we were following
             else
@@ -137,20 +151,22 @@ namespace ColonistBarKF
                 StopFollow();
                 return;
             }
+
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
             // before starting to compare positions
             if (_cameraHasJumpedAtLeastOnce)
             {
                 // the actual location of the camera right now
-                var currentCameraPosition = Find.CameraDriver.MapPosition;
+                IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
 
                 // the location the camera has been requested to be at
-                var requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+                IntVec3 requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
 
                 // these normally stay in sync while following is active, since we were the last to request where the camera should go.
                 // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
                 // following our thing.
-                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 || Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
+                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 ||
+                     Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
                 {
                     StopFollow();
                     return;
@@ -161,12 +177,12 @@ namespace ColonistBarKF
             _cameraHasJumpedAtLeastOnce = true;
         }
 
-        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
-
         private static Vector3 GetRequestedCameraPosition()
         {
-            var cameraDriver = Find.CameraDriver;
-            return (Vector3)_cameraDriverRootPosField.GetValue(cameraDriver);
+            if (_cameraDriverRootPosField == null)
+                throw new NullReferenceException("CameraDriver.rootPos field info NULL");
+
+            return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
         }
 
         public static void TryStartFollow(Thing thing)
@@ -194,9 +210,13 @@ namespace ColonistBarKF
 
         private static void StartFollow(Thing thing)
         {
+            if (thing == null)
+                throw new ArgumentNullException(nameof(thing));
+
             _followedThing = thing;
             _currentlyFollowing = true;
-            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Negative);
+
+            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
 
         public static void StopFollow()
@@ -204,12 +224,14 @@ namespace ColonistBarKF
             Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
             _followedThing = null;
             _currentlyFollowing = false;
+            _cameraHasJumpedAtLeastOnce = false;
         }
 
         private void CheckFollowBreakingKeys()
         {
             if (!_currentlyFollowing)
                 return;
+
             if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
                 StopFollow();
         }
@@ -220,22 +242,21 @@ namespace ColonistBarKF
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
-            Rect[] screenCorners = new[]
-            {
-                new Rect(0f, 0f, 200f, 200f),
-                new Rect(Screen.width - 250, 0f, 255f, 255f),
-                new Rect(0f, Screen.height - 250, 225f, 255f),
-                new Rect(Screen.width - 250, Screen.height - 250, 255f, 255f)
-            };
+            var screenCorners = new[]
+                                {
+                                    new Rect( 0f, 0f, 200f, 200f ),
+                                    new Rect( Screen.width - 250, 0f, 255f, 255f ),
+                                    new Rect( 0f, Screen.height - 250, 225f, 255f ),
+                                    new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
+                                };
             if (screenCorners.Any(e => e.Contains(mousePosition)))
                 return;
 
             if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
-                || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+                 || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
             {
                 StopFollow();
             }
-
         }
     }
 }

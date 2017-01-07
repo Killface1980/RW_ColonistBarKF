@@ -23,8 +23,6 @@ namespace ColonistBarKF
 
     using Verse;
 
-    using static ColonistBarKF.MapComponentInjector;
-
 #if !NoCCL
     public class ModConfigMenu : ModConfigurationMenu
 #else

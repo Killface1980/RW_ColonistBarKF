@@ -56,6 +56,8 @@ namespace ColonistBarKF
         private int _lastStatUpdate;
 
         private GameObject _psiObject;
+        private GameObject _followObject;
+        private GameObject _zoomObject;
         private bool _reinjectNeeded;
         private float _reinjectTime;
         private void OnLevelWasLoaded(int level)
@@ -88,6 +90,16 @@ namespace ColonistBarKF
                 _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
                 _psiObject.AddComponent<PSI.PSI>();
                 Log.Message("PSI Injected!!");
+
+                // FollowMe 
+                _followObject = GameObject.Find("FollowMeMain") ?? new GameObject("FollowMeMain");
+                _followObject.AddComponent<FollowMe>();
+                Log.Message("FollowMe Injected!!");
+
+                // FollowMe 
+                _zoomObject = GameObject.Find("ZoomToMouseMain") ?? new GameObject("ZoomToMouseMain");
+                _zoomObject.AddComponent<ZoomToMouse>();
+                Log.Message("ZoomToMouse Injected!!");
             }
         }
 
