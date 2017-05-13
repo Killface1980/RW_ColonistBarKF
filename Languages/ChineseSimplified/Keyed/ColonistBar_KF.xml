@@ -42,6 +42,8 @@
   <CBKF.Settings.useZoomToMouse>使用缩放到鼠标™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>默认</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>武器</CBKF.Settings.Weapons>
+  <FollowMe.StartFollow>FollowMe™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Stop FollowMe™</FollowMe.StopFollow>
   <FollowMe.MiddleClick>中键点击殖民者开始跟随™</FollowMe.MiddleClick>
   <FollowMe.Cancel>不再跟随 {0}.</FollowMe.Cancel>
   <FollowMe.Follow>跟随 {0}.</FollowMe.Follow>

@@ -67,7 +67,7 @@
     <Compile Include="Detouring\_Selector.cs" />
     <Compile Include="Detouring\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
-    <Compile Include="OLD_A16\Class1.cs" />
+    <None Include="OLD_A16\Class1.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
@@ -106,9 +106,6 @@
     </Content>
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
-    </Content>
-    <Content Include="..\..\Languages\Russian\Keyed\ColonistBar_KF.xml">
-      <Link>Languages\Russian\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
   <ItemGroup />

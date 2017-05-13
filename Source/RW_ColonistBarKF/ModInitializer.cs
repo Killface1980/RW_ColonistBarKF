@@ -32,26 +32,26 @@ namespace ColonistBarKF
         private static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsColonistBar result = XmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
+            SettingsColonistBar result = DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
             return result;
         }
         public static void SaveBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
+            DirectXmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
         }
 
         private static SettingsPSI LoadPsiSettings(string path = "ColonistBar_PSIKF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsPSI result = XmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
+            SettingsPSI result = DirectXmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
             return result;
         }
 
         public static void SavePsiSettings(string path = "ColonistBar_PSIKF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            XmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
+            DirectXmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
         }
         private int _lastStatUpdate;
 

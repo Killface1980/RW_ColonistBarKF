@@ -42,6 +42,8 @@
   <CBKF.Settings.useZoomToMouse>Use ZoomToMouse™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>Weapons</CBKF.Settings.Weapons>
+  <FollowMe.StartFollow>FollowMe™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Stop FollowMe™</FollowMe.StopFollow>
   <FollowMe.MiddleClick>Middle click on colonist to start FollowMe™</FollowMe.MiddleClick>
   <FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Following {0}.</FollowMe.Follow>

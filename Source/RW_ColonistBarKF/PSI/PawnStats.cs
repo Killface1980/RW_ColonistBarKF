@@ -41,9 +41,9 @@ namespace ColonistBarKF.PSI
 
         public bool HasLifeThreateningDisease = false;
 
-        public List<Thought> thoughts;
-        public int lastStatUpdate = -5000;
-        public MentalBreaker mb;
-        public Need_Mood mood;
+        public List<Thought> Thoughts;
+        public int LastStatUpdate = -5000;
+        public MentalBreaker Mb;
+        public Need_Mood Mood;
     }
 }

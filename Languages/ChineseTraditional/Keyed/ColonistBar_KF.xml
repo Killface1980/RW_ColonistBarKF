@@ -42,6 +42,8 @@
   <CBKF.Settings.Vanilla>默認</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>武器</CBKF.Settings.Weapons>
   <FollowMe.MiddleClick>中鍵點擊殖民者開始跟隨™</FollowMe.MiddleClick>
+  <FollowMe.StartFollow>FollowMe™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Stop FollowMe™</FollowMe.StopFollow>
   <FollowMe.Cancel>不再跟隨 {0}.</FollowMe.Cancel>
   <FollowMe.Follow>跟隨 {0}.</FollowMe.Follow>
   <FollowMe.RejectMultiple>無法跟隨, 多重選擇.</FollowMe.RejectMultiple>

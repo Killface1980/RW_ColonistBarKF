@@ -18,7 +18,7 @@ namespace ColonistBarKF
             
         }
 
-        private static bool _currentlyFollowing;
+        public static bool CurrentlyFollowing;
         private static Thing _followedThing;
         private static bool _cameraHasJumpedAtLeastOnce;
 
@@ -48,7 +48,7 @@ namespace ColonistBarKF
                     return String.Empty;
                 }
 
-                var pawn = _followedThing as Pawn;
+                Pawn pawn = _followedThing as Pawn;
                 if (pawn != null)
                 {
                     return pawn.NameStringShort;
@@ -112,30 +112,30 @@ namespace ColonistBarKF
 
         private static void Follow()
         {
-            if (!_currentlyFollowing || _followedThing == null)
+            if (!CurrentlyFollowing || _followedThing == null)
                 return;
 
-            Vector3 newCameraPosition;
+            Vector3 newCameraPosition = new Vector3();
             Map newMap;
-            if (!_followedThing.Spawned && _followedThing.holdingContainer != null)
+            if (!_followedThing.Spawned && _followedThing.holdingOwner != null)
             {
                 // thing is in some sort of container
-                IThingContainerOwner holder = _followedThing.holdingContainer.owner;
+                IThingHolder holder = _followedThing.holdingOwner.Owner;
 
                 // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
-                var tracker = holder as Pawn_CarryTracker;
+                Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
                 if (tracker != null)
                 {
                     newCameraPosition = tracker.pawn.DrawPos;
                     newMap = tracker.pawn.MapHeld;
                 }
 
-                // otherwise the holder int location will have to do
-                else
-                {
-                    newCameraPosition = holder.GetPosition().ToVector3Shifted();
-                    newMap = holder.GetMap();
-                }
+             // // otherwise the holder int location will have to do
+             // else
+             // {
+             //     newCameraPosition = holder.GetPosition().ToVector3Shifted();
+             //     newMap = holder.GetMap();
+             // }
             }
 
             // thing is spawned in world, just use the things drawPos
@@ -173,7 +173,7 @@ namespace ColonistBarKF
                 }
             }
 
-            Find.CameraDriver.JumpTo(newCameraPosition);
+            Find.CameraDriver.JumpToVisibleMapLoc(newCameraPosition);
             _cameraHasJumpedAtLeastOnce = true;
         }
 
@@ -187,7 +187,7 @@ namespace ColonistBarKF
 
         public static void TryStartFollow(Thing thing)
         {
-            if (!_currentlyFollowing && thing == null)
+            if (!CurrentlyFollowing && thing == null)
             {
                 if (Find.Selector.NumSelected > 1)
                     Messages.Message("FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput);
@@ -200,7 +200,7 @@ namespace ColonistBarKF
             }
 
             // cancel current follow (toggle or thing == null)
-            else if (_currentlyFollowing && thing == null || thing == _followedThing)
+            else if (CurrentlyFollowing && thing == null || thing == _followedThing)
                 StopFollow();
 
             // follow new thing
@@ -214,7 +214,7 @@ namespace ColonistBarKF
                 throw new ArgumentNullException(nameof(thing));
 
             _followedThing = thing;
-            _currentlyFollowing = true;
+            CurrentlyFollowing = true;
 
             Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
@@ -223,13 +223,13 @@ namespace ColonistBarKF
         {
             Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
             _followedThing = null;
-            _currentlyFollowing = false;
+            CurrentlyFollowing = false;
             _cameraHasJumpedAtLeastOnce = false;
         }
 
         private void CheckFollowBreakingKeys()
         {
-            if (!_currentlyFollowing)
+            if (!CurrentlyFollowing)
                 return;
 
             if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
@@ -238,11 +238,11 @@ namespace ColonistBarKF
 
         private void CheckFollowCameraDolly()
         {
-            if (!_currentlyFollowing)
+            if (!CurrentlyFollowing)
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
-            var screenCorners = new[]
+            Rect[] screenCorners = new[]
                                 {
                                     new Rect( 0f, 0f, 200f, 200f ),
                                     new Rect( Screen.width - 250, 0f, 255f, 255f ),

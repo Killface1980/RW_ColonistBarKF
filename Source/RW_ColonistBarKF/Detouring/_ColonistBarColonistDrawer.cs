@@ -194,7 +194,7 @@ namespace ColonistBarKF
                 if (clickedColonist == colonist && Time.time - clickedAt < 0.5f)
                 {
                     Event.current.Use();
-                    JumpToTargetUtility.TryJump(colonist);
+                    CameraJumper.TryJump(colonist);
                     clickedColonist = null;
                 }
                 else
@@ -286,16 +286,16 @@ namespace ColonistBarKF
                 {
                     if (Find.MainTabsRoot.OpenTab == MainTabDefOf.World)
                     {
-                        JumpToTargetUtility.TrySelect(entry.pawn);
+                        CameraJumper.TrySelect(entry.pawn);
                     }
                     else
                     {
-                        JumpToTargetUtility.TryJumpAndSelect(entry.pawn);
+                        CameraJumper.TryJumpAndSelect(entry.pawn);
                     }
                 }
                 else
                 {
-                    if (!JumpToTargetUtility.CloseWorldTab() && Current.Game.VisibleMap != map)
+                    if (!CameraJumper.CloseWorldTab() && Current.Game.VisibleMap != map)
                     {
                         SoundDefOf.MapSelected.PlayOneShotOnCamera();
                     }

@@ -42,6 +42,8 @@
   <CBKF.Settings.useZoomToMouse>Benutze ZoomToMouse™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>Waffen</CBKF.Settings.Weapons>
+  <FollowMe.StartFollow>FolgeMir™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Stoppe FolgeMir™</FollowMe.StopFollow>
   <FollowMe.MiddleClick>Mittlerer Mausklick auf Kolonisten für FolgeMir™</FollowMe.MiddleClick>
   <FollowMe.Cancel> {0} wird nicht mehr Verfolgt.</FollowMe.Cancel>
   <FollowMe.Follow> Verfolge jetzt {0}.</FollowMe.Follow>

@@ -35,7 +35,7 @@ namespace ColonistBarKF
 
                 // zoom action has taken place
                 if (action > tolerance)
-                    Current.CameraDriver.JumpTo(CurrentRealPosition + MouseMapOffset);
+                    Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
                 else
                     // update last known location.
                     LastMouseMapPosition = CurrentMouseMapPosition;

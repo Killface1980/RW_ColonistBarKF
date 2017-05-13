@@ -21,13 +21,13 @@ namespace ColonistBarKF.Detouring
             Caravan caravan = ColonistBar_KF.CaravanMemberCaravanAt(UI.MousePositionOnUIInverted);
             if (caravan != null)
             {
-                JumpToTargetUtility.TryJumpAndSelect(caravan);
+                CameraJumper.TryJumpAndSelect(caravan);
                 return;
             }
             Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
             if (thing != null && !thing.Spawned)
             {
-                JumpToTargetUtility.TryJump(thing);
+                CameraJumper.TryJump(thing);
                 return;
             }
             List<object> list = SelectableObjectsUnderMouse().ToList<object>();
@@ -191,7 +191,7 @@ namespace ColonistBarKF.Detouring
             {
                 if (!selectedSomething)
                 {
-                    JumpToTargetUtility.TryJumpAndSelect(list2[j]);
+                    CameraJumper.TryJumpAndSelect(list2[j]);
                     selectedSomething = true;
                 }
                 else

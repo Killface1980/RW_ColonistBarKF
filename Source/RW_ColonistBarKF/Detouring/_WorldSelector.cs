@@ -70,7 +70,7 @@ namespace ColonistBarKF.Detouring
                 {
                     if (!flag)
                     {
-                        JumpToTargetUtility.TryJumpAndSelect(list2[j]);
+                        CameraJumper.TryJumpAndSelect(list2[j]);
                         flag = true;
                     }
                     else
@@ -123,11 +123,11 @@ namespace ColonistBarKF.Detouring
                 {
                     if (thing.Spawned)
                     {
-                        JumpToTargetUtility.TryJumpAndSelect(thing);
+                        CameraJumper.TryJumpAndSelect(thing);
                     }
                     else
                     {
-                        JumpToTargetUtility.TryJump(thing);
+                        CameraJumper.TryJump(thing);
                     }
                     return;
                 }
