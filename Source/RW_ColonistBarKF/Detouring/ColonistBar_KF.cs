@@ -66,21 +66,6 @@ namespace ColonistBarKF
                     return ColBarSettings.FixedIconScaleFloat;
                 }
 
-                if (ColBarSettings.ColBarPos == Alignment.Left || ColBarSettings.ColBarPos == Alignment.Right)
-                {
-                    while (true)
-                    {
-                        int allowedColumnsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
-                        int num2 = ColumnsCountAssumingScale(CurrentScale);
-                        if (num2 <= allowedColumnsCountForScale)
-                        {
-                            break;
-                        }
-                        CurrentScale *= 0.95f;
-                    }
-                    return CurrentScale;
-                }
-
                 while (true)
                 {
                     int allowedRowsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
@@ -128,8 +113,6 @@ namespace ColonistBarKF
 
         private static int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
 
-        private static int ColonistsPerColumn => ColonistsPerColumnAssumingScale(Scale);
-
         private static Vector2 SizeAssumingScale(float scale)
         {
             BaseSize.x = ColBarSettings.BaseSizeFloat;
@@ -142,43 +125,13 @@ namespace ColonistBarKF
             return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
 
-        private static int ColumnsCountAssumingScale(float scale)
-        {
-            return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerColumnAssumingScale(scale));
-        }
-
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            if (ColBarSettings.ColBarPos == Alignment.Bottom)
-            {
-                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorBottom - ColBarSettings.MarginRightHorBottom;
-                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorBottom / 2 - ColBarSettings.MarginRightHorBottom / 2;
+            ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop - ColBarSettings.MarginRightHorTop;
+            ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2 - ColBarSettings.MarginRightHorTop / 2;
 
-            }
-            else
-            {
-                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop - ColBarSettings.MarginRightHorTop;
-                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2 - ColBarSettings.MarginRightHorTop / 2;
-
-            }
             return Mathf.FloorToInt((ColBarSettings.MaxColonistBarWidth) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale) + SpacingHorizontalPSIAssumingScale(scale) + SpacingHorizontalMoodBarAssumingScale(scale)));
         }
-
-        private static int ColonistsPerColumnAssumingScale(float scale)
-        {
-            if (ColBarSettings.ColBarPos == Alignment.Right)
-            {
-                ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerRight - ColBarSettings.MarginBottomVerRight;
-                ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerRight / 2 - ColBarSettings.MarginBottomVerRight / 2;
-            }
-            else
-            {
-                ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerLeft - ColBarSettings.MarginBottomVerLeft;
-                ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerLeft / 2 - ColBarSettings.MarginBottomVerLeft / 2;
-            }
-            return Mathf.FloorToInt((ColBarSettings.MaxColonistBarHeight) / (SizeAssumingScale(scale).y + SpacingVerticalAssumingScale(scale) + SpacingVerticalPSIAssumingScale(scale)));
-        }
-
 
         private static float SpacingHorizontalAssumingScale(float scale)
         {
@@ -214,6 +167,8 @@ namespace ColonistBarKF
         {
             get
             {
+                return 2;
+
                 int maxCount = 0;
                 foreach (KeyValuePair<Pawn, PawnStats> colonist in PSI.PSI._statsDict)
                 {
@@ -488,6 +443,7 @@ namespace ColonistBarKF
         private static Rect GroupFrameRect(int group)
         {
             float pos_x = 99999f;
+            float pos_y = 99999f;
             float width = 0f;
             float height = 0f;
             List<ColonistBar.Entry> entries = Entries;
@@ -497,11 +453,12 @@ namespace ColonistBarKF
                 if (entries[i].group == group)
                 {
                     pos_x = Mathf.Min(pos_x, drawLocs[i].x);
+                    pos_y = Mathf.Min(pos_y, drawLocs[i].y);
                     width = Mathf.Max(width, drawLocs[i].x + Size.x);
                     height = Mathf.Max(height, drawLocs[i].y + Size.y);
                 }
             }
-            return new Rect(pos_x, 0f, width - pos_x, height).ContractedBy(-12f * Scale);
+            return new Rect(pos_x - ColBarSettings.BaseSizeFloat / 4, pos_y - ColBarSettings.BaseSizeFloat / 8, width - pos_x + ColBarSettings.BaseSizeFloat / 2, height + ColBarSettings.BaseSizeFloat / 8).ContractedBy(-12f * Scale);
         }
 
 
@@ -642,7 +599,6 @@ namespace ColonistBarKF
             CheckRecacheEntries();
             Vector2 size = Size;
             int colonistsPerRow = ColonistsPerRow;
-            int colonistsPerColumn = ColonistsPerColumn;
             float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
             float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
 
@@ -650,109 +606,37 @@ namespace ColonistBarKF
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
 
-            switch (ColBarSettings.ColBarPos)
-            {
-                case Alignment.Left:
-                    cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftVer;
-                    break;
-
-                case Alignment.Right:
-                    cachedDrawLocs_x = Screen.width - size.x - ColBarSettings.MarginRightVer;
-                    break;
-
-                case Alignment.Top:
-                    break;
-
-                case Alignment.Bottom:
-                    cachedDrawLocs_y = Screen.height - size.y - ColBarSettings.MarginBottomHor - 30f - 12f;
-                    break;
-
-                default:
-                    break;
-            }
 
             cachedDrawLocs.Clear();
 
-            #region Horizontal Alignment
-
-            if (ColBarSettings.ColBarPos == Alignment.Left || ColBarSettings.ColBarPos == Alignment.Right)
-                for (int i = 0; i < cachedEntries.Count; i++)
-                {
-                    //         Debug.Log("Colonists count: " + i);
-                    if (i % colonistsPerColumn == 0)
-                    {
-                        int maxColInColumn = Mathf.Min(colonistsPerColumn, cachedEntries.Count - i);
-                        float barHeight = maxColInColumn * size.y + (maxColInColumn - 1) * (spacingVertical + SpacingLabel);
-                        cachedDrawLocs_y = (Screen.height - barHeight) / 2f + ColBarSettings.VerticalOffset;
-
-                        if (ColBarSettings.UsePsi)
-                            ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
-                        if (ColBarSettings.UseExternalMoodBar)
-                            ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
-
-                        if (i != 0)
-                        {
-                            if (ColBarSettings.ColBarPos == Alignment.Right)
-                            {
-                                cachedDrawLocs_x -= size.x + spacingHorizontal;
-                            }
-                            else
-                            {
-                                cachedDrawLocs_x += size.x + spacingHorizontal;
-                            }
-                        }
-                        //         Debug.Log("maxColInColumn " + maxColInColumn);
-                    }
-                    else
-                    {
-                        cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
-                    }
-                    cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
-
-                    //      Debug.Log("MaxColonistBarHeight:" + SettingsMaxColonistBarHeight+ " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f) + " / (SizeAssumingScale(1f).y: "+ SizeAssumingScale(1f).y + " + SpacingVerticalAssumingScale(1f): "+ SpacingVerticalAssumingScale(1f));
-                    //
-                    //      Debug.Log("colonistsPerRow " + colonistsPerRow);
-                    //      Debug.Log("colonistsPerColumn " + colonistsPerColumn);
-                    //      Debug.Log("cachedDrawLocs_x: " + cachedDrawLocs_x);
-                    //      Debug.Log("cachedDrawLocs_y: " + cachedDrawLocs_y);
-                    //      Debug.Log("cachedEntries: " + i);
-                }
-            #endregion
             #region Vertical
-            else
-                for (int i = 0; i < cachedEntries.Count; i++)
+
+            for (int i = 0; i < cachedEntries.Count; i++)
+            {
+                if (i % colonistsPerRow == 0)
                 {
-                    if (i % colonistsPerRow == 0)
-                    {
-                        int maxColInRow = Mathf.Min(colonistsPerRow, cachedEntries.Count - i);
-                        float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
-                        cachedDrawLocs_x = (Screen.width - num4) / 2f + ColBarSettings.HorizontalOffset;
+                    int maxColInRow = Mathf.Min(colonistsPerRow, cachedEntries.Count - i);
+                    float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
+                    cachedDrawLocs_x = (Screen.width - num4) / 2f + ColBarSettings.HorizontalOffset;
 
-                        if (ColBarSettings.UsePsi)
-                            ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
+                    if (ColBarSettings.UsePsi)
+                        ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
-                        if (ColBarSettings.UseExternalMoodBar)
-                            ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
+                    if (ColBarSettings.UseExternalMoodBar)
+                        ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
 
 
-                        if (i != 0)
-                        {
-                            if (ColBarSettings.ColBarPos == Alignment.Bottom)
-                            {
-                                cachedDrawLocs_y -= size.y + spacingVertical + SpacingLabel;
-                            }
-                            else
-                            {
-                                cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        cachedDrawLocs_x += size.x + spacingHorizontal;
-                    }
-                    cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
+                    if (i != 0)
+                        cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
+
+
                 }
+                else
+                {
+                    cachedDrawLocs_x += size.x + spacingHorizontal;
+                }
+                cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
+            }
 
 
             #endregion
@@ -880,7 +764,7 @@ namespace ColonistBarKF
                     }
                 }
             }
-            RecacheDrawLocs();
+            //        RecacheDrawLocs();
             Notify_RecachedEntries();
             tmpPawns.Clear();
             tmpMaps.Clear();

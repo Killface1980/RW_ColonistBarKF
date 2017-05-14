@@ -60,7 +60,7 @@ namespace ColonistBarKF.PSI
             _matLibName = matLib;
         }
 
-        public Material this[Icons icon] => _data[(int) icon];
+        public Material this[Icons icon] => _data[(int)icon];
 
         private Material LoadIconMat(string path, bool smooth = false)
         {
@@ -72,22 +72,22 @@ namespace ColonistBarKF.PSI
             }
             else
             {
-              //if (smooth)
-              //{
-              //    tex.filterMode = FilterMode.Trilinear;
-              //    tex.mipMapBias = -0.5f;
-              //    tex.anisoLevel = 9;
-              //    tex.wrapMode = TextureWrapMode.Repeat;
-              //    tex.Apply();
-              //    tex.Compress(true);
-              //}
-              //else
-              //{
-              //    tex.filterMode = FilterMode.Point;
-              //    tex.wrapMode = TextureWrapMode.Repeat;
-              //    tex.Apply();
-              //    tex.Compress(true);
-              //}
+                if (smooth)
+                {
+                    tex.filterMode = FilterMode.Trilinear;
+                    tex.mipMapBias = -0.5f;
+                    tex.anisoLevel = 9;
+                    tex.wrapMode = TextureWrapMode.Repeat;
+                    tex.Apply();
+                    tex.Compress(true);
+                }
+                else
+                {
+                    tex.filterMode = FilterMode.Point;
+                    tex.wrapMode = TextureWrapMode.Repeat;
+                    tex.Apply();
+                    tex.Compress(true);
+                }
                 material = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.MetaOverlay));
             }
             return material;
@@ -104,7 +104,7 @@ namespace ColonistBarKF.PSI
                         continue;
                     default:
                         string path = _matLibName + "/" + Enum.GetName(typeof(Icons), icons);
-                        _data[(int) icons] = LoadIconMat(path, smooth);
+                        _data[(int)icons] = LoadIconMat(path, smooth);
                         continue;
                 }
             }

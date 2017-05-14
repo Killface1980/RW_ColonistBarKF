@@ -360,166 +360,43 @@ namespace ColonistBarKF
         private void FillPageMain()
         {
 
+            #region Horizontal alignment
 
-            #region Vertical Alignment
+            BeginVertical(this._fondBoxes);
+            ColBarSettings.UseCustomMarginTopHor = Toggle(
+                ColBarSettings.UseCustomMarginTopHor,
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTopHor + " yMin, "
+                + (int)ColBarSettings.MarginLeftHorTop + " xMin, " + (int)ColBarSettings.MarginRightHorTop + " xMax");
 
-            if (ColBarSettings.ColBarPos == Position.Alignment.Right)
+            if (ColBarSettings.UseCustomMarginTopHor)
             {
-                BeginVertical(this._fondBoxes);
-                ColBarSettings.UseCustomMarginRight = Toggle(
-                    ColBarSettings.UseCustomMarginRight,
-                    "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginRightVer + " xMax, "
-                    + (int)ColBarSettings.MarginTopVerRight + " yMin, " + (int)ColBarSettings.MarginBottomVerRight
-                    + " yMax");
-                if (ColBarSettings.UseCustomMarginRight)
-                {
-                    Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginRightVer = HorizontalSlider(
-                        ColBarSettings.MarginRightVer,
-                        0f,
-                        Screen.width / 6);
-                    ColBarSettings.MarginTopVerRight = HorizontalSlider(
-                        ColBarSettings.MarginTopVerRight,
-                        0f,
-                        Screen.height * 2 / 5);
-                    ColBarSettings.MarginBottomVerRight = HorizontalSlider(
-                        ColBarSettings.MarginBottomVerRight,
-                        0f,
-                        Screen.height * 2 / 5);
-                }
-                else
-                {
-                    ColBarSettings.MarginRightVer = 21f;
-                    ColBarSettings.MarginTopVerRight = 120f;
-                    ColBarSettings.MarginBottomVerRight = 120f;
-                    ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerRight
-                                                          - ColBarSettings.MarginBottomVerRight;
-                    ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerRight / 2
-                                                    - ColBarSettings.MarginBottomVerRight / 2;
-                }
-
-                EndVertical();
+                Space(Text.LineHeight / 2);
+                ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 0f, Screen.height / 6);
+                ColBarSettings.MarginLeftHorTop = HorizontalSlider(
+                    ColBarSettings.MarginLeftHorTop,
+                    0f,
+                    Screen.width * 2 / 5);
+                ColBarSettings.MarginRightHorTop = HorizontalSlider(
+                    ColBarSettings.MarginRightHorTop,
+                    0f,
+                    Screen.width * 2 / 5);
             }
-
-            if (ColBarSettings.ColBarPos == Position.Alignment.Left)
+            else
             {
-                BeginVertical(this._fondBoxes);
-                ColBarSettings.UseCustomMarginLeft = Toggle(
-                    ColBarSettings.UseCustomMarginLeft,
-                    "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginLeftVer + " xMin, "
-                    + (int)ColBarSettings.MarginTopVerLeft + " yMin, " + (int)ColBarSettings.MarginBottomVerLeft
-                    + " yMax");
-                if (ColBarSettings.UseCustomMarginLeft)
-                {
-                    Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginLeftVer = HorizontalSlider(ColBarSettings.MarginLeftVer, 0f, Screen.width / 6);
-                    ColBarSettings.MarginTopVerLeft = HorizontalSlider(
-                        ColBarSettings.MarginTopVerLeft,
-                        0f,
-                        Screen.height * 2 / 5);
-                    ColBarSettings.MarginBottomVerLeft = HorizontalSlider(
-                        ColBarSettings.MarginBottomVerLeft,
-                        0f,
-                        Screen.height * 2 / 5);
-                }
-                else
-                {
-                    ColBarSettings.MarginLeftVer = 21f;
-                    ColBarSettings.MarginTopVerLeft = 120f;
-                    ColBarSettings.MarginBottomVerLeft = 120f;
-                    ColBarSettings.MaxColonistBarHeight = Screen.height - ColBarSettings.MarginTopVerLeft
-                                                          - ColBarSettings.MarginBottomVerLeft;
-                    ColBarSettings.VerticalOffset = ColBarSettings.MarginTopVerLeft / 2
-                                                    - ColBarSettings.MarginBottomVerLeft / 2;
-                }
-
-                EndVertical();
+                ColBarSettings.MarginTopHor = 21f;
+                ColBarSettings.MarginLeftHorTop = 160f;
+                ColBarSettings.MarginRightHorTop = 160f;
+                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop
+                                                     - ColBarSettings.MarginRightHorTop;
+                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2
+                                                  - ColBarSettings.MarginRightHorTop / 2;
             }
 
             // listing.Gap(3f);
-#if !NoCCL
-                listing.Undent();
-#endif
+            EndVertical();
 
-            #endregion
+            // listing.Gap(3f);
 
-            #region Horizontal alignment
-
-            if (ColBarSettings.ColBarPos == Position.Alignment.Bottom)
-            {
-                BeginVertical(this._fondBoxes);
-                ColBarSettings.UseCustomMarginBottom = Toggle(
-                    ColBarSettings.UseCustomMarginBottom,
-                    "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginBottomHor + " yMax, "
-                    + (int)ColBarSettings.MarginLeftHorBottom + " xMin, " + (int)ColBarSettings.MarginRightHorBottom
-                    + " xMax");
-
-                if (ColBarSettings.UseCustomMarginBottom)
-                {
-                    Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginBottomHor =
-                        ColBarSettings.MarginBottomHor =
-                            HorizontalSlider(ColBarSettings.MarginBottomHor, 10, Screen.height / 6);
-                    ColBarSettings.MarginLeftHorBottom = HorizontalSlider(
-                        ColBarSettings.MarginLeftHorBottom,
-                        0f,
-                        Screen.width * 2 / 5);
-                    ColBarSettings.MarginRightHorBottom = HorizontalSlider(
-                        ColBarSettings.MarginRightHorBottom,
-                        0f,
-                        Screen.width * 2 / 5);
-                }
-                else
-                {
-                    ColBarSettings.MarginBottomHor = 21f;
-                    ColBarSettings.MarginLeftHorBottom = 160f;
-                    ColBarSettings.MarginRightHorBottom = 160f;
-                    ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorBottom
-                                                         - ColBarSettings.MarginRightHorBottom;
-                    ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorBottom / 2
-                                                      - ColBarSettings.MarginRightHorBottom / 2;
-                }
-
-                EndVertical();
-            }
-
-            if (ColBarSettings.ColBarPos == Position.Alignment.Top)
-            {
-                BeginVertical(this._fondBoxes);
-                ColBarSettings.UseCustomMarginTopHor = Toggle(
-                    ColBarSettings.UseCustomMarginTopHor,
-                    "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTopHor + " yMin, "
-                    + (int)ColBarSettings.MarginLeftHorTop + " xMin, " + (int)ColBarSettings.MarginRightHorTop + " xMax");
-
-                if (ColBarSettings.UseCustomMarginTopHor)
-                {
-                    Space(Text.LineHeight / 2);
-                    ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 0f, Screen.height / 6);
-                    ColBarSettings.MarginLeftHorTop = HorizontalSlider(
-                        ColBarSettings.MarginLeftHorTop,
-                        0f,
-                        Screen.width * 2 / 5);
-                    ColBarSettings.MarginRightHorTop = HorizontalSlider(
-                        ColBarSettings.MarginRightHorTop,
-                        0f,
-                        Screen.width * 2 / 5);
-                }
-                else
-                {
-                    ColBarSettings.MarginTopHor = 21f;
-                    ColBarSettings.MarginLeftHorTop = 160f;
-                    ColBarSettings.MarginRightHorTop = 160f;
-                    ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop
-                                                         - ColBarSettings.MarginRightHorTop;
-                    ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2
-                                                      - ColBarSettings.MarginRightHorTop / 2;
-                }
-
-                // listing.Gap(3f);
-                EndVertical();
-
-                // listing.Gap(3f);
-            }
 
 #if !NoCCL
                 listing.Undent();
@@ -587,16 +464,20 @@ namespace ColonistBarKF
             ColBarSettings.UseNewMood = Toggle(
                 ColBarSettings.UseNewMood,
                 "CBKF.Settings.UseNewMood".Translate());
-            ColBarSettings.UseExternalMoodBar = Toggle(
+
+            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
+            {
+                ColBarSettings.UseExternalMoodBar = Toggle(
                 ColBarSettings.UseExternalMoodBar,
                 "CBKF.Settings.UseExternalMoodBar".Translate());
 
-            if (ColBarSettings.UseExternalMoodBar)
-            {
-                BeginHorizontal();
-                MoodBarPositionInt = Toolbar(this.MoodBarPositionInt, this.positionStrings);
-                FlexibleSpace();
-                EndHorizontal();
+                if (ColBarSettings.UseExternalMoodBar)
+                {
+                    BeginHorizontal();
+                    MoodBarPositionInt = Toolbar(this.MoodBarPositionInt, this.positionStrings);
+                    FlexibleSpace();
+                    EndHorizontal();
+                }
             }
 
             EndVertical();
@@ -1265,59 +1146,6 @@ namespace ColonistBarKF
             }
         }
 
-        private int BarPositionInt
-        {
-            get
-            {
-                if (ColBarSettings.ColBarPos == Position.Alignment.Left)
-                {
-                    this.barPositionInt = 0;
-                }
-
-                if (ColBarSettings.ColBarPos == Position.Alignment.Right)
-                {
-                    this.barPositionInt = 1;
-                }
-
-                if (ColBarSettings.ColBarPos == Position.Alignment.Top)
-                {
-                    this.barPositionInt = 2;
-                }
-
-                if (ColBarSettings.ColBarPos == Position.Alignment.Bottom)
-                {
-                    this.barPositionInt = 3;
-                }
-
-                return this.barPositionInt;
-            }
-
-            set
-            {
-                switch (value)
-                {
-                    case 0:
-                        ColBarSettings.ColBarPos = Position.Alignment.Left;
-                        break;
-                    case 1:
-                        ColBarSettings.ColBarPos = Position.Alignment.Right;
-
-                        break;
-                    case 2:
-                        ColBarSettings.ColBarPos = Position.Alignment.Top;
-                        break;
-                    case 3:
-                        ColBarSettings.ColBarPos = Position.Alignment.Bottom;
-                        break;
-                    default:
-                        ColBarSettings.ColBarPos = Position.Alignment.Left;
-                        break;
-                }
-
-                this.barPositionInt = value;
-            }
-        }
-
         private int PsiBarPositionInt
         {
             get
@@ -1628,11 +1456,6 @@ namespace ColonistBarKF
                         this.LabelHeadline("CBKF.Settings.BarPosition".Translate());
 
                         BeginVertical();
-
-                        BeginHorizontal();
-                        this.BarPositionInt = Toolbar(this.BarPositionInt, this.positionStrings);
-                        FlexibleSpace();
-                        EndHorizontal();
 
                         this.FillPageMain();
 

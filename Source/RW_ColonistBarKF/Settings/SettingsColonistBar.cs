@@ -12,7 +12,7 @@ namespace ColonistBarKF
 
         public float BaseSpacingVertical = 32f;
 
-        public Position.Alignment ColBarPos = Position.Alignment.Top;
+      //  public Position.Alignment ColBarPos = Position.Alignment.Top;
 
         public Position.Alignment ColBarPsiIconPos = Position.Alignment.Left;
 

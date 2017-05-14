@@ -245,6 +245,10 @@ namespace ColonistBarKF.PSI
 
         private static void DrawIconOnBar(Rect rect, ref int num, Icons icon, Color color, float rectAlpha)
         {
+            // only two columns visible
+            if (num > ColBarSettings.IconsInColumn * 2)
+                return;
+
             Material material = PSIMaterials[icon];
 
             if (material == null)
