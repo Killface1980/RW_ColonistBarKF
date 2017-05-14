@@ -1313,7 +1313,7 @@ namespace ColonistBarKF
 
                                             if (FollowMe.CurrentlyFollowing)
                                             {
-                                                FollowMe.StopFollow();
+                                                FollowMe.StopFollow("Selected another colonist on bar");
                                                 FollowMe.TryStartFollow(colonist);
                                             }
                                             else
@@ -1354,7 +1354,8 @@ namespace ColonistBarKF
                                         }
                                         else
                                         {
-                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StopFollow".Translate(), FollowMe.StopFollow));
+                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StopFollow".Translate(), 
+                                                delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
                                         }
                                         floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
                                         {
@@ -1420,7 +1421,7 @@ namespace ColonistBarKF
                     // start following
                     if (FollowMe.CurrentlyFollowing)
                     {
-                        FollowMe.StopFollow();
+                        FollowMe.StopFollow("Canceled by user");
                     }
                     else
                     {

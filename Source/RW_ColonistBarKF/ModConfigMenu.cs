@@ -46,6 +46,7 @@ namespace ColonistBarKF
             this.preventCameraMotion = false;
             this.resizeable = true;
             this.onlyOneOfTypeAllowed = true;
+            Reinit(false, true);
         }
 
 
@@ -55,19 +56,6 @@ namespace ColonistBarKF
             ColonistBar_KF.PawnTextureSize = new Vector2(
                                                  ColBarSettings.BaseSizeFloat - 2f,
                                                  ColBarSettings.BaseSizeFloat * 1.5f);
-
-            Reinit(false, true);
-
-            // if (Find.TickManager.TicksGame > lastupdate)
-            // {
-            // //if (ColBarSettings.UseGender)
-            // //    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexGrey;
-            // //else
-            // //{
-            // //    ColonistBarTextures.BGTex = ColonistBarTextures.BGTexVanilla;
-            // //}
-            // lastupdate = Find.TickManager.TicksGame + 1500;
-            // }
         }
 
         private void DrawCheckboxArea(

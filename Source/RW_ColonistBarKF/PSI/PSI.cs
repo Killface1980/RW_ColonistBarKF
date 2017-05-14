@@ -29,7 +29,7 @@ namespace ColonistBarKF.PSI
         public static Vector3[] _iconPosVectorsPSI;
         private static Vector3[] _iconPosRectsBar;
 
-        private void Awake()
+        private void Start()
         {
             Reinit();
         }
@@ -59,15 +59,16 @@ namespace ColonistBarKF.PSI
 
             if (reloadIconSet)
             {
-                //  LongEventHandler.ExecuteWhenFinished(() =>
-                //  {
-                PSIMaterials = new Materials(PsiSettings.IconSet);
-                //PSISettings SettingsPSI =
-                //    XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
-                //PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
-                PSIMaterials.LoadTexturesOnStart(true);
-                //   Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
-                //       });
+            //    LongEventHandler.ExecuteWhenFinished(() =>
+                {
+                    PSIMaterials = new Materials(PsiSettings.IconSet);
+                      //PSISettings SettingsPSI =
+                      //    XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
+                      //PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
+                      PSIMaterials.ReloadTextures(true);
+                 //   Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
+                }
+                //);
             }
 
         }

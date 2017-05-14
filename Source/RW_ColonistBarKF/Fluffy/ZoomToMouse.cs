@@ -5,29 +5,38 @@ using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF
 {
-    public class ZoomToMouse : MonoBehaviour
+    public class ZoomToMouse : GameComponent
     {
+        public ZoomToMouse(Game game)
+        {
+            // nothing
+        }
+
         // backing private fields / properties
-        private const BindingFlags all = (BindingFlags)60;
-        private readonly FieldInfo curSize_FI = typeof(CameraDriver).GetField("rootSize", all);
-        private readonly FieldInfo desSize_FI = typeof(CameraDriver).GetField("desiredSize", all);
-        private readonly MethodInfo curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", all).GetGetMethod(true);
+        private const BindingFlags AllFlags = (BindingFlags)60;
+        private readonly FieldInfo _curSizeFi = typeof(CameraDriver).GetField("rootSize", AllFlags);
+        private readonly FieldInfo _desSizeFi = typeof(CameraDriver).GetField("desiredSize", AllFlags);
+        private readonly MethodInfo _curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", AllFlags).GetGetMethod(true);
 
         // tolerance for zoom
         private float tolerance = .1f;
 
         // helpers
-        private Vector3 LastMouseMapPosition = Vector3.zero;
+        private Vector3 _lastMouseMapPosition = Vector3.zero;
         private Vector3 CurrentMouseMapPosition => UI.MouseMapPosition();
-        private Vector3 MouseMapOffset => LastMouseMapPosition - CurrentMouseMapPosition;
+
+        private Vector3 MouseMapOffset => _lastMouseMapPosition - CurrentMouseMapPosition;
 
         // reflection helpers
-        private float CurrentSize => (float)curSize_FI.GetValue(Current.CameraDriver);
-        private float DesiredSize => (float)desSize_FI.GetValue(Current.CameraDriver);
-        private Vector3 CurrentRealPosition => (Vector3)curPos.Invoke(Current.CameraDriver, null);
+        private float CurrentSize => (float)_curSizeFi.GetValue(Current.CameraDriver);
+        private float DesiredSize => (float)_desSizeFi.GetValue(Current.CameraDriver);
+        private Vector3 CurrentRealPosition => (Vector3)_curPos.Invoke(Current.CameraDriver, null);
 
-        public  void FixedUpdate()
+        public override void GameComponentOnGUI()
         {
+            if (Current.ProgramState != ProgramState.Playing)
+                return;
+
             if (CBKF.ColBarSettings.useZoomToMouse)
             {
                 // determine zoom action
@@ -38,7 +47,7 @@ namespace ColonistBarKF
                     Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
                 else
                     // update last known location.
-                    LastMouseMapPosition = CurrentMouseMapPosition;
+                    _lastMouseMapPosition = CurrentMouseMapPosition;
 
                 // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
                 // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.

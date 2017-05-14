@@ -91,15 +91,15 @@ namespace ColonistBarKF
                 _psiObject.AddComponent<PSI.PSI>();
                 Log.Message("PSI Injected!!");
 
-                // FollowMe 
-                _followObject = GameObject.Find("FollowMeMain") ?? new GameObject("FollowMeMain");
-                _followObject.AddComponent<FollowMe>();
-                Log.Message("FollowMe Injected!!");
+             // // FollowMe 
+             // _followObject = GameObject.Find("FollowMeMain") ?? new GameObject("FollowMeMain");
+             // _followObject.AddComponent<FollowMe>();
+             // Log.Message("FollowMe Injected!!");
 
-                // FollowMe 
-                _zoomObject = GameObject.Find("ZoomToMouseMain") ?? new GameObject("ZoomToMouseMain");
-                _zoomObject.AddComponent<ZoomToMouse>();
-                Log.Message("ZoomToMouse Injected!!");
+              //// ZoomToMouse 
+              //_zoomObject = GameObject.Find("ZoomToMouseMain") ?? new GameObject("ZoomToMouseMain");
+              //_zoomObject.AddComponent<ZoomToMouse>();
+              //Log.Message("ZoomToMouse Injected!!");
             }
         }
 
