@@ -458,7 +458,7 @@ namespace ColonistBarKF
                     height = Mathf.Max(height, drawLocs[i].y + Size.y);
                 }
             }
-            return new Rect(pos_x - ColBarSettings.BaseSizeFloat / 4, pos_y - ColBarSettings.BaseSizeFloat / 8, width - pos_x + ColBarSettings.BaseSizeFloat / 2, height + ColBarSettings.BaseSizeFloat / 8).ContractedBy(-12f * Scale);
+            return new Rect(pos_x - ColBarSettings.BaseSizeFloat / 4, pos_y - ColBarSettings.BaseSizeFloat / 8, width - pos_x + ColBarSettings.BaseSizeFloat / 2, height).ContractedBy(-12f * Scale);
         }
 
 

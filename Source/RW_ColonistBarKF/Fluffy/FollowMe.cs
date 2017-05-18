@@ -20,6 +20,10 @@ namespace ColonistBarKF
             // noop
         }
 
+        public FollowMe()
+        {
+            //
+        }
         #region Properties
 
         public static string FollowedLabel
@@ -29,7 +33,7 @@ namespace ColonistBarKF
                 if (_followedThing == null)
                     return String.Empty;
 
-                var pawn = _followedThing as Pawn;
+                Pawn pawn = _followedThing as Pawn;
                 if (pawn != null)
                     return pawn.NameStringShort;
 
@@ -279,8 +283,7 @@ namespace ColonistBarKF
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
-            var screenCorners = new[]
-                                {
+            Rect[] screenCorners = {
                                     new Rect( 0f, 0f, 200f, 200f ),
                                     new Rect( Screen.width - 250, 0f, 255f, 255f ),
                                     new Rect( 0f, Screen.height - 250, 225f, 255f ),

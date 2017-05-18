@@ -12,6 +12,11 @@ namespace ColonistBarKF
             // nothing
         }
 
+        public ZoomToMouse()
+        {
+            //
+        }
+
         // backing private fields / properties
         private const BindingFlags AllFlags = (BindingFlags)60;
         private readonly FieldInfo _curSizeFi = typeof(CameraDriver).GetField("rootSize", AllFlags);
@@ -37,21 +42,24 @@ namespace ColonistBarKF
             if (Current.ProgramState != ProgramState.Playing)
                 return;
 
-            if (CBKF.ColBarSettings.useZoomToMouse)
-            {
-                // determine zoom action
-                float action = CurrentSize - DesiredSize;
+            if (!CBKF.ColBarSettings.useZoomToMouse)
+                return;
 
-                // zoom action has taken place
-                if (action > tolerance)
-                    Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
-                else
-                    // update last known location.
-                    _lastMouseMapPosition = CurrentMouseMapPosition;
+            if (FollowMe.CurrentlyFollowing)
+                return;
 
-                // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
-                // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.
-            }
+            // determine zoom action
+            float action = CurrentSize - DesiredSize;
+
+            // zoom action has taken place
+            if (action > tolerance)
+                Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
+            else
+                // update last known location.
+                _lastMouseMapPosition = CurrentMouseMapPosition;
+
+            // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
+            // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.
         }
 
     }
