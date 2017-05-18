@@ -15,6 +15,7 @@ namespace ColonistBarKF
 {
     public static class ColonistBar_KF
     {
+        private static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
 
         private const float PawnTextureHorizontalPadding = 1f;
 
@@ -53,47 +54,29 @@ namespace ColonistBarKF
             set { _pawnTextureCameraOffset = value; }
         }
 
-        public static float CurrentScale;
+        public static float cachedScale;
 
-        private static float Scale
+        public static float Scale
         {
             get
             {
-                CurrentScale = 1f;
-
-                if (ColBarSettings.UseFixedIconScale)
-                {
-                    return ColBarSettings.FixedIconScaleFloat;
-                }
-
-                while (true)
-                {
-                    int allowedRowsCountForScale = GetAllowedRowsCountForScale(CurrentScale);
-
-                    int rowsCountAssumingScale = RowsCountAssumingScale(CurrentScale);
-                    if (rowsCountAssumingScale <= allowedRowsCountForScale)
-                    {
-                        break;
-                    }
-                    CurrentScale *= 0.95f;
-                }
-                return CurrentScale;
+                return cachedScale;
             }
         }
+        public static Vector2 Size => SizeAssumingScale(Scale);
 
-        private static Vector2 Size => SizeAssumingScale(Scale);
 
-        private static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
+        public static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
 
         private static float SpacingVertical => SpacingVerticalAssumingScale(Scale);
 
-        private static float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
+        public static float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
 
         private static float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
 
         private static float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
 
-        private static float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
+        public static float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
 
         private static float SpacingHorizontalMoodBarAssumingScale(float scale)
         {
@@ -127,8 +110,8 @@ namespace ColonistBarKF
 
         private static int ColonistsPerRowAssumingScale(float scale)
         {
-            ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop - ColBarSettings.MarginRightHorTop;
-            ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2 - ColBarSettings.MarginRightHorTop / 2;
+            ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft - ColBarSettings.MarginRight;
+            ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2 - ColBarSettings.MarginRight / 2;
 
             return Mathf.FloorToInt((ColBarSettings.MaxColonistBarWidth) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale) + SpacingHorizontalPSIAssumingScale(scale) + SpacingHorizontalMoodBarAssumingScale(scale)));
         }
@@ -180,88 +163,6 @@ namespace ColonistBarKF
             }
         }
 
-        private static int GetAllowedRowsCountForScale(float scale)
-        {
-            if (ColBarSettings.UseCustomRowCount)
-            {
-                switch (ColBarSettings.MaxRowsCustom)
-                {
-                    case 1:
-                        {
-                            return 1;
-                        }
-                    case 2:
-                        {
-                            if (scale > 0.54f)
-                            {
-                                return 1;
-                            }
-                            return 2;
-                        }
-                    case 3:
-                        {
-                            if (scale > 0.66f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.54f)
-                            {
-                                return 2;
-                            }
-                            return 3;
-                        }
-                    case 4:
-                        {
-                            if (scale > 0.78f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.66f)
-                            {
-                                return 2;
-                            }
-                            if (scale > 0.54f)
-                            {
-                                return 3;
-                            }
-                            return 4;
-                        }
-                    case 5:
-                        {
-                            if (scale > 0.9f)
-                            {
-                                return 1;
-                            }
-                            if (scale > 0.78f)
-                            {
-                                return 2;
-                            }
-                            if (scale > 0.66f)
-                            {
-                                return 3;
-                            }
-                            if (scale > 0.54f)
-                            {
-                                return 4;
-                            }
-                            return 5;
-                        }
-
-                }
-            }
-
-
-            if (scale > 0.58f)
-            {
-                return 1;
-            }
-            if (scale > 0.42f)
-            {
-                return 2;
-            }
-            return 3;
-        }
-
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Pawn> GetColonistsInOrder()
         {
@@ -277,6 +178,8 @@ namespace ColonistBarKF
             return tmpColonistsInOrder;
         }
 
+        static Rect ColbarRect = new Rect();
+
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InconsistentNaming
@@ -288,16 +191,16 @@ namespace ColonistBarKF
             }
 
 
-            if (Event.current.type == EventType.Layout)
-            {
-                BaseSize.x = ColBarSettings.BaseSizeFloat;
-                BaseSize.y = ColBarSettings.BaseSizeFloat;
-                PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
-                PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
-
-                MarkColonistsDirty();
-                RecacheDrawLocs();
-            }
+          //if (Event.current.type == EventType.Layout)
+          //{
+          //    BaseSize.x = ColBarSettings.BaseSizeFloat;
+          //    BaseSize.y = ColBarSettings.BaseSizeFloat;
+          //    PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
+          //    PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
+          //
+          //    MarkColonistsDirty();
+          //    RecacheDrawLocs();
+          //}
 
 
             if (Event.current.type != EventType.Layout)
@@ -514,7 +417,7 @@ namespace ColonistBarKF
         // RimWorld.ColonistBar
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
-            List<Vector2> drawLocs = cachedDrawLocs;
+        List<Vector2> drawLocs = cachedDrawLocs;
             List<ColonistBar.Entry> entries = Entries;
             Vector2 size = Size;
             tmpColonistsWithMap.Clear();
@@ -603,7 +506,7 @@ namespace ColonistBarKF
             float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
 
 
-            float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeftHorTop * Scale;
+            float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeft * Scale;
             float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
 
 
@@ -769,10 +672,11 @@ namespace ColonistBarKF
             tmpPawns.Clear();
             tmpMaps.Clear();
             tmpCaravans.Clear();
-            CalculateColonistsInGroup();
+            drawLocsFinder.CalculateDrawLocs(cachedDrawLocs, out cachedScale);
         }
 
         private static List<int> entriesInGroup = new List<int>();
+        private static List<int> horizontalSlotsPerGroup = new List<int>();
 
         private static void CalculateColonistsInGroup()
         {
@@ -1467,7 +1371,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return UI.screenWidth >= 1000 && UI.screenHeight >= 760;
+                return UI.screenWidth >= 800 && UI.screenHeight >= 500;
             }
         }
 
@@ -1562,7 +1466,6 @@ namespace ColonistBarKF
             }
             return tmpMapColonistsOrCorpsesInScreenRect;
         }
-
 
     }
 }

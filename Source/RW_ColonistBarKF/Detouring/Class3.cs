@@ -1,38 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 using UnityEngine;
 using Verse;
+using static ColonistBarKF.CBKF;
 
-namespace RimWorld
+namespace ColonistBarKF
 {
-    public class ColonistBarDrawLocsFinderKF
+    public class ColonistBarDrawLocsFinder_KF
     {
-        private const float MarginTop = 21f;
+        public static float AllSpacingHor = ColonistBar_KF.SpacingHorizontal + ColonistBar_KF.SpacingMoodBarHorizontal + ColonistBar_KF.SpacingPSIHorizontal;
 
         private List<int> entriesInGroup = new List<int>();
 
         private List<int> horizontalSlotsPerGroup = new List<int>();
 
-        private ColonistBar ColonistBar
-        {
-            get
-            {
-                return Find.ColonistBar;
-            }
-        }
 
         private static float MaxColonistBarWidth
         {
             get
             {
-                return (float)UI.screenWidth - 520f;
+                return Screen.width - ColBarSettings.MarginLeft - ColBarSettings.MarginRight;
+
             }
         }
 
         public void CalculateDrawLocs(List<Vector2> outDrawLocs, out float scale)
         {
-            if (ColonistBar.Entries.Count == 0)
+            if (ColonistBar_KF.Entries.Count == 0)
             {
                 outDrawLocs.Clear();
                 scale = 1f;
@@ -41,14 +37,16 @@ namespace RimWorld
             CalculateColonistsInGroup();
             bool onlyOneRow;
             int maxPerGlobalRow;
+
             scale = FindBestScale(out onlyOneRow, out maxPerGlobalRow);
+
             CalculateDrawLocs(outDrawLocs, scale, onlyOneRow, maxPerGlobalRow);
         }
 
         private void CalculateColonistsInGroup()
         {
             entriesInGroup.Clear();
-            List<ColonistBar.Entry> entries = ColonistBar.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.Entries;
             int num = CalculateGroupsCount();
             for (int i = 0; i < num; i++)
             {
@@ -67,7 +65,7 @@ namespace RimWorld
 
         private int CalculateGroupsCount()
         {
-            List<ColonistBar.Entry> entries = ColonistBar.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.Entries;
             int num = -1;
             int num2 = 0;
             for (int i = 0; i < entries.Count; i++)
@@ -83,18 +81,18 @@ namespace RimWorld
 
         private float FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow)
         {
-            float num = 1f;
-            List<ColonistBar.Entry> entries = ColonistBar.Entries;
-            int num2 = CalculateGroupsCount();
+            float bestScale = 1f;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.Entries;
+            int groupsCount = CalculateGroupsCount();
             while (true)
             {
-                float num3 = (ColonistBar.BaseSize.x + 24f) * num;
-                float num4 = ColonistBarDrawLocsFinderKF.MaxColonistBarWidth - (float)(num2 - 1) * 25f * num;
+                float num3 = (ColonistBar_KF.BaseSize.x + 24f + AllSpacingHor) * bestScale;
+                float num4 = MaxColonistBarWidth - (float)(groupsCount - 1) * 25f * bestScale;
                 maxPerGlobalRow = Mathf.FloorToInt(num4 / num3);
                 onlyOneRow = true;
                 if (TryDistributeHorizontalSlotsBetweenGroups(maxPerGlobalRow))
                 {
-                    int allowedRowsCountForScale = ColonistBarDrawLocsFinderKF.GetAllowedRowsCountForScale(num);
+                    int allowedRowsCountForScale = GetAllowedRowsCountForScale(bestScale);
                     bool flag = true;
                     int num5 = -1;
                     for (int i = 0; i < entries.Count; i++)
@@ -119,9 +117,9 @@ namespace RimWorld
                         break;
                     }
                 }
-                num *= 0.95f;
+                bestScale *= 0.95f;
             }
-            return num;
+            return bestScale;
         }
 
         private bool TryDistributeHorizontalSlotsBetweenGroups(int maxPerGlobalRow)
@@ -159,8 +157,78 @@ namespace RimWorld
             return true;
         }
 
+        //modded
         private static int GetAllowedRowsCountForScale(float scale)
         {
+            if (ColBarSettings.UseCustomRowCount)
+            {
+                switch (ColBarSettings.MaxRowsCustom)
+                {
+                    case 1:
+                        {
+                            return 1;
+                        }
+                    case 2:
+                        {
+                            if (scale > 0.54f)
+                            {
+                                return 1;
+                            }
+                            return 2;
+                        }
+                    case 3:
+                        {
+                            if (scale > 0.66f)
+                            {
+                                return 1;
+                            }
+                            if (scale > 0.54f)
+                            {
+                                return 2;
+                            }
+                            return 3;
+                        }
+                    case 4:
+                        {
+                            if (scale > 0.78f)
+                            {
+                                return 1;
+                            }
+                            if (scale > 0.66f)
+                            {
+                                return 2;
+                            }
+                            if (scale > 0.54f)
+                            {
+                                return 3;
+                            }
+                            return 4;
+                        }
+                    case 5:
+                        {
+                            if (scale > 0.9f)
+                            {
+                                return 1;
+                            }
+                            if (scale > 0.78f)
+                            {
+                                return 2;
+                            }
+                            if (scale > 0.66f)
+                            {
+                                return 3;
+                            }
+                            if (scale > 0.54f)
+                            {
+                                return 4;
+                            }
+                            return 5;
+                        }
+
+                }
+            }
+
+
             if (scale > 0.58f)
             {
                 return 1;
@@ -175,54 +243,54 @@ namespace RimWorld
         private void CalculateDrawLocs(List<Vector2> outDrawLocs, float scale, bool onlyOneRow, int maxPerGlobalRow)
         {
             outDrawLocs.Clear();
-            int num = maxPerGlobalRow;
+            int entriesCount = maxPerGlobalRow;
             if (onlyOneRow)
             {
                 for (int i = 0; i < horizontalSlotsPerGroup.Count; i++)
                 {
                     horizontalSlotsPerGroup[i] = Mathf.Min(horizontalSlotsPerGroup[i], entriesInGroup[i]);
                 }
-                num = ColonistBar.Entries.Count;
+                entriesCount = ColonistBar_KF.Entries.Count;
             }
-            int num2 = CalculateGroupsCount();
-            float num3 = (ColonistBar.BaseSize.x + 24f) * scale;
-            float num4 = (float)num * num3 + (float)(num2 - 1) * 25f * scale;
-            List<ColonistBar.Entry> entries = ColonistBar.Entries;
-            int num5 = -1;
-            int num6 = -1;
-            float num7 = ((float)UI.screenWidth - num4) / 2f;
+            int groupsCount = CalculateGroupsCount();
+            float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + 24f + AllSpacingHor) * scale;
+            float colBarWidth = (float)entriesCount * scaledEntryWidthFloat + (float)(groupsCount - 1) * 25f * scale;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.Entries;
+            int index = -1;
+            int numInGroup = -1;
+            float groupStartX = ((float)UI.screenWidth - colBarWidth) / 2f;
             for (int j = 0; j < entries.Count; j++)
             {
-                if (num5 != entries[j].group)
+                if (index != entries[j].group)
                 {
-                    if (num5 >= 0)
+                    if (index >= 0)
                     {
-                        num7 += 25f * scale;
-                        num7 += (float)horizontalSlotsPerGroup[num5] * scale * (ColonistBar.BaseSize.x + 24f);
+                        groupStartX += 25f * scale;
+                        groupStartX += (float)horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + 24f + AllSpacingHor);
                     }
-                    num6 = 0;
-                    num5 = entries[j].group;
+                    numInGroup = 0;
+                    index = entries[j].group;
                 }
                 else
                 {
-                    num6++;
+                    numInGroup++;
                 }
-                Vector2 drawLoc = GetDrawLoc(num7, 21f, entries[j].group, num6, scale);
+                Vector2 drawLoc = GetDrawLoc(groupStartX, ColBarSettings.MarginTopHor, entries[j].group, numInGroup, scale);
                 outDrawLocs.Add(drawLoc);
             }
         }
 
         private Vector2 GetDrawLoc(float groupStartX, float groupStartY, int group, int numInGroup, float scale)
         {
-            float num = groupStartX + (float)(numInGroup % horizontalSlotsPerGroup[group]) * scale * (ColonistBar.BaseSize.x + 24f);
-            float y = groupStartY + (float)(numInGroup / horizontalSlotsPerGroup[group]) * scale * (ColonistBar.BaseSize.y + 32f);
+            float x = groupStartX + (float)(numInGroup % horizontalSlotsPerGroup[group]) * scale * (ColonistBar_KF.BaseSize.x + 24f + AllSpacingHor);
+            float y = groupStartY + (float)(numInGroup / horizontalSlotsPerGroup[group]) * scale * (ColonistBar_KF.BaseSize.y + 32f);
             bool flag = numInGroup >= entriesInGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
             if (flag)
             {
                 int num2 = horizontalSlotsPerGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
-                num += (float)num2 * scale * (ColonistBar.BaseSize.x + 24f) * 0.5f;
+                x += (float)num2 * scale * (ColonistBar_KF.BaseSize.x + 24f + AllSpacingHor) * 0.5f;
             }
-            return new Vector2(num, y);
+            return new Vector2(x, y);
         }
     }
 }

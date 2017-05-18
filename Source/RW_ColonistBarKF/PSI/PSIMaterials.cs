@@ -81,14 +81,14 @@ namespace ColonistBarKF.PSI
                     tex.anisoLevel = 9;
                     tex.wrapMode = TextureWrapMode.Repeat;
              //       tex.Apply();
-                    tex.Compress(true);
+            //        tex.Compress(true);
                 }
                 else
                 {
                     tex.filterMode = FilterMode.Point;
                     tex.wrapMode = TextureWrapMode.Repeat;
               //      tex.Apply();
-                    tex.Compress(true);
+             //       tex.Compress(true);
                 }
                 material = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.MetaOverlay));
             }

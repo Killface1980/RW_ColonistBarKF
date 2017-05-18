@@ -46,31 +46,13 @@ namespace ColonistBarKF
 
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
-        public float MarginBottomHor = 21f;
 
-        public float MarginBottomVerLeft = 120f;
+        public float MarginLeft = 160f;
 
-        public float MarginBottomVerRight = 120f;
+        public float MarginRight = 160f;
 
-        public float MarginLeftHorBottom = 160f;
-
-        public float MarginLeftHorTop = 160f;
-
-        public float MarginLeftVer = 21f;
-
-        public float MarginRightHorBottom = 160f;
-
-        public float MarginRightHorTop = 160f;
-
-        public float MarginRightVer = 21f;
 
         public float MarginTopHor = 21f;
-
-        public float MarginTopVerLeft = 120f;
-
-        public float MarginTopVerRight = 120f;
-
-        public float MaxColonistBarHeight = Screen.height - 240f;
 
         public float MaxColonistBarWidth = Screen.width - 320f;
 

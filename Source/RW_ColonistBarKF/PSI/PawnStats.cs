@@ -5,7 +5,7 @@ using Verse;
 
 namespace ColonistBarKF.PSI
 {
-    internal class PawnStats
+    public class PawnStats
     {
         public int IconCount;
 

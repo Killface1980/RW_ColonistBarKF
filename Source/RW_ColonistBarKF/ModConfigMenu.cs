@@ -239,7 +239,7 @@ namespace ColonistBarKF
                 "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, "
                 + (ColBarSettings.UseFixedIconScale
                        ? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, "
-                       : (ColonistBar_KF.CurrentScale * 100).ToString("N0") + " %, ")
+                       : (ColonistBar_KF.cachedScale * 100).ToString("N0") + " %, ")
                 + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
             if (ColBarSettings.UseCustomIconSize)
             {
@@ -354,30 +354,30 @@ namespace ColonistBarKF
             ColBarSettings.UseCustomMarginTopHor = Toggle(
                 ColBarSettings.UseCustomMarginTopHor,
                 "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTopHor + " yMin, "
-                + (int)ColBarSettings.MarginLeftHorTop + " xMin, " + (int)ColBarSettings.MarginRightHorTop + " xMax");
+                + (int)ColBarSettings.MarginLeft + " xMin, " + (int)ColBarSettings.MarginRight + " xMax");
 
             if (ColBarSettings.UseCustomMarginTopHor)
             {
                 Space(Text.LineHeight / 2);
                 ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 0f, Screen.height / 6);
-                ColBarSettings.MarginLeftHorTop = HorizontalSlider(
-                    ColBarSettings.MarginLeftHorTop,
+                ColBarSettings.MarginLeft = HorizontalSlider(
+                    ColBarSettings.MarginLeft,
                     0f,
                     Screen.width * 2 / 5);
-                ColBarSettings.MarginRightHorTop = HorizontalSlider(
-                    ColBarSettings.MarginRightHorTop,
+                ColBarSettings.MarginRight = HorizontalSlider(
+                    ColBarSettings.MarginRight,
                     0f,
                     Screen.width * 2 / 5);
             }
             else
             {
                 ColBarSettings.MarginTopHor = 21f;
-                ColBarSettings.MarginLeftHorTop = 160f;
-                ColBarSettings.MarginRightHorTop = 160f;
-                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeftHorTop
-                                                     - ColBarSettings.MarginRightHorTop;
-                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeftHorTop / 2
-                                                  - ColBarSettings.MarginRightHorTop / 2;
+                ColBarSettings.MarginLeft = 160f;
+                ColBarSettings.MarginRight = 160f;
+                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft
+                                                     - ColBarSettings.MarginRight;
+                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2
+                                                  - ColBarSettings.MarginRight / 2;
             }
 
             // listing.Gap(3f);
