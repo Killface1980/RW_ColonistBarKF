@@ -435,11 +435,6 @@ namespace ColonistBarKF.PSI
                         -num1,
                         3f,
                         num2);
-
-                ColonistBar_KF.BaseSize.x = ColBarSettings.BaseSizeFloat;
-                ColonistBar_KF.BaseSize.y = ColBarSettings.BaseSizeFloat;
-                ColonistBar_KF.PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
-                ColonistBar_KF.PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
             }
         }
 

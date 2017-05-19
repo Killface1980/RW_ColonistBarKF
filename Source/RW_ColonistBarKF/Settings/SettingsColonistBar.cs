@@ -51,8 +51,7 @@ namespace ColonistBarKF
 
         public float MarginRight = 160f;
 
-
-        public float MarginTopHor = 21f;
+        public float MarginTop = 21f;
 
         public float MaxColonistBarWidth = Screen.width - 320f;
 

@@ -35,10 +35,10 @@ namespace ColonistBarKF
 
         // custom test
 
-        public static Vector2 BaseSize = new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
+        public static Vector2 BaseSize => new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
 
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static Vector2 PawnTextureSize = new Vector2(ColBarSettings.BaseSizeFloat - 2f, ColBarSettings.BaseSizeFloat * 1.5f);
+        public static Vector2 PawnTextureSize => new Vector2(ColBarSettings.BaseSizeFloat - 2f, ColBarSettings.BaseSizeFloat * 1.5f);
 
         private static Vector3 _pawnTextureCameraOffset;
 
@@ -98,8 +98,6 @@ namespace ColonistBarKF
 
         private static Vector2 SizeAssumingScale(float scale)
         {
-            BaseSize.x = ColBarSettings.BaseSizeFloat;
-            BaseSize.y = ColBarSettings.BaseSizeFloat;
             return BaseSize * scale;
         }
 
@@ -507,7 +505,7 @@ namespace ColonistBarKF
 
 
             float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeft * Scale;
-            float cachedDrawLocs_y = ColBarSettings.MarginTopHor * Scale;
+            float cachedDrawLocs_y = ColBarSettings.MarginTop * Scale;
 
 
             cachedDrawLocs.Clear();
@@ -677,43 +675,6 @@ namespace ColonistBarKF
 
         private static List<int> entriesInGroup = new List<int>();
         private static List<int> horizontalSlotsPerGroup = new List<int>();
-
-        private static void CalculateColonistsInGroup()
-        {
-            entriesInGroup.Clear();
-            List<ColonistBar.Entry> entries = Entries;
-            int num = CalculateGroupsCount();
-            for (int i = 0; i < num; i++)
-            {
-                entriesInGroup.Add(0);
-            }
-            for (int j = 0; j < entries.Count; j++)
-            {
-                List<int> list;
-                List<int> expr_49 = list = entriesInGroup;
-                int num2;
-                int expr_5C = num2 = entries[j].group;
-                num2 = list[num2];
-                expr_49[expr_5C] = num2 + 1;
-            }
-        }
-
-        // RimWorld.ColonistBarDrawLocsFinder
-        private static int CalculateGroupsCount()
-        {
-            List<ColonistBar.Entry> entries = Entries;
-            int num = -1;
-            int num2 = 0;
-            for (int i = 0; i < entries.Count; i++)
-            {
-                if (num != entries[i].group)
-                {
-                    num2++;
-                    num = entries[i].group;
-                }
-            }
-            return num2;
-        }
 
 
         public static void Notify_RecachedEntries()
@@ -1374,6 +1335,7 @@ namespace ColonistBarKF
                 return UI.screenWidth >= 800 && UI.screenHeight >= 500;
             }
         }
+
 
         private static void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
         {

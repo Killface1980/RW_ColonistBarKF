@@ -50,14 +50,6 @@ namespace ColonistBarKF
         }
 
 
-        public override void WindowUpdate()
-        {
-            ColonistBar_KF.BaseSize = new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
-            ColonistBar_KF.PawnTextureSize = new Vector2(
-                                                 ColBarSettings.BaseSizeFloat - 2f,
-                                                 ColBarSettings.BaseSizeFloat * 1.5f);
-        }
-
         private void DrawCheckboxArea(
             string iconName,
             Material iconMaterial,
@@ -353,13 +345,13 @@ namespace ColonistBarKF
             BeginVertical(this._fondBoxes);
             ColBarSettings.UseCustomMarginTopHor = Toggle(
                 ColBarSettings.UseCustomMarginTopHor,
-                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTopHor + " yMin, "
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " yMin, "
                 + (int)ColBarSettings.MarginLeft + " xMin, " + (int)ColBarSettings.MarginRight + " xMax");
 
             if (ColBarSettings.UseCustomMarginTopHor)
             {
                 Space(Text.LineHeight / 2);
-                ColBarSettings.MarginTopHor = HorizontalSlider(ColBarSettings.MarginTopHor, 0f, Screen.height / 6);
+                ColBarSettings.MarginTop = HorizontalSlider(ColBarSettings.MarginTop, 0f, Screen.height / 6);
                 ColBarSettings.MarginLeft = HorizontalSlider(
                     ColBarSettings.MarginLeft,
                     0f,
@@ -371,7 +363,7 @@ namespace ColonistBarKF
             }
             else
             {
-                ColBarSettings.MarginTopHor = 21f;
+                ColBarSettings.MarginTop = 21f;
                 ColBarSettings.MarginLeft = 160f;
                 ColBarSettings.MarginRight = 160f;
                 ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft
