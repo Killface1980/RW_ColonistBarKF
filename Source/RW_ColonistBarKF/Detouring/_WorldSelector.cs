@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF.Detouring
 {
     class _WorldSelector
     {
+
         // RimWorld.Planet.WorldSelector
         private IEnumerable<WorldObject> SelectableObjectsUnderMouse(out bool clickedDirectlyOnCaravan, out bool usedColonistBar)
         {
             Vector2 mousePositionOnUIInverted = UI.MousePositionOnUIInverted;
             if (Current.ProgramState == ProgramState.Playing)
             {
-                Caravan caravan = ColonistBar_KF.CaravanMemberCaravanAt(mousePositionOnUIInverted);
+                Caravan caravan = Find.ColonistBar.CaravanMemberCaravanAt(mousePositionOnUIInverted);
                 if (caravan != null)
                 {
                     clickedDirectlyOnCaravan = true;
@@ -56,7 +56,7 @@ namespace ColonistBarKF.Detouring
             bool flag = false;
             if (Current.ProgramState == ProgramState.Playing)
             {
-                List<Caravan> list = ColonistBar_KF.CaravanMembersCaravansInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
+                List<Caravan> list = CBKF.ColonistBarKF.CaravanMembersCaravansInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
                 for (int i = 0; i < list.Count; i++)
                 {
                     flag = true;
@@ -65,7 +65,7 @@ namespace ColonistBarKF.Detouring
             }
             if (!flag && Current.ProgramState == ProgramState.Playing)
             {
-                List<Thing> list2 = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
+                List<Thing> list2 = CBKF.ColonistBarKF.MapColonistsOrCorpsesInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
                 for (int j = 0; j < list2.Count; j++)
                 {
                     if (!flag)
@@ -81,13 +81,13 @@ namespace ColonistBarKF.Detouring
             }
             if (!flag)
             {
-                List<WorldObject> list3 = WorldObjectSelectionUtility.MultiSelectableWorldObjectsInScreenRectDistinct(Find.WorldSelector.dragBox.ScreenRect).ToList<WorldObject>();
-                if (list3.Any((WorldObject x) => x is Caravan))
+                List<WorldObject> list3 = WorldObjectSelectionUtility.MultiSelectableWorldObjectsInScreenRectDistinct(Find.WorldSelector.dragBox.ScreenRect).ToList();
+                if (list3.Any(x => x is Caravan))
                 {
-                    list3.RemoveAll((WorldObject x) => !(x is Caravan));
-                    if (list3.Any((WorldObject x) => x.Faction == Faction.OfPlayer))
+                    list3.RemoveAll(x => !(x is Caravan));
+                    if (list3.Any(x => x.Faction == Faction.OfPlayer))
                     {
-                        list3.RemoveAll((WorldObject x) => x.Faction != Faction.OfPlayer);
+                        list3.RemoveAll(x => x.Faction != Faction.OfPlayer);
                     }
                 }
                 for (int k = 0; k < list3.Count; k++)
@@ -117,7 +117,7 @@ namespace ColonistBarKF.Detouring
         {
             if (Current.ProgramState == ProgramState.Playing)
             {
-                Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
+                Thing thing = CBKF.ColonistBarKF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
                 Pawn pawn = thing as Pawn;
                 if (thing != null && (pawn == null || !pawn.IsCaravanMember()))
                 {
@@ -134,7 +134,7 @@ namespace ColonistBarKF.Detouring
             }
             bool flag;
             bool flag2;
-            List<WorldObject> list = SelectableObjectsUnderMouse(out flag, out flag2).ToList<WorldObject>();
+            List<WorldObject> list = SelectableObjectsUnderMouse(out flag, out flag2).ToList();
             if (flag2 || (flag && list.Count >= 2))
             {
                 canSelectTile = false;
@@ -154,7 +154,7 @@ namespace ColonistBarKF.Detouring
             {
                 WorldObject worldObject = (from obj in list
                                            where Find.WorldSelector.SelectedObjects.Contains(obj)
-                                           select obj).FirstOrDefault<WorldObject>();
+                                           select obj).FirstOrDefault();
                 if (worldObject != null)
                 {
                     if (!ShiftIsHeld)
@@ -188,7 +188,7 @@ namespace ColonistBarKF.Detouring
         [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         private void SelectFirstOrNextFrom(List<WorldObject> objects, int tile)
         {
-            int num = objects.FindIndex((WorldObject x) => Find.WorldSelector.SelectedObjects.Contains(x));
+            int num = objects.FindIndex(x => Find.WorldSelector.SelectedObjects.Contains(x));
             int num2 = -1;
             int num3 = -1;
             if (num != -1)

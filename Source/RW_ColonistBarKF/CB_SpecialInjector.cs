@@ -12,8 +12,6 @@ using CommunityCoreLibrary;
 
 namespace ColonistBarKF
 {
-    using global::ColonistBarKF.NoCCL;
-
     public class CB_SpecialInjector : SpecialInjector
     {
 

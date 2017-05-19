@@ -61,6 +61,7 @@
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
+    <Compile Include="Detouring\Class2.cs" />
     <Compile Include="Detouring\Class3.cs" />
     <Compile Include="Detouring\_Selector.cs" />
     <Compile Include="Detouring\_WorldSelector.cs" />

@@ -42,7 +42,7 @@ namespace ColonistBarKF
             if (Current.ProgramState != ProgramState.Playing)
                 return;
 
-            if (!CBKF.ColBarSettings.useZoomToMouse)
+            if (!ColBarSettings.useZoomToMouse)
                 return;
 
             if (FollowMe.CurrentlyFollowing)

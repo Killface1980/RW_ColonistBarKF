@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -10,7 +9,6 @@ namespace ColonistBarKF
 {
     public class ColonistBarDrawLocsFinder_KF
     {
-
         private List<int> entriesInGroup = new List<int>();
 
         private List<int> horizontalSlotsPerGroup = new List<int>();
@@ -86,7 +84,7 @@ namespace ColonistBarKF
             while (true)
             {
                 float num3 = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal) * bestScale;
-                float num4 = MaxColonistBarWidth - (float)(groupsCount - 1) * 25f * bestScale;
+                float num4 = MaxColonistBarWidth - (groupsCount - 1) * 25f * bestScale;
                 maxPerGlobalRow = Mathf.FloorToInt(num4 / num3);
                 onlyOneRow = true;
                 if (TryDistributeHorizontalSlotsBetweenGroups(maxPerGlobalRow))
@@ -99,7 +97,7 @@ namespace ColonistBarKF
                         if (num5 != entries[i].group)
                         {
                             num5 = entries[i].group;
-                            int num6 = Mathf.CeilToInt((float)entriesInGroup[entries[i].group] / (float)horizontalSlotsPerGroup[entries[i].group]);
+                            int num6 = Mathf.CeilToInt(entriesInGroup[entries[i].group] / (float)horizontalSlotsPerGroup[entries[i].group]);
                             if (num6 > 1)
                             {
                                 onlyOneRow = false;
@@ -118,6 +116,7 @@ namespace ColonistBarKF
                 }
                 bestScale *= 0.95f;
             }
+            return ColBarSettings.UseFixedIconScale ? ColBarSettings.FixedIconScaleFloat : bestScale;
             return bestScale;
         }
 
@@ -129,7 +128,7 @@ namespace ColonistBarKF
             {
                 horizontalSlotsPerGroup.Add(0);
             }
-            GenMath.DHondtDistribution(horizontalSlotsPerGroup, (int i) => (float)entriesInGroup[i], maxPerGlobalRow);
+            GenMath.DHondtDistribution(horizontalSlotsPerGroup, i => (float)entriesInGroup[i], maxPerGlobalRow);
             for (int j = 0; j < horizontalSlotsPerGroup.Count; j++)
             {
                 if (horizontalSlotsPerGroup[j] == 0)
@@ -253,11 +252,11 @@ namespace ColonistBarKF
             }
             int groupsCount = CalculateGroupsCount();
             float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal) * scale;
-            float colBarWidth = (float)entriesCount * scaledEntryWidthFloat + (float)(groupsCount - 1) * 25f * scale;
+            float colBarWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
             List<ColonistBar.Entry> entries = ColonistBar_KF.Entries;
             int index = -1;
             int numInGroup = -1;
-            float groupStartX = ((float)UI.screenWidth - colBarWidth) / 2f;
+            float groupStartX = (UI.screenWidth - colBarWidth) / 2f;
             for (int j = 0; j < entries.Count; j++)
             {
                 if (index != entries[j].group)
@@ -265,7 +264,7 @@ namespace ColonistBarKF
                     if (index >= 0)
                     {
                         groupStartX += 25f * scale;
-                        groupStartX += (float)horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal);
+                        groupStartX += horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal);
                     }
                     numInGroup = 0;
                     index = entries[j].group;
@@ -281,13 +280,13 @@ namespace ColonistBarKF
 
         private Vector2 GetDrawLoc(float groupStartX, float groupStartY, int group, int numInGroup, float scale)
         {
-            float x = groupStartX + (float)(numInGroup % horizontalSlotsPerGroup[group]) * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal);
-            float y = groupStartY + (float)(numInGroup / horizontalSlotsPerGroup[group]) * scale * (ColonistBar_KF.BaseSize.y + ColBarSettings.BaseSpacingVertical);
+            float x = groupStartX + numInGroup % horizontalSlotsPerGroup[group] * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal);
+            float y = groupStartY + numInGroup / horizontalSlotsPerGroup[group] * scale * (ColonistBar_KF.BaseSize.y + ColBarSettings.BaseSpacingVertical);
             bool flag = numInGroup >= entriesInGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
             if (flag)
             {
                 int num2 = horizontalSlotsPerGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
-                x += (float)num2 * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal) * 0.5f;
+                x += num2 * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal) * 0.5f;
             }
             return new Vector2(x, y);
         }

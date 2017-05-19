@@ -615,13 +615,6 @@ namespace ColonistBarKF.PSI
                         {
                             pawnStats.ToxicBuildUp = hediff.Severity;
                         }
-                        else
-                        {
-                            //if (!hediff.FullyHealableOnlyByTend())
-                            //{
-                            //    continue;
-                            //}
-                        }
                         HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
                         if (compImmunizable != null)
                         {
@@ -714,7 +707,7 @@ namespace ColonistBarKF.PSI
             if (pawn.mindState == null)
                 return false;
             PawnStats pawnStats = _statsDict[pawn];
-            return pawnStats.Thoughts.Any((thought) => thought.def == tdef);
+            return pawnStats.Thoughts.Any(thought => thought.def == tdef);
 
         }
 

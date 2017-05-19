@@ -1,9 +1,8 @@
-﻿using static ColonistBarKF.Position;
+﻿using UnityEngine;
+using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
 {
-    using UnityEngine;
-
     public class SettingsColonistBar
     {
         public float BaseSizeFloat = 48f;
@@ -14,7 +13,7 @@ namespace ColonistBarKF
 
       //  public Position.Alignment ColBarPos = Position.Alignment.Top;
 
-        public Position.Alignment ColBarPsiIconPos = Position.Alignment.Left;
+        public Alignment ColBarPsiIconPos = Alignment.Left;
 
         public float DoubleClickTime = 0.5f;
 
@@ -57,7 +56,7 @@ namespace ColonistBarKF
 
         public int MaxRowsCustom = 3;
 
-        public Position.Alignment MoodBarPos = Position.Alignment.Right;
+        public Alignment MoodBarPos = Alignment.Right;
 
         public float moodRectAlpha = 0.66f;
 
