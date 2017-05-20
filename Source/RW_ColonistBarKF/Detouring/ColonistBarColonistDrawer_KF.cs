@@ -96,21 +96,21 @@ namespace ColonistBarKF
         // RimWorld.ColonistBarColonistDrawer
         private Rect GroupFrameRect(int group)
         {
-            float num = 99999f;
+            float pos_x = 99999f;
             float num2 = 0f;
-            float num3 = 0f;
+            float height = 0f;
             List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
             List<Vector2> drawLocs = ColonistBar_KF.helper.DrawLocs;
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].group == group)
                 {
-                    num = Mathf.Min(num, drawLocs[i].x);
+                    pos_x = Mathf.Min(pos_x, drawLocs[i].x);
                     num2 = Mathf.Max(num2, drawLocs[i].x + ColonistBar_KF.Size.x);
-                    num3 = Mathf.Max(num3, drawLocs[i].y + ColonistBar_KF.Size.y);
+                    height = Mathf.Max(height, drawLocs[i].y + ColonistBar_KF.Size.y);
                 }
             }
-            return new Rect(num, 0f, num2 - num, num3).ContractedBy(-12f * ColonistBar_KF.Scale);
+            return new Rect(pos_x, 0f, num2 - pos_x, height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }
 
         public void DrawGroupFrame(int group)
@@ -345,8 +345,6 @@ namespace ColonistBarKF
 
             Color BGColor = new Color();
 
-
-
             Rect moodBorderRect = new Rect(rect);
             if (ColBarSettings.UseExternalMoodBar)
             {
@@ -479,6 +477,12 @@ namespace ColonistBarKF
             Vector2 pos = new Vector2(rect.center.x, rect.yMax + 1f * ColonistBar_KF.Scale);
             GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha, rect.width + ColonistBar_KF.SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
+
+            // PSI
+            if (ColBarSettings.UsePsi)
+            {
+                PSI.PSI.DrawColonistIcons(colonist, false, entryRectAlpha, rect);
+            }
         }
 
 

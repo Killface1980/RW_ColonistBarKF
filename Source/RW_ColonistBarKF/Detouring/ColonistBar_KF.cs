@@ -47,8 +47,14 @@ namespace ColonistBarKF
                 return helper.cachedScale;
             }
         }
-        public static Vector2 Size => SizeAssumingScale(Scale);
 
+        public static Vector2 Size
+        {
+            get
+            {
+                return BaseSize * Scale;
+            }
+        }
 
         public static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
 
@@ -202,12 +208,6 @@ namespace ColonistBarKF
                         if (entry.pawn != null)
                         {
                             drawer.DrawColonist(rect, entry.pawn, entry.map);
-                            if (ColBarSettings.UsePsi)
-                            {
-                                float entryRectAlpha = GetEntryRectAlpha(rect);
-                                drawer.ApplyEntryInAnotherMapAlphaFactor(entry.map, ref entryRectAlpha);
-                                PSI.PSI.DrawColonistIcons(entry.pawn, false, entryRectAlpha, rect);
-                            }
                         }
                     }
                 }
