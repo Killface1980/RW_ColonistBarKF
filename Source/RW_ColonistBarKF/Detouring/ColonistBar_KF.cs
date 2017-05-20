@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ColonistBarKF.ColorPicker;
 using ColonistBarKF.Detouring;
 using ColonistBarKF.PSI;
 using RimWorld;
@@ -14,61 +15,54 @@ using static ColonistBarKF.Position;
 namespace ColonistBarKF
 {
     [StaticConstructorOnStartup]
-    public class ColonistBar_KF
+    public static class ColonistBar_KF
     {
-        private static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
-        private static ColonistBarColonistDrawer_KF drawer = new ColonistBarColonistDrawer_KF();
+        public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
+        public static ColonistBarColonistDrawer_KF drawer = new ColonistBarColonistDrawer_KF();
 
-        public ColonistBar_KF()
-        {
-        }
+        public static ColHelper helper = new ColHelper();
 
         private const float PawnTextureHorizontalPadding = 1f;
 
-        private static List<ColonistBar.Entry> cachedEntries = new List<ColonistBar.Entry>();
 
-        private static List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        private static bool entriesDirty = true;
 
-        private static Pawn clickedColonist;
 
         private static float clickedAt;
 
 
         // custom test
 
-        public static  Vector2 BaseSize => new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
+        public static Vector2 BaseSize => new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
 
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
 
 
 
-        public static float cachedScale;
 
-        public float Scale
+        public static float Scale
         {
             get
             {
-                return cachedScale;
+                return helper.cachedScale;
             }
         }
-        public Vector2 Size => SizeAssumingScale(Scale);
+        public static Vector2 Size => SizeAssumingScale(Scale);
 
 
-        public float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
+        public static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
 
-        private float SpacingVertical => SpacingVerticalAssumingScale(Scale);
+        private static float SpacingVertical => SpacingVerticalAssumingScale(Scale);
 
-        public float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
+        public static float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
 
-        private float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
+        private static float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
 
-        private float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
+        private static float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
 
-        public float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
+        public static float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
 
-        private float SpacingHorizontalMoodBarAssumingScale(float scale)
+        private static float SpacingHorizontalMoodBarAssumingScale(float scale)
         {
             if (ColBarSettings.UseExternalMoodBar && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
                 return ColBarSettings.BaseSizeFloat / 4 * scale;
@@ -76,7 +70,7 @@ namespace ColonistBarKF
             return 0f;
         }
 
-        private float SpacingVerticalgMoodBarAssumingScale(float scale)
+        private static float SpacingVerticalgMoodBarAssumingScale(float scale)
         {
             if (ColBarSettings.UseExternalMoodBar &&
                 (ColBarSettings.MoodBarPos == Alignment.Bottom || ColBarSettings.MoodBarPos == Alignment.Top))
@@ -84,19 +78,19 @@ namespace ColonistBarKF
             return 0f;
         }
 
-        private int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
+        private static int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
 
-        private Vector2 SizeAssumingScale(float scale)
+        private static Vector2 SizeAssumingScale(float scale)
         {
             return BaseSize * scale;
         }
 
-        private int RowsCountAssumingScale(float scale)
+        private static int RowsCountAssumingScale(float scale)
         {
-            return Mathf.CeilToInt(cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
+            return Mathf.CeilToInt(helper.cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
         }
 
-        private int ColonistsPerRowAssumingScale(float scale)
+        private static int ColonistsPerRowAssumingScale(float scale)
         {
             ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft - ColBarSettings.MarginRight;
             ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2 - ColBarSettings.MarginRight / 2;
@@ -104,17 +98,17 @@ namespace ColonistBarKF
             return Mathf.FloorToInt((ColBarSettings.MaxColonistBarWidth) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale) + SpacingHorizontalPSIAssumingScale(scale) + SpacingHorizontalMoodBarAssumingScale(scale)));
         }
 
-        private  float SpacingHorizontalAssumingScale(float scale)
+        private static float SpacingHorizontalAssumingScale(float scale)
         {
             return ColBarSettings.BaseSpacingHorizontal * scale;
         }
 
-        private  float SpacingVerticalAssumingScale(float scale)
+        private static float SpacingVerticalAssumingScale(float scale)
         {
             return ColBarSettings.BaseSpacingVertical * scale;
         }
 
-        private  float SpacingHorizontalPSIAssumingScale(float scale)
+        private static float SpacingHorizontalPSIAssumingScale(float scale)
         {
             if (ColBarSettings.UsePsi)
                 if (ColBarSettings.ColBarPsiIconPos == Alignment.Left || ColBarSettings.ColBarPsiIconPos == Alignment.Right)
@@ -124,7 +118,7 @@ namespace ColonistBarKF
             return 0f;
         }
 
-        private  float SpacingVerticalPSIAssumingScale(float scale)
+        private static float SpacingVerticalPSIAssumingScale(float scale)
         {
             if (ColBarSettings.UsePsi)
                 if (ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == Alignment.Top)
@@ -152,24 +146,24 @@ namespace ColonistBarKF
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public List<Pawn> GetColonistsInOrder()
+        public static List<Pawn> GetColonistsInOrder()
         {
-            List<ColonistBar.Entry> entries = Entries;
-            tmpColonistsInOrder.Clear();
+            List<ColonistBar.Entry> entries = helper.Entries;
+            helper.tmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].pawn != null)
                 {
-                    tmpColonistsInOrder.Add(entries[i].pawn);
+                    helper.tmpColonistsInOrder.Add(entries[i].pawn);
                 }
             }
-            return tmpColonistsInOrder;
+            return helper.tmpColonistsInOrder;
         }
 
         static Rect ColbarRect = new Rect();
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public void ColonistBarOnGUI()
+        public static void ColonistBarOnGUI()
         {
             if (!Visible)
             {
@@ -177,38 +171,33 @@ namespace ColonistBarKF
             }
 
 
-            //if (Event.current.type == EventType.Layout)
-            //{
-            //    BaseSize.x = ColBarSettings.BaseSizeFloat;
-            //    BaseSize.y = ColBarSettings.BaseSizeFloat;
-            //    PawnTextureSize.x = ColBarSettings.BaseSizeFloat - 2f;
-            //    PawnTextureSize.y = ColBarSettings.BaseSizeFloat * 1.5f;
-            //
-            //    MarkColonistsDirty();
-            //    RecacheDrawLocs();
-            //}
+         // if (Event.current.type == EventType.Layout)
+         // {
+         //    if (Rand.Value>0.99f)
+         //         MarkColonistsDirty();
+         // }
 
 
             if (Event.current.type != EventType.Layout)
             {
-                List<ColonistBar.Entry> entries = Entries;
+                List<ColonistBar.Entry> entries = helper.Entries;
                 int num = -1;
                 bool showGroupFrames = ShowGroupFrames;
-                for (int i = 0; i < cachedDrawLocs.Count; i++)
+                for (int i = 0; i < helper.cachedDrawLocs.Count; i++)
                 {
-                    Rect rect = new Rect(cachedDrawLocs[i].x, cachedDrawLocs[i].y, Size.x, Size.y);
+                    Rect rect = new Rect(helper.cachedDrawLocs[i].x, helper.cachedDrawLocs[i].y, Size.x, Size.y);
                     ColonistBar.Entry entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
                     if (entry.pawn != null)
                     {
-                        HandleClicks(rect, entry.pawn);
+                        drawer.HandleClicks(rect, entry.pawn);
                     }
                     if (Event.current.type == EventType.Repaint)
                     {
                         if (flag && showGroupFrames)
                         {
-                            DrawGroupFrame(entry.group);
+                            drawer.DrawGroupFrame(entry.group);
                         }
                         if (entry.pawn != null)
                         {
@@ -225,14 +214,14 @@ namespace ColonistBarKF
                 num = -1;
                 if (showGroupFrames)
                 {
-                    for (int j = 0; j < cachedDrawLocs.Count; j++)
+                    for (int j = 0; j < helper.cachedDrawLocs.Count; j++)
                     {
                         ColonistBar.Entry entry2 = entries[j];
                         bool flag2 = num != entry2.group;
                         num = entry2.group;
                         if (flag2)
                         {
-                            HandleGroupFrameClicks(entry2.group);
+                            drawer.HandleGroupFrameClicks(entry2.group);
                         }
                     }
                 }
@@ -241,77 +230,18 @@ namespace ColonistBarKF
         }
 
         // RimWorld.ColonistBarColonistDrawer
-        public void HandleGroupFrameClicks(int group)
-        {
-            Rect rect = GroupFrameRect(group);
-            if (Mouse.IsOver(rect))
-            {
-                bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                if (Event.current.type == EventType.MouseDown && Event.current.button == 1)
-                {
-                    Event.current.Use();
-                }
-                else if (Event.current.type == EventType.MouseUp)
-                {
-                    if (Event.current.button == 0)
-                    {
-                        if (!AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
-                        {
-                            if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive) || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
-                            {
-                                Find.Selector.dragBox.active = false;
-                                Find.WorldSelector.dragBox.active = false;
-                                ColonistBar.Entry entry = Entries.Find(x => x.group == group);
-                                Map map = entry.map;
-                                if (map == null)
-                                {
-                                    if (Find.MainTabsRoot.OpenTab == MainButtonDefOf.World)
-                                    {
-                                        CameraJumper.TrySelect(entry.pawn);
-                                    }
-                                    else
-                                    {
-                                        CameraJumper.TryJumpAndSelect(entry.pawn);
-                                    }
-                                }
-                                else
-                                {
-                                    if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
-                                    {
-                                        SoundDefOf.MapSelected.PlayOneShotOnCamera();
-                                    }
-                                    Current.Game.VisibleMap = map;
-                                }
-                            }
-                        }
-                    }
-                    //else if (Event.current.button == 1)
-                    //{
-                    //    ColonistBar.Entry entry2 = Entries.Find(x => x.group == group);
-                    //    if (entry2.map != null)
-                    //    {
-                    //        CameraJumper.TryJumpAndSelect(CameraJumper.GetGlobalTargetInfoForMap(entry2.map));
-                    //    }
-                    //    else if (entry2.pawn != null)
-                    //    {
-                    //        CameraJumper.TryJumpAndSelect(entry2.pawn);
-                    //    }
-                    //}
-                }
-            }
-        }
 
-        public bool AnyColonistOrCorpseAt(Vector2 pos)
+        public static bool AnyColonistOrCorpseAt(Vector2 pos)
         {
             ColonistBar.Entry entry;
             return TryGetEntryAt(pos, out entry) && entry.pawn != null;
         }
 
         // RimWorld.ColonistBar
-        public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
+        public static bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
-            List<Vector2> drawLocs = cachedDrawLocs;
-            List<ColonistBar.Entry> entries = Entries;
+            List<Vector2> drawLocs = helper.cachedDrawLocs;
+            List<ColonistBar.Entry> entries = helper.Entries;
             Vector2 size = Size;
             for (int i = 0; i < drawLocs.Count; i++)
             {
@@ -326,67 +256,12 @@ namespace ColonistBarKF
             return false;
         }
 
-
-        // RimWorld.ColonistBarColonistDrawer
-        private Rect GroupFrameRect(int group)
-        {
-            float pos_x = 99999f;
-            float pos_y = 99999f;
-            float width = 0f;
-            float height = 0f;
-            List<ColonistBar.Entry> entries = Entries;
-            List<Vector2> drawLocs = cachedDrawLocs;
-            for (int i = 0; i < entries.Count; i++)
-            {
-                if (entries[i].group == group)
-                {
-                    pos_x = Mathf.Min(pos_x, drawLocs[i].x);
-                    pos_y = Mathf.Min(pos_y, drawLocs[i].y);
-                    width = Mathf.Max(width, drawLocs[i].x + Size.x);
-                    height = Mathf.Max(height, drawLocs[i].y + Size.y);
-                }
-            }
-            return new Rect(pos_x - ColBarSettings.BaseSizeFloat / 4, pos_y - ColBarSettings.BaseSizeFloat / 8, width - pos_x + ColBarSettings.BaseSizeFloat / 2, height).ContractedBy(-12f * Scale);
-        }
-
-
-
-        // RimWorld.ColonistBarColonistDrawer
-        public void DrawGroupFrame(int group)
-        {
-            Rect position = GroupFrameRect(group);
-            List<ColonistBar.Entry> entries = Entries;
-            Map map = entries.Find(x => x.group == group).map;
-            float alpha;
-            if (map == null)
-            {
-                if (WorldRendererUtility.WorldRenderedNow)
-                {
-                    alpha = 1f;
-                }
-                else
-                {
-                    alpha = 0.75f;
-                }
-            }
-            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
-            {
-                alpha = 0.75f;
-            }
-            else
-            {
-                alpha = 1f;
-            }
-            Widgets.DrawRectFast(position, new Color(0.5f, 0.5f, 0.5f, 0.4f * alpha), null);
-        }
-
-
         // RimWorld.ColonistBar
-        private bool ShowGroupFrames
+        private static bool ShowGroupFrames
         {
             get
             {
-                List<ColonistBar.Entry> entries = Entries;
+                List<ColonistBar.Entry> entries = helper.Entries;
                 int num = -1;
                 for (int i = 0; i < entries.Count; i++)
                 {
@@ -400,12 +275,12 @@ namespace ColonistBarKF
         // RimWorld.ColonistBar
         // ReSharper disable once UnusedMember.Global
         // RimWorld.ColonistBar
-        public List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
+        public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
-            List<Vector2> drawLocs = cachedDrawLocs;
-            List<ColonistBar.Entry> entries = Entries;
+            List<Vector2> drawLocs = helper.cachedDrawLocs;
+            List<ColonistBar.Entry> entries = helper.Entries;
             Vector2 size = Size;
-            tmpColonistsWithMap.Clear();
+            helper.tmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
             {
                 if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
@@ -422,42 +297,36 @@ namespace ColonistBarKF
                         {
                             first = pawn;
                         }
-                        tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].map));
+                        helper.tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].map));
                     }
                 }
             }
             if (WorldRendererUtility.WorldRenderedNow)
             {
-                if (tmpColonistsWithMap.Any(x => x.Second == null))
+                if (helper.tmpColonistsWithMap.Any(x => x.Second == null))
                 {
-                    tmpColonistsWithMap.RemoveAll(x => x.Second != null);
+                    helper.tmpColonistsWithMap.RemoveAll(x => x.Second != null);
                     goto IL_1A1;
                 }
             }
-            if (tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+            if (helper.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
             {
-                tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                helper.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
             }
             IL_1A1:
-            tmpColonists.Clear();
-            for (int j = 0; j < tmpColonistsWithMap.Count; j++)
+            helper.tmpColonists.Clear();
+            for (int j = 0; j < helper.tmpColonistsWithMap.Count; j++)
             {
-                tmpColonists.Add(tmpColonistsWithMap[j].First);
+                helper.tmpColonists.Add(helper.tmpColonistsWithMap[j].First);
             }
-            tmpColonistsWithMap.Clear();
-            return tmpColonists;
+            helper.tmpColonistsWithMap.Clear();
+            return helper.tmpColonists;
         }
 
-        public static List<ColonistBar.Entry> Entries
-        {
-            get
-            {
-                CheckRecacheEntries();
-                return cachedEntries;
-            }
-        }
+
+
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public Thing ColonistOrCorpseAt(Vector2 pos)
+        public static Thing ColonistOrCorpseAt(Vector2 pos)
         {
             if (!Visible)
             {
@@ -481,57 +350,57 @@ namespace ColonistBarKF
             }
             return result;
         }
-/*
-        public void RecacheDrawLocs()
-        {
-            CheckRecacheEntries();
-            Vector2 size = Size;
-            int colonistsPerRow = ColonistsPerRow;
-            float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
-            float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
-
-
-            float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeft * Scale;
-            float cachedDrawLocs_y = ColBarSettings.MarginTop * Scale;
-
-
-            cachedDrawLocs.Clear();
-
-            #region Vertical
-
-            for (int i = 0; i < cachedEntries.Count; i++)
-            {
-                if (i % colonistsPerRow == 0)
+        /*
+                public void RecacheDrawLocs()
                 {
-                    int maxColInRow = Mathf.Min(colonistsPerRow, cachedEntries.Count - i);
-                    float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
-                    cachedDrawLocs_x = (Screen.width - num4) / 2f + ColBarSettings.HorizontalOffset;
-
-                    if (ColBarSettings.UsePsi)
-                        ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
-
-                    if (ColBarSettings.UseExternalMoodBar)
-                        ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
+                    CheckRecacheEntries();
+                    Vector2 size = Size;
+                    int colonistsPerRow = ColonistsPerRow;
+                    float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
+                    float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
 
 
-                    if (i != 0)
-                        cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
+                    float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeft * Scale;
+                    float cachedDrawLocs_y = ColBarSettings.MarginTop * Scale;
+
+
+                    cachedDrawLocs.Clear();
+
+                    #region Vertical
+
+                    for (int i = 0; i < cachedEntries.Count; i++)
+                    {
+                        if (i % colonistsPerRow == 0)
+                        {
+                            int maxColInRow = Mathf.Min(colonistsPerRow, cachedEntries.Count - i);
+                            float num4 = maxColInRow * size.x + (maxColInRow - 1) * spacingHorizontal;
+                            cachedDrawLocs_x = (Screen.width - num4) / 2f + ColBarSettings.HorizontalOffset;
+
+                            if (ColBarSettings.UsePsi)
+                                ModifyBasicDrawLocsForPsi(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
+
+                            if (ColBarSettings.UseExternalMoodBar)
+                                ModifyBasicDrawLocsForMoodBar(size, ref cachedDrawLocs_x, ref cachedDrawLocs_y);
+
+
+                            if (i != 0)
+                                cachedDrawLocs_y += size.y + spacingVertical + SpacingLabel;
+
+
+                        }
+                        else
+                        {
+                            cachedDrawLocs_x += size.x + spacingHorizontal;
+                        }
+                        cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
+                    }
+
+
+                    #endregion
 
 
                 }
-                else
-                {
-                    cachedDrawLocs_x += size.x + spacingHorizontal;
-                }
-                cachedDrawLocs.Add(new Vector2(cachedDrawLocs_x, cachedDrawLocs_y));
-            }
-
-
-            #endregion
-
-
-        }
-*/
+        */
         private static void ModifyBasicDrawLocsForPsi(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
         {
             switch (ColBarSettings.ColBarPsiIconPos)
@@ -576,148 +445,12 @@ namespace ColonistBarKF
         }
 
 
-        private static void CheckRecacheEntries()
-        {
-            if (!entriesDirty)
-            {
-                return;
-            }
-            entriesDirty = false;
-            cachedEntries.Clear();
-            if (Find.PlaySettings.showColonistBar)
-            {
-                tmpMaps.Clear();
-                tmpMaps.AddRange(Find.Maps);
-                tmpMaps.SortBy(x => !x.IsPlayerHome, x => x.uniqueID);
-                int num = 0;
-                for (int i = 0; i < tmpMaps.Count; i++)
-                {
-                    tmpPawns.Clear();
-                    tmpPawns.AddRange(tmpMaps[i].mapPawns.FreeColonists);
-                    List<Thing> list = tmpMaps[i].listerThings.ThingsInGroup(ThingRequestGroup.Corpse);
-                    for (int j = 0; j < list.Count; j++)
-                    {
-                        if (!list[j].IsDessicated())
-                        {
-                            Pawn innerPawn = ((Corpse)list[j]).InnerPawn;
-                            if (innerPawn != null)
-                            {
-                                if (innerPawn.IsColonist)
-                                {
-                                    tmpPawns.Add(innerPawn);
-                                }
-                            }
-                        }
-                    }
-                    List<Pawn> allPawnsSpawned = tmpMaps[i].mapPawns.AllPawnsSpawned;
-                    for (int k = 0; k < allPawnsSpawned.Count; k++)
-                    {
-                        Corpse corpse = allPawnsSpawned[k].carryTracker.CarriedThing as Corpse;
-                        if (corpse != null && !corpse.IsDessicated() && corpse.InnerPawn.IsColonist)
-                        {
-                            tmpPawns.Add(corpse.InnerPawn);
-                        }
-                    }
-                    //         tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
-                    SortCachedColonists(ref tmpPawns);
-                    for (int l = 0; l < tmpPawns.Count; l++)
-                    {
-                        cachedEntries.Add(new ColonistBar.Entry(tmpPawns[l], tmpMaps[i], num));
-                    }
-                    if (!tmpPawns.Any())
-                    {
-                        cachedEntries.Add(new ColonistBar.Entry(null, tmpMaps[i], num));
-                    }
-                    num++;
-                }
-                tmpCaravans.Clear();
-                tmpCaravans.AddRange(Find.WorldObjects.Caravans);
-                tmpCaravans.SortBy(x => x.ID);
-                for (int m = 0; m < tmpCaravans.Count; m++)
-                {
-                    if (tmpCaravans[m].IsPlayerControlled)
-                    {
-                        tmpPawns.Clear();
-                        tmpPawns.AddRange(tmpCaravans[m].PawnsListForReading);
-                        //  tmpPawns.SortBy((Pawn x) => x.thingIDNumber);
-                        SortCachedColonists(ref tmpPawns);
-                        for (int n = 0; n < tmpPawns.Count; n++)
-                        {
-                            if (tmpPawns[n].IsColonist)
-                            {
-                                cachedEntries.Add(new ColonistBar.Entry(tmpPawns[n], null, num));
-                            }
-                        }
-                        num++;
-                    }
-                }
-            }
-            //        RecacheDrawLocs();
-            drawer.Notify_RecachedEntries();
-            tmpPawns.Clear();
-            tmpMaps.Clear();
-            tmpCaravans.Clear();
-            drawLocsFinder.CalculateDrawLocs(cachedDrawLocs, out cachedScale);
-        }
 
         private static List<int> entriesInGroup = new List<int>();
         private static List<int> horizontalSlotsPerGroup = new List<int>();
 
 
 
-        private static void SortCachedColonists(ref List<Pawn> tmpColonists)
-        {
-            IOrderedEnumerable<Pawn> orderedEnumerable = null;
-            switch (ColBarSettings.SortBy)
-            {
-                case SettingsColonistBar.SortByWhat.vanilla:
-                    tmpColonists.SortBy(x => x.thingIDNumber);
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.byName:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.sexage:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.health:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.mood:
-                    orderedEnumerable = tmpColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
-                        .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                case SettingsColonistBar.SortByWhat.medic:
-                    orderedEnumerable = tmpColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                    tmpColonists = orderedEnumerable.ToList();
-                    SaveBarSettings();
-                    break;
-
-                default:
-                    tmpColonists.SortBy(x => x.thingIDNumber);
-                    SaveBarSettings();
-                    break;
-            }
-        }
 
 
 
@@ -725,7 +458,7 @@ namespace ColonistBarKF
 
 
 
-        public float GetEntryRectAlpha(Rect rect)
+        public static float GetEntryRectAlpha(Rect rect)
         {
             float t;
             if (Messages.CollidesWithAnyMessage(rect, out t))
@@ -738,179 +471,19 @@ namespace ColonistBarKF
 
 
 
-        private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
-        private static int clickCount;
-
-        private void HandleClicks(Rect rect, Pawn colonist)
-        {
-            if (Mouse.IsOver(rect))
-            {
-                switch (Event.current.type)
-                {
-                    case EventType.MouseDown:
-                        {
-                            switch (Event.current.button)
-                            {
-                                case 0:
-                                    {
-                                        if (clickedColonist == colonist && Time.time - clickedAt < ColBarSettings.DoubleClickTime)
-                                        {
-                                            // use event so it doesn't bubble through
-                                            Event.current.Use();
-
-                                            if (FollowMe.CurrentlyFollowing)
-                                            {
-                                                FollowMe.StopFollow("Selected another colonist on bar");
-                                                FollowMe.TryStartFollow(colonist);
-                                            }
-                                            else
-                                            {
-                                                CameraJumper.TryJump(colonist);
-                                            }
-                                            clickedColonist = null;
-                                        }
-                                        else
-                                        {
-                                            clickedColonist = colonist;
-                                            clickedAt = Time.time;
-                                            clickCount++;
-                                        }
-                                        break;
-                                    }
-
-                                case 1:
-                                    {
-                                        List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
-
-                                        if (clickedColonist != null && SelPawn != null && SelPawn != clickedColonist)
-                                        {
-                                            foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(clickedColonist.TrueCenter(), SelPawn))
-                                            {
-                                                floatOptionList.Add(choice);
-                                            }
-                                            if (floatOptionList.Any())
-                                                floatOptionList.Add(new FloatMenuOption("--------------------", delegate
-                                                {
-                                                }));
-
-                                        }
-                                        if (!FollowMe.CurrentlyFollowing)
-                                        {
-                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StartFollow".Translate(),
-                                                delegate { FollowMe.TryStartFollow(colonist); }));
-                                        }
-                                        else
-                                        {
-                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StopFollow".Translate(),
-                                                delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
-                                        }
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
-                                            MarkColonistsDirty();
-                                            //           CheckRecacheEntries();
-                                        }));
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
-                                            MarkColonistsDirty();
-                                            //            CheckRecacheEntries();
-                                        }));
-
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
-                                            MarkColonistsDirty();
-                                            //          CheckRecacheEntries();
-                                        }));
-
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
-                                            MarkColonistsDirty();
-                                            //        CheckRecacheEntries();
-                                        }));
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
-                                            MarkColonistsDirty();
-                                            //    CheckRecacheEntries();
-                                        }));
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medic;
-                                            MarkColonistsDirty();
-                                            //  CheckRecacheEntries();
-                                        }));
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
-                                        {
-                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
-                                            MarkColonistsDirty();
-                                            //      CheckRecacheEntries();
-                                        }));
-
-                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
-                                        FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
-                                        Find.WindowStack.Add(window);
-
-                                        // use event so it doesn't bubble through
-                                        Event.current.Use();
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                }
-
-                if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
-                {
-
-                    // start following
-                    if (FollowMe.CurrentlyFollowing)
-                    {
-                        FollowMe.StopFollow("Canceled by user");
-                    }
-                    else
-                    {
-                        FollowMe.TryStartFollow(colonist);
-                    }
-
-                    // use event so it doesn't bubble through
-                    Event.current.Use();
-
-                }
-            }
-
-
-        }
-
+        // detour not working - JIT?!?
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public  void MarkColonistsDirty()
+        public static void MarkColonistsDirty()
         {
-            entriesDirty = true;
-            // added
-            CheckRecacheEntries();
+            helper.entriesDirty = true;
+            Log.Message("Colonists marked dirty.01");
         }
 
 
 
 
-        private static List<Pawn> tmpPawns = new List<Pawn>();
 
-        private static List<Map> tmpMaps = new List<Map>();
-
-        private static List<Caravan> tmpCaravans = new List<Caravan>();
-
-        private static List<Pawn> tmpColonistsInOrder = new List<Pawn>();
-
-        private static List<Pair<Thing, Map>> tmpColonistsWithMap = new List<Pair<Thing, Map>>();
-
-        private static List<Thing> tmpColonists = new List<Thing>();
-
-        private static List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
-
-        private static List<Pawn> tmpCaravanPawns = new List<Pawn>();
         // RimWorld.ColonistBar
         private static bool Visible
         {
@@ -923,7 +496,7 @@ namespace ColonistBarKF
 
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public Caravan CaravanMemberCaravanAt(Vector2 at)
+        public static Caravan CaravanMemberCaravanAt(Vector2 at)
         {
             if (!Visible)
             {
@@ -938,28 +511,28 @@ namespace ColonistBarKF
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
+        public static List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
         {
-            tmpCaravans.Clear();
+            helper.tmpCaravans.Clear();
             if (!Visible)
             {
-                return tmpCaravans;
+                return helper.tmpCaravans;
             }
             List<Pawn> list = CaravanMembersInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
-                tmpCaravans.Add(list[i].GetCaravan());
+                helper.tmpCaravans.Add(list[i].GetCaravan());
             }
-            return tmpCaravans;
+            return helper.tmpCaravans;
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public List<Pawn> CaravanMembersInScreenRect(Rect rect)
+        public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
-            tmpCaravanPawns.Clear();
+            helper.tmpCaravanPawns.Clear();
             if (!Visible)
             {
-                return tmpCaravanPawns;
+                return helper.tmpCaravanPawns;
             }
             List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
@@ -967,30 +540,29 @@ namespace ColonistBarKF
                 Pawn pawn = list[i] as Pawn;
                 if (pawn != null && pawn.IsCaravanMember())
                 {
-                    tmpCaravanPawns.Add(pawn);
+                    helper.tmpCaravanPawns.Add(pawn);
                 }
             }
-            return tmpCaravanPawns;
+            return helper.tmpCaravanPawns;
         }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
-        public List<Thing> MapColonistsOrCorpsesInScreenRect(Rect rect)
+        public static List<Thing> MapColonistsOrCorpsesInScreenRect(Rect rect)
         {
-            tmpMapColonistsOrCorpsesInScreenRect.Clear();
+            helper.tmpMapColonistsOrCorpsesInScreenRect.Clear();
             if (!Visible)
             {
-                return tmpMapColonistsOrCorpsesInScreenRect;
+                return helper.tmpMapColonistsOrCorpsesInScreenRect;
             }
             List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].Spawned)
                 {
-                    tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
+                    helper.tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
                 }
             }
-            return tmpMapColonistsOrCorpsesInScreenRect;
+            return helper.tmpMapColonistsOrCorpsesInScreenRect;
         }
-
     }
 }

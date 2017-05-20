@@ -28,7 +28,6 @@ namespace ColonistBarKF
     {
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
         public static SettingsPSI PsiSettings = new SettingsPSI();
-        public static ColonistBar_KF ColonistBarKF = new ColonistBar_KF();
 
         private static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {
@@ -74,11 +73,11 @@ namespace ColonistBarKF
             if (Current.ProgramState != ProgramState.Playing)
                 return;
 
-            if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
-            {
-                CBKF.ColonistBarKF.MarkColonistsDirty();
-                _lastStatUpdate = Find.TickManager.TicksGame;
-            }
+          //if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
+          //{
+          //    ColonistBar_KF.MarkColonistsDirty();
+          //    _lastStatUpdate = Find.TickManager.TicksGame;
+          //}
 
             // PSI 
             if (_reinjectNeeded)
@@ -110,7 +109,7 @@ namespace ColonistBarKF
             ColBarSettings = LoadBarSettings();
             PsiSettings = LoadPsiSettings();
             _lastStatUpdate = -5000;
-
+            ColonistBar_KF.MarkColonistsDirty();
             //PSI
             OnLevelWasLoaded(0);
             enabled = true;

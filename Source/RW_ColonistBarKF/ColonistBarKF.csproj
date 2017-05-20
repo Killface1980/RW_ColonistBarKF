@@ -44,8 +44,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\HugsLib\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HugsLib">
+      <HintPath>..\..\..\HugsLib\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,8 +69,11 @@
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
-    <Compile Include="Detouring\Class2.cs" />
-    <Compile Include="Detouring\Class3.cs" />
+    <Compile Include="Detouring\ColonistBarColonistDrawer_KF.cs" />
+    <Compile Include="Detouring\ColonistBarDrawLocsFinder_KF.cs" />
+    <Compile Include="Detouring\ColHelper.cs" />
+    <Compile Include="Detouring\Class5.cs" />
+    <Compile Include="Detouring\Class6.cs" />
     <Compile Include="Detouring\_Selector.cs" />
     <Compile Include="Detouring\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />

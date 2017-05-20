@@ -19,13 +19,13 @@ namespace ColonistBarKF.Detouring
         [Detour(typeof(Selector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         private void SelectUnderMouse()
         {
-            Caravan caravan = CBKF.ColonistBarKF.CaravanMemberCaravanAt(UI.MousePositionOnUIInverted);
+            Caravan caravan = ColonistBar_KF.CaravanMemberCaravanAt(UI.MousePositionOnUIInverted);
             if (caravan != null)
             {
                 CameraJumper.TryJumpAndSelect(caravan);
                 return;
             }
-            Thing thing = CBKF.ColonistBarKF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
+            Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
             if (thing != null && !thing.Spawned)
             {
                 CameraJumper.TryJump(thing);
@@ -177,7 +177,7 @@ namespace ColonistBarKF.Detouring
                 Find.Selector.ClearSelection();
             }
             bool selectedSomething = false;
-            List<Thing> list = CBKF.ColonistBarKF.MapColonistsOrCorpsesInScreenRect(Find.Selector.dragBox.ScreenRect);
+            List<Thing> list = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(Find.Selector.dragBox.ScreenRect);
             for (int i = 0; i < list.Count; i++)
             {
                 selectedSomething = true;
@@ -187,7 +187,7 @@ namespace ColonistBarKF.Detouring
             {
                 return;
             }
-            List<Caravan> list2 = CBKF.ColonistBarKF.CaravanMembersCaravansInScreenRect(Find.Selector.dragBox.ScreenRect);
+            List<Caravan> list2 = ColonistBar_KF.CaravanMembersCaravansInScreenRect(Find.Selector.dragBox.ScreenRect);
             for (int j = 0; j < list2.Count; j++)
             {
                 if (!selectedSomething)
@@ -259,7 +259,7 @@ namespace ColonistBarKF.Detouring
         private IEnumerable<object> SelectableObjectsUnderMouse()
         {
             Vector2 mousePos = UI.MousePositionOnUIInverted;
-            Thing colonistOrCorpse = CBKF.ColonistBarKF.ColonistOrCorpseAt(mousePos);
+            Thing colonistOrCorpse = ColonistBar_KF.ColonistOrCorpseAt(mousePos);
             if (colonistOrCorpse != null && colonistOrCorpse.Spawned)
             {
                 yield return colonistOrCorpse;

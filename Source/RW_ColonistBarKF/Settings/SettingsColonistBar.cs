@@ -15,8 +15,6 @@ namespace ColonistBarKF
 
         public Alignment ColBarPsiIconPos = Alignment.Left;
 
-        public float DoubleClickTime = 0.5f;
-
         public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
 
         public float FixedIconScaleFloat = 1f;
@@ -136,8 +134,6 @@ namespace ColonistBarKF
         public bool ShowUnarmed = true;
 
         public SortByWhat SortBy;
-
-        public bool UseCustomDoubleClickTime = false;
 
         public bool UseCustomIconSize = false;
 

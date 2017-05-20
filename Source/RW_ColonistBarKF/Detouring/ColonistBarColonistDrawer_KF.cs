@@ -7,6 +7,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF
@@ -42,8 +43,8 @@ namespace ColonistBarKF
 
         private Rect GetPawnTextureRect(float x, float y)
         {
-            Vector2 vector = PawnTextureSize * CBKF.ColonistBarKF.Scale;
-            return new Rect(x + 1f, y - (vector.y - CBKF.ColonistBarKF.Size.y) - 1f, vector.x, vector.y);
+            Vector2 vector = PawnTextureSize * ColonistBar_KF.Scale;
+            return new Rect(x + 1f, y - (vector.y - ColonistBar_KF.Size.y) - 1f, vector.x, vector.y);
         }
 
         public void ApplyEntryInAnotherMapAlphaFactor(Map map, ref float alpha)
@@ -68,16 +69,16 @@ namespace ColonistBarKF
             {
                 obj = colonist.Corpse;
             }
-            float num = 0.4f * CBKF.ColonistBarKF.Scale;
+            float num = 0.4f * ColonistBar_KF.Scale;
             Vector2 textureSize = new Vector2(SelectionDrawerUtility.SelectedTexGUI.width * num, SelectionDrawerUtility.SelectedTexGUI.height * num);
-            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * CBKF.ColonistBarKF.Scale);
+            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, obj, rect, SelectionDrawer.SelectTimes, textureSize, ColBarSettings.BaseSizeFloat * 0.4f * ColonistBar_KF.Scale);
             DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
         private void DrawCaravanSelectionOverlayOnGUI(Caravan caravan, Rect rect)
         {
-            float num = 0.4f * CBKF.ColonistBarKF.Scale;
+            float num = 0.4f * ColonistBar_KF.Scale;
             Vector2 textureSize = new Vector2(SelectionDrawerUtility.SelectedTexGUI.width * num, SelectionDrawerUtility.SelectedTexGUI.height * num);
-            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, caravan, rect, WorldSelectionDrawer.SelectTimes, textureSize, 20f * CBKF.ColonistBarKF.Scale);
+            SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(bracketLocs, caravan, rect, WorldSelectionDrawer.SelectTimes, textureSize, 20f * ColonistBar_KF.Scale);
             DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
@@ -92,10 +93,249 @@ namespace ColonistBarKF
             }
         }
 
+        // RimWorld.ColonistBarColonistDrawer
+        private Rect GroupFrameRect(int group)
+        {
+            float num = 99999f;
+            float num2 = 0f;
+            float num3 = 0f;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<Vector2> drawLocs = ColonistBar_KF.helper.DrawLocs;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].group == group)
+                {
+                    num = Mathf.Min(num, drawLocs[i].x);
+                    num2 = Mathf.Max(num2, drawLocs[i].x + ColonistBar_KF.Size.x);
+                    num3 = Mathf.Max(num3, drawLocs[i].y + ColonistBar_KF.Size.y);
+                }
+            }
+            return new Rect(num, 0f, num2 - num, num3).ContractedBy(-12f * ColonistBar_KF.Scale);
+        }
+
+        public void DrawGroupFrame(int group)
+        {
+            Rect position = GroupFrameRect(group);
+            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            Map map = entries.Find((ColonistBar.Entry x) => x.group == group).map;
+            float num;
+            if (map == null)
+            {
+                if (WorldRendererUtility.WorldRenderedNow)
+                {
+                    num = 1f;
+                }
+                else
+                {
+                    num = 0.75f;
+                }
+            }
+            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+            {
+                num = 0.75f;
+            }
+            else
+            {
+                num = 1f;
+            }
+            Widgets.DrawRectFast(position, new Color(0.5f, 0.5f, 0.5f, 0.4f * num), null);
+        }
+
+        private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
+
+        public  void HandleClicks(Rect rect, Pawn colonist)
+        {
+            if (Mouse.IsOver(rect))
+            {
+                switch (Event.current.type)
+                {
+                    case EventType.MouseDown:
+                        {
+                            switch (Event.current.button)
+                            {
+                                case 0:
+                                    {
+                                        //        if (clickedColonist == colonist && Time.time - clickedAt < ColBarSettings.DoubleClickTime)
+                                        if (Event.current.clickCount == 2 )
+                                        {
+                                            // use event so it doesn't bubble through
+                                            Event.current.Use();
+
+                                            if (FollowMe.CurrentlyFollowing)
+                                            {
+                                                FollowMe.StopFollow("Selected another colonist on bar");
+                                                FollowMe.TryStartFollow(colonist);
+                                            }
+                                            else
+                                            {
+                                                CameraJumper.TryJump(colonist);
+                                            }
+                                     //       clickedColonist = null;
+                                        }
+                                   //   if (Event.current.clickCount == 1)
+                                   //   {
+                                   //       clickedColonist = colonist;
+                                   //   }
+                                        break;
+                                    }
+
+                                case 1:
+                                    {
+                                        List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                                        if (colonist != null && SelPawn != null && SelPawn != colonist)
+                                        {
+                                            foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(colonist.TrueCenter(), SelPawn))
+                                            {
+                                                floatOptionList.Add(choice);
+                                            }
+                                            if (floatOptionList.Any())
+                                                floatOptionList.Add(new FloatMenuOption("--------------------", delegate
+                                                {
+                                                }));
+
+                                        }
+                                        if (!FollowMe.CurrentlyFollowing)
+                                        {
+                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StartFollow".Translate(),
+                                                delegate { FollowMe.TryStartFollow(colonist); }));
+                                        }
+                                        else
+                                        {
+                                            floatOptionList.Add(new FloatMenuOption("FollowMe.StopFollow".Translate(),
+                                                delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
+                                        }
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Vanilla".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //           CheckRecacheEntries();
+                                        }));
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.ByName".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //            CheckRecacheEntries();
+                                        }));
+
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SexAge".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //          CheckRecacheEntries();
+                                        }));
+
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Mood".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //        CheckRecacheEntries();
+                                        }));
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Health".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //    CheckRecacheEntries();
+                                        }));
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Medic".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medic;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //  CheckRecacheEntries();
+                                        }));
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.Weapons".Translate(), delegate
+                                        {
+                                            ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
+                                            ColonistBar_KF.MarkColonistsDirty();
+                                            //      CheckRecacheEntries();
+                                        }));
+
+                                        floatOptionList.Add(new FloatMenuOption("CBKF.Settings.SettingsColonistBar".Translate(), delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
+                                        FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
+                                        Find.WindowStack.Add(window);
+
+                                        // use event so it doesn't bubble through
+                                        Event.current.Use();
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                }
+
+                if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
+                {
+
+                    // start following
+                    if (FollowMe.CurrentlyFollowing)
+                    {
+                        FollowMe.StopFollow("Canceled by user");
+                    }
+                    else
+                    {
+                        FollowMe.TryStartFollow(colonist);
+                    }
+
+                    // use event so it doesn't bubble through
+                    Event.current.Use();
+
+                }
+            }
+
+
+        }
+
+        public void HandleGroupFrameClicks(int group)
+        {
+            Rect rect = this.GroupFrameRect(group);
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect) && !ColonistBar_KF.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
+            {
+                bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
+                if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive) || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
+                {
+                    Find.Selector.dragBox.active = false;
+                    Find.WorldSelector.dragBox.active = false;
+                    ColonistBar.Entry entry = ColonistBar_KF.helper.Entries.Find((ColonistBar.Entry x) => x.group == group);
+                    Map map = entry.map;
+                    if (map == null)
+                    {
+                        if (WorldRendererUtility.WorldRenderedNow)
+                        {
+                            CameraJumper.TrySelect(entry.pawn);
+                        }
+                        else
+                        {
+                            CameraJumper.TryJumpAndSelect(entry.pawn);
+                        }
+                    }
+                    else
+                    {
+                        if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
+                        {
+                            SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                        }
+                        Current.Game.VisibleMap = map;
+                    }
+                }
+            }
+          //if (Event.current.button == 1 && Widgets.ButtonInvisible(rect, false))
+          //{
+          //    ColonistBar.Entry entry2 = ColonistBar_KF.helper.Entries.Find((ColonistBar.Entry x) => x.group == group);
+          //    if (entry2.map != null)
+          //    {
+          //        CameraJumper.TryJumpAndSelect(CameraJumper.GetWorldTargetOfMap(entry2.map));
+          //    }
+          //    else if (entry2.pawn != null)
+          //    {
+          //        CameraJumper.TryJumpAndSelect(entry2.pawn);
+          //    }
+          //}
+        }
+
 
         public void DrawColonist(Rect rect, Pawn colonist, Map pawnMap)
         {
-            float entryRectAlpha = CBKF.ColonistBarKF.GetEntryRectAlpha(rect);
+            float entryRectAlpha = ColonistBar_KF.GetEntryRectAlpha(rect);
             ApplyEntryInAnotherMapAlphaFactor(pawnMap, ref entryRectAlpha);
 
             bool colonistAlive = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
@@ -210,7 +450,7 @@ namespace ColonistBarKF
 
 
 
-            Rect rect2 = rect.ContractedBy(-2f * CBKF.ColonistBarKF.Scale);
+            Rect rect2 = rect.ContractedBy(-2f * ColonistBar_KF.Scale);
 
             if (colonistAlive && !WorldRendererUtility.WorldRenderedNow)
             {
@@ -236,8 +476,8 @@ namespace ColonistBarKF
                 GUI.DrawTexture(rect, ColonistBarTextures.DeadColonistTex);
             }
             //       float num = 4f * Scale;
-            Vector2 pos = new Vector2(rect.center.x, rect.yMax + 1f * CBKF.ColonistBarKF.Scale);
-            GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha, rect.width + CBKF.ColonistBarKF.SpacingHorizontal - 2f, pawnLabelsCache);
+            Vector2 pos = new Vector2(rect.center.x, rect.yMax + 1f * ColonistBar_KF.Scale);
+            GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha, rect.width + ColonistBar_KF.SpacingHorizontal - 2f, pawnLabelsCache);
             GUI.color = Color.white;
         }
 
@@ -324,7 +564,7 @@ namespace ColonistBarKF
 
         private void DrawIcon(Texture2D icon, ref Vector2 pos, string tooltip)
         {
-            float num = ColBarSettings.BaseSizeFloat * 0.4f * CBKF.ColonistBarKF.Scale;
+            float num = ColBarSettings.BaseSizeFloat * 0.4f * ColonistBar_KF.Scale;
             Rect rect = new Rect(pos.x, pos.y, num, num);
             GUI.DrawTexture(rect, icon);
             TooltipHandler.TipRegion(rect, tooltip);
@@ -333,7 +573,7 @@ namespace ColonistBarKF
 
         private  void DrawWeaponIcon(Rect rect, Pawn colonist)
         {
-            float entryRectAlpha = CBKF.ColonistBarKF.GetEntryRectAlpha(rect);
+            float entryRectAlpha = ColonistBar_KF.GetEntryRectAlpha(rect);
             ApplyEntryInAnotherMapAlphaFactor(colonist.Map, ref entryRectAlpha);
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;

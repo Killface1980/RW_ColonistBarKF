@@ -56,7 +56,7 @@ namespace ColonistBarKF.Detouring
             bool flag = false;
             if (Current.ProgramState == ProgramState.Playing)
             {
-                List<Caravan> list = CBKF.ColonistBarKF.CaravanMembersCaravansInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
+                List<Caravan> list = ColonistBar_KF.CaravanMembersCaravansInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
                 for (int i = 0; i < list.Count; i++)
                 {
                     flag = true;
@@ -65,7 +65,7 @@ namespace ColonistBarKF.Detouring
             }
             if (!flag && Current.ProgramState == ProgramState.Playing)
             {
-                List<Thing> list2 = CBKF.ColonistBarKF.MapColonistsOrCorpsesInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
+                List<Thing> list2 = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
                 for (int j = 0; j < list2.Count; j++)
                 {
                     if (!flag)
@@ -117,7 +117,7 @@ namespace ColonistBarKF.Detouring
         {
             if (Current.ProgramState == ProgramState.Playing)
             {
-                Thing thing = CBKF.ColonistBarKF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
+                Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
                 Pawn pawn = thing as Pawn;
                 if (thing != null && (pawn == null || !pawn.IsCaravanMember()))
                 {
