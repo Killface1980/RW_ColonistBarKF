@@ -306,30 +306,22 @@ namespace ColonistBarKF
             GUILayout.BeginVertical(_fondBoxes);
             ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
                 ColBarSettings.UseCustomMarginTop,
-                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " yMin, "
-                + (int)ColBarSettings.MarginLeft + " xMin, " + (int)ColBarSettings.MarginRight + " xMax");
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y, \n " +
+                "CBKF.Settings.MaxColonistBarWidth".Translate() + (Screen.width - (int)ColBarSettings.MarginHorizontal) + " px");
 
             if (ColBarSettings.UseCustomMarginTop)
             {
                 GUILayout.Space(Text.LineHeight / 2);
                 ColBarSettings.MarginTop = GUILayout.HorizontalSlider(ColBarSettings.MarginTop, 0f, Screen.height / 6);
-                ColBarSettings.MarginLeft = GUILayout.HorizontalSlider(
-                    ColBarSettings.MarginLeft,
-                    0f,
-                    Screen.width * 2 / 5);
-                ColBarSettings.MarginRight = GUILayout.HorizontalSlider(
-                    ColBarSettings.MarginRight,
-                    0f,
-                    Screen.width * 2 / 5);
+                ColBarSettings.MarginHorizontal = GUILayout.HorizontalSlider(
+                    ColBarSettings.MarginHorizontal,
+                    Screen.width * 2 / 5,
+                    0f);
             }
             else
             {
                 ColBarSettings.MarginTop = 21f;
-                ColBarSettings.MarginLeft = 520f;
-                ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft
-                                                     - ColBarSettings.MarginRight;
-                ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2
-                                                  - ColBarSettings.MarginRight / 2;
+                ColBarSettings.MarginHorizontal = 520f;
             }
 
             // listing.Gap(3f);

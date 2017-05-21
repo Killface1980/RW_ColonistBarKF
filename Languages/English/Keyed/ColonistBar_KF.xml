@@ -15,7 +15,7 @@
   <CBKF.Settings.Health>Health</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Color for male colonists</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Bottom margin</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginLeft>Left margin</CBKF.Settings.MarginLeft>
+  <CBKF.Settings.MarginHorizontal>Max colonist bar width</CBKF.Settings.MarginHorizontal>
   <CBKF.Settings.MarginRight>Right margin</CBKF.Settings.MarginRight>
   <CBKF.Settings.MarginTop>Top margin</CBKF.Settings.MarginTop>
   <CBKF.Settings.MaxColonistBarWidth>Maximum bar width</CBKF.Settings.MaxColonistBarWidth>

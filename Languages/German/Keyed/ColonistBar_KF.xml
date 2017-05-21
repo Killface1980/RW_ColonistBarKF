@@ -15,7 +15,7 @@
   <CBKF.Settings.Health>Gesundheit</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Farbe für männliche Kolonisten</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Unterer Abstand</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginLeft>Linker Abstand</CBKF.Settings.MarginLeft>
+  <CBKF.Settings.MarginHorizontal>Maximale Leistenbreite</CBKF.Settings.MarginHorizontal>
   <CBKF.Settings.MarginRight>Rechter Abstand</CBKF.Settings.MarginRight>
   <CBKF.Settings.MarginTop>Oberer Abstand</CBKF.Settings.MarginTop>
   <CBKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</CBKF.Settings.MaxColonistBarHeight>

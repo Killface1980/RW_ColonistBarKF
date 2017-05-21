@@ -112,7 +112,7 @@ namespace ColonistBarKF
                     height = Mathf.Max(height, drawLocs[i].y + ColonistBar_KF.FullSize.y);
                 }
             }
-            return new Rect(pos_x, ColBarSettings.MarginTop - 21f, num2 - pos_x, height - ColBarSettings.MarginTop).ContractedBy(-12f * ColonistBar_KF.Scale);
+            return new Rect(pos_x, ColBarSettings.UseCustomMarginTop ? ColBarSettings.MarginTop - 21f : 21f, num2 - pos_x, ColBarSettings.UseCustomMarginTop ? height - ColBarSettings.MarginTop : height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }
 
         public void DrawGroupFrame(int group)

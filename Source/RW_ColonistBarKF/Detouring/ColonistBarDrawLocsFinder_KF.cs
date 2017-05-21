@@ -18,7 +18,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return Screen.width - ColBarSettings.MarginLeft - ColBarSettings.MarginRight;
+                return Screen.width - ColBarSettings.MarginHorizontal;
 
             }
         }
@@ -256,7 +256,7 @@ namespace ColonistBarKF
             List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
             int index = -1;
             int numInGroup = -1;
-            float groupStartX = (UI.screenWidth - groupWidth) / 2f + ColBarSettings.HorizontalOffset;
+            float groupStartX = (UI.screenWidth - groupWidth ) / 2f;
             for (int j = 0; j < entries.Count; j++)
             {
                 if (index != entries[j].group)

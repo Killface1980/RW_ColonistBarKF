@@ -117,6 +117,9 @@
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
     </Content>
+    <Content Include="..\..\Languages\Russian\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\Russian\ColonistBar_KF.xml</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

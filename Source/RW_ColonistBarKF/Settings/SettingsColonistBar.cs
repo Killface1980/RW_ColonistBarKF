@@ -17,7 +17,6 @@ namespace ColonistBarKF
 
         public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
 
-        public float HorizontalOffset = 0f;
 
         public float IconOffsetX = 1f;
 
@@ -42,13 +41,9 @@ namespace ColonistBarKF
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
 
-        public float MarginLeft = 260f;
-
-        public float MarginRight = 260f;
+        public float MarginHorizontal = 520f;
 
         public float MarginTop = 21f;
-
-        public float MaxColonistBarWidth = Screen.width - 320f;
 
         public int MaxRowsCustom = 3;
 

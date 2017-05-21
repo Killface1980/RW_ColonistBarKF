@@ -154,6 +154,14 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty(Thing __instance)
         {
+            var pawn = __instance as Pawn;
+            if (pawn== null)
+                return;
+            if (pawn.Faction!= Faction.OfPlayer)
+                return;
+            if (!pawn.RaceProps.Humanlike)
+                return;
+
             if (__instance is IThingHolder && Find.ColonistBar != null)
             {
                 MarkDirty_Helper.Dirty();
