@@ -74,6 +74,8 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
+            if (!Find.PlaySettings.showColonistBar)
+                return;
             MarkDirty_Helper.Dirty();
             Log.Message("Colonists marked dirty.x06");
         }
@@ -82,13 +84,21 @@ namespace ColonistBarKF
     static class NotifyColonistBar_Postfix
     {
         [HarmonyPostfix]
-        private static void MarkColonistsDirty()
+        private static void MarkColonistsDirty(Corpse __instance)
         {
-            MarkDirty_Helper.Dirty();
-            Log.Message("Colonists marked dirty.x07");
+            Pawn InnerPawn = __instance.InnerPawn;
+
+            if (InnerPawn == null)
+                return;
+
+            if (InnerPawn.Faction == Faction.OfPlayer && Current.ProgramState == ProgramState.Playing)
+            {
+                MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x07");
+            }
         }
     }
-    //   [HarmonyPatch(typeof(Game), "AddMap")]
+    [HarmonyPatch(typeof(Game), "AddMap")]
     static class AddMap_Postfix
     {
         [HarmonyPostfix]
@@ -98,12 +108,15 @@ namespace ColonistBarKF
             Log.Message("Colonists marked dirty.x08");
         }
     }
-    //   [HarmonyPatch(typeof(Game), "DeinitAndRemoveMap")]
+    [HarmonyPatch(typeof(Game), "DeinitAndRemoveMap")]
     static class DeinitAndRemoveMap_Postfix
     {
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
+            if (Current.ProgramState != ProgramState.Playing)
+                return;
+
             MarkDirty_Helper.Dirty();
             Log.Message("Colonists marked dirty.x09");
         }
@@ -122,10 +135,13 @@ namespace ColonistBarKF
     static class Kill_Postfix
     {
         [HarmonyPostfix]
-        private static void MarkColonistsDirty()
+        private static void MarkColonistsDirty(Pawn __instance)
         {
-            MarkDirty_Helper.Dirty();
-            Log.Message("Colonists marked dirty.x11");
+            if (__instance.Faction != null && __instance.Faction.IsPlayer && Current.ProgramState == ProgramState.Playing)
+            {
+                MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x11");
+            }
         }
     }
     [HarmonyPatch(typeof(Pawn), "SetFaction")]
@@ -142,8 +158,16 @@ namespace ColonistBarKF
     static class DeSpawn_Postfix
     {
         [HarmonyPostfix]
-        private static void MarkColonistsDirty()
+        private static void MarkColonistsDirty(Thing __instance)
         {
+            var pawn = __instance as Pawn;
+            if (pawn == null)
+                return;
+            if (pawn.Faction != Faction.OfPlayer)
+                return;
+            if (!pawn.RaceProps.Humanlike)
+                return;
+
             MarkDirty_Helper.Dirty();
             Log.Message("Colonists marked dirty.x13");
         }
@@ -155,9 +179,9 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty(Thing __instance)
         {
             var pawn = __instance as Pawn;
-            if (pawn== null)
+            if (pawn == null)
                 return;
-            if (pawn.Faction!= Faction.OfPlayer)
+            if (pawn.Faction != Faction.OfPlayer)
                 return;
             if (!pawn.RaceProps.Humanlike)
                 return;

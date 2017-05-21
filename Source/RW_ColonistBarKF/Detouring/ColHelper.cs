@@ -147,13 +147,13 @@ namespace ColonistBarKF
                     break;
 
                 case SettingsColonistBar.SortByWhat.byName:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.LabelCap != null).ThenBy(x => x.LabelCap);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.LabelCap != null).ThenBy(x => x.LabelCap);
                     tmpColonists = orderedEnumerable.ToList();
                     CBKF.SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.sexage:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x.ageTracker.AgeBiologicalYears);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.gender.GetLabel() != null).ThenBy(x => x?.gender.GetLabel()).ThenBy(x => x?.ageTracker.AgeBiologicalYears);
                     tmpColonists = orderedEnumerable.ToList();
                     CBKF.SaveBarSettings();
                     break;
@@ -171,14 +171,14 @@ namespace ColonistBarKF
                     break;
 
                 case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
-                        .ThenByDescending(c => c.equipment.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+                    orderedEnumerable = tmpColonists.OrderByDescending(a => a?.equipment?.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
+                        .ThenByDescending(c => c?.equipment?.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
                     CBKF.SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.medic:
-                    orderedEnumerable = tmpColonists.OrderByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    orderedEnumerable = tmpColonists.OrderByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
                     tmpColonists = orderedEnumerable.ToList();
                     CBKF.SaveBarSettings();
                     break;

@@ -52,14 +52,14 @@ namespace ColonistBarKF
         {
             get
             {
-                return (new Vector2(ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal() + WidthPSIHorizontal(), ColBarSettings.BaseSizeFloat + HeightMoodBarVertical() + HeightPSIVertical())) * Scale;
+                return new Vector2(ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal() + WidthPSIHorizontal(), ColBarSettings.BaseSizeFloat + HeightMoodBarVertical() + HeightPSIVertical()) * Scale;
             }
         }
         public static Vector2 PawnSize
         {
             get
             {
-                return (new Vector2(ColBarSettings.BaseSizeFloat , ColBarSettings.BaseSizeFloat)) * Scale;
+                return (new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat)) * Scale;
             }
         }
         public static float SpaceBetweenColonistsHorizontal
@@ -72,7 +72,8 @@ namespace ColonistBarKF
 
         public static float WidthMoodBarHorizontal()
         {
-            if (ColBarSettings.UseExternalMoodBar && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
+            if (ColBarSettings.UseExternalMoodBar &&
+                (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
                 return ColBarSettings.BaseSizeFloat / 4;
 
             return 0f;
@@ -91,7 +92,7 @@ namespace ColonistBarKF
             if (ColBarSettings.UsePsi)
                 if (ColBarSettings.ColBarPsiIconPos == Alignment.Left || ColBarSettings.ColBarPsiIconPos == Alignment.Right)
                 {
-                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn  * PsiRowsOnBar;
+                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
@@ -146,11 +147,11 @@ namespace ColonistBarKF
             }
 
 
-         // if (Event.current.type == EventType.Layout)
-         // {
-         //    if (Rand.Value>0.99f)
-         //         MarkColonistsDirty();
-         // }
+            // if (Event.current.type == EventType.Layout)
+            // {
+            //    if (Rand.Value>0.99f)
+            //         MarkColonistsDirty();
+            // }
 
 
             if (Event.current.type != EventType.Layout)
@@ -160,7 +161,7 @@ namespace ColonistBarKF
                 bool showGroupFrames = ShowGroupFrames;
                 for (int i = 0; i < helper.cachedDrawLocs.Count; i++)
                 {
-                    Rect rect = new Rect(helper.cachedDrawLocs[i].x, helper.cachedDrawLocs[i].y, FullSize.x, FullSize.y);
+                    Rect rect = new Rect(helper.cachedDrawLocs[i].x, helper.cachedDrawLocs[i].y, FullSize.x, FullSize.y + 12f);
                     ColonistBar.Entry entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
@@ -381,7 +382,7 @@ namespace ColonistBarKF
         public static void MarkColonistsDirty()
         {
             helper.entriesDirty = true;
-        //    Log.Message("Colonists marked dirty.01");
+            //    Log.Message("Colonists marked dirty.01");
         }
 
         private static bool Visible

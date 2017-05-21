@@ -99,6 +99,7 @@ namespace ColonistBarKF
         private Rect GroupFrameRect(int group)
         {
             float pos_x = 99999f;
+            float pos_y = 21f;
             float num2 = 0f;
             float height = 0f;
             List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
@@ -112,7 +113,13 @@ namespace ColonistBarKF
                     height = Mathf.Max(height, drawLocs[i].y + ColonistBar_KF.FullSize.y);
                 }
             }
-            return new Rect(pos_x, ColBarSettings.UseCustomMarginTop ? ColBarSettings.MarginTop - 21f : 21f, num2 - pos_x, ColBarSettings.UseCustomMarginTop ? height - ColBarSettings.MarginTop : height).ContractedBy(-12f * ColonistBar_KF.Scale);
+            if (ColBarSettings.UseCustomMarginTop)
+            {
+                pos_y = ColBarSettings.MarginTop;
+                height -= ColBarSettings.MarginTop;
+            }
+
+            return new Rect(pos_x, pos_y, num2 - pos_x, height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }
 
         public void DrawGroupFrame(int group)
