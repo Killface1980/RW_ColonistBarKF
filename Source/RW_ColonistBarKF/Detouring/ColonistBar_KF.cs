@@ -48,93 +48,65 @@ namespace ColonistBarKF
             }
         }
 
-        public static Vector2 Size
+        public static Vector2 FullSize
         {
             get
             {
-                return BaseSize * Scale;
+                return (new Vector2(ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal() + WidthPSIHorizontal(), ColBarSettings.BaseSizeFloat + HeightMoodBarVertical() + HeightPSIVertical())) * Scale;
+            }
+        }
+        public static Vector2 PawnSize
+        {
+            get
+            {
+                return (new Vector2(ColBarSettings.BaseSizeFloat , ColBarSettings.BaseSizeFloat)) * Scale;
+            }
+        }
+        public static float SpaceBetweenColonistsHorizontal
+        {
+            get
+            {
+                return ColBarSettings.BaseSpacingHorizontal * Scale;
             }
         }
 
-        public static float SpacingHorizontal => SpacingHorizontalAssumingScale(Scale);
-
-        private static float SpacingVertical => SpacingVerticalAssumingScale(Scale);
-
-        public static float SpacingPSIHorizontal => SpacingHorizontalPSIAssumingScale(Scale);
-
-        private static float SpacingPSIVertical => SpacingVerticalPSIAssumingScale(Scale);
-
-        private static float SpacingMoodBarVertical => SpacingVerticalgMoodBarAssumingScale(Scale);
-
-        public static float SpacingMoodBarHorizontal => SpacingHorizontalMoodBarAssumingScale(Scale);
-
-        private static float SpacingHorizontalMoodBarAssumingScale(float scale)
+        public static float WidthMoodBarHorizontal()
         {
             if (ColBarSettings.UseExternalMoodBar && (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
-                return ColBarSettings.BaseSizeFloat / 4 * scale;
+                return ColBarSettings.BaseSizeFloat / 4;
 
             return 0f;
         }
 
-        private static float SpacingVerticalgMoodBarAssumingScale(float scale)
+        public static float HeightMoodBarVertical()
         {
             if (ColBarSettings.UseExternalMoodBar &&
                 (ColBarSettings.MoodBarPos == Alignment.Bottom || ColBarSettings.MoodBarPos == Alignment.Top))
-                return ColBarSettings.BaseSizeFloat / 4 * scale;
+                return ColBarSettings.BaseSizeFloat / 4;
             return 0f;
         }
 
-        private static int ColonistsPerRow => ColonistsPerRowAssumingScale(Scale);
-
-        private static Vector2 SizeAssumingScale(float scale)
-        {
-            return BaseSize * scale;
-        }
-
-        private static int RowsCountAssumingScale(float scale)
-        {
-            return Mathf.CeilToInt(helper.cachedDrawLocs.Count / (float)ColonistsPerRowAssumingScale(scale));
-        }
-
-        private static int ColonistsPerRowAssumingScale(float scale)
-        {
-            ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft - ColBarSettings.MarginRight;
-            ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2 - ColBarSettings.MarginRight / 2;
-
-            return Mathf.FloorToInt((ColBarSettings.MaxColonistBarWidth) / (SizeAssumingScale(scale).x + SpacingHorizontalAssumingScale(scale) + SpacingHorizontalPSIAssumingScale(scale) + SpacingHorizontalMoodBarAssumingScale(scale)));
-        }
-
-        private static float SpacingHorizontalAssumingScale(float scale)
-        {
-            return ColBarSettings.BaseSpacingHorizontal * scale;
-        }
-
-        private static float SpacingVerticalAssumingScale(float scale)
-        {
-            return ColBarSettings.BaseSpacingVertical * scale;
-        }
-
-        private static float SpacingHorizontalPSIAssumingScale(float scale)
+        public static float WidthPSIHorizontal()
         {
             if (ColBarSettings.UsePsi)
                 if (ColBarSettings.ColBarPsiIconPos == Alignment.Left || ColBarSettings.ColBarPsiIconPos == Alignment.Right)
                 {
-                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * scale * PsiRowsOnBar;
+                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn  * PsiRowsOnBar;
                 }
             return 0f;
         }
 
-        private static float SpacingVerticalPSIAssumingScale(float scale)
+        public static float HeightPSIVertical()
         {
             if (ColBarSettings.UsePsi)
                 if (ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == Alignment.Top)
                 {
-                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * scale * PsiRowsOnBar;
+                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
 
-        private static int PsiRowsOnBar
+        public static int PsiRowsOnBar
         {
             get
             {
@@ -143,8 +115,7 @@ namespace ColonistBarKF
                 int maxCount = 0;
                 foreach (KeyValuePair<Pawn, PawnStats> colonist in PSI.PSI._statsDict)
                 {
-                    if (colonist.Value.IconCount > maxCount)
-                        maxCount = colonist.Value.IconCount;
+                    maxCount = Mathf.Max(maxCount, colonist.Value.IconCount);
                 }
                 int psiRowsOnBar = Mathf.CeilToInt((float)maxCount / ColBarSettings.IconsInColumn);
                 return psiRowsOnBar;
@@ -165,8 +136,6 @@ namespace ColonistBarKF
             }
             return helper.tmpColonistsInOrder;
         }
-
-        static Rect ColbarRect = new Rect();
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static void ColonistBarOnGUI()
@@ -191,7 +160,7 @@ namespace ColonistBarKF
                 bool showGroupFrames = ShowGroupFrames;
                 for (int i = 0; i < helper.cachedDrawLocs.Count; i++)
                 {
-                    Rect rect = new Rect(helper.cachedDrawLocs[i].x, helper.cachedDrawLocs[i].y, Size.x, Size.y);
+                    Rect rect = new Rect(helper.cachedDrawLocs[i].x, helper.cachedDrawLocs[i].y, FullSize.x, FullSize.y);
                     ColonistBar.Entry entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
@@ -229,7 +198,6 @@ namespace ColonistBarKF
             }
         }
 
-        // RimWorld.ColonistBarColonistDrawer
 
         public static bool AnyColonistOrCorpseAt(Vector2 pos)
         {
@@ -237,12 +205,11 @@ namespace ColonistBarKF
             return TryGetEntryAt(pos, out entry) && entry.pawn != null;
         }
 
-        // RimWorld.ColonistBar
         public static bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
             List<Vector2> drawLocs = helper.cachedDrawLocs;
             List<ColonistBar.Entry> entries = helper.Entries;
-            Vector2 size = Size;
+            Vector2 size = FullSize;
             for (int i = 0; i < drawLocs.Count; i++)
             {
                 Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y);
@@ -256,7 +223,6 @@ namespace ColonistBarKF
             return false;
         }
 
-        // RimWorld.ColonistBar
         private static bool ShowGroupFrames
         {
             get
@@ -271,15 +237,11 @@ namespace ColonistBarKF
             }
         }
 
-
-        // RimWorld.ColonistBar
-        // ReSharper disable once UnusedMember.Global
-        // RimWorld.ColonistBar
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
             List<Vector2> drawLocs = helper.cachedDrawLocs;
             List<ColonistBar.Entry> entries = helper.Entries;
-            Vector2 size = Size;
+            Vector2 size = FullSize;
             helper.tmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
             {
@@ -323,8 +285,6 @@ namespace ColonistBarKF
             return helper.tmpColonists;
         }
 
-
-
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Thing ColonistOrCorpseAt(Vector2 pos)
         {
@@ -356,11 +316,11 @@ namespace ColonistBarKF
                     CheckRecacheEntries();
                     Vector2 size = Size;
                     int colonistsPerRow = ColonistsPerRow;
-                    float spacingHorizontal = SpacingHorizontal + SpacingPSIHorizontal + SpacingMoodBarHorizontal;
-                    float spacingVertical = SpacingVertical + SpacingPSIVertical + SpacingMoodBarVertical;
+                    float spacingHorizontal = SpacingHorizontal + WidthPSIHorizontal + WidthMoodBarHorizontal;
+                    float spacingVertical = SpacingVertical + HeightPSIVertical + HeightMoodBarVertical;
 
 
-                    float cachedDrawLocs_x = 0f + ColBarSettings.MarginLeft * Scale;
+                    float cachedDrawLocs_x = 0f + ColBarSettings.MarginHorizontal * Scale;
                     float cachedDrawLocs_y = ColBarSettings.MarginTop * Scale;
 
 
@@ -401,62 +361,6 @@ namespace ColonistBarKF
 
                 }
         */
-        private static void ModifyBasicDrawLocsForPsi(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
-        {
-            switch (ColBarSettings.ColBarPsiIconPos)
-            {
-                case Alignment.Left:
-                    cachedDrawLocs_x += size.x / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
-                    break;
-
-                case Alignment.Right:
-                    cachedDrawLocs_x -= size.x / ColBarSettings.IconsInColumn * PsiRowsOnBar / 2;
-                    break;
-
-                case Alignment.Bottom:
-                    //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
-                    break;
-                case Alignment.Top:
-                    cachedDrawLocs_y += size.y / ColBarSettings.IconsInColumn * PsiRowsOnBar;
-                    break;
-            }
-        }
-
-        private static void ModifyBasicDrawLocsForMoodBar(Vector2 size, ref float cachedDrawLocs_x, ref float cachedDrawLocs_y)
-        {
-            switch (ColBarSettings.MoodBarPos)
-            {
-                case Alignment.Left:
-                    cachedDrawLocs_x += size.x / 8;
-                    break;
-
-                case Alignment.Right:
-                    cachedDrawLocs_x -= size.x / 8;
-                    break;
-
-                case Alignment.Top:
-                    cachedDrawLocs_y += size.y / 8;
-                    break;
-
-                case Alignment.Bottom:
-                    //      cachedDrawLocs_y -= size.y/ColBarSettings.IconsInColumn*PsiRowsOnBar;
-                    break;
-            }
-        }
-
-
-
-        private static List<int> entriesInGroup = new List<int>();
-        private static List<int> horizontalSlotsPerGroup = new List<int>();
-
-
-
-
-
-
-        // RimWorld.ColonistBarColonistDrawer
-
-
 
         public static float GetEntryRectAlpha(Rect rect)
         {
@@ -477,14 +381,9 @@ namespace ColonistBarKF
         public static void MarkColonistsDirty()
         {
             helper.entriesDirty = true;
-            Log.Message("Colonists marked dirty.01");
+        //    Log.Message("Colonists marked dirty.01");
         }
 
-
-
-
-
-        // RimWorld.ColonistBar
         private static bool Visible
         {
             get

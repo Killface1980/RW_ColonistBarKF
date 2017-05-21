@@ -209,17 +209,14 @@ namespace ColonistBarKF
 
             ColBarSettings.UseCustomIconSize = GUILayout.Toggle(
                 ColBarSettings.UseCustomIconSize,
-                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, "
-                + (ColBarSettings.UseFixedIconScale
-                       ? (ColBarSettings.FixedIconScaleFloat * 100).ToString("N0") + " %, "
-                       : (ColonistBar_KF.helper.cachedScale * 100).ToString("N0") + " %, ")
+                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, " + (ColonistBar_KF.helper.cachedScale * 100).ToString("N0") + " %, "
                 + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
 
             if (ColBarSettings.UseCustomIconSize)
             {
                 GUILayout.Space(Text.LineHeight / 2);
 
-                ColBarSettings.BaseSizeFloat = GUILayout.HorizontalSlider(ColBarSettings.BaseSizeFloat, 24f, 128f);
+                ColBarSettings.BaseSizeFloat = GUILayout.HorizontalSlider(ColBarSettings.BaseSizeFloat, 24f, 256f);
 
                 ColBarSettings.BaseSpacingHorizontal = GUILayout.HorizontalSlider(ColBarSettings.BaseSpacingHorizontal, 1f, 72f);
                 ColBarSettings.BaseSpacingVertical = GUILayout.HorizontalSlider(ColBarSettings.BaseSpacingVertical, 1f, 96f);
@@ -230,22 +227,6 @@ namespace ColonistBarKF
                 ColBarSettings.BaseSpacingHorizontal = 24f;
                 ColBarSettings.BaseSpacingVertical = 32f;
             }
-
-            #region Fixed Scaling
-
-            ColBarSettings.UseFixedIconScale = GUILayout.Toggle(
-                ColBarSettings.UseFixedIconScale,
-                "CBKF.Settings.FixedScale".Translate());
-            if (ColBarSettings.UseFixedIconScale)
-            {
-                ColBarSettings.FixedIconScaleFloat = GUILayout.HorizontalSlider(ColBarSettings.FixedIconScaleFloat, 0.2f, 2.5f);
-            }
-            else
-            {
-                ColBarSettings.FixedIconScaleFloat = 1f;
-            }
-
-            #endregion
 
             GUILayout.EndVertical();
 
@@ -323,12 +304,12 @@ namespace ColonistBarKF
             #region Horizontal alignment
 
             GUILayout.BeginVertical(_fondBoxes);
-            ColBarSettings.UseCustomMarginTopHor = GUILayout.Toggle(
-                ColBarSettings.UseCustomMarginTopHor,
+            ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
+                ColBarSettings.UseCustomMarginTop,
                 "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " yMin, "
                 + (int)ColBarSettings.MarginLeft + " xMin, " + (int)ColBarSettings.MarginRight + " xMax");
 
-            if (ColBarSettings.UseCustomMarginTopHor)
+            if (ColBarSettings.UseCustomMarginTop)
             {
                 GUILayout.Space(Text.LineHeight / 2);
                 ColBarSettings.MarginTop = GUILayout.HorizontalSlider(ColBarSettings.MarginTop, 0f, Screen.height / 6);
@@ -344,8 +325,7 @@ namespace ColonistBarKF
             else
             {
                 ColBarSettings.MarginTop = 21f;
-                ColBarSettings.MarginLeft = 160f;
-                ColBarSettings.MarginRight = 160f;
+                ColBarSettings.MarginLeft = 520f;
                 ColBarSettings.MaxColonistBarWidth = Screen.width - ColBarSettings.MarginLeft
                                                      - ColBarSettings.MarginRight;
                 ColBarSettings.HorizontalOffset = ColBarSettings.MarginLeft / 2
@@ -375,7 +355,7 @@ namespace ColonistBarKF
                 + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
             if (ColBarSettings.UseCustomRowCount)
             {
-                ColBarSettings.MaxRowsCustom = (int) GUILayout.HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
+                ColBarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
             }
 
             GUILayout.EndVertical();
@@ -398,24 +378,24 @@ namespace ColonistBarKF
 
             GUILayout.Label("FollowMe.MiddleClick".Translate());
 
-          //#region DoubleClickTime
-          //
-          //ColBarSettings.UseCustomDoubleClickTime = GUILayout.Toggle(
-          //    ColBarSettings.UseCustomDoubleClickTime,
-          //    "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2")
-          //    + " s");
-          //if (ColBarSettings.UseCustomDoubleClickTime)
-          //{
-          //    // listing.Gap(3f);
-          //    GUILayout.Space(Text.LineHeight / 2);
-          //    ColBarSettings.DoubleClickTime = GUILayout.HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f);
-          //}
-          //else
-          //{
-          //    ColBarSettings.DoubleClickTime = 0.5f;
-          //}
-          //
-          //#endregion
+            //#region DoubleClickTime
+            //
+            //ColBarSettings.UseCustomDoubleClickTime = GUILayout.Toggle(
+            //    ColBarSettings.UseCustomDoubleClickTime,
+            //    "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2")
+            //    + " s");
+            //if (ColBarSettings.UseCustomDoubleClickTime)
+            //{
+            //    // listing.Gap(3f);
+            //    GUILayout.Space(Text.LineHeight / 2);
+            //    ColBarSettings.DoubleClickTime = GUILayout.HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f);
+            //}
+            //else
+            //{
+            //    ColBarSettings.DoubleClickTime = 0.5f;
+            //}
+            //
+            //#endregion
 
 
             #region Mood Bar
@@ -425,7 +405,7 @@ namespace ColonistBarKF
                 ColBarSettings.UseNewMood,
                 "CBKF.Settings.UseNewMood".Translate());
 
-            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
+            if (ColBarSettings.UseNewMood)
             {
                 ColBarSettings.UseExternalMoodBar = GUILayout.Toggle(
                 ColBarSettings.UseExternalMoodBar,
@@ -438,6 +418,10 @@ namespace ColonistBarKF
                     GUILayout.FlexibleSpace();
                     GUILayout.EndHorizontal();
                 }
+            }
+            else
+            {
+                ColBarSettings.UseExternalMoodBar = false;
             }
 
             GUILayout.EndVertical();
@@ -499,7 +483,7 @@ namespace ColonistBarKF
 
             GUILayout.Space(Text.LineHeight / 2);
 
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            _scrollPositionPSI = GUILayout.BeginScrollView(_scrollPositionPSI);
 
             int num = 0;
             GUILayout.BeginHorizontal();
@@ -762,7 +746,7 @@ namespace ColonistBarKF
 
         private void FillPagePSIOpacityAndColor()
         {
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            _scrollPositionPSIOp = GUILayout.BeginScrollView(_scrollPositionPSIOp);
 
             GUILayout.BeginVertical(_fondBoxes);
             GUILayout.Label(
@@ -881,7 +865,7 @@ namespace ColonistBarKF
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            _scrollPositionPSISens = GUILayout.BeginScrollView(_scrollPositionPSISens);
 
             GUILayout.BeginVertical(_fondBoxes);
             GUILayout.Label(
@@ -927,7 +911,7 @@ namespace ColonistBarKF
 
         private void FillPSIPageSizeArrangement()
         {
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            _scrollPositionPSISize = GUILayout.BeginScrollView(_scrollPositionPSISize);
 
 
 
@@ -945,7 +929,7 @@ namespace ColonistBarKF
                 GUILayout.Space(Text.LineHeight / 2);
 
                 GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int) GUILayout.HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+                ColBarSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
             }
             GUILayout.EndVertical();
 
@@ -979,7 +963,7 @@ namespace ColonistBarKF
                 GUILayout.Space(Text.LineHeight / 2);
 
                 GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + PsiSettings.IconsInColumn);
-                PsiSettings.IconsInColumn = (int) GUILayout.HorizontalSlider(PsiSettings.IconsInColumn, 1f, 7f);
+                PsiSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(PsiSettings.IconsInColumn, 1f, 7f);
 
                 int num = (int)(PsiSettings.IconSize * 4.5);
 
@@ -1175,24 +1159,23 @@ namespace ColonistBarKF
         {
             get
             {
-                if (ColBarSettings.MoodBarPos == Position.Alignment.Left)
+                switch (ColBarSettings.MoodBarPos)
                 {
-                    moodBarPositionInt = 0;
-                }
+                    case Position.Alignment.Left:
+                        moodBarPositionInt = 0;
+                        break;
 
-                if (ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                {
-                    moodBarPositionInt = 1;
-                }
+                    case Position.Alignment.Right:
+                        moodBarPositionInt = 1;
+                        break;
 
-                if (ColBarSettings.MoodBarPos == Position.Alignment.Top)
-                {
-                    moodBarPositionInt = 2;
-                }
+                    case Position.Alignment.Top:
+                        moodBarPositionInt = 2;
+                        break;
 
-                if (ColBarSettings.MoodBarPos == Position.Alignment.Bottom)
-                {
-                    moodBarPositionInt = 3;
+                    case Position.Alignment.Bottom:
+                        moodBarPositionInt = 3;
+                        break;
                 }
 
                 return moodBarPositionInt;
@@ -1364,10 +1347,10 @@ namespace ColonistBarKF
         readonly GUIStyle _fondImages = new GUIStyle
         {
             normal = {
-                                                            background = ColonistBarTextures.DarkGrayFond
+                background = ColonistBarTextures.DarkGrayFond
                                                          },
             hover = {
-                                                           background = ColonistBarTextures.RedHover
+                background = ColonistBarTextures.RedHover
                                                         }
         };
 
@@ -1375,7 +1358,11 @@ namespace ColonistBarKF
 
         readonly GUIStyle _grayLines = new GUIStyle { normal = { background = ColonistBarTextures.GrayLines } };
 
-        private Vector2 _scrollPosition;
+        private Vector2 _scrollPositionPSISens;
+        private Vector2 _scrollPositionPSISize;
+        private Vector2 _scrollPositionPSIOp;
+        private Vector2 _scrollPositionPSI;
+        private Vector2 _scrollPositionBase;
 
         public override void DoWindowContents(Rect rect)
 #else
@@ -1392,7 +1379,7 @@ namespace ColonistBarKF
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Colonist Bar KF 0.16.0", _headline);
+            GUILayout.Label("Colonist Bar KF 0.17.0", _headline);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -1410,7 +1397,7 @@ namespace ColonistBarKF
                     {
                         GUILayout.Space(Text.LineHeight);
 
-                        _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+                        _scrollPositionBase = GUILayout.BeginScrollView(_scrollPositionBase);
 
                         LabelHeadline("CBKF.Settings.BarPosition".Translate());
 
@@ -1515,7 +1502,11 @@ namespace ColonistBarKF
             GUILayout.EndArea();
 
             if (GUI.changed)
+            {
                 ColonistBar_KF.MarkColonistsDirty();
+                PSI.PSI.Reinit(false, false, true);
+
+            }
 
 #if !NoCCL
             return 1000f;

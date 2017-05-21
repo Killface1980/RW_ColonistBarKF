@@ -23,7 +23,6 @@ namespace ColonistBarKF
         public static void Dirty()
         {
             ColonistBar_KF.helper.entriesDirty = true;
-            Log.Message("Colonists marked dirty.x02");
         }
     }
 
@@ -34,6 +33,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x02");
         }
     }
 
@@ -44,6 +44,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x03");
         }
     }
     [HarmonyPatch(typeof(Caravan), "PostAdd")]
@@ -53,6 +54,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x04");
         }
     }
     [HarmonyPatch(typeof(Caravan), "PostRemove")]
@@ -62,6 +64,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x05");
         }
     }
 
@@ -72,6 +75,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x06");
         }
     }
     [HarmonyPatch(typeof(Corpse), "NotifyColonistBar")]
@@ -81,6 +85,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x07");
         }
     }
     //   [HarmonyPatch(typeof(Game), "AddMap")]
@@ -90,6 +95,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x08");
         }
     }
     //   [HarmonyPatch(typeof(Game), "DeinitAndRemoveMap")]
@@ -99,6 +105,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x09");
         }
     }
     [HarmonyPatch(typeof(MapPawns), "DoListChangedNotifications")]
@@ -108,6 +115,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x10");
         }
     }
     [HarmonyPatch(typeof(Pawn), "Kill")]
@@ -117,6 +125,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x11");
         }
     }
     [HarmonyPatch(typeof(Pawn), "SetFaction")]
@@ -126,6 +135,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x12");
         }
     }
     [HarmonyPatch(typeof(Thing), "DeSpawn")]
@@ -135,6 +145,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             MarkDirty_Helper.Dirty();
+            Log.Message("Colonists marked dirty.x13");
         }
     }
     [HarmonyPatch(typeof(Thing), "SpawnSetup")]
@@ -144,7 +155,10 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty(Thing __instance)
         {
             if (__instance is IThingHolder && Find.ColonistBar != null)
+            {
                 MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x14");
+            }
         }
     }
     [HarmonyPatch(typeof(ThingOwner), "NotifyColonistBarIfColonistCorpse")]
@@ -154,8 +168,12 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty(Thing __instance)
         {
             Corpse corpse = __instance as Corpse;
-            if (corpse != null && !corpse.Bugged && corpse.InnerPawn.Faction != null && corpse.InnerPawn.Faction.IsPlayer && Current.ProgramState == ProgramState.Playing)
+            if (corpse != null && !corpse.Bugged && corpse.InnerPawn.Faction != null &&
+                corpse.InnerPawn.Faction.IsPlayer && Current.ProgramState == ProgramState.Playing)
+            {
                 MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x15");
+            }
         }
     }
     [HarmonyPatch(typeof(Window), "Notify_ResolutionChanged")]
@@ -165,7 +183,10 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             if (Current.ProgramState == ProgramState.Playing)
+            {
                 MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x16");
+            }
         }
     }
 

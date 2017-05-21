@@ -17,8 +17,6 @@ namespace ColonistBarKF
 
         public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
 
-        public float FixedIconScaleFloat = 1f;
-
         public float HorizontalOffset = 0f;
 
         public float IconOffsetX = 1f;
@@ -44,9 +42,9 @@ namespace ColonistBarKF
         public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
 
-        public float MarginLeft = 160f;
+        public float MarginLeft = 260f;
 
-        public float MarginRight = 160f;
+        public float MarginRight = 260f;
 
         public float MarginTop = 21f;
 
@@ -137,20 +135,12 @@ namespace ColonistBarKF
 
         public bool UseCustomIconSize = false;
 
-        public bool UseCustomMarginBottom = false;
-
-        public bool UseCustomMarginLeft = false;
-
-        public bool UseCustomMarginRight = false;
-
         // public static bool useCustomScale = false;
-        public bool UseCustomMarginTopHor = false;
+        public bool UseCustomMarginTop = false;
 
         public bool UseCustomPawnTextureCameraOffsets = false;
 
         public bool UseCustomRowCount = false;
-
-        public bool UseFixedIconScale = false;
 
         public bool UseGender = true;
 
