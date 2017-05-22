@@ -11,40 +11,6 @@ namespace ColonistBarKF.Detouring
 {
     class _WorldSelector
     {
-
-        // RimWorld.Planet.WorldSelector
-        private IEnumerable<WorldObject> SelectableObjectsUnderMouse(out bool clickedDirectlyOnCaravan, out bool usedColonistBar)
-        {
-            Vector2 mousePositionOnUIInverted = UI.MousePositionOnUIInverted;
-            if (Current.ProgramState == ProgramState.Playing)
-            {
-                Caravan caravan = Find.ColonistBar.CaravanMemberCaravanAt(mousePositionOnUIInverted);
-                if (caravan != null)
-                {
-                    clickedDirectlyOnCaravan = true;
-                    usedColonistBar = true;
-                    return Gen.YieldSingle<WorldObject>(caravan);
-                }
-            }
-            List<WorldObject> list = GenWorldUI.WorldObjectsUnderMouse(UI.MousePositionOnUI);
-            clickedDirectlyOnCaravan = false;
-            if (list.Count > 0 && list[0] is Caravan && list[0].DistanceToMouse(UI.MousePositionOnUI) < GenWorldUI.CaravanDirectClickRadius)
-            {
-                clickedDirectlyOnCaravan = true;
-                for (int i = list.Count - 1; i >= 0; i--)
-                {
-                    WorldObject worldObject = list[i];
-                    if (worldObject is Caravan && worldObject.DistanceToMouse(UI.MousePositionOnUI) > GenWorldUI.CaravanDirectClickRadius)
-                    {
-                        list.Remove(worldObject);
-                    }
-                }
-            }
-            usedColonistBar = false;
-            return list;
-        }
-   
-        
         // RimWorld.Planet.WorldSelector
         [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         private void SelectInsideDragBox()
@@ -229,5 +195,36 @@ namespace ColonistBarKF.Detouring
             Find.WorldSelector.selectedTile = num2;
         }
 
+        // RimWorld.Planet.WorldSelector
+        private IEnumerable<WorldObject> SelectableObjectsUnderMouse(out bool clickedDirectlyOnCaravan, out bool usedColonistBar)
+        {
+            Vector2 mousePositionOnUIInverted = UI.MousePositionOnUIInverted;
+            if (Current.ProgramState == ProgramState.Playing)
+            {
+                Caravan caravan = Find.ColonistBar.CaravanMemberCaravanAt(mousePositionOnUIInverted);
+                if (caravan != null)
+                {
+                    clickedDirectlyOnCaravan = true;
+                    usedColonistBar = true;
+                    return Gen.YieldSingle<WorldObject>(caravan);
+                }
+            }
+            List<WorldObject> list = GenWorldUI.WorldObjectsUnderMouse(UI.MousePositionOnUI);
+            clickedDirectlyOnCaravan = false;
+            if (list.Count > 0 && list[0] is Caravan && list[0].DistanceToMouse(UI.MousePositionOnUI) < GenWorldUI.CaravanDirectClickRadius)
+            {
+                clickedDirectlyOnCaravan = true;
+                for (int i = list.Count - 1; i >= 0; i--)
+                {
+                    WorldObject worldObject = list[i];
+                    if (worldObject is Caravan && worldObject.DistanceToMouse(UI.MousePositionOnUI) > GenWorldUI.CaravanDirectClickRadius)
+                    {
+                        list.Remove(worldObject);
+                    }
+                }
+            }
+            usedColonistBar = false;
+            return list;
+        }
     }
 }

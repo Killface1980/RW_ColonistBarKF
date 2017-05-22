@@ -72,8 +72,8 @@
     <Compile Include="Detouring\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="Detouring\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="Detouring\ColHelper.cs" />
-    <Compile Include="Detouring\Class5.cs" />
-    <Compile Include="Detouring\Class6.cs" />
+    <Compile Include="Detouring\HugsLib_Patches_Dirty.cs" />
+    <Compile Include="Detouring\Coloniistbar_KF_ModBase.cs" />
     <Compile Include="Detouring\_Selector.cs" />
     <Compile Include="Detouring\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />

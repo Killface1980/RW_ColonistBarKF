@@ -22,6 +22,8 @@ namespace ColonistBarKF.Detouring
             Caravan caravan = ColonistBar_KF.CaravanMemberCaravanAt(UI.MousePositionOnUIInverted);
             if (caravan != null)
             {
+                if (FollowMe.CurrentlyFollowing)
+                    FollowMe.StopFollow("Caravan member selected.");
                 CameraJumper.TryJumpAndSelect(caravan);
                 return;
             }
