@@ -209,7 +209,7 @@ namespace ColonistBarKF
 
             ColBarSettings.UseCustomIconSize = GUILayout.Toggle(
                 ColBarSettings.UseCustomIconSize,
-                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, " + (ColonistBar_KF.helper.cachedScale * 100).ToString("N0") + " %, "
+                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, " + (ColonistBar_KF.BarHelperKf.cachedScale * 100).ToString("N0") + " %, "
                 + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
 
             if (ColBarSettings.UseCustomIconSize)

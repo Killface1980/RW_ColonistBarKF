@@ -25,7 +25,7 @@ namespace ColonistBarKF
 
         public void CalculateDrawLocs(List<Vector2> outDrawLocs, out float scale)
         {
-            if (ColonistBar_KF.helper.Entries.Count == 0)
+            if (ColonistBar_KF.BarHelperKf.Entries.Count == 0)
             {
                 outDrawLocs.Clear();
                 scale = 1f;
@@ -43,7 +43,7 @@ namespace ColonistBarKF
         private void CalculateColonistsInGroup()
         {
             entriesInGroup.Clear();
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             int num = CalculateGroupsCount();
             for (int i = 0; i < num; i++)
             {
@@ -62,7 +62,7 @@ namespace ColonistBarKF
 
         private int CalculateGroupsCount()
         {
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             int num = -1;
             int num2 = 0;
             for (int i = 0; i < entries.Count; i++)
@@ -79,7 +79,7 @@ namespace ColonistBarKF
         private float FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow)
         {
             float bestScale = 1f;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             int groupsCount = CalculateGroupsCount();
             while (true)
             {
@@ -248,12 +248,12 @@ namespace ColonistBarKF
                 {
                     horizontalSlotsPerGroup[i] = Mathf.Min(horizontalSlotsPerGroup[i], entriesInGroup[i]);
                 }
-                entriesCount = ColonistBar_KF.helper.Entries.Count;
+                entriesCount = ColonistBar_KF.BarHelperKf.Entries.Count;
             }
             int groupsCount = CalculateGroupsCount();
             float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal()) * scale;
             float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             int index = -1;
             int numInGroup = -1;
             float groupStartX = (UI.screenWidth - groupWidth ) / 2f;

@@ -65,19 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
-    <Compile Include="ColorsPSI.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
-    <Compile Include="Detouring\ColonistBarColonistDrawer_KF.cs" />
-    <Compile Include="Detouring\ColonistBarDrawLocsFinder_KF.cs" />
-    <Compile Include="Detouring\ColHelper.cs" />
-    <Compile Include="Detouring\HugsLib_Patches_Dirty.cs" />
-    <Compile Include="Detouring\Coloniistbar_KF_ModBase.cs" />
-    <Compile Include="Detouring\_Selector.cs" />
-    <Compile Include="Detouring\_WorldSelector.cs" />
+    <Compile Include="ColonistBarKF\ColonistBarColonistDrawer_KF.cs" />
+    <Compile Include="ColonistBarKF\ColonistBarDrawLocsFinder_KF.cs" />
+    <Compile Include="ColonistBarKF\ColBarHelper_KF.cs" />
+    <Compile Include="ColonistBarKF\HugsLib_Patches_Dirty.cs" />
+    <Compile Include="ColonistBarKF\Coloniistbar_KF_ModBase.cs" />
+    <Compile Include="ColonistBarKF\_Selector.cs" />
+    <Compile Include="ColonistBarKF\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
-    <None Include="OLD_A16\Class1.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
@@ -85,14 +83,14 @@
     <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
-    <Compile Include="ColonistBarTextures.cs" />
+    <Compile Include="ColonistBarKF\ColonistBarTextures.cs" />
     <Compile Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />
     <Compile Include="Fluffy\ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Settings\SettingsColonistBar.cs" />
-    <Compile Include="Detouring\ColonistBar_KF.cs" />
+    <Compile Include="ColonistBarKF\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,7 +120,9 @@
       <Link>Languages\Russian\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Media\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

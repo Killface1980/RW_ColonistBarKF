@@ -13,7 +13,7 @@ namespace ColonistBarKF
         [HarmonyPrefix]
         private static void MarkColonistsDirty()
         {
-            ColonistBar_KF.helper.entriesDirty = true;
+            ColonistBar_KF.BarHelperKf.entriesDirty = true;
             Log.Message("Colonists marked dirty.x02");
         }
     }
@@ -22,7 +22,7 @@ namespace ColonistBarKF
     {
         public static void Dirty()
         {
-            ColonistBar_KF.helper.entriesDirty = true;
+            ColonistBar_KF.BarHelperKf.entriesDirty = true;
         }
     }
 

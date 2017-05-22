@@ -6,7 +6,6 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using static ColonistBarKF.CBKF;
-using static ColonistBarKF.ColorsPSI;
 using static ColonistBarKF.PSI.PSI;
 
 namespace ColonistBarKF.PSI

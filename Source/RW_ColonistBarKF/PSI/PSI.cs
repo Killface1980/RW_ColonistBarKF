@@ -6,8 +6,8 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using static ColonistBarKF.CBKF;
-using static ColonistBarKF.ColorsPSI;
 using static ColonistBarKF.PSI.PSIDrawer;
+using static Verse.ColonistBarTextures;
 
 
 namespace ColonistBarKF.PSI

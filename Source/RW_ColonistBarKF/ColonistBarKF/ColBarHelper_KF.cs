@@ -9,7 +9,7 @@ using Verse;
 
 namespace ColonistBarKF
 {
-    public class ColHelper
+    public class ColBarHelper_KF
     {
         public bool entriesDirty = true;
 

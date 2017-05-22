@@ -102,8 +102,8 @@ namespace ColonistBarKF
             float pos_y = 21f;
             float num2 = 0f;
             float height = 0f;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
-            List<Vector2> drawLocs = ColonistBar_KF.helper.DrawLocs;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<Vector2> drawLocs = ColonistBar_KF.BarHelperKf.DrawLocs;
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].group == group)
@@ -125,7 +125,7 @@ namespace ColonistBarKF
         public void DrawGroupFrame(int group)
         {
             Rect position = GroupFrameRect(group);
-            List<ColonistBar.Entry> entries = ColonistBar_KF.helper.Entries;
+            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             Map map = entries.Find((ColonistBar.Entry x) => x.group == group).map;
             float num;
             if (map == null)
@@ -304,7 +304,7 @@ namespace ColonistBarKF
                 {
                     Find.Selector.dragBox.active = false;
                     Find.WorldSelector.dragBox.active = false;
-                    ColonistBar.Entry entry = ColonistBar_KF.helper.Entries.Find((ColonistBar.Entry x) => x.group == group);
+                    ColonistBar.Entry entry = ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
                     Map map = entry.map;
                     if (map == null)
                     {
@@ -329,7 +329,7 @@ namespace ColonistBarKF
             }
             //if (Event.current.button == 1 && Widgets.ButtonInvisible(outerRect, false))
             //{
-            //    ColonistBar.Entry entry2 = ColonistBar_KF.helper.Entries.Find((ColonistBar.Entry x) => x.group == group);
+            //    ColonistBar.Entry entry2 = ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
             //    if (entry2.map != null)
             //    {
             //        CameraJumper.TryJumpAndSelect(CameraJumper.GetWorldTargetOfMap(entry2.map));
@@ -363,36 +363,6 @@ namespace ColonistBarKF
 
             BuildRects(outerRect, out pawnRect, out moodBorderRect, out psiRect);
 
-            PawnStats pawnStats = null;
-            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
-            {
-                if (PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats))
-                    if (pawnStats.Mood != null && pawnStats.Mb != null)
-                    {
-                        if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdExtreme)
-                        {
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodExtremeCrossedTex);
-                        }
-                        else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMajor)
-                        {
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMajorCrossedTex);
-                        }
-                        else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMinor)
-                        {
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMinorCrossedTex);
-                        }
-                        else
-                        {
-                            GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        }
-                    }
-            }
-
-
-
             if (ColBarSettings.UseGender)
             {
                 if (colonist.gender == Gender.Male)
@@ -409,12 +379,38 @@ namespace ColonistBarKF
 
                 BGColor.a = entryRectAlpha;
 
-                GUI.color = BGColor;
             }
 
+            GUI.color = color;
 
+            PawnStats pawnStats = null;
+            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
+            {
+                if (PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats))
+                    if (pawnStats.Mood != null && pawnStats.Mb != null)
+                    {
+                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
+                        // if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdExtreme)
+                        // {
+                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodExtremeCrossedTex);
+                        // }
+                        // else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMajor)
+                        // {
+                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMajorCrossedTex);
+                        // }
+                        // else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMinor)
+                        // {
+                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMinorCrossedTex);
+                        // }
+                        // else
+                        // {
+                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
+                        // }
+                    }
+            }
+
+            GUI.color = BGColor;
             GUI.DrawTexture(pawnRect, ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
-
             GUI.color = color;
 
             if (colonist.needs != null && colonist.needs.mood != null)
@@ -654,7 +650,7 @@ namespace ColonistBarKF
             GUI.color = color;
             if (colonist?.equipment.Primary != null)
             {
-                var thing = colonist.equipment.Primary;
+                ThingWithComps thing = colonist.equipment.Primary;
                 Rect rect2 = rect.ContractedBy(rect.width / 3);
 
                 rect2.x = rect.xMax - rect2.width - rect.width / 12;
@@ -703,68 +699,66 @@ namespace ColonistBarKF
 
             if (mood != null && mb != null)
             {
-                if (mood.CurLevelPercentage > mb.BreakThresholdMinor)
+                float moodPercent;
+                float curMood = mood.CurLevelPercentage;
+                Texture2D moodTex;
+                Texture2D moodBgTex;
+
+                if (curMood > mb.BreakThresholdMinor)
                 {
-                    if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
-                    else
-                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodTex);
+                    moodPercent = Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, curMood);
+                    moodTex = ColonistBarTextures.MoodTex;
+                    moodBgTex = ColonistBarTextures.MoodBGTex;
                 }
-                else if (mood.CurLevelPercentage > mb.BreakThresholdMajor)
+                else if (curMood > mb.BreakThresholdMajor)
                 {
-                    if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
-                    else
-                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMinorCrossedTex);
+                    moodPercent = Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, curMood);
+                    moodTex = ColonistBarTextures.MoodMinorCrossedTex;
+                    moodBgTex = ColonistBarTextures.MoodMinorCrossedBGTex;
                 }
-                else if (mood.CurLevelPercentage > mb.BreakThresholdExtreme)
+                else if (curMood > mb.BreakThresholdExtreme)
                 {
-                    if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
-                    else
-                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodMajorCrossedTex);
+                    moodPercent = Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, curMood);
+                    moodTex = ColonistBarTextures.MoodMajorCrossedTex;
+                    moodBgTex = ColonistBarTextures.MoodMajorCrossedBGTex;
                 }
                 else
                 {
-                    GUI.DrawTexture(moodRect, ColonistBarTextures.MoodExtremeCrossedBGTex);
-                    if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                        GUI.DrawTexture(moodRect.BottomPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
-                    else
-                        GUI.DrawTexture(moodRect.LeftPart(mood.CurLevelPercentage), ColonistBarTextures.MoodExtremeCrossedTex);
+                    moodPercent = mb.BreakThresholdExtreme > 0.01f ? Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, curMood) : 1f;
+                    moodTex = ColonistBarTextures.MoodExtremeCrossedTex;
+                    moodBgTex = ColonistBarTextures.MoodExtremeCrossedBGTex;
                 }
+                GUI.DrawTexture(moodRect, moodBgTex);
+
+                if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
+                    GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
+                else
+                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
 
                 DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
                 DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
                 DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
 
+                Rect rect1;
+                Rect rect2;
+
                 switch (ColBarSettings.MoodBarPos)
                 {
-                    case Position.Alignment.Left:
-                    case Position.Alignment.Right:
-                        GUI.DrawTexture(
-                            new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width,
-                                1), ColonistBarTextures.MoodTargetTex);
-                        GUI.DrawTexture(
-                            new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3),
-                            ColonistBarTextures.MoodTargetTex);
+                    default:
+                        rect1 = new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1);
+                        rect2 = new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3);
                         break;
+
                     case Position.Alignment.Top:
-                        GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
-                            ColonistBarTextures.MoodTargetTex);
-                        GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2),
-                            ColonistBarTextures.MoodTargetTex);
+                        rect1 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height);
+                        rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2);
                         break;
                     case Position.Alignment.Bottom:
-                        GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height),
-                            ColonistBarTextures.MoodTargetTex);
-                        GUI.DrawTexture(
-                            new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2),
-                            ColonistBarTextures.MoodTargetTex);
-                        break;
+                        rect1 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height);
+                        rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2); break;
                 }
+                GUI.DrawTexture(rect1, ColonistBarTextures.MoodTargetTex);
+                GUI.DrawTexture(rect2, ColonistBarTextures.MoodTargetTex);
             }
         }
 
