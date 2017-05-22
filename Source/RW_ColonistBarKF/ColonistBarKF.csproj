@@ -78,6 +78,7 @@
     <Compile Include="Detouring\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
     <None Include="OLD_A16\Class1.cs" />
+    <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />

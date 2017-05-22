@@ -165,7 +165,7 @@ namespace ColonistBarKF
                     break;
 
                 case SettingsColonistBar.SortByWhat.mood:
-                    orderedEnumerable = tmpColonists.OrderByDescending(x => x?.needs?.mood?.CurLevelPercentage);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurLevelPercentage);
                     tmpColonists = orderedEnumerable.ToList();
                     CBKF.SaveBarSettings();
                     break;

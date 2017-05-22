@@ -438,7 +438,7 @@ namespace ColonistBarKF
             }
 
 
-            Rect rect2 = pawnRect.ContractedBy(-2f * ColonistBar_KF.Scale);
+            Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
 
             if (colonistAlive && !WorldRendererUtility.WorldRenderedNow)
             {
