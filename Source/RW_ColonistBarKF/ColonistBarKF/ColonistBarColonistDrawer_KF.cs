@@ -9,7 +9,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 using Verse.Sound;
-using static ColonistBarKF.CBKF;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {
@@ -386,7 +386,7 @@ namespace ColonistBarKF
             PawnStats pawnStats = null;
             if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
             {
-                if (PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats))
+                if (_statsDict.TryGetValue(colonist, out pawnStats))
                     if (pawnStats.Mood != null && pawnStats.Mb != null)
                     {
                         GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
@@ -616,7 +616,7 @@ namespace ColonistBarKF
             if (false)
             {
                 PawnStats pawnStats;
-                if (colonist.Dead || colonist.holdingOwner != null || !PSI.PSI._statsDict.TryGetValue(colonist, out pawnStats) ||
+                if (colonist.Dead || colonist.holdingOwner != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||
                     colonist.drafter == null || colonist.skills == null)
                     return;
 

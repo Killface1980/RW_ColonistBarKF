@@ -5,19 +5,28 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using static ColonistBarKF.CBKF;
 using static ColonistBarKF.PSI.PSIDrawer;
+using static ColonistBarKF.Settings;
 using static Verse.ColonistBarTextures;
 
 
 namespace ColonistBarKF.PSI
 {
 
-    internal class PSI : MonoBehaviour
+    public class PSI : GameComponent
     {
-        private static double _fDelta;
+        public PSI()
+        {
+            //
+        }
 
-        public static Dictionary<Pawn, PawnStats> _statsDict = new Dictionary<Pawn, PawnStats>();
+        public PSI(Game game)
+        {
+            //
+        }
+
+        private  double _fDelta;
+
 
         private static float _worldScale = 1f;
 
@@ -30,7 +39,7 @@ namespace ColonistBarKF.PSI
         public static Vector3[] _iconPosVectorsPSI;
         public static Vector3[] _iconPosRectsBar;
 
-        private void Start()
+        public override void FinalizeInit()
         {
             Reinit();
         }
@@ -38,7 +47,7 @@ namespace ColonistBarKF.PSI
         public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
         {
             _pawnCapacities = new[]
-            {
+     {
                 PawnCapacityDefOf.BloodFiltration,
                 PawnCapacityDefOf.BloodPumping,
                 PawnCapacityDefOf.Breathing,
@@ -52,6 +61,13 @@ namespace ColonistBarKF.PSI
                 PawnCapacityDefOf.Talking
             };
 
+            if (reloadSettings)
+            {
+                ColBarSettings = LoadBarSettings();
+                PsiSettings = LoadPsiSettings();
+                ColonistBar_KF.MarkColonistsDirty();
+            }
+
             if (recalcIconPos)
             {
                 RecalcBarPositionAndSize();
@@ -60,7 +76,7 @@ namespace ColonistBarKF.PSI
 
             if (reloadIconSet)
             {
-                //    LongEventHandler.ExecuteWhenFinished(() =>
+                LongEventHandler.ExecuteWhenFinished(() =>
                 {
                     PSIMaterials = new Materials(PsiSettings.IconSet);
                     //PSISettings SettingsPSI =
@@ -68,16 +84,14 @@ namespace ColonistBarKF.PSI
                     //PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
                     PSIMaterials.ReloadTextures(true);
                     //   Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
-                }
-                //);
+                });
             }
 
         }
-        private static CellRect viewRect;
+        private CellRect _viewRect;
         private static bool initialized;
 
-        // ReSharper disable once UnusedMember.Global
-        public virtual void OnGUI()
+        public override void GameComponentOnGUI()
         {
 
             if (Current.ProgramState != ProgramState.Playing)
@@ -88,19 +102,17 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-
-
             if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner)
                 return;
 
             {
-                viewRect = Find.CameraDriver.CurrentViewRect;
-                viewRect = viewRect.ExpandedBy(5);
+                _viewRect = Find.CameraDriver.CurrentViewRect;
+                _viewRect = _viewRect.ExpandedBy(5);
                 foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawns)
                 {
-                    if (!viewRect.Contains(pawn.Position))
+                    if (!_viewRect.Contains(pawn.Position))
                         continue;
-                    if (useGUILayout)
+                    //     if (useGUILayout)
                     {
                         if (pawn != null && pawn.RaceProps.Animal)
                             DrawAnimalIcons(pawn);
@@ -114,9 +126,8 @@ namespace ColonistBarKF.PSI
         }
 
         // ReSharper disable once UnusedMember.Global
-        public virtual void Update()
+        public override void GameComponentUpdate()
         {
-
             if (Input.GetKeyUp(KeyCode.F11))
             {
                 PsiSettings.UsePsi = !PsiSettings.UsePsi;
@@ -126,10 +137,47 @@ namespace ColonistBarKF.PSI
             _worldScale = Screen.height / (2f * Camera.current.orthographicSize);
         }
 
+        public override void GameComponentTick()
+        {
+            // Scans the map for new pawns
+
+            if (Current.ProgramState != ProgramState.Playing)
+                return;
+
+            if (!ColBarSettings.UsePsi && !PsiSettings.UsePsi)
+                return;
+
+            _fDelta += Time.fixedDeltaTime;
+            if (_fDelta < 5)
+                return;
+            _fDelta = 0.0;
+
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
+            {
+                if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null)
+                    continue;
+
+                if (_statsDict.ContainsKey(pawn))
+                    continue;
+
+                try
+                {
+                    UpdateColonistStats(pawn);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log(ex);
+                    //Log.Notify_Exception(ex);
+
+                }
+            }
+        }
+
+
         #region Icon Drawing 
 
 
- 
+
         public static void RecalcIconPositionsPSI()
         {
             //            _iconPosVectors = new Vector3[18];
@@ -149,10 +197,10 @@ namespace ColonistBarKF.PSI
                 _iconPosVectorsPSI[index] =
                     new Vector3(
                         (float)
-                            (-0.600000023841858 * PsiSettings.IconDistanceX -
+                            (-0.600000023841858 * PsiSettings.IconMarginX -
                              0.550000011920929 * PsiSettings.IconSize * PsiSettings.IconOffsetX * num1), 3f,
                         (float)
-                            (-0.600000023841858 * PsiSettings.IconDistanceY +
+                            (-0.600000023841858 * PsiSettings.IconMarginY +
                              0.550000011920929 * PsiSettings.IconSize * PsiSettings.IconOffsetY * num2));
 
             }
@@ -460,44 +508,6 @@ namespace ColonistBarKF.PSI
 
         }
 
-        //   public void UpdateOptionsDialog()
-        //   {
-        //       Dialog_Options dialogOptions = Find.WindowStack.WindowOfType<Dialog_Options>();
-        //       bool optionsOpened = dialogOptions != null;
-        //       bool PsiSettingsShowed = Find.WindowStack.IsOpen(typeof(Dialog_Settings));
-        //       if (optionsOpened && PsiSettingsShowed)
-        //       {
-        //           _settingsDialog.OptionsDialog = dialogOptions;
-        //           if (_inGame)
-        //           {                    
-        //           RecalcIconPositions();
-        //           }
-        //           return;
-        //       }
-        //       if (optionsOpened && !PsiSettingsShowed)
-        //       {
-        //           if (!_settingsDialog.CloseButtonClicked)
-        //           {
-        //               Find.UIRoot.windows.Add(_settingsDialog);
-        //               _settingsDialog.Page = "main";
-        //               return;
-        //           }
-        //           dialogOptions.Close(true);
-        //       }
-        //       else
-        //       {
-        //           if (!optionsOpened && PsiSettingsShowed)
-        //           {
-        //               _settingsDialog.Close(false);
-        //               return;
-        //           }
-        //           if (!optionsOpened && !PsiSettingsShowed)
-        //           {
-        //               _settingsDialog.CloseButtonClicked = false;
-        //           }
-        //       }
-        //   }
-
         #endregion
 
         #region Draw Icons
@@ -528,37 +538,6 @@ namespace ColonistBarKF.PSI
             DrawIconOnColonist(bodyPos, ref num, Icons.Aggressive, ColorRedAlert, ViewOpacityCrit);
         }
 
-        public virtual void FixedUpdate()
-        {
-            if (Current.ProgramState != ProgramState.Playing)
-                return;
-
-            if (!ColBarSettings.UsePsi && !PsiSettings.UsePsi)
-                return;
-
-            _fDelta += Time.fixedDeltaTime;
-
-            if (_fDelta < 5)
-                return;
-            _fDelta = 0.0;
-
-            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
-            {
-                if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null) continue;
-                if (_statsDict.ContainsKey(pawn)) continue;
-
-                try
-                {
-                    UpdateColonistStats(pawn);
-                }
-                catch (Exception ex)
-                {
-                    Debug.Log(ex);
-                    //Log.Notify_Exception(ex);
-
-                }
-            }
-        }
 
         public static void DrawColonistIcons(Pawn colonist, bool psi, float rectAlpha = 1f, Rect psiRect = new Rect())
         {
@@ -572,6 +551,7 @@ namespace ColonistBarKF.PSI
                 UpdateColonistStats(colonist);
                 pawnStats.LastStatUpdate = Find.TickManager.TicksGame;
             }
+
 
             float viewOpacity = PsiSettings.IconOpacity;
 

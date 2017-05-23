@@ -9,7 +9,6 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using static ColonistBarKF.CBKF;
 using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
@@ -27,13 +26,12 @@ namespace ColonistBarKF
 
 
 
-
         private static float clickedAt;
 
 
         // custom test
 
-        public static Vector2 BaseSize => new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat);
+        public static Vector2 BaseSize => new Vector2(Settings.ColBarSettings.BaseSizeFloat, Settings.ColBarSettings.BaseSizeFloat);
 
         //      public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
 
@@ -52,57 +50,57 @@ namespace ColonistBarKF
         {
             get
             {
-                return new Vector2(ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal() + WidthPSIHorizontal(), ColBarSettings.BaseSizeFloat + HeightMoodBarVertical() + HeightPSIVertical()) * Scale;
+                return new Vector2(Settings.ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal() + WidthPSIHorizontal(), Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical() + HeightPSIVertical()) * Scale;
             }
         }
         public static Vector2 PawnSize
         {
             get
             {
-                return (new Vector2(ColBarSettings.BaseSizeFloat, ColBarSettings.BaseSizeFloat)) * Scale;
+                return (new Vector2(Settings.ColBarSettings.BaseSizeFloat, Settings.ColBarSettings.BaseSizeFloat)) * Scale;
             }
         }
         public static float SpaceBetweenColonistsHorizontal
         {
             get
             {
-                return ColBarSettings.BaseSpacingHorizontal * Scale;
+                return Settings.ColBarSettings.BaseSpacingHorizontal * Scale;
             }
         }
 
         public static float WidthMoodBarHorizontal()
         {
-            if (ColBarSettings.UseExternalMoodBar &&
-                (ColBarSettings.MoodBarPos == Alignment.Left || ColBarSettings.MoodBarPos == Alignment.Right))
-                return ColBarSettings.BaseSizeFloat / 4;
+            if (Settings.ColBarSettings.UseExternalMoodBar &&
+                (Settings.ColBarSettings.MoodBarPos == Alignment.Left || Settings.ColBarSettings.MoodBarPos == Alignment.Right))
+                return Settings.ColBarSettings.BaseSizeFloat / 4;
 
             return 0f;
         }
 
         public static float HeightMoodBarVertical()
         {
-            if (ColBarSettings.UseExternalMoodBar &&
-                (ColBarSettings.MoodBarPos == Alignment.Bottom || ColBarSettings.MoodBarPos == Alignment.Top))
-                return ColBarSettings.BaseSizeFloat / 4;
+            if (Settings.ColBarSettings.UseExternalMoodBar &&
+                (Settings.ColBarSettings.MoodBarPos == Alignment.Bottom || Settings.ColBarSettings.MoodBarPos == Alignment.Top))
+                return Settings.ColBarSettings.BaseSizeFloat / 4;
             return 0f;
         }
 
         public static float WidthPSIHorizontal()
         {
-            if (ColBarSettings.UsePsi)
-                if (ColBarSettings.ColBarPsiIconPos == Alignment.Left || ColBarSettings.ColBarPsiIconPos == Alignment.Right)
+            if (Settings.ColBarSettings.UsePsi)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Left || Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Right)
                 {
-                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                    return Settings.ColBarSettings.BaseSizeFloat /Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
 
         public static float HeightPSIVertical()
         {
-            if (ColBarSettings.UsePsi)
-                if (ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == Alignment.Top)
+            if (Settings.ColBarSettings.UsePsi)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Top)
                 {
-                    return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                    return Settings.ColBarSettings.BaseSizeFloat /Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
@@ -114,11 +112,11 @@ namespace ColonistBarKF
                 return 2;
 
                 int maxCount = 0;
-                foreach (KeyValuePair<Pawn, PawnStats> colonist in PSI.PSI._statsDict)
+                foreach (KeyValuePair<Pawn, PawnStats> colonist in Settings._statsDict)
                 {
                     maxCount = Mathf.Max(maxCount, colonist.Value.IconCount);
                 }
-                int psiRowsOnBar = Mathf.CeilToInt((float)maxCount / ColBarSettings.IconsInColumn);
+                int psiRowsOnBar = Mathf.CeilToInt((float)maxCount /Settings.ColBarSettings.IconsInColumn);
                 return psiRowsOnBar;
             }
         }

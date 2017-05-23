@@ -49,8 +49,7 @@ namespace ColonistBarKF.PSI
         Length
     }
 
-    [StaticConstructorOnStartup]
-    internal class Materials
+    public class Materials
     {
 
         private readonly Material[] _data = new Material[40];

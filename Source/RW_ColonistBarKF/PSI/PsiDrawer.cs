@@ -5,7 +5,6 @@ using System.Text;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.CBKF;
 using static ColonistBarKF.PSI.PSI;
 
 namespace ColonistBarKF.PSI
@@ -31,7 +30,7 @@ namespace ColonistBarKF.PSI
         public static void DrawIconOnBar(Rect psiRect, ref int num, Icons icon, Color color, float rectAlpha)
         {
             // only two columns visible
-            if (num + 1 > ColBarSettings.IconsInColumn * 2)
+            if (num + 1 > Settings.ColBarSettings.IconsInColumn * 2)
                 return;
 
             Material material = PSIMaterials[icon];
@@ -53,7 +52,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float wordscale = WorldScale;
-            if (PsiSettings.IconsScreenScale)
+            if (Settings.PsiSettings.IconsScreenScale)
             {
                 wordscale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -64,9 +63,9 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
 
 
-            float num2 = wordscale * (PsiSettings.IconSizeMult * 0.5f);
+            float num2 = wordscale * (Settings.PsiSettings.IconSizeMult * 0.5f);
             //On Colonist
-            Rect position = new Rect(vectorAtBody.x, vectorAtBody.y, num2 * PsiSettings.IconSize, num2 * PsiSettings.IconSize);
+            Rect position = new Rect(vectorAtBody.x, vectorAtBody.y, num2 * Settings.PsiSettings.IconSize, num2 * Settings.PsiSettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -85,12 +84,12 @@ namespace ColonistBarKF.PSI
 
             Rect iconRect = new Rect(rect);
 
-            iconRect.width /= ColBarSettings.IconsInColumn;
+            iconRect.width /= Settings.ColBarSettings.IconsInColumn;
             iconRect.height = iconRect.width;
             iconRect.x = rect.xMin;
             iconRect.y = rect.yMax;
 
-            switch (ColBarSettings.ColBarPsiIconPos)
+            switch (Settings.ColBarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = rect.xMax - iconRect.width;
@@ -117,11 +116,11 @@ namespace ColonistBarKF.PSI
 
             }
 
-            //    iconRect.x += (-0.5f * CBKF.ColBarSettings.IconDistanceX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
-            //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
+            //    iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
+            //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconMarginY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
 
-            iconRect.x += ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
-            iconRect.y -= ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
+            iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
             //On Colonist
             //iconRect.x -= iconRect.width * 0.5f;
             //iconRect.y -= iconRect.height * 0.5f;

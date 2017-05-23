@@ -5,7 +5,6 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.CBKF;
 
 namespace ColonistBarKF.Detouring
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.CBKF;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {

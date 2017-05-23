@@ -2,57 +2,36 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {
-    public class ModInitializer : ITab
+  //public class ModInitializer : ITab
+  //{
+  //    protected GameObject modInitializerControllerObject;
+  //
+  //    public ModInitializer()
+  //    {
+  //        LongEventHandler.ExecuteWhenFinished(delegate
+  //        {
+  //            modInitializerControllerObject = new GameObject("Colonist Bar KF");
+  //            modInitializerControllerObject.AddComponent<CBKF>();
+  //            Object.DontDestroyOnLoad(modInitializerControllerObject);
+  //            Log.Message("Colonist Bar KF Initialized");
+  //        });
+  //    }
+  //
+  //    protected override void FillTab() { }
+  //}
+
+
+    public class CBKF : Mod
     {
-        protected GameObject modInitializerControllerObject;
 
-        public ModInitializer()
+        public CBKF(ModContentPack content) : base(content)
         {
-            LongEventHandler.ExecuteWhenFinished(delegate
-            {
-                modInitializerControllerObject = new GameObject("Colonist Bar KF");
-                modInitializerControllerObject.AddComponent<CBKF>();
-                Object.DontDestroyOnLoad(modInitializerControllerObject);
-                Log.Message("Colonist Bar KF Initialized");
-            });
         }
 
-        protected override void FillTab() { }
-    }
-
-
-    public class CBKF : MonoBehaviour
-    {
-        public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
-        public static SettingsPSI PsiSettings = new SettingsPSI();
-
-        private static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
-        {
-            string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsColonistBar result = DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
-            return result;
-        }
-        public static void SaveBarSettings(string path = "ColonistBar_KF.xml")
-        {
-            string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            DirectXmlSaver.SaveDataObject(ColBarSettings, configFolder + "/" + path);
-        }
-
-        private static SettingsPSI LoadPsiSettings(string path = "ColonistBar_PSIKF.xml")
-        {
-            string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsPSI result = DirectXmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
-            return result;
-        }
-
-        public static void SavePsiSettings(string path = "ColonistBar_PSIKF.xml")
-        {
-            string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            DirectXmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
-        }
         private int _lastStatUpdate;
 
         private GameObject _psiObject;
@@ -73,11 +52,11 @@ namespace ColonistBarKF
             if (Current.ProgramState != ProgramState.Playing)
                 return;
 
-          //if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
-          //{
-          //    ColonistBar_KF.MarkColonistsDirty();
-          //    _lastStatUpdate = Find.TickManager.TicksGame;
-          //}
+            //if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
+            //{
+            //    ColonistBar_KF.MarkColonistsDirty();
+            //    _lastStatUpdate = Find.TickManager.TicksGame;
+            //}
 
             // PSI 
             if (_reinjectNeeded)
@@ -87,23 +66,12 @@ namespace ColonistBarKF
                     return;
                 _reinjectNeeded = false;
                 _reinjectTime = 0.0f;
-                _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
-                _psiObject.AddComponent<PSI.PSI>();
+              //_psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
+              //_psiObject.AddComponent<PSI.PSI>();
                 Log.Message("PSI Injected!!");
-
-             // // FollowMe 
-             // _followObject = GameObject.Find("FollowMeMain") ?? new GameObject("FollowMeMain");
-             // _followObject.AddComponent<FollowMe>();
-             // Log.Message("FollowMe Injected!!");
-
-              //// ZoomToMouse 
-              //_zoomObject = GameObject.Find("ZoomToMouseMain") ?? new GameObject("ZoomToMouseMain");
-              //_zoomObject.AddComponent<ZoomToMouse>();
-              //Log.Message("ZoomToMouse Injected!!");
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
         public void Start()
         {
             ColBarSettings = LoadBarSettings();
@@ -112,9 +80,8 @@ namespace ColonistBarKF
             ColonistBar_KF.MarkColonistsDirty();
             //PSI
             OnLevelWasLoaded(0);
-            enabled = true;
-
-
         }
+
+
     }
 }

@@ -9,8 +9,8 @@ using System.IO;
 using ColonistBarKF.PSI;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.CBKF;
 using static ColonistBarKF.PSI.PSI;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {
@@ -969,10 +969,10 @@ namespace ColonistBarKF
 
                 GUILayout.BeginVertical(_fondBoxes);
                 GUILayout.Label(
-                    "PSI.Settings.Arrangement.IconPosition".Translate() + (int)(PsiSettings.IconDistanceX * 100.0)
-                    + " x, " + (int)(PsiSettings.IconDistanceY * 100.0) + " y");
-                PsiSettings.IconDistanceX = GUILayout.HorizontalSlider(PsiSettings.IconDistanceX, -2f, 2f);
-                PsiSettings.IconDistanceY = GUILayout.HorizontalSlider(PsiSettings.IconDistanceY, -2f, 2f);
+                    "PSI.Settings.Arrangement.IconPosition".Translate() + (int)(PsiSettings.IconMarginX * 100.0)
+                    + " x, " + (int)(PsiSettings.IconMarginY * 100.0) + " y");
+                PsiSettings.IconMarginX = GUILayout.HorizontalSlider(PsiSettings.IconMarginX, -2f, 2f);
+                PsiSettings.IconMarginY = GUILayout.HorizontalSlider(PsiSettings.IconMarginY, -2f, 2f);
                 GUILayout.EndVertical();
 
                 GUILayout.BeginVertical(_fondBoxes);
@@ -1232,8 +1232,8 @@ namespace ColonistBarKF
                 {
                     case 0:
                         PsiSettings.IconAlignment = value;
-                        PsiSettings.IconDistanceX = 1f;
-                        PsiSettings.IconDistanceY = 1f;
+                        PsiSettings.IconMarginX = 1f;
+                        PsiSettings.IconMarginY = 1f;
                         PsiSettings.IconOffsetX = 1f;
                         PsiSettings.IconOffsetY = 1f;
                         PsiSettings.IconsHorizontal = false;
@@ -1245,8 +1245,8 @@ namespace ColonistBarKF
                         break;
                     case 1:
                         PsiSettings.IconAlignment = value;
-                        PsiSettings.IconDistanceX = -1f;
-                        PsiSettings.IconDistanceY = 1f;
+                        PsiSettings.IconMarginX = -1f;
+                        PsiSettings.IconMarginY = 1f;
                         PsiSettings.IconOffsetX = -1f;
                         PsiSettings.IconOffsetY = 1f;
                         PsiSettings.IconsHorizontal = false;
@@ -1258,8 +1258,8 @@ namespace ColonistBarKF
                         break;
                     case 2:
                         PsiSettings.IconAlignment = value;
-                        PsiSettings.IconDistanceX = 1f;
-                        PsiSettings.IconDistanceY = -1.63f;
+                        PsiSettings.IconMarginX = 1f;
+                        PsiSettings.IconMarginY = -1.63f;
                         PsiSettings.IconOffsetX = -1f;
                         PsiSettings.IconOffsetY = 1f;
                         PsiSettings.IconsHorizontal = true;
@@ -1271,8 +1271,8 @@ namespace ColonistBarKF
                         break;
                     case 3:
                         PsiSettings.IconAlignment = value;
-                        PsiSettings.IconDistanceX = 1.139534f;
-                        PsiSettings.IconDistanceY = 1.375f;
+                        PsiSettings.IconMarginX = 1.139534f;
+                        PsiSettings.IconMarginY = 1.375f;
                         PsiSettings.IconOffsetX = -0.9534883f;
                         PsiSettings.IconOffsetY = -0.9534884f;
                         PsiSettings.IconsHorizontal = true;

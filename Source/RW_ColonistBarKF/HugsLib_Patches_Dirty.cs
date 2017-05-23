@@ -127,8 +127,11 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
-            MarkDirty_Helper.Dirty();
-            Log.Message("Colonists marked dirty.x10");
+            if (Find.ColonistBar != null)
+            {
+                MarkDirty_Helper.Dirty();
+                Log.Message("Colonists marked dirty.x10");
+            }
         }
     }
     [HarmonyPatch(typeof(Pawn), "Kill")]

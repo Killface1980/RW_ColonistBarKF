@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static ColonistBarKF.CBKF;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {

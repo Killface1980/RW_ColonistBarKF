@@ -6,6 +6,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {
@@ -139,53 +140,53 @@ namespace ColonistBarKF
         private static void SortCachedColonists(ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
-            switch (CBKF.ColBarSettings.SortBy)
+            switch (ColBarSettings.SortBy)
             {
                 case SettingsColonistBar.SortByWhat.vanilla:
                     tmpColonists.SortBy(x => x.thingIDNumber);
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.byName:
                     orderedEnumerable = tmpColonists.OrderBy(x => x?.LabelCap != null).ThenBy(x => x.LabelCap);
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.sexage:
                     orderedEnumerable = tmpColonists.OrderBy(x => x?.gender.GetLabel() != null).ThenBy(x => x?.gender.GetLabel()).ThenBy(x => x?.ageTracker.AgeBiologicalYears);
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.health:
                     orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.mood:
                     orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurLevelPercentage);
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.weapons:
                     orderedEnumerable = tmpColonists.OrderByDescending(a => a?.equipment?.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
                         .ThenByDescending(c => c?.equipment?.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.medic:
                     orderedEnumerable = tmpColonists.OrderByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
                     tmpColonists = orderedEnumerable.ToList();
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
 
                 default:
                     tmpColonists.SortBy(x => x.thingIDNumber);
-                    CBKF.SaveBarSettings();
+                    SaveBarSettings();
                     break;
             }
         }

@@ -5,7 +5,7 @@
   <CBKF.Settings.BarPosition>Colonist Bar Main Settings</CBKF.Settings.BarPosition>
   <CBKF.Settings.BaseSpacingHorizontal>Horizontal spacing: </CBKF.Settings.BaseSpacingHorizontal>
   <CBKF.Settings.BaseSpacingVertical>Vertical spacing: </CBKF.Settings.BaseSpacingVertical>
-  <CBKF.Settings.BasicSize>Icon Size and Distance: </CBKF.Settings.BasicSize>
+  <CBKF.Settings.BasicSize>Icon Size and Margin: </CBKF.Settings.BasicSize>
   <CBKF.Settings.ByName>By Name</CBKF.Settings.ByName>
   <CBKF.Settings.ColBarIconVisibility>On bar</CBKF.Settings.ColBarIconVisibility>
   <CBKF.Settings.ColonistBarOffset>Colonist Bar Offsets: </CBKF.Settings.ColonistBarOffset>
@@ -55,7 +55,7 @@
   <PSI.Settings.Advanced>Advanced</PSI.Settings.Advanced>
   <PSI.Settings.Arrangement.Header>Size &amp; Arrangement</PSI.Settings.Arrangement.Header>
   <PSI.Settings.Arrangement.Horizontal>Arrange horizontally</PSI.Settings.Arrangement.Horizontal>
-  <PSI.Settings.Arrangement.IconOffset>Distance between: </PSI.Settings.Arrangement.IconOffset>
+  <PSI.Settings.Arrangement.IconOffset>Margin between: </PSI.Settings.Arrangement.IconOffset>
   <PSI.Settings.Arrangement.IconPosition>Alignment: </PSI.Settings.Arrangement.IconPosition>
   <PSI.Settings.Arrangement.IconSize>Icon size: </PSI.Settings.Arrangement.IconSize>
   <PSI.Settings.Arrangement.IconsPerColumn>Icons per column/row: </PSI.Settings.Arrangement.IconsPerColumn>

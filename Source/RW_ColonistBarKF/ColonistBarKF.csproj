@@ -65,22 +65,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColonistBarKF\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="ColonistBarKF\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="ColonistBarKF\ColBarHelper_KF.cs" />
-    <Compile Include="ColonistBarKF\HugsLib_Patches_Dirty.cs" />
+    <Compile Include="HugsLib_Patches_Dirty.cs" />
     <Compile Include="ColonistBarKF\Coloniistbar_KF_ModBase.cs" />
     <Compile Include="ColonistBarKF\_Selector.cs" />
     <Compile Include="ColonistBarKF\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
+    <None Include="ModInitializer.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
-    <Compile Include="PSI\PawnStats.cs" />
+    <Compile Include="PSI\CompPawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
     <Compile Include="ColonistBarKF\ColonistBarTextures.cs" />
@@ -92,16 +94,11 @@
     <Compile Include="Settings\SettingsColonistBar.cs" />
     <Compile Include="ColonistBarKF\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
-    <Compile Include="ModInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
       <Link>Defs\About.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
-      <Link>Defs\Initializer.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
@@ -112,6 +109,7 @@
     </Content>
     <Content Include="..\..\Languages\English\Keyed\ColonistBar_KF.xml">
       <Link>Languages\English\ColonistBar_KF.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
