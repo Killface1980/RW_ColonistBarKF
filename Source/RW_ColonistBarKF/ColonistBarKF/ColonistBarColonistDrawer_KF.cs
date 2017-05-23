@@ -420,7 +420,8 @@ namespace ColonistBarKF
                     if (pawnStats != null)
                     {
                         Rect moodRect = moodBorderRect.ContractedBy(2f);
-                        DrawNewMoodRect(moodRect, pawnStats.Mood, pawnStats.Mb);
+                        string tooltip = colonist.needs.mood.GetTipString();
+                        DrawNewMoodRect(moodRect, pawnStats.Mood, pawnStats.Mb, tooltip);
                     }
                 }
                 else
@@ -572,8 +573,8 @@ namespace ColonistBarKF
                 }
                 else if (def == JobDefOf.WaitCombat)
                 {
-                    Stance_Busy stance_Busy = colonist.stances.curStance as Stance_Busy;
-                    if (stance_Busy != null && stance_Busy.focusTarg.IsValid)
+                    Stance_Busy stanceBusy = colonist.stances.curStance as Stance_Busy;
+                    if (stanceBusy != null && stanceBusy.focusTarg.IsValid)
                     {
                         attacking = true;
                     }
@@ -613,20 +614,6 @@ namespace ColonistBarKF
                 //  DrawIcon(PSI.PSI.PSIMaterials[Icons.Idle].mainTexture as Texture2D, ref vector, "ActivityIconIdle".Translate());
                 DrawIcon(ColonistBarTextures.Icon_Idle, ref vector, "ActivityIconIdle".Translate());
             }
-            if (false)
-            {
-                PawnStats pawnStats;
-                if (colonist.Dead || colonist.holdingOwner != null || !_statsDict.TryGetValue(colonist, out pawnStats) ||
-                    colonist.drafter == null || colonist.skills == null)
-                    return;
-
-                if (pawnStats.MentalSanity == MentalStateDefOf.BingingDrugMajor || pawnStats.MentalSanity == MentalStateDefOf.BingingDrugExtreme)
-                {
-                    Material material = PSI.PSI.PSIMaterials[Icons.Drunk];
-                    DrawIcon(material.mainTexture as Texture2D, ref vector, colonist.MentalStateDef.LabelCap);
-                }
-            }
-
             if (colonist.IsBurning())
             {
                 DrawIcon(ColonistBarTextures.Icon_Burning, ref vector, "ActivityIconBurning".Translate());
@@ -648,7 +635,7 @@ namespace ColonistBarKF
             ApplyEntryInAnotherMapAlphaFactor(colonist.Map, ref entryRectAlpha);
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
-            if (colonist?.equipment.Primary != null)
+            if (colonist.equipment.Primary != null)
             {
                 ThingWithComps thing = colonist.equipment.Primary;
                 Rect rect2 = rect.ContractedBy(rect.width / 3);
@@ -694,7 +681,7 @@ namespace ColonistBarKF
             }
         }
 
-        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb)
+        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb, string tooltip)
         {
 
             if (mood != null && mb != null)
@@ -759,6 +746,7 @@ namespace ColonistBarKF
                 }
                 GUI.DrawTexture(rect1, ColonistBarTextures.MoodTargetTex);
                 GUI.DrawTexture(rect2, ColonistBarTextures.MoodTargetTex);
+                TooltipHandler.TipRegion(moodRect, tooltip);
             }
         }
 

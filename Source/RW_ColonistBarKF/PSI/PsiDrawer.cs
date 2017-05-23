@@ -27,7 +27,7 @@ namespace ColonistBarKF.PSI
             num++;
         }
 
-        public static void DrawIconOnBar(Rect psiRect, ref int num, Icons icon, Color color, float rectAlpha)
+        public static void DrawIconOnBar(Rect psiRect, ref int num, Icons icon, Color color, float rectAlpha, string tooltip =null)
         {
             // only two columns visible
             if (num + 1 > Settings.ColBarSettings.IconsInColumn * 2)
@@ -38,7 +38,9 @@ namespace ColonistBarKF.PSI
             if (material == null)
                 return;
 
-            DrawIcon_onBar(psiRect, _iconPosRectsBar[num], material, color, rectAlpha);
+            DrawIcon_onBar(psiRect, _iconPosRectsBar[num], material, color, rectAlpha, tooltip);
+
+
             num++;
         }
 
@@ -73,7 +75,7 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha)
+        private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha, string tooltip =null)
         {
             color.a *= rectAlpha;
             Color GuiColor = GUI.color;
@@ -117,7 +119,7 @@ namespace ColonistBarKF.PSI
             }
 
             //    iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
-            //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconMarginY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
+            //    iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
 
             iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
             iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
@@ -137,6 +139,8 @@ namespace ColonistBarKF.PSI
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
 
+            if (tooltip != null)
+                TooltipHandler.TipRegion(iconRect, tooltip);
         }
 
 
@@ -146,10 +150,10 @@ namespace ColonistBarKF.PSI
             DrawIconOnColonist(bodyPos, ref num, icon, new Color(0.9f, v, v), opacity);
         }
 
-        public static void DrawIcon_FadeRedAlertToNeutral(Rect rect, ref int num, Icons icon, float v, float rectAlpha)
+        public static void DrawIcon_FadeRedAlertToNeutral(Rect rect, ref int num, Icons icon, float v, float rectAlpha, string tooltip = null)
         {
             v = v * 0.9f; // max settings according to neutral icon
-            DrawIconOnBar(rect, ref num, icon, new Color(0.9f, v, v, 1f), rectAlpha);
+            DrawIconOnBar(rect, ref num, icon, new Color(0.9f, v, v, 1f), rectAlpha, tooltip);
         }
 
         public static void DrawIcon_FadeFloatWithTwoColors(Vector3 bodyPos, ref int num, Icons icon, float v, Color c1, Color c2, float opacity)
