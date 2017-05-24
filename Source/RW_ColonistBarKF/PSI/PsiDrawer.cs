@@ -23,7 +23,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            DrawIcon_posOffset(bodyPos, _iconPosVectorsPSI[num], material, color, opacity);
+            DrawIcon_posOffset(bodyPos, IconPosVectorsPsi[num], material, color, opacity);
             num++;
         }
 
@@ -38,7 +38,7 @@ namespace ColonistBarKF.PSI
             if (material == null)
                 return;
 
-            DrawIcon_onBar(psiRect, _iconPosRectsBar[num], material, color, rectAlpha, tooltip);
+            DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, tooltip);
 
 
             num++;

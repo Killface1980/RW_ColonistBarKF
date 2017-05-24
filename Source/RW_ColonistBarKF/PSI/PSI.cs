@@ -36,13 +36,81 @@ namespace ColonistBarKF.PSI
 
         private static PawnCapacityDef[] _pawnCapacities;
 
-        public static Vector3[] _iconPosVectorsPSI;
-        public static Vector3[] _iconPosRectsBar;
+        public static Vector3[] IconPosVectorsPsi;
+        public static Vector3[] IconPosRectsBar;
+        private CellRect _viewRect;
 
         public override void FinalizeInit()
         {
             Reinit();
+            UpdateDictionary();
+            _fDelta = 0;
         }
+
+        public override void GameComponentOnGUI()
+        {
+
+            if (Current.ProgramState != ProgramState.Playing)
+                return;
+
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                return;
+            }
+
+            if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner)
+                return;
+
+            {
+                _viewRect = Find.CameraDriver.CurrentViewRect;
+                _viewRect = _viewRect.ExpandedBy(5);
+                foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawns)
+                {
+                    if (!_viewRect.Contains(pawn.Position))
+                        continue;
+                    //     if (useGUILayout)
+                    {
+                        if (pawn != null && pawn.RaceProps.Animal)
+                            DrawAnimalIcons(pawn);
+                        else if (pawn != null && ((PsiSettings.UsePsi && pawn.IsColonist) || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
+                        {
+                            DrawColonistIcons(pawn, true);
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void GameComponentUpdate()
+        {
+            if (Input.GetKeyUp(KeyCode.F11))
+            {
+                PsiSettings.UsePsi = !PsiSettings.UsePsi;
+                ColBarSettings.UsePsi = !ColBarSettings.UsePsi;
+                Messages.Message(PsiSettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(), MessageSound.Standard);
+            }
+            _worldScale = Screen.height / (2f * Camera.current.orthographicSize);
+        }
+
+        public override void GameComponentTick()
+        {
+            // Scans the map for new pawns
+
+            if (Current.ProgramState != ProgramState.Playing)
+                return;
+
+            if (!ColBarSettings.UsePsi && !PsiSettings.UsePsi)
+                return;
+
+            _fDelta += Time.fixedDeltaTime;
+            if (_fDelta < 5)
+                return;
+            _fDelta = 0.0;
+
+            UpdateDictionary();
+        }
+
+        #region Icon Drawing 
 
         public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
         {
@@ -88,101 +156,12 @@ namespace ColonistBarKF.PSI
             }
 
         }
-        private CellRect _viewRect;
-        private static bool initialized;
 
-        public override void GameComponentOnGUI()
-        {
-
-            if (Current.ProgramState != ProgramState.Playing)
-                return;
-
-            if (WorldRendererUtility.WorldRenderedNow)
-            {
-                return;
-            }
-
-            if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner)
-                return;
-
-            {
-                _viewRect = Find.CameraDriver.CurrentViewRect;
-                _viewRect = _viewRect.ExpandedBy(5);
-                foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawns)
-                {
-                    if (!_viewRect.Contains(pawn.Position))
-                        continue;
-                    //     if (useGUILayout)
-                    {
-                        if (pawn != null && pawn.RaceProps.Animal)
-                            DrawAnimalIcons(pawn);
-                        else if (pawn != null && ((PsiSettings.UsePsi && pawn.IsColonist) || (PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)))
-                        {
-                            DrawColonistIcons(pawn, true);
-                        }
-                    }
-                }
-            }
-        }
-
-        // ReSharper disable once UnusedMember.Global
-        public override void GameComponentUpdate()
-        {
-            if (Input.GetKeyUp(KeyCode.F11))
-            {
-                PsiSettings.UsePsi = !PsiSettings.UsePsi;
-                ColBarSettings.UsePsi = !ColBarSettings.UsePsi;
-                Messages.Message(PsiSettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(), MessageSound.Standard);
-            }
-            _worldScale = Screen.height / (2f * Camera.current.orthographicSize);
-        }
-
-        public override void GameComponentTick()
-        {
-            // Scans the map for new pawns
-
-            if (Current.ProgramState != ProgramState.Playing)
-                return;
-
-            if (!ColBarSettings.UsePsi && !PsiSettings.UsePsi)
-                return;
-
-            _fDelta += Time.fixedDeltaTime;
-            if (_fDelta < 5)
-                return;
-            _fDelta = 0.0;
-
-            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
-            {
-                if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null)
-                    continue;
-
-                if (_statsDict.ContainsKey(pawn))
-                    continue;
-
-                try
-                {
-                    UpdateColonistStats(pawn);
-                }
-                catch (Exception ex)
-                {
-                    Debug.Log(ex);
-                    //Log.Notify_Exception(ex);
-
-                }
-            }
-        }
-
-
-        #region Icon Drawing 
-
-
-
-        public static void RecalcIconPositionsPSI()
+        private static void RecalcIconPositionsPSI()
         {
             //            _iconPosVectors = new Vector3[18];
-            _iconPosVectorsPSI = new Vector3[40];
-            for (int index = 0; index < _iconPosVectorsPSI.Length; ++index)
+            IconPosVectorsPsi = new Vector3[40];
+            for (int index = 0; index < IconPosVectorsPsi.Length; ++index)
             {
                 int num1 = index / PsiSettings.IconsInColumn;
                 int num2 = index % PsiSettings.IconsInColumn;
@@ -194,7 +173,7 @@ namespace ColonistBarKF.PSI
                 }
 
 
-                _iconPosVectorsPSI[index] =
+                IconPosVectorsPsi[index] =
                     new Vector3(
                         (float)
                             (-0.600000023841858 * PsiSettings.IconMarginX -
@@ -206,11 +185,11 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        public static void RecalcBarPositionAndSize()
+        private static void RecalcBarPositionAndSize()
         {
 
-            _iconPosRectsBar = new Vector3[40];
-            for (int index = 0; index < _iconPosRectsBar.Length; ++index)
+            IconPosRectsBar = new Vector3[40];
+            for (int index = 0; index < IconPosRectsBar.Length; ++index)
             {
                 int num1;
                 int num2;
@@ -227,7 +206,7 @@ namespace ColonistBarKF.PSI
 
                 }
 
-                _iconPosRectsBar[index] =
+                IconPosRectsBar[index] =
                     new Vector3(
                         -num1,
                         3f,
@@ -238,6 +217,29 @@ namespace ColonistBarKF.PSI
         #endregion
 
         #region Status + Updates
+
+        private static void UpdateDictionary()
+        {
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned)
+            //.FreeColonistsAndPrisoners)                                                                                        //               foreach (var colonist in Find.Map.mapPawns.FreeColonistsAndPrisonersSpawned) //.FreeColonistsAndPrisoners)
+            {
+                if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || pawn.Name == null)
+                    continue;
+
+                if (_statsDict.ContainsKey(pawn))
+                    continue;
+
+                try
+                {
+                    UpdateColonistStats(pawn);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log(ex);
+                    //Log.Notify_Exception(ex);
+                }
+            }
+        }
 
         private static void UpdateColonistStats(Pawn colonist)
         {

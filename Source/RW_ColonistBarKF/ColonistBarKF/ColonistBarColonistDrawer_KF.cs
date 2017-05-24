@@ -420,8 +420,8 @@ namespace ColonistBarKF
                     if (pawnStats != null)
                     {
                         Rect moodRect = moodBorderRect.ContractedBy(2f);
-                        string tooltip = colonist.needs.mood.GetTipString();
-                        DrawNewMoodRect(moodRect, pawnStats.Mood, pawnStats.Mb, tooltip);
+                        //       string tooltip = colonist.needs.mood.GetTipString();
+                        DrawNewMoodRect(moodRect, pawnStats.Mood, pawnStats.Mb);
                     }
                 }
                 else
@@ -681,7 +681,7 @@ namespace ColonistBarKF
             }
         }
 
-        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb, string tooltip)
+        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb, string tooltip = null)
         {
 
             if (mood != null && mb != null)
@@ -746,7 +746,7 @@ namespace ColonistBarKF
                 }
                 GUI.DrawTexture(rect1, ColonistBarTextures.MoodTargetTex);
                 GUI.DrawTexture(rect2, ColonistBarTextures.MoodTargetTex);
-                TooltipHandler.TipRegion(moodRect, tooltip);
+                //   TooltipHandler.TipRegion(moodRect, tooltip);
             }
         }
 

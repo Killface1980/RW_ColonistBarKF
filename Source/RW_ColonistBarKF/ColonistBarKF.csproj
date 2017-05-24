@@ -82,7 +82,7 @@
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
-    <Compile Include="PSI\CompPawnStats.cs" />
+    <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
     <Compile Include="ColonistBarKF\ColonistBarTextures.cs" />
