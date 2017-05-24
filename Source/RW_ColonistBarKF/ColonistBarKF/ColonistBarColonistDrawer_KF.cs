@@ -10,6 +10,7 @@ using Verse;
 using Verse.AI.Group;
 using Verse.Sound;
 using static ColonistBarKF.Settings;
+using static Verse.ColonistBarTextures;
 
 namespace ColonistBarKF
 {
@@ -355,7 +356,7 @@ namespace ColonistBarKF
             Color BGColor = new Color();
 
             // testing
-            GUI.DrawTexture(outerRect, ColonistBarTextures.DarkGrayFond);
+            GUI.DrawTexture(outerRect, DarkGrayFond);
 
             Rect pawnRect;
             Rect moodBorderRect;
@@ -384,33 +385,11 @@ namespace ColonistBarKF
             GUI.color = color;
 
             PawnStats pawnStats = null;
-            if (ColBarSettings.UseNewMood || ColBarSettings.UseExternalMoodBar)
-            {
-                if (_statsDict.TryGetValue(colonist, out pawnStats))
-                    if (pawnStats.Mood != null && pawnStats.Mb != null)
-                    {
-                        GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        // if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdExtreme)
-                        // {
-                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodExtremeCrossedTex);
-                        // }
-                        // else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMajor)
-                        // {
-                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMajorCrossedTex);
-                        // }
-                        // else if (pawnStats.Mood.CurLevelPercentage <= pawnStats.Mb.BreakThresholdMinor)
-                        // {
-                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodMinorCrossedTex);
-                        // }
-                        // else
-                        // {
-                        //     GUI.DrawTexture(moodBorderRect, ColonistBarTextures.MoodNeutral);
-                        // }
-                    }
-            }
+            _statsDict.TryGetValue(colonist, out pawnStats);
+
 
             GUI.color = BGColor;
-            GUI.DrawTexture(pawnRect, ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+            GUI.DrawTexture(pawnRect, ColBarSettings.UseGender ? BGTexGrey : BGTexVanilla);
             GUI.color = color;
 
             if (colonist.needs != null && colonist.needs.mood != null)
@@ -419,9 +398,8 @@ namespace ColonistBarKF
                 {
                     if (pawnStats != null)
                     {
-                        Rect moodRect = moodBorderRect.ContractedBy(2f);
                         //       string tooltip = colonist.needs.mood.GetTipString();
-                        DrawNewMoodRect(moodRect, pawnStats.Mood, pawnStats.Mb);
+                        DrawNewMoodRect(moodBorderRect, pawnStats.Mood, pawnStats.Mb);
                     }
                 }
                 else
@@ -430,7 +408,7 @@ namespace ColonistBarKF
                     float num = position.height * colonist.needs.mood.CurLevelPercentage;
                     position.yMin = position.yMax - num;
                     position.height = num;
-                    GUI.DrawTexture(position, ColonistBarTextures.MoodBGTex);
+                    GUI.DrawTexture(position, VanillaMoodBGTex);
                 }
             }
 
@@ -460,7 +438,7 @@ namespace ColonistBarKF
             GUI.color = color;
             if (colonist.Dead)
             {
-                GUI.DrawTexture(pawnRect, ColonistBarTextures.DeadColonistTex);
+                GUI.DrawTexture(pawnRect, DeadColonistTex);
             }
             //       float num = 4f * Scale;
             Vector2 pos = new Vector2(pawnRect.center.x, pawnRect.yMax + 1f * ColonistBar_KF.Scale);
@@ -583,40 +561,40 @@ namespace ColonistBarKF
             if (colonist.InAggroMentalState)
             {
                 //        DrawIcon(PSI.PSI.PSIMaterials[Icons.Aggressive].mainTexture as Texture2D, ref vector, colonist.MentalStateDef.LabelCap);
-                DrawIcon(ColonistBarTextures.Icon_MentalStateAggro, ref vector, colonist.MentalStateDef.LabelCap);
+                DrawIcon(Icon_MentalStateAggro, ref vector, colonist.MentalStateDef.LabelCap);
             }
             else if (colonist.InMentalState)
             {
                 //        DrawIcon(PSI.PSI.PSIMaterials[Icons.Dazed].mainTexture as Texture2D, ref vector, colonist.MentalStateDef.LabelCap);
-                DrawIcon(ColonistBarTextures.Icon_MentalStateNonAggro, ref vector, colonist.MentalStateDef.LabelCap);
+                DrawIcon(Icon_MentalStateNonAggro, ref vector, colonist.MentalStateDef.LabelCap);
             }
             else if (colonist.InBed() && colonist.CurrentBed().Medical)
             {
                 //        DrawIcon(PSI.PSI.PSIMaterials[Icons.Health].mainTexture as Texture2D, ref vector, "ActivityIconMedicalRest".Translate());
-                DrawIcon(ColonistBarTextures.Icon_MedicalRest, ref vector, "ActivityIconMedicalRest".Translate());
+                DrawIcon(Icon_MedicalRest, ref vector, "ActivityIconMedicalRest".Translate());
             }
             else if (colonist.CurJob != null && colonist.jobs.curDriver.asleep)
             {
                 //      DrawIcon(PSI.PSI.PSIMaterials[Icons.Tired].mainTexture as Texture2D, ref vector, "ActivityIconSleeping".Translate());
-                DrawIcon(ColonistBarTextures.Icon_Sleeping, ref vector, "ActivityIconSleeping".Translate());
+                DrawIcon(Icon_Sleeping, ref vector, "ActivityIconSleeping".Translate());
             }
             else if (colonist.CurJob != null && colonist.CurJob.def == JobDefOf.FleeAndCower)
             {
                 //      DrawIcon(PSI.PSI.PSIMaterials[Icons.Leave].mainTexture as Texture2D, ref vector, "ActivityIconFleeing".Translate());
-                DrawIcon(ColonistBarTextures.Icon_Fleeing, ref vector, "ActivityIconFleeing".Translate());
+                DrawIcon(Icon_Fleeing, ref vector, "ActivityIconFleeing".Translate());
             }
             else if (attacking)
             {
-                DrawIcon(ColonistBarTextures.Icon_Attacking, ref vector, "ActivityIconAttacking".Translate());
+                DrawIcon(Icon_Attacking, ref vector, "ActivityIconAttacking".Translate());
             }
             else if (colonist.mindState.IsIdle && GenDate.DaysPassed >= 1)
             {
                 //  DrawIcon(PSI.PSI.PSIMaterials[Icons.Idle].mainTexture as Texture2D, ref vector, "ActivityIconIdle".Translate());
-                DrawIcon(ColonistBarTextures.Icon_Idle, ref vector, "ActivityIconIdle".Translate());
+                DrawIcon(Icon_Idle, ref vector, "ActivityIconIdle".Translate());
             }
             if (colonist.IsBurning())
             {
-                DrawIcon(ColonistBarTextures.Icon_Burning, ref vector, "ActivityIconBurning".Translate());
+                DrawIcon(Icon_Burning, ref vector, "ActivityIconBurning".Translate());
             }
         }
 
@@ -658,12 +636,12 @@ namespace ColonistBarKF
 
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(0.85f, 0.2f, 0.2f, entryRectAlpha);
+                    GUI.color = new Color(ColVermillion.r, ColVermillion.g, ColVermillion.b, entryRectAlpha);
                     iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.95f * entryRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(0.15f, 0.3f, 0.85f, entryRectAlpha);
+                    GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b, entryRectAlpha);
                     iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.95f * entryRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
@@ -681,50 +659,73 @@ namespace ColonistBarKF
             }
         }
 
-        private static void DrawNewMoodRect(Rect moodRect, Need_Mood mood, MentalBreaker mb, string tooltip = null)
+        private static void DrawNewMoodRect(Rect moodBorderRect, Need_Mood mood, MentalBreaker mb, string tooltip = null)
         {
 
             if (mood != null && mb != null)
             {
+                Rect moodRect = moodBorderRect.ContractedBy(2f);
+
                 float moodPercent;
                 float curMood = mood.CurLevelPercentage;
                 Texture2D moodTex;
                 Texture2D moodBgTex;
 
+                GUI.DrawTexture(moodBorderRect, MoodBGTex);
+
                 if (curMood > mb.BreakThresholdMinor)
                 {
                     moodPercent = Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, curMood);
-                    moodTex = ColonistBarTextures.MoodTex;
-                    moodBgTex = ColonistBarTextures.MoodBGTex;
+                    moodTex = MoodNeutralTex;
+
+                    if (moodPercent < 0.3f)
+                    {
+                        Color color = Color.Lerp(ColBlueBG, ColYellow, Mathf.InverseLerp(0.2f, 0f, moodPercent));
+                        moodBgTex = SolidColorMaterials.NewSolidColorTexture(color);
+                    }
+                    else
+                    {
+                        moodBgTex = MoodNeutralBBTex;
+                    }
                 }
                 else if (curMood > mb.BreakThresholdMajor)
                 {
                     moodPercent = Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, curMood);
-                    moodTex = ColonistBarTextures.MoodMinorCrossedTex;
-                    moodBgTex = ColonistBarTextures.MoodMinorCrossedBGTex;
+                    moodTex = MoodMinorCrossedTex;
+
+                    if (moodPercent < 0.5f)
+                    {
+                        Color color = Color.Lerp(ColYellowBg, ColOrange, Mathf.InverseLerp(0.2f, 0.05f, moodPercent));
+                        moodBgTex = SolidColorMaterials.NewSolidColorTexture(color);
+                    }
+                    else
+                    {
+                        moodBgTex = MoodMinorCrossedBGTex;
+                    }
+
                 }
                 else if (curMood > mb.BreakThresholdExtreme)
                 {
                     moodPercent = Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, curMood);
-                    moodTex = ColonistBarTextures.MoodMajorCrossedTex;
-                    moodBgTex = ColonistBarTextures.MoodMajorCrossedBGTex;
+                    moodTex = MoodMajorCrossedTex;
+                    if (moodPercent < 0.7f)
+                    {
+                        Color color = Color.Lerp(ColOrangeBg, ColVermillion, Mathf.InverseLerp(0.2f, 0.05f, moodPercent));
+                        moodBgTex = SolidColorMaterials.NewSolidColorTexture(color);
+                    }
+                    else
+                    {
+                        moodBgTex = MoodMajorCrossedBGTex;
+                    }
                 }
                 else
                 {
-                    moodPercent = mb.BreakThresholdExtreme > 0.01f ? Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, curMood) : 1f;
-                    moodTex = ColonistBarTextures.MoodExtremeCrossedTex;
-                    moodBgTex = ColonistBarTextures.MoodExtremeCrossedBGTex;
+                    //     moodPercent = mb.BreakThresholdExtreme > 0.01f ? Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, curMood) : 1f;
+                    moodPercent = 1f;
+                    moodTex = MoodExtremeCrossedTex;
+                    moodBgTex = MoodExtremeCrossedTex;
                 }
                 GUI.DrawTexture(moodRect, moodBgTex);
-
-                if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                    GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
-                else
-                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
-
-                DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
-                DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
-                DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
 
                 Rect rect1;
                 Rect rect2;
@@ -734,18 +735,27 @@ namespace ColonistBarKF
                     default:
                         rect1 = new Rect(moodRect.x, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage, moodRect.width, 1);
                         rect2 = new Rect(moodRect.xMax + 1, moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage - 1, 2, 3);
+                        GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
                         break;
 
                     case Position.Alignment.Top:
                         rect1 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height);
                         rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2);
+                        GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
                         break;
                     case Position.Alignment.Bottom:
                         rect1 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage, moodRect.y, 1, moodRect.height);
-                        rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2); break;
+                        rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2);
+                        GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
+                        break;
                 }
-                GUI.DrawTexture(rect1, ColonistBarTextures.MoodTargetTex);
-                GUI.DrawTexture(rect2, ColonistBarTextures.MoodTargetTex);
+
+                DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
+                DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
+                DrawMentalThreshold(moodRect, mb.BreakThresholdMinor, mood.CurLevelPercentage);
+
+                GUI.DrawTexture(rect1, MoodTargetTex);
+                GUI.DrawTexture(rect2, MoodTargetTex);
                 //   TooltipHandler.TipRegion(moodRect, tooltip);
             }
         }
@@ -753,9 +763,9 @@ namespace ColonistBarKF
         private static void DrawMentalThreshold(Rect moodRect, float threshold, float currentMood)
         {
             if (ColBarSettings.MoodBarPos == Position.Alignment.Left || ColBarSettings.MoodBarPos == Position.Alignment.Right)
-                GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), ColonistBarTextures.MoodBreakTex);
+                GUI.DrawTexture(new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1), MoodBreakTex);
             else
-                GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * threshold, moodRect.y, 1, moodRect.height), ColonistBarTextures.MoodBreakTex);
+                GUI.DrawTexture(new Rect(moodRect.x + moodRect.width * threshold, moodRect.y, 1, moodRect.height), MoodBreakTex);
 
             /*if (currentMood <= threshold)
 			{

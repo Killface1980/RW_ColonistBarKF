@@ -114,7 +114,7 @@ namespace ColonistBarKF
 
         public bool ShowPyromaniac = true;
 
-        public bool ShowSad = true;
+        public bool ShowSad = false;
 
         public bool ShowTired = true;
 
@@ -167,5 +167,6 @@ namespace ColonistBarKF
         }
 
         public bool UseNewMood = true;
+    
     }
 }

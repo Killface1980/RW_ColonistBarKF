@@ -735,9 +735,12 @@ namespace ColonistBarKF.PSI
             // Bad Mood
             if (pawn.needs.mood.CurLevelPercentage <= mb?.BreakThresholdMinor)
             {
-                if (!psi && ColBarSettings.ShowSad)
-                    DrawIcon_FadeRedAlertToNeutral(psiRect, ref barIconNum, Icons.Sad,
-                        pawn.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor, rectAlpha);
+                // No need for an icon if I have a mood bar.
+
+                //if (!psi && ColBarSettings.ShowSad)
+                //    DrawIcon_FadeRedAlertToNeutral(psiRect, ref barIconNum, Icons.Sad,
+                //        pawn.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor, rectAlpha);
+
                 if (psi && PsiSettings.ShowSad)
                     DrawIcon_FadeRedAlertToNeutral(bodyLoc, ref iconNum, Icons.Sad,
                         pawn.needs.mood.CurLevelPercentage / mb.BreakThresholdMinor, ViewOpacityCrit);
@@ -1369,6 +1372,7 @@ namespace ColonistBarKF.PSI
                     }
                 }
             }
+
         }
 
         #endregion
