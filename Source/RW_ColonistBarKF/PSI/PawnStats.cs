@@ -23,7 +23,7 @@ namespace ColonistBarKF.PSI
 
         public float ApparelHealth = 1f;
 
-        public float Drunkness = 0f;
+    //    public float Drunkness = 0f;
 
         public bool HasBed = false;
 
@@ -45,5 +45,12 @@ namespace ColonistBarKF.PSI
         public int LastStatUpdate = -5000;
         public MentalBreaker Mb;
         public Need_Mood Mood;
+        public int drugDesire = -1;
+        public bool traitsCheck = false;
+        public bool isAddict = false;
+        public ThoughtDef painThought;
+        public bool withDrawal = false;
+        public string drugUserLabel = null;
+        public string addictionLabel = null;
     }
 }

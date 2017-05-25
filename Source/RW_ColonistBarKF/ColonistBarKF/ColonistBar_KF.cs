@@ -26,9 +26,6 @@ namespace ColonistBarKF
 
 
 
-        private static float clickedAt;
-
-
         // custom test
 
         public static Vector2 BaseSize => new Vector2(Settings.ColBarSettings.BaseSizeFloat, Settings.ColBarSettings.BaseSizeFloat);

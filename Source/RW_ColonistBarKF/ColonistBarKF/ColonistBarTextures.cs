@@ -6,19 +6,19 @@ namespace Verse
     internal class ColonistBarTextures
     {
         // Color blind palette
-        public static readonly Color32 ColVermillion = new Color32(204, 63, 0, 255);
+        public static readonly Color ColVermillion = new Color32(204, 63, 0, 255);
      //   public static readonly Color32 ColVermillion = new Color32(179, 55, 0, 255);
-        public static readonly Color32 ColOrange = new Color32(177, 123, 0, 255);
-        public static readonly Color32 ColOrangeBg = new Color32(177, 123, 0, 60);
-        public static readonly Color32 ColYellow = new Color32(176, 179, 0, 255);
-        public static readonly Color32 ColYellowBg = new Color32(176, 179, 0, 60);
-        public static readonly Color32 ColReddishPurple = new Color32(204, 121, 167, 255);
-        public static readonly Color32 ColBlueishGreen = new Color32(0, 158, 115, 255);
-        public static readonly Color32 ColBlueishGreenBg = new Color32(0, 158, 115, 60);
-        public static Color32 ColSkyBlue = new Color32(92, 180, 230, 255);
-        public static Color32 ColSkyBlueBg = new Color32(92, 180, 230, 80);
-        public static Color32 ColBlue = new Color32(0, 114, 178, 255);
-        public static Color32 ColBlueBG = new Color32(0, 114, 178, 80);
+        public static readonly Color ColOrange = new Color32(177, 123, 0, 255);
+        public static readonly Color ColOrangeBg = new Color32(177, 123, 0, 60);
+        public static readonly Color ColYellow = new Color32(176, 179, 0, 255);
+        public static readonly Color ColYellowBg = new Color32(176, 179, 0, 60);
+        public static readonly Color ColReddishPurple = new Color32(204, 121, 167, 255);
+        public static readonly Color ColBlueishGreen = new Color32(0, 158, 115, 255);
+        public static readonly Color ColBlueishGreenBg = new Color32(0, 158, 115, 60);
+        public static readonly Color ColSkyBlue = new Color32(92, 180, 230, 255);
+        public static readonly Color ColSkyBlueBg = new Color32(92, 180, 230, 80);
+        public static readonly Color ColBlue = new Color32(0, 114, 178, 255);
+        public static readonly Color ColBlueBG = new Color32(0, 114, 178, 80);
 
 
         public static Color Color25To21 = ColVermillion;

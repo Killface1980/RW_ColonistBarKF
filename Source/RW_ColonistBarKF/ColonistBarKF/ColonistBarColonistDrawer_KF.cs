@@ -641,7 +641,7 @@ namespace ColonistBarKF
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b, entryRectAlpha);
+                    GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b,entryRectAlpha);
                     iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.95f * entryRectAlpha);
                 }
                 Widgets.DrawBoxSolid(rect2, iconcolor);
