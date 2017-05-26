@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
     public class Coloniistbar_KF_ModBase : HugsLib.ModBase
     {

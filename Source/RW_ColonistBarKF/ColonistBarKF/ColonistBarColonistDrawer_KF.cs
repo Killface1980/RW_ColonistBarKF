@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ColonistBarKF.PSI;
 using RimWorld;
 using RimWorld.Planet;
@@ -385,7 +383,7 @@ namespace ColonistBarKF
             GUI.color = color;
 
             PawnStats pawnStats = null;
-            _statsDict.TryGetValue(colonist, out pawnStats);
+            StatsDict.TryGetValue(colonist, out pawnStats);
 
 
             GUI.color = BGColor;

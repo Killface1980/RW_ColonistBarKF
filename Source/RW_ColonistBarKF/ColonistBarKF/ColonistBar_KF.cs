@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using ColonistBarKF.ColorPicker;
-using ColonistBarKF.Detouring;
 using ColonistBarKF.PSI;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Verse.Sound;
 using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
@@ -109,7 +105,7 @@ namespace ColonistBarKF
                 return 2;
 
                 int maxCount = 0;
-                foreach (KeyValuePair<Pawn, PawnStats> colonist in Settings._statsDict)
+                foreach (KeyValuePair<Pawn, PawnStats> colonist in Settings.StatsDict)
                 {
                     maxCount = Mathf.Max(maxCount, colonist.Value.IconCount);
                 }

@@ -72,7 +72,7 @@
     <Compile Include="ColonistBarKF\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="ColonistBarKF\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="ColonistBarKF\ColBarHelper_KF.cs" />
-    <Compile Include="HugsLib_Patches_Dirty.cs" />
+    <Compile Include="Harmony_Patches_Dirty.cs" />
     <Compile Include="ColonistBarKF\Coloniistbar_KF_ModBase.cs" />
     <Compile Include="ColonistBarKF\_Selector.cs" />
     <Compile Include="ColonistBarKF\_WorldSelector.cs" />

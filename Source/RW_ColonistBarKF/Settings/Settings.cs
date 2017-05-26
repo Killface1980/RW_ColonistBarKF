@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using ColonistBarKF.PSI;
 using Verse;
 
@@ -10,7 +7,7 @@ namespace ColonistBarKF
 {
     public static class Settings
     {
-        public static Dictionary<Pawn, PawnStats> _statsDict = new Dictionary<Pawn, PawnStats>();
+        public static Dictionary<Pawn, PawnStats> StatsDict = new Dictionary<Pawn, PawnStats>();
 
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
         public static SettingsPSI PsiSettings = new SettingsPSI();

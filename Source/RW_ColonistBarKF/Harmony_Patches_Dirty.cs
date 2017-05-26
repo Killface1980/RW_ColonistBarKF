@@ -1,11 +1,35 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Harmony;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace ColonistBarKF
 {
+  //// patching not working - JIT?!?
+  //[HarmonyPatch(typeof(PawnRenderer), "RenderPawnAt", new Type[] { typeof(Vector3) })]
+  //static class RenderPawnAt_Postfix
+  //{
+  //    private static readonly FieldInfo pawnField = AccessTools.Field(typeof(PawnRenderer), "pawn");
+  //
+  //    [HarmonyPostfix]
+  //    private static void MarkColonistsDirty(PawnRenderer __instance)
+  //    {
+  //        Pawn __result = (Pawn)pawnField.GetValue(__instance);
+  //        if (__result.RaceProps.Animal)
+  //            PSI.PSI.DrawAnimalIcons(__result);
+  //
+  //        else if ( (Settings.PsiSettings.UsePsi && __result.IsColonist) || (Settings.PsiSettings.UsePsiOnPrisoner && __result.IsPrisoner))
+  //        {
+  //            PSI.PSI.DrawColonistIcons(__result, true);
+  //        }
+  //
+  //        //           Log.Message("Colonists marked dirty.x02");
+  //    }
+  //}
+
     // patching not working - JIT?!?
     [HarmonyPatch(typeof(ColonistBar), "MarkColonistsDirty")]
     static class MarkColonistsDirty_Prefix
@@ -14,7 +38,7 @@ namespace ColonistBarKF
         private static void MarkColonistsDirty()
         {
             ColonistBar_KF.BarHelperKf.entriesDirty = true;
- //           Log.Message("Colonists marked dirty.x02");
+            //           Log.Message("Colonists marked dirty.x02");
         }
     }
 
@@ -130,7 +154,7 @@ namespace ColonistBarKF
             if (Find.ColonistBar != null)
             {
                 MarkDirty_Helper.Dirty();
-   //             Log.Message("Colonists marked dirty.x10");
+                //             Log.Message("Colonists marked dirty.x10");
             }
         }
     }
