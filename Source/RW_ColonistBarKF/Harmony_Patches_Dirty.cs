@@ -98,8 +98,6 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
-            if (!Find.PlaySettings.showColonistBar)
-                return;
             MarkDirty_Helper.Dirty();
             //        Log.Message("Colonists marked dirty.x06");
         }

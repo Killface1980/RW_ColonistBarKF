@@ -62,5 +62,8 @@ namespace ColonistBarKF.PSI
         public bool jealous = false;
         public bool jealousThought = false;
         public bool unburied = false;
+        public bool isPacifist = false;
+        public bool isPyromaniac = false;
+        public bool isMasochist=false;
     }
 }

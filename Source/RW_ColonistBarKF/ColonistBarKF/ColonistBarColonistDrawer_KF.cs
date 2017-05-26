@@ -354,7 +354,7 @@ namespace ColonistBarKF
             Color BGColor = new Color();
 
             // testing
-            GUI.DrawTexture(outerRect, DarkGrayFond);
+        //    GUI.DrawTexture(outerRect, DarkGrayFond);
 
             Rect pawnRect;
             Rect moodBorderRect;
