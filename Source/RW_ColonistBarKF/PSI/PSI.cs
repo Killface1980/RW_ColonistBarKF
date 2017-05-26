@@ -568,19 +568,21 @@ namespace ColonistBarKF.PSI
 
             pawnStats.isAddict = false;
             pawnStats.withDrawal = false;
+            pawnStats.withDrawalPercent = 0f;
             pawnStats.addictionLabel = null;
 
             if (hediffs != null)
-                foreach (Hediff addiction in hediffs)
+                foreach (Hediff hediff in hediffs)
                 {
-                    if (addiction is Hediff_Addiction)
+                    if (hediff is Hediff_Addiction)
                     {
                         pawnStats.isAddict = true;
-                        pawnStats.withDrawal = addiction.CurStageIndex > 0;
+                        pawnStats.withDrawalPercent = hediff.Severity;
+                        pawnStats.withDrawal = hediff.CurStageIndex > 0;
                         if (pawnStats.addictionLabel.NullOrEmpty())
-                            pawnStats.addictionLabel = addiction.LabelCap;
+                            pawnStats.addictionLabel = hediff.LabelCap;
                         else
-                            pawnStats.addictionLabel += "\n" + addiction.LabelCap;
+                            pawnStats.addictionLabel += "\n" + hediff.LabelCap;
                     }
                 }
 
@@ -748,8 +750,10 @@ namespace ColonistBarKF.PSI
 
                     if (pawnStats.isAddict)
                     {
-                        color = pawnStats.withDrawal ? ColBlueishGreen : ColVermillion;
-
+                        if (pawnStats.withDrawal)
+                            GetWithdrawalColor(pawnStats, out color);
+                        else
+                            color = ColVermillion;
                     }
                     else
                     {
@@ -1370,7 +1374,10 @@ namespace ColonistBarKF.PSI
 
                     if (pawnStats.isAddict)
                     {
-                        color = pawnStats.withDrawal ? ColBlueishGreen : ColVermillion;
+                        if (pawnStats.withDrawal)
+                            GetWithdrawalColor(pawnStats, out color);
+                        else
+                            color = ColVermillion;
 
                         if (!pawnStats.drugUserLabel.NullOrEmpty())
                             tooltip = pawnStats.drugUserLabel + "\n" + pawnStats.addictionLabel;
@@ -1736,6 +1743,11 @@ namespace ColonistBarKF.PSI
                     }
             }
 
+        }
+
+        private static void GetWithdrawalColor(PawnStats pawnStats, out Color color)
+        {
+            color = Color.Lerp(ColBlueishGreen, ColVermillion, pawnStats.withDrawalPercent);
         }
 
         #endregion

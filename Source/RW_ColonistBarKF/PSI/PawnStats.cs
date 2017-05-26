@@ -65,5 +65,6 @@ namespace ColonistBarKF.PSI
         public bool isPacifist = false;
         public bool isPyromaniac = false;
         public bool isMasochist=false;
+        public float withDrawalPercent = 0f;
     }
 }
