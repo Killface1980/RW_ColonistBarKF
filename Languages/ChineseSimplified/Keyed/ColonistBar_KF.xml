@@ -15,7 +15,7 @@
   <CBKF.Settings.Health>健康</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>男性殖民者颜色</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>底边距</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginHorizontal>Max colonist bar width</CBKF.Settings.MarginHorizontal>
+  <CBKF.Settings.MarginHorizontal>Max colonist bar width: </CBKF.Settings.MarginHorizontal>
   <CBKF.Settings.MarginRight>右边距</CBKF.Settings.MarginRight>
   <CBKF.Settings.MarginTop>顶边距</CBKF.Settings.MarginTop>
   <CBKF.Settings.MaxColonistBarWidth>最小头像宽度</CBKF.Settings.MaxColonistBarWidth>
@@ -144,5 +144,7 @@
   <PSI.Settings.Visibility.LeftUnburied>目睹死亡</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>婚姻</PSI.Settings.Visibility.Marriage>
 
+  <PSI.WoundInfection>Infection</PSI.WoundInfection>
+  <PSI.Efficiency>Efficiency</PSI.Efficiency>
 
 </LanguageData>

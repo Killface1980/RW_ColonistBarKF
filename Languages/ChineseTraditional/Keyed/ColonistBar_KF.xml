@@ -143,5 +143,7 @@
   <PSI.Settings.Visibility.LeftUnburied>殖民者離開了</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>婚姻</PSI.Settings.Visibility.Marriage>
 
+  <PSI.WoundInfection>Infection</PSI.WoundInfection>
+  <PSI.Efficiency>Efficiency</PSI.Efficiency>
 
 </LanguageData>

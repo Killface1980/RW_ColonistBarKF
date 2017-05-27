@@ -15,7 +15,7 @@
   <CBKF.Settings.Health>Gesundheit</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Farbe für männliche Kolonisten</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Unterer Abstand</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginHorizontal>Maximale Leistenbreite</CBKF.Settings.MarginHorizontal>
+  <CBKF.Settings.MarginHorizontal>Maximale Leistenbreite: </CBKF.Settings.MarginHorizontal>
   <CBKF.Settings.MarginRight>Rechter Abstand</CBKF.Settings.MarginRight>
   <CBKF.Settings.MarginTop>Oberer Abstand</CBKF.Settings.MarginTop>
   <CBKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</CBKF.Settings.MaxColonistBarHeight>
@@ -143,4 +143,7 @@
   <PSI.Settings.Visibility.Toxicity>Vergiftung</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.LeftUnburied>Kolonist nicht begraben</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
+  <PSI.WoundInfection>Infektion</PSI.WoundInfection>
+  <PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
+
 </LanguageData>

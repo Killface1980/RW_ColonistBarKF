@@ -157,9 +157,9 @@ namespace ColonistBarKF.PSI
             DrawIconOnColonist(bodyPos, ref num, icon, Color.Lerp(c1, c2, v), opacity);
         }
 
-        public static void DrawIcon_FadeFloatWithTwoColors(Rect rect, ref int num, Icons icon, float v, Color c1, Color c2, float rectAlpha)
+        public static void DrawIcon_FadeFloatWithTwoColors(Rect rect, ref int num, Icons icon, float v, Color c1, Color c2, float rectAlpha, string tooltip = null)
         {
-            DrawIconOnBar(rect, ref num, icon, Color.Lerp(c1, c2, v), rectAlpha);
+            DrawIconOnBar(rect, ref num, icon, Color.Lerp(c1, c2, v), rectAlpha, tooltip);
         }
 
         public static void DrawIcon_FadeFloatWithThreeColors(Vector3 bodyPos, ref int num, Icons icon, float v, Color c1, Color c2, Color c3, float opacity)
@@ -192,23 +192,23 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        public static void DrawIcon_FadeFloatWithFourColorsHB(Rect rect, ref int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4, float rectAlpha)
+        public static void DrawIcon_FadeFloatWithFourColorsHB(Rect rect, ref int num, Icons icon, float v, Color c1, Color c2, Color c3, Color c4, float rectAlpha, string tooltip = null)
         {
             if (v > 0.8f)
             {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5), rectAlpha);
+                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5), rectAlpha, tooltip);
             }
             else if (v > 0.6f)
             {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5), rectAlpha);
+                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5), rectAlpha, tooltip);
             }
             else if (v > 0.4f)
             {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5), rectAlpha);
+                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5), rectAlpha, tooltip);
             }
             else
             {
-                DrawIconOnBar(rect, ref num, icon, c4, rectAlpha);
+                DrawIconOnBar(rect, ref num, icon, c4, rectAlpha, tooltip);
             }
         }
 

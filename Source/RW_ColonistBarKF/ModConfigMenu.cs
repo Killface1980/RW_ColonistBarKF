@@ -599,12 +599,6 @@ namespace ColonistBarKF
                 ref PsiSettings.ShowBloodloss,
                 ref num);
             DrawCheckboxArea(
-                "PSI.Settings.Visibility.Sickness".Translate(),
-                PSIMaterials[Icons.Sickness],
-                ref ColBarSettings.ShowMedicalAttention,
-                ref PsiSettings.ShowMedicalAttention,
-                ref num);
-            DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pain".Translate(),
                 PSIMaterials[Icons.Pain],
                 ref ColBarSettings.ShowPain,
@@ -692,46 +686,11 @@ namespace ColonistBarKF
                 ref PsiSettings.ShowPacific,
                 ref num);
 
-            DrawCheckboxArea(
-                "PSI.Settings.Visibility.Lovers".Translate(),
-                PSIMaterials[Icons.Love],
-                ref ColBarSettings.ShowLove,
-                ref PsiSettings.ShowLove,
-                ref num);
+
 
             // DrawCheckboxArea("PSI.Settings.Visibility.Marriage".Translate(), PSIMaterials[Icons.Marriage], ref ColBarSettings.ShowMarriage, ref PsiSettings.ShowMarriage, ref num);
             GUILayout.EndHorizontal();
 
-            // PsiSettings.ShowIdle = Toggle(PsiSettings.ShowIdle, "PSI.Settings.Visibility.Idle".Translate());
-            // PsiSettings.ShowUnarmed = Toggle(PsiSettings.ShowUnarmed, "PSI.Settings.Visibility.Unarmed".Translate());
-            // PsiSettings.ShowHungry = Toggle(PsiSettings.ShowHungry, "PSI.Settings.Visibility.Hungry".Translate());
-            // PsiSettings.ShowSad = Toggle(PsiSettings.ShowSad, "PSI.Settings.Visibility.Sad".Translate());
-            // PsiSettings.ShowTired = Toggle(PsiSettings.ShowTired, "PSI.Settings.Visibility.Tired".Translate());
-            // //
-            // PsiSettings.ShowMedicalAttention = Toggle(PsiSettings.ShowMedicalAttention, "PSI.Settings.Visibility.Sickness".Translate());
-            // PsiSettings.ShowPain = Toggle(PsiSettings.ShowPain, "PSI.Settings.Visibility.Pain".Translate());
-            // PsiSettings.ShowHealth = Toggle(PsiSettings.ShowHealth, "PSI.Settings.Visibility.Health".Translate());
-            // PsiSettings.ShowEffectiveness = Toggle(PsiSettings.ShowEffectiveness, "PSI.Settings.Visibility.Injury".Translate());
-            // PsiSettings.ShowBloodloss = Toggle(PsiSettings.ShowBloodloss, "PSI.Settings.Visibility.Bloodloss".Translate());
-            // //
-            // PsiSettings.ShowTooHot = Toggle(PsiSettings.ShowTooHot, "PSI.Settings.Visibility.TooHot".Translate());
-            // PsiSettings.ShowTooCold = Toggle(PsiSettings.ShowTooCold, "PSI.Settings.Visibility.TooCold".Translate());
-            // PsiSettings.ShowNaked = Toggle(PsiSettings.ShowNaked, "PSI.Settings.Visibility.Naked".Translate());
-            // PsiSettings.ShowDrunk = Toggle(PsiSettings.ShowDrunk, "PSI.Settings.Visibility.Drunk".Translate());
-            // PsiSettings.ShowApparelHealth = Toggle(PsiSettings.ShowApparelHealth, "PSI.Settings.Visibility.ApparelHealth".Translate());
-            // //
-            // PsiSettings.ShowPacific = Toggle(PsiSettings.ShowPacific, "PSI.Settings.Visibility.Pacific".Translate());
-            // PsiSettings.ShowNightOwl = Toggle(PsiSettings.ShowNightOwl, "PSI.Settings.Visibility.NightOwl".Translate());
-            // PsiSettings.ShowGreedy = Toggle(PsiSettings.ShowGreedy, "PSI.Settings.Visibility.Greedy".Translate());
-            // PsiSettings.ShowJealous = Toggle(PsiSettings.ShowJealous, "PSI.Settings.Visibility.Jealous".Translate());
-            // PsiSettings.ShowLove = Toggle(PsiSettings.ShowLove, "PSI.Settings.Visibility.Lovers".Translate());
-            // //
-            // PsiSettings.ShowProsthophile = Toggle(PsiSettings.ShowProsthophile, "PSI.Settings.Visibility.Prosthophile".Translate());
-            // PsiSettings.ShowProsthophobe = Toggle(PsiSettings.ShowProsthophobe, "PSI.Settings.Visibility.Prosthophobe".Translate());
-            // PsiSettings.ShowCabinFever = Toggle(PsiSettings.ShowCabinFever, "PSI.Settings.Visibility.CabinFever".Translate());
-            // PsiSettings.ShowBedroom = Toggle(PsiSettings.ShowBedroom, "PSI.Settings.Visibility.Bedroom".Translate());
-            // PsiSettings.ShowDeadColonists = Toggle(PsiSettings.ShowDeadColonists, "PSI.Settings.Visibility.ShowDeadColonists".Translate());
-            // PsiSettings.ShowPyromaniac = Toggle(PsiSettings.ShowPyromaniac, "PSI.Settings.Visibility.Pyromaniac".Translate());
             GUILayout.Space(Text.LineHeight / 2);
             GUILayout.EndScrollView();
         }

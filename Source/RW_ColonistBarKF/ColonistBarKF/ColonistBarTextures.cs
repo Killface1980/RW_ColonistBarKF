@@ -32,7 +32,8 @@ namespace Verse
 
         public static Color Color05AndLess = new Color(0.8f, 0.75f, 0.59f);
 
-        public static Color ColorMoodBoost = ColSkyBlue;
+        public static Color ColorMoodBoost = ColBlueishGreen;
+
         public static Color ColorHealthBarGreen = ColBlueishGreen;
      //   public static Color ColorMoodBoost = new Color(0f, 0.8f, 0f);
 

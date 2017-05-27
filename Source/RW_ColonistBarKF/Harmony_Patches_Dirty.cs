@@ -195,7 +195,7 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty(Thing __instance)
         {
-            var pawn = __instance as Pawn;
+            Pawn pawn = __instance as Pawn;
             if (pawn == null)
                 return;
             if (pawn.Faction != Faction.OfPlayer)
@@ -213,7 +213,7 @@ namespace ColonistBarKF
         [HarmonyPostfix]
         private static void MarkColonistsDirty(Thing __instance)
         {
-            var pawn = __instance as Pawn;
+            Pawn pawn = __instance as Pawn;
             if (pawn == null)
                 return;
             if (pawn.Faction != Faction.OfPlayer)

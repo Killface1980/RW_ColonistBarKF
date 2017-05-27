@@ -25,7 +25,7 @@ namespace ColonistBarKF.PSI
 
         //    public float Drunkness = 0f;
 
-        public bool HasBed = false;
+        public int BedStatus = -1;
 
         public bool IsSick = false;
 
@@ -52,19 +52,32 @@ namespace ColonistBarKF.PSI
         public bool withDrawal = false;
         public string drugUserLabel = null;
         public string addictionLabel = null;
-        public bool wantsToHump = false;
-        public bool feelsNaked = false;
+        public int wantsToHump = -1;
+        public int feelsNaked = -1;
         public int prostho = 0;
         public int prosthoWant = 0;
-        public bool nightOwlUnhappy = false;
+        public int nightOwlUnhappy = -1;
         public bool greedy = false;
         public bool greedyThought = false;
         public bool jealous = false;
         public bool jealousThought = false;
-        public bool unburied = false;
+        public int unburied = -1;
         public bool isPacifist = false;
         public bool isPyromaniac = false;
         public bool isMasochist=false;
         public float withDrawalPercent = 0f;
+        public float pawnHealth =1f;
+        public float severity;
+        public float immunity;
+        public string humpTip;
+        public string sickTip;
+        public string painTip;
+        public string cabinFeverTip;
+        public string nakedTip;
+        public string nightOwlTip;
+        public bool isNightOwl = false;
+        public string unburiedTip;
+
+        public string BedStatusTip;
     }
 }
