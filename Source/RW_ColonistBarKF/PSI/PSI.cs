@@ -1763,6 +1763,7 @@ namespace ColonistBarKF.PSI
                         }
                     }
             }
+            pawnStats.IconCount = barIconNum > colBarSettings.MaxRowsCustom ? colBarSettings.MaxRowsCustom : barIconNum;
 
         }
 

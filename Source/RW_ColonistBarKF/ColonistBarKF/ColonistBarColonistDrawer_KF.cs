@@ -18,7 +18,6 @@ namespace ColonistBarKF
 
         private static Vector2[] bracketLocs = new Vector2[4];
 
-        public static float SpacingLabel = 20f;
 
         private Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
 
@@ -354,7 +353,7 @@ namespace ColonistBarKF
             Color BGColor = new Color();
 
             // testing
-        //    GUI.DrawTexture(outerRect, DarkGrayFond);
+            //    GUI.DrawTexture(outerRect, DarkGrayFond);
 
             Rect pawnRect;
             Rect moodBorderRect;
@@ -390,7 +389,7 @@ namespace ColonistBarKF
             GUI.DrawTexture(pawnRect, ColBarSettings.UseGender ? BGTexGrey : BGTexVanilla);
             GUI.color = color;
 
-            if (colonist.needs != null && colonist.needs.mood != null)
+            if (colonist.needs?.mood != null)
             {
                 if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                 {
@@ -469,8 +468,8 @@ namespace ColonistBarKF
                         pawnRect.x += moodBorderRect.width;
                         break;
                     case Position.Alignment.Right:
-                        moodBorderRect.x = pawnRect.xMax;
                         moodBorderRect.width /= 4;
+                        moodBorderRect.x = pawnRect.xMax;
                         break;
                     case Position.Alignment.Top:
                         moodBorderRect.height /= 4;
@@ -478,7 +477,7 @@ namespace ColonistBarKF
                         break;
                     case Position.Alignment.Bottom:
                         moodBorderRect.height /= 4;
-                        moodBorderRect.y = pawnRect.yMax + SpacingLabel;
+                        moodBorderRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
                         break;
                 }
                 psiRect = new Rect(pawnRect);
@@ -501,7 +500,7 @@ namespace ColonistBarKF
                             psiRect.yMax = Mathf.Min(pawnRect.yMin, moodBorderRect.yMin);
                             break;
                         case Position.Alignment.Bottom:
-                            psiRect.y = Math.Max(pawnRect.yMax + SpacingLabel, moodBorderRect.yMax);
+                            psiRect.y = Math.Max(pawnRect.yMax + ColonistBar_KF.SpacingLabel, moodBorderRect.yMax);
                             break;
                     }
                 }
@@ -522,7 +521,7 @@ namespace ColonistBarKF
                             pawnRect.y += ColonistBar_KF.HeightPSIVertical() * ColonistBar_KF.Scale;
                             break;
                         case Position.Alignment.Bottom:
-                            psiRect.y = pawnRect.yMax + SpacingLabel;
+                            psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
                             break;
                     }
                     moodBorderRect = new Rect(pawnRect);
@@ -635,13 +634,12 @@ namespace ColonistBarKF
                 if (thing.def.IsMeleeWeapon)
                 {
                     GUI.color = new Color(ColVermillion.r, ColVermillion.g, ColVermillion.b, entryRectAlpha);
-                    iconcolor = new Color(0.2f, 0.05f, 0.05f, 0.95f * entryRectAlpha);
                 }
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b,entryRectAlpha);
-                    iconcolor = new Color(0.03f, 0.075f, 0.2f, 0.95f * entryRectAlpha);
+                    GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b, entryRectAlpha);
                 }
+                iconcolor = new Color(0.3f, 0.3f, 0.3f, 0.95f * entryRectAlpha);
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
                 GUI.color = color;
@@ -657,7 +655,7 @@ namespace ColonistBarKF
             }
         }
 
-        private static void DrawNewMoodRect(Rect moodBorderRect, Need_Mood mood, MentalBreaker mb, string tooltip = null)
+        private static void DrawNewMoodRect(Rect moodBorderRect, Need mood, MentalBreaker mb, string tooltip = null)
         {
 
             if (mood != null && mb != null)

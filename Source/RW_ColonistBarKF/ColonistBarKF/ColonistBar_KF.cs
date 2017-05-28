@@ -19,6 +19,7 @@ namespace ColonistBarKF
 
         private const float PawnTextureHorizontalPadding = 1f;
 
+        public const float SpacingLabel = 15f;
 
 
 
@@ -98,19 +99,24 @@ namespace ColonistBarKF
             return 0f;
         }
 
-        public static int PsiRowsOnBar
+        private static int _psiRowsOnBar;
+
+        private static int PsiRowsOnBar
         {
             get
             {
-                return 2;
+         //       return 2;
 
                 int maxCount = 0;
+                int curCount = _psiRowsOnBar;
                 foreach (KeyValuePair<Pawn, PawnStats> colonist in Settings.StatsDict)
                 {
                     maxCount = Mathf.Max(maxCount, colonist.Value.IconCount);
                 }
-                int psiRowsOnBar = Mathf.CeilToInt((float)maxCount /Settings.ColBarSettings.IconsInColumn);
-                return psiRowsOnBar;
+                _psiRowsOnBar = Mathf.CeilToInt((float)maxCount /Settings.ColBarSettings.IconsInColumn);
+                if (curCount!= _psiRowsOnBar)
+                    MarkColonistsDirty();
+                return _psiRowsOnBar;
             }
         }
 
@@ -152,7 +158,7 @@ namespace ColonistBarKF
                 bool showGroupFrames = ShowGroupFrames;
                 for (int i = 0; i < BarHelperKf.cachedDrawLocs.Count; i++)
                 {
-                    Rect rect = new Rect(BarHelperKf.cachedDrawLocs[i].x, BarHelperKf.cachedDrawLocs[i].y, FullSize.x, FullSize.y + 12f);
+                    Rect rect = new Rect(BarHelperKf.cachedDrawLocs[i].x, BarHelperKf.cachedDrawLocs[i].y, FullSize.x, FullSize.y + SpacingLabel);
                     ColonistBar.Entry entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;

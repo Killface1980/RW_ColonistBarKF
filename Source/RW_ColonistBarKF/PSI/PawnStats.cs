@@ -7,7 +7,7 @@ namespace ColonistBarKF.PSI
 {
     public class PawnStats
     {
-        public int IconCount;
+        public int IconCount = 0;
 
         public float TotalEfficiency = 1f;
 
