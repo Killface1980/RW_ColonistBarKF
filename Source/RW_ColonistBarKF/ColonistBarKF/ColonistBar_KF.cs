@@ -84,7 +84,7 @@ namespace ColonistBarKF
             if (Settings.ColBarSettings.UsePsi)
                 if (Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Left || Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Right)
                 {
-                    return Settings.ColBarSettings.BaseSizeFloat /Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                    return Settings.ColBarSettings.BaseSizeFloat / Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
@@ -94,7 +94,7 @@ namespace ColonistBarKF
             if (Settings.ColBarSettings.UsePsi)
                 if (Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Bottom || Settings.ColBarSettings.ColBarPsiIconPos == Alignment.Top)
                 {
-                    return Settings.ColBarSettings.BaseSizeFloat /Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                    return Settings.ColBarSettings.BaseSizeFloat / Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
                 }
             return 0f;
         }
@@ -105,7 +105,7 @@ namespace ColonistBarKF
         {
             get
             {
-         //       return 2;
+                //       return 2;
 
                 int maxCount = 0;
                 int curCount = _psiRowsOnBar;
@@ -113,8 +113,8 @@ namespace ColonistBarKF
                 {
                     maxCount = Mathf.Max(maxCount, colonist.Value.IconCount);
                 }
-                _psiRowsOnBar = Mathf.CeilToInt((float)maxCount /Settings.ColBarSettings.IconsInColumn);
-                if (curCount!= _psiRowsOnBar)
+                _psiRowsOnBar = Mathf.CeilToInt((float)maxCount / Settings.ColBarSettings.IconsInColumn);
+                if (curCount != _psiRowsOnBar)
                     MarkColonistsDirty();
                 return _psiRowsOnBar;
             }

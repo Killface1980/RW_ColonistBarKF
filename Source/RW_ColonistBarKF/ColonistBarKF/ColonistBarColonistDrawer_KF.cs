@@ -342,6 +342,12 @@ namespace ColonistBarKF
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
+            PawnStats pawnStats = null;
+            StatsDict.TryGetValue(colonist, out pawnStats);
+
+          //if (pawnStats.IconCount == 0)
+          //    outerRect.width
+
             float entryRectAlpha = ColonistBar_KF.GetEntryRectAlpha(outerRect);
             ApplyEntryInAnotherMapAlphaFactor(pawnMap, ref entryRectAlpha);
 
@@ -381,8 +387,7 @@ namespace ColonistBarKF
 
             GUI.color = color;
 
-            PawnStats pawnStats = null;
-            StatsDict.TryGetValue(colonist, out pawnStats);
+
 
 
             GUI.color = BGColor;

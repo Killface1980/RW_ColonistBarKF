@@ -209,7 +209,7 @@ namespace ColonistBarKF
 
             ColBarSettings.UseCustomIconSize = GUILayout.Toggle(
                 ColBarSettings.UseCustomIconSize,
-                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, " + (ColonistBar_KF.BarHelperKf.cachedScale * 100).ToString("N0") + " %, "
+                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, " + (ColonistBar_KF.BarHelperKf.cachedScale.ToStringPercent())+" %, "
                 + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
 
             if (ColBarSettings.UseCustomIconSize)
@@ -306,8 +306,8 @@ namespace ColonistBarKF
             GUILayout.BeginVertical(_fondBoxes);
             ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
                 ColBarSettings.UseCustomMarginTop,
-                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y, \n " +
-                "CBKF.Settings.MaxColonistBarWidth".Translate() + (Screen.width - (int)ColBarSettings.MarginHorizontal) + " px");
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y \n" +
+                "CBKF.Settings.MaxColonistBarWidth".Translate() + ": " + (Screen.width - (int)ColBarSettings.MarginHorizontal) + " px");
 
             if (ColBarSettings.UseCustomMarginTop)
             {
