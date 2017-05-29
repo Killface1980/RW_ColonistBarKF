@@ -80,19 +80,10 @@
         public static readonly Texture2D MoodBreakTex =
             SolidColorMaterials.NewSolidColorTexture(new Color(0.1f, 0.2f, 0.22f, 0.8f));
 
-        public static readonly Texture2D MoodNeutralTex = SolidColorMaterials.NewSolidColorTexture(ColBlue);
+        public static readonly Texture2D MoodNeutralTex = SolidColorMaterials.NewSolidColorTexture(Color.white);
 
-        public static readonly Texture2D MoodNeutralBGTex = SolidColorMaterials.NewSolidColorTexture(ColBlueBG);
+        public static readonly Texture2D MoodNeutralBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.6f, 0.6f, 0.6f, 0.3f));
 
-        public static readonly Texture2D MoodMinorCrossedTex = SolidColorMaterials.NewSolidColorTexture(ColYellow);
-
-        public static readonly Texture2D MoodMinorCrossedBGTex = SolidColorMaterials.NewSolidColorTexture(ColYellowBg);
-
-        public static readonly Texture2D MoodMajorCrossedTex = SolidColorMaterials.NewSolidColorTexture(ColOrange);
-
-        public static readonly Texture2D MoodMajorCrossedBGTex = SolidColorMaterials.NewSolidColorTexture(ColOrangeBg);
-
-        public static readonly Texture2D MoodExtremeCrossedTex = SolidColorMaterials.NewSolidColorTexture(ColVermillion);
 
         public static readonly Texture2D MoodTargetTex =
             SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.9f, 0.95f, 0.7f));

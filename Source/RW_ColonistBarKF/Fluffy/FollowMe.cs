@@ -72,6 +72,21 @@ namespace ColonistBarKF
 
         #region Methods
 
+        public override void LoadedGame()
+        {
+            if (CurrentlyFollowing)
+                StopFollow("Game loaded");
+            base.LoadedGame();
+        }
+
+        public override void StartedNewGame()
+        {
+            if (CurrentlyFollowing)
+                StopFollow("New game started");
+
+            base.LoadedGame();
+        }
+
         public static void TryStartFollow(Thing thing)
         {
             if (!CurrentlyFollowing && thing == null)
@@ -114,28 +129,28 @@ namespace ColonistBarKF
             _cameraHasJumpedAtLeastOnce = false;
         }
 
-     // public override void GameComponentOnGUI()
-     // {
-     //     if (Current.ProgramState != ProgramState.Playing)
-     //         return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
-     //
-     //     if (Event.current.type == EventType.mouseUp &&
-     //          Event.current.button == 1)
-     //     {
-     //         // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
-     //         Vector3 pos = Input.mousePosition;
-     //         pos.y = Screen.height - pos.y;
-     //         Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
-     //         if (thing != null)
-     //         {
-     //             // start following
-     //             TryStartFollow(thing);
-     //
-     //             // use event so it doesn't bubble through
-     //             Event.current.Use();
-     //         }
-     //     }
-     // }
+        // public override void GameComponentOnGUI()
+        // {
+        //     if (Current.ProgramState != ProgramState.Playing)
+        //         return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
+        //
+        //     if (Event.current.type == EventType.mouseUp &&
+        //          Event.current.button == 1)
+        //     {
+        //         // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
+        //         Vector3 pos = Input.mousePosition;
+        //         pos.y = Screen.height - pos.y;
+        //         Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
+        //         if (thing != null)
+        //         {
+        //             // start following
+        //             TryStartFollow(thing);
+        //
+        //             // use event so it doesn't bubble through
+        //             Event.current.Use();
+        //         }
+        //     }
+        // }
 
         public override void GameComponentUpdate()
         {

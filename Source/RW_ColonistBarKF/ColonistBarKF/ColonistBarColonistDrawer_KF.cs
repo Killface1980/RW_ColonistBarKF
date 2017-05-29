@@ -558,57 +558,41 @@ namespace ColonistBarKF
             Rect rect1 = new Rect();
             Rect rect2 = new Rect();
 
+            Color color = GUI.color;
+            var moodCol = new Color();
+
             float moodPercent;
             float curMood = mood.CurLevelPercentage;
-
-            int stat = 0;
 
             GUI.DrawTexture(moodBorderRect, MoodBGTex);
 
             if (curMood > mb.BreakThresholdMinor)
             {
-                stat = 1;
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, curMood);
+                moodCol = ColBlueBG;
             }
             else if (curMood > mb.BreakThresholdMajor)
             {
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, curMood);
-                stat = 2;
+                moodCol = ColYellow;
             }
             else if (curMood > mb.BreakThresholdExtreme)
             {
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, curMood);
-                stat = 3;
+                moodCol = ColOrange;
             }
             else
             {
                 // moodPercent = mb.BreakThresholdExtreme > 0.01f ? Mathf.InverseLerp(0f, mb.BreakThresholdExtreme, curMood) : 1f;
                 moodPercent = 1f;
-                stat = 4;
+                moodCol = ColVermillion;
             }
-            switch (stat)
-            {
-                default:
-                    break;
-                case 1:
-                    GUI.DrawTexture(moodRect, MoodNeutralBGTex);
-                    DrawMood(moodRect, MoodNeutralTex, moodPercent, mood, out rect1, out rect2);
-                    break;
-
-                case 2:
-                    GUI.DrawTexture(moodRect, MoodMinorCrossedBGTex);
-                    DrawMood(moodRect, MoodMinorCrossedTex, moodPercent, mood, out rect1, out rect2);
-                    break;
-
-                case 3:
-                    GUI.DrawTexture(moodRect, MoodMajorCrossedBGTex);
-                    DrawMood(moodRect, MoodMajorCrossedBGTex, moodPercent, mood, out rect1, out rect2);
-                    break;
-
-                case 4:
-                    GUI.DrawTexture(moodRect, MoodExtremeCrossedTex);
-                    break;
-            }
+            
+            moodCol.a = color.a;
+            GUI.color = moodCol;
+            GUI.DrawTexture(moodRect, MoodNeutralBGTex);
+            DrawMood(moodRect, MoodNeutralTex, moodPercent, mood, out rect1, out rect2);
+            GUI.color = color;
 
             DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
             DrawMentalThreshold(moodRect, mb.BreakThresholdMajor, mood.CurLevelPercentage);
@@ -823,7 +807,6 @@ namespace ColonistBarKF
                 }
 
                 // color labe by thing
-                Color iconcolor = new Color();
 
                 if (thing.def.IsMeleeWeapon)
                 {
@@ -835,7 +818,7 @@ namespace ColonistBarKF
                     GUI.color = new Color(ColBlue.r, ColBlue.g, ColBlue.b, entryRectAlpha);
                 }
 
-                iconcolor = new Color(0.5f, 0.5f, 0.5f, 0.5f * entryRectAlpha);
+                Color iconcolor = new Color(0.5f, 0.5f, 0.5f, 0.8f * entryRectAlpha);
                 Widgets.DrawBoxSolid(rect2, iconcolor);
                 Widgets.DrawBox(rect2);
                 GUI.color = color;
