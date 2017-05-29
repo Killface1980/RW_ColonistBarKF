@@ -5,7 +5,6 @@ using Verse;
 
 namespace ColonistBarKF.NoCCL
 {
-#if NoCCL
     /// <summary>
     /// For when CCL is not available
     /// </summary>
@@ -109,5 +108,4 @@ namespace ColonistBarKF.NoCCL
         }
 
     }
-#endif
 }

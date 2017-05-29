@@ -15,7 +15,6 @@ namespace ColonistBarKF
 
         public Alignment ColBarPsiIconPos = Alignment.Left;
 
-        public Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
 
 
         public float IconOffsetX = 1f;
@@ -38,7 +37,6 @@ namespace ColonistBarKF
 
         // public float LimitMoodLess = 0.25f;
 
-        public Color MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
 
 
         public float MarginHorizontal = 520f;

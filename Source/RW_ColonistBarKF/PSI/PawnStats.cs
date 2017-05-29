@@ -79,5 +79,6 @@ namespace ColonistBarKF.PSI
         public string unburiedTip;
 
         public string BedStatusTip;
+        public Color BGColor = Color.gray;
     }
 }

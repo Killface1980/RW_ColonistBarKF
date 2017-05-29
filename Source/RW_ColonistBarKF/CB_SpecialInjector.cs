@@ -3,12 +3,6 @@ using System.Reflection;
 using ColonistBarKF.NoCCL;
 using Verse;
 
-// Toggle in Hospitality Properties
-#if NoCCL
-
-#else
-using CommunityCoreLibrary;
-#endif
 
 namespace ColonistBarKF
 {

@@ -3,6 +3,9 @@
     public class SettingsPSI
     {
 
+        public bool ShowLove = true;
+        public bool ShowDeadColonists = false;
+        
         // PSI settings
         public int IconAlignment = 0;
         public bool UsePsi = true;
@@ -44,8 +47,7 @@
         public bool ShowNightOwl = true;
         public bool ShowGreedy = true;
         public bool ShowJealous = true;
-        public bool ShowLove = true;
-        public bool ShowDeadColonists = false;
+
         public bool ShowLeftUnburied = true;
         public bool ShowCabinFever = true;
         public bool ShowPain = true;

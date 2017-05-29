@@ -66,9 +66,9 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="ColorPicker\ColorWrapper.cs" />
-    <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
+    <None Include="ColorPicker\ColorHelper.cs" />
+    <None Include="ColorPicker\ColorWrapper.cs" />
+    <None Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColonistBarKF\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="ColonistBarKF\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="ColonistBarKF\ColBarHelper_KF.cs" />
