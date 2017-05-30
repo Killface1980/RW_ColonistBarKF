@@ -1,7 +1,6 @@
 ﻿// Karel Kroeze
 // FollowMe.cs
 // 2016-12-27
-
 using System;
 using System.Linq;
 using System.Reflection;
@@ -22,8 +21,8 @@ namespace ColonistBarKF
 
         public FollowMe()
         {
-            //
         }
+
         #region Properties
 
         public static string FollowedLabel
@@ -31,7 +30,7 @@ namespace ColonistBarKF
             get
             {
                 if (_followedThing == null)
-                    return String.Empty;
+                    return string.Empty;
 
                 Pawn pawn = _followedThing as Pawn;
                 if (pawn != null)
@@ -131,27 +130,24 @@ namespace ColonistBarKF
 
         // public override void GameComponentOnGUI()
         // {
-        //     if (Current.ProgramState != ProgramState.Playing)
-        //         return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
-        //
-        //     if (Event.current.type == EventType.mouseUp &&
-        //          Event.current.button == 1)
-        //     {
-        //         // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
-        //         Vector3 pos = Input.mousePosition;
-        //         pos.y = Screen.height - pos.y;
-        //         Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
-        //         if (thing != null)
-        //         {
-        //             // start following
-        //             TryStartFollow(thing);
-        //
-        //             // use event so it doesn't bubble through
-        //             Event.current.Use();
-        //         }
-        //     }
+        // if (Current.ProgramState != ProgramState.Playing)
+        // return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
+        // if (Event.current.type == EventType.mouseUp &&
+        // Event.current.button == 1)
+        // {
+        // // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
+        // Vector3 pos = Input.mousePosition;
+        // pos.y = Screen.height - pos.y;
+        // Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
+        // if (thing != null)
+        // {
+        // // start following
+        // TryStartFollow(thing);
+        // // use event so it doesn't bubble through
+        // Event.current.Use();
         // }
-
+        // }
+        // }
         public override void GameComponentUpdate()
         {
             if (!_enabled)
@@ -202,11 +198,10 @@ namespace ColonistBarKF
 
             // we have to use our own logic for following spawned things, as CameraJumper
             // uses integer positions - which would be jerky.
-            if (target.HasThing)
-                TryJumpSmoothInternal(target.Thing);
+            if (target.HasThing) TryJumpSmoothInternal(target.Thing);
+
             // However, if we don't have a thing to follow, integer positions will do just fine.
-            else
-                CameraJumper.TryJump(target);
+            else CameraJumper.TryJump(target);
 
             _cameraHasJumpedAtLeastOnce = true;
         }
@@ -228,6 +223,7 @@ namespace ColonistBarKF
                     if (!flag)
                         SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
                 }
+
                 Find.CameraDriver.JumpToVisibleMapLoc(thing.DrawPos); // <---
             }
             else

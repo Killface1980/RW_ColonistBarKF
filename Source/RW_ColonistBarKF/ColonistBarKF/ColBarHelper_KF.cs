@@ -59,6 +59,7 @@ namespace ColonistBarKF
             }
             entriesDirty = false;
             cachedEntries.Clear();
+            ColonistBar_KF.RecalcPositions();
             if (Find.PlaySettings.showColonistBar)
             {
                 tmpMaps.Clear();

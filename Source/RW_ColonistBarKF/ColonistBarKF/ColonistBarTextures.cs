@@ -82,7 +82,9 @@
 
         public static readonly Texture2D MoodNeutralTex = SolidColorMaterials.NewSolidColorTexture(Color.white);
 
-        public static readonly Texture2D MoodNeutralBGTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.6f, 0.6f, 0.6f, 0.3f));
+        public static readonly Color ColorNeutralSoft = new Color(0.6f, 0.6f, 0.6f, 0.3f);
+
+        public static readonly Texture2D MoodNeutralBGTex = SolidColorMaterials.NewSolidColorTexture(ColorNeutralSoft);
 
 
         public static readonly Texture2D MoodTargetTex =

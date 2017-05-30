@@ -9,8 +9,6 @@ namespace ColonistBarKF
 
     using ColonistBarKF.PSI;
 
-    using JetBrains.Annotations;
-
     using RimWorld;
     using RimWorld.Planet;
 
@@ -459,16 +457,16 @@ namespace ColonistBarKF
                     switch (ColBarSettings.ColBarPsiIconPos)
                     {
                         case Position.Alignment.Left:
-                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal() * ColonistBar_KF.Scale;
-                            moodBorderRect.x += ColonistBar_KF.WidthPSIHorizontal() * ColonistBar_KF.Scale;
+                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
+                            moodBorderRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
                             psiRect.x = Mathf.Min(moodBorderRect.xMin, pawnRect.xMin) - psiRect.width;
                             break;
                         case Position.Alignment.Right:
                             psiRect.x = Mathf.Max(pawnRect.xMax, moodBorderRect.xMax);
                             break;
                         case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical() * ColonistBar_KF.Scale;
-                            moodBorderRect.y += ColonistBar_KF.HeightPSIVertical() * ColonistBar_KF.Scale;
+                            pawnRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
+                            moodBorderRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
                             psiRect.yMax = Mathf.Min(pawnRect.yMin, moodBorderRect.yMin);
                             break;
                         case Position.Alignment.Bottom:
@@ -484,13 +482,13 @@ namespace ColonistBarKF
                     switch (ColBarSettings.ColBarPsiIconPos)
                     {
                         case Position.Alignment.Left:
-                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal() * ColonistBar_KF.Scale;
+                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
                             break;
                         case Position.Alignment.Right:
                             psiRect.x = pawnRect.xMax;
                             break;
                         case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical() * ColonistBar_KF.Scale;
+                            pawnRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
                             break;
                         case Position.Alignment.Bottom:
                             psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
@@ -559,7 +557,10 @@ namespace ColonistBarKF
             Rect rect2 = new Rect();
 
             Color color = GUI.color;
-            var moodCol = new Color();
+            Color moodCol = new Color();
+
+            Color critColor = Color.clear;
+            bool showCritical = false;
 
             float moodPercent;
             float curMood = mood.CurLevelPercentage;
@@ -569,17 +570,35 @@ namespace ColonistBarKF
             if (curMood > mb.BreakThresholdMinor)
             {
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdMinor, 1f, curMood);
-                moodCol = ColBlueBG;
+                moodCol = ColBlue;
+                if (moodPercent < 0.3f)
+                {
+                    critColor = Color.Lerp(ColorNeutralSoft, ColorNeutralStatusSolid, Mathf.InverseLerp(0.3f, 0f, moodPercent));
+                    critColor *= ColYellow;
+                    showCritical = true;
+                }
             }
             else if (curMood > mb.BreakThresholdMajor)
             {
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdMajor, mb.BreakThresholdMinor, curMood);
                 moodCol = ColYellow;
+                if (moodPercent < 0.4f)
+                {
+                    critColor = Color.Lerp(ColorNeutralSoft, ColorNeutralStatusSolid, Mathf.InverseLerp(0.4f, 0f, moodPercent));
+                    critColor *= ColOrange;
+                    showCritical = true;
+                }
             }
             else if (curMood > mb.BreakThresholdExtreme)
             {
                 moodPercent = Mathf.InverseLerp(mb.BreakThresholdExtreme, mb.BreakThresholdMajor, curMood);
                 moodCol = ColOrange;
+                if (moodPercent < 0.5f)
+                {
+                    critColor = Color.Lerp(ColorNeutralSoft, ColorNeutralStatusSolid, Mathf.InverseLerp(0.5f, 0f, moodPercent));
+                    critColor *= ColVermillion;
+                    showCritical = true;
+                }
             }
             else
             {
@@ -587,11 +606,20 @@ namespace ColonistBarKF
                 moodPercent = 1f;
                 moodCol = ColVermillion;
             }
-            
+
+
             moodCol.a = color.a;
+
             GUI.color = moodCol;
             GUI.DrawTexture(moodRect, MoodNeutralBGTex);
-            DrawMood(moodRect, MoodNeutralTex, moodPercent, mood, out rect1, out rect2);
+            if (showCritical)
+            {
+                critColor.a *= color.a;
+                GUI.color = critColor;
+                GUI.DrawTexture(moodRect, MoodNeutralTex);
+                GUI.color = moodCol;
+            }
+            DrawCurrentMood(moodRect, MoodNeutralTex, moodPercent, mood, out rect1, out rect2);
             GUI.color = color;
 
             DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme, mood.CurLevelPercentage);
@@ -604,7 +632,7 @@ namespace ColonistBarKF
             // TooltipHandler.TipRegion(moodRect, tooltip);
         }
 
-        private static void DrawMood(Rect moodRect, Texture2D moodTex, float moodPercent, Need mood, out Rect rect1, out Rect rect2)
+        private static void DrawCurrentMood(Rect moodRect, Texture2D moodTex, float moodPercent, Need mood, out Rect rect1, out Rect rect2)
         {
             switch (ColBarSettings.MoodBarPos)
             {
@@ -628,7 +656,11 @@ namespace ColonistBarKF
                                 moodRect.y,
                                 1,
                                 moodRect.height);
-                    rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMin - 1, 3, 2);
+                    rect2 = new Rect(
+                                moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1,
+                                moodRect.yMin - 1,
+                                3,
+                                2);
                     GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
                     break;
                 case Position.Alignment.Bottom:
@@ -637,7 +669,11 @@ namespace ColonistBarKF
                                 moodRect.y,
                                 1,
                                 moodRect.height);
-                    rect2 = new Rect(moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1, moodRect.yMax + 1, 3, 2);
+                    rect2 = new Rect(
+                                moodRect.x + moodRect.width * mood.CurInstantLevelPercentage - 1,
+                                moodRect.yMax + 1,
+                                3,
+                                2);
                     GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
                     break;
             }
@@ -807,7 +843,6 @@ namespace ColonistBarKF
                 }
 
                 // color labe by thing
-
                 if (thing.def.IsMeleeWeapon)
                 {
                     GUI.color = new Color(ColVermillion.r, ColVermillion.g, ColVermillion.b, entryRectAlpha);

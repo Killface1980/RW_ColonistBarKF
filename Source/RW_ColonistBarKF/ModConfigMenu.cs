@@ -15,12 +15,13 @@ namespace ColonistBarKF
 
     public class ColonistBarKF_Settings : Window
     {
+        private static string cbkfversion = "Colonist Bar KF 0.17.1.3";
+
         public static int lastupdate = -5000;
 
         private static int _iconLimit;
 
-  //      private static ColorWrapper colourWrapper;
-
+  // private static ColorWrapper colourWrapper;
         public Window OptionsDialog;
 
         public ColonistBarKF_Settings()
@@ -356,7 +357,6 @@ namespace ColonistBarKF
 
 
             
-
             GUILayout.BeginVertical(this._fondBoxes);
             ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
                 ColBarSettings.UseCustomRowCount,
@@ -371,7 +371,7 @@ namespace ColonistBarKF
 
             
 
-            #region Various
+            
 
             GUILayout.BeginVertical(this._fondBoxes);
 
@@ -435,7 +435,7 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
 
-            #endregion
+            
         }
 
         private void FillPagePSIIconSet(Rect viewRect)
@@ -1336,7 +1336,6 @@ namespace ColonistBarKF
         private Vector2 _scrollPositionBase;
 
         public override void DoWindowContents(Rect rect)
-
         {
             Rect viewRect = new Rect(rect);
             viewRect.x += 15f;
@@ -1348,7 +1347,7 @@ namespace ColonistBarKF
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Colonist Bar KF 0.17.0", this._headline);
+            GUILayout.Label(cbkfversion, this._headline);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 

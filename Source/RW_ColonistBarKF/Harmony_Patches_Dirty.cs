@@ -27,18 +27,16 @@
     // }
 
   //// patching not working - JIT?!?
-  //[HarmonyPatch(typeof(ColonistBar), "MarkColonistsDirty")]
-  //static class MarkColonistsDirty_Prefix
-  //{
-  //    [HarmonyPrefix]
-  //    private static void MarkColonistsDirty()
-  //    {
-  //        ColonistBar_KF.BarHelperKf.entriesDirty = true;
-  //
-  //        // Log.Message("Colonists marked dirty.x02");
-  //    }
-  //}
-
+  // [HarmonyPatch(typeof(ColonistBar), "MarkColonistsDirty")]
+  // static class MarkColonistsDirty_Prefix
+  // {
+  // [HarmonyPrefix]
+  // private static void MarkColonistsDirty()
+  // {
+  // ColonistBar_KF.BarHelperKf.entriesDirty = true;
+  // // Log.Message("Colonists marked dirty.x02");
+  // }
+  // }
     static class MarkDirty_Helper
     {
         public static void Dirty()

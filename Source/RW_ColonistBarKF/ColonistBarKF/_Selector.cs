@@ -26,12 +26,14 @@ namespace ColonistBarKF.Detouring
                 CameraJumper.TryJumpAndSelect(caravan);
                 return;
             }
+
             Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
             if (thing != null && !thing.Spawned)
             {
                 CameraJumper.TryJump(thing);
                 return;
             }
+
             List<object> list = SelectableObjectsUnderMouse().ToList();
             if (list.Count == 0)
             {
@@ -71,6 +73,7 @@ namespace ColonistBarKF.Detouring
                         {
                             num -= list.Count;
                         }
+
                         Find.Selector.ClearSelection();
                         Find.Selector.Select(list[num], true, true);
                     }
@@ -91,6 +94,7 @@ namespace ColonistBarKF.Detouring
                     {
                         Find.Selector.ClearSelection();
                     }
+
                     Find.Selector.Select(list[0], true, true);
                 }
             }
@@ -113,14 +117,16 @@ namespace ColonistBarKF.Detouring
             {
                 return;
             }
+
             Thing clickedThing = list.FirstOrDefault(o => o is Pawn && ((Pawn)o).Faction == Faction.OfPlayer && !((Pawn)o).IsPrisoner) as Thing;
-            clickedThing = (list.FirstOrDefault(o => o is Pawn) as Thing);
+            clickedThing = list.FirstOrDefault(o => o is Pawn) as Thing;
             if (clickedThing == null)
             {
-                clickedThing = ((from o in list
+                clickedThing = (from o in list
                                  where o is Thing && !((Thing)o).def.neverMultiSelect
-                                 select o).FirstOrDefault() as Thing);
+                                 select o).FirstOrDefault() as Thing;
             }
+
             Rect rect = new Rect(0f, 0f, UI.screenWidth, UI.screenHeight);
             if (clickedThing != null)
             {
@@ -131,6 +137,7 @@ namespace ColonistBarKF.Detouring
                     {
                         return false;
                     }
+
                     Pawn pawn = clickedThing as Pawn;
                     if (pawn != null)
                     {
@@ -139,11 +146,13 @@ namespace ColonistBarKF.Detouring
                         {
                             return false;
                         }
+
                         if (pawn2.HostFaction != pawn.HostFaction)
                         {
                             return false;
                         }
                     }
+
                     return true;
                 };
                 foreach (Thing obj in enumerable)
@@ -153,12 +162,15 @@ namespace ColonistBarKF.Detouring
                         Find.Selector.Select(obj, true, true);
                     }
                 }
+
                 return;
             }
+
             if (list.FirstOrDefault(o => o is Zone && ((Zone)o).IsMultiselectable) == null)
             {
                 return;
             }
+
             IEnumerable<Zone> enumerable2 = ThingSelectionUtility.MultiSelectableZonesInScreenRectDistinct(rect);
             foreach (Zone current in enumerable2)
             {
@@ -177,6 +189,7 @@ namespace ColonistBarKF.Detouring
             {
                 Find.Selector.ClearSelection();
             }
+
             bool selectedSomething = false;
             List<Thing> list = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(Find.Selector.dragBox.ScreenRect);
             for (int i = 0; i < list.Count; i++)
@@ -184,10 +197,12 @@ namespace ColonistBarKF.Detouring
                 selectedSomething = true;
                 Find.Selector.Select(list[i], true, true);
             }
+
             if (selectedSomething)
             {
                 return;
             }
+
             List<Caravan> list2 = ColonistBar_KF.CaravanMembersCaravansInScreenRect(Find.Selector.dragBox.ScreenRect);
             for (int j = 0; j < list2.Count; j++)
             {
@@ -201,10 +216,12 @@ namespace ColonistBarKF.Detouring
                     Find.WorldSelector.Select(list2[j], true);
                 }
             }
+
             if (selectedSomething)
             {
                 return;
             }
+
             List<Thing> boxThings = ThingSelectionUtility.MultiSelectableThingsInScreenRectDistinct(Find.Selector.dragBox.ScreenRect).ToList();
             Func<Predicate<Thing>, bool> func = delegate (Predicate<Thing> predicate)
             {
@@ -215,6 +232,7 @@ namespace ColonistBarKF.Detouring
                     Find.Selector.Select(current2, true, true);
                     selectedSomething = true;
                 }
+
                 return selectedSomething;
             };
             Predicate<Thing> arg = t => t.def.category == ThingCategory.Pawn && ((Pawn)t).RaceProps.Humanlike && t.Faction == Faction.OfPlayer;
@@ -222,35 +240,42 @@ namespace ColonistBarKF.Detouring
             {
                 return;
             }
+
             Predicate<Thing> arg2 = t => t.def.category == ThingCategory.Pawn && ((Pawn)t).RaceProps.Humanlike;
             if (func(arg2))
             {
                 return;
             }
+
             Predicate<Thing> arg3 = t => t.def.CountAsResource;
             if (func(arg3))
             {
                 return;
             }
+
             Predicate<Thing> arg4 = t => t.def.category == ThingCategory.Pawn;
             if (func(arg4))
             {
                 return;
             }
+
             if (func(t => t.def.selectable))
             {
                 return;
             }
+
             List<Zone> list3 = ThingSelectionUtility.MultiSelectableZonesInScreenRectDistinct(Find.Selector.dragBox.ScreenRect).ToList();
             foreach (Zone current in list3)
             {
                 selectedSomething = true;
                 Find.Selector.Select(current, true, true);
             }
+
             if (selectedSomething)
             {
                 return;
             }
+
             SelectUnderMouse();
         }
 
@@ -285,10 +310,12 @@ namespace ColonistBarKF.Detouring
                         }
                     }
                 }
+
                 for (int j = 0; j < selectableList.Count; j++)
                 {
                     yield return selectableList[j];
                 }
+
                 Zone z = Find.VisibleMap.zoneManager.ZoneAt(UI.MouseCell());
                 if (z != null)
                 {

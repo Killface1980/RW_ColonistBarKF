@@ -18,6 +18,7 @@ namespace ColonistBarKF
             SettingsColonistBar result = DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
             return result;
         }
+
         public static void SaveBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);

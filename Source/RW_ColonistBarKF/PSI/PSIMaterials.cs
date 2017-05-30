@@ -77,18 +77,22 @@ namespace ColonistBarKF.PSI
                     tex.mipMapBias = -0.5f;
                     tex.anisoLevel = 9;
                     tex.wrapMode = TextureWrapMode.Repeat;
-             //       tex.Apply();
-            //        tex.Compress(true);
+
+                    // tex.Apply();
+                    // tex.Compress(true);
                 }
                 else
                 {
                     tex.filterMode = FilterMode.Point;
                     tex.wrapMode = TextureWrapMode.Repeat;
-              //      tex.Apply();
-             //       tex.Compress(true);
+
+                    // tex.Apply();
+                    // tex.Compress(true);
                 }
+
                 material = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.MetaOverlay));
             }
+
             return material;
         }
 

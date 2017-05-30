@@ -71,6 +71,7 @@ namespace ColonistBarKF.ColorPicker
                     col.b = v1;
                     break;
             }
+
             col.r = Mathf.Clamp(col.r, 0f, 1f);
             col.g = Mathf.Clamp(col.g, 0f, 1f);
             col.b = Mathf.Clamp(col.b, 0f, 1f);
@@ -119,6 +120,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     num = colorone;
                 }
+
                 float num2 = V - num;
                 if (num2 != 0f)
                 {
@@ -130,6 +132,7 @@ namespace ColonistBarKF.ColorPicker
                     S = 0f;
                     H = offset + (colorone - colortwo);
                 }
+
                 H /= 6f;
                 if (H < 0f)
                 {
@@ -187,9 +190,11 @@ namespace ColonistBarKF.ColorPicker
                 {
                     return false;
                 }
+
                 col = clr;
                 return true;
             }
+
             return false;
         }
 

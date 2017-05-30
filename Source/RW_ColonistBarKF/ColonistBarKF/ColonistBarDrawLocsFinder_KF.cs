@@ -84,7 +84,7 @@ namespace ColonistBarKF
             while (true)
             {
                 //float num3 = (ColonistBar.BaseSize.x + 24f) * num;
-                float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal()) * bestScale;
+                float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal+ ColonistBar_KF.WidthPSIHorizontal) * bestScale;
                 float availableScreen = MaxColonistBarWidth - (groupsCount - 1) * 25f * bestScale;
                 maxPerGlobalRow = Mathf.FloorToInt(availableScreen / neededPerEntry);
                 onlyOneRow = true;
@@ -251,7 +251,7 @@ namespace ColonistBarKF
                 entriesCount = ColonistBar_KF.BarHelperKf.Entries.Count;
             }
             int groupsCount = CalculateGroupsCount();
-            float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal()) * scale;
+            float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal+ ColonistBar_KF.WidthPSIHorizontal) * scale;
             float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
             List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
             int index = -1;
@@ -264,7 +264,7 @@ namespace ColonistBarKF
                     if (index >= 0)
                     {
                         groupStartX += 25f * scale;
-                        groupStartX += horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal());
+                        groupStartX += horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal+ ColonistBar_KF.WidthPSIHorizontal);
                     }
                     numInGroup = 0;
                     index = entries[j].group;
@@ -283,18 +283,18 @@ namespace ColonistBarKF
             float x = groupStartX +
                       numInGroup % horizontalSlotsPerGroup[group] * scale *
                       (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal +
-                       ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal());
+                       ColonistBar_KF.WidthMoodBarHorizontal+ ColonistBar_KF.WidthPSIHorizontal);
             float y = groupStartY +
                       numInGroup / horizontalSlotsPerGroup[group] * scale *
                       (ColonistBar_KF.BaseSize.y + ColBarSettings.BaseSpacingVertical +
-                       ColonistBar_KF.HeightMoodBarVertical() + ColonistBar_KF.HeightPSIVertical());
+                       ColonistBar_KF.HeightMoodBarVertical+ ColonistBar_KF.HeightPSIVertical);
             y += numInGroup / horizontalSlotsPerGroup[group]*ColonistBar_KF.SpacingLabel;
 
             bool flag = numInGroup >= entriesInGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
             if (flag)
             {
                 int num2 = horizontalSlotsPerGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
-                x += num2 * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal() + ColonistBar_KF.WidthPSIHorizontal()) * 0.5f;
+                x += num2 * scale * (ColonistBar_KF.BaseSize.x + ColBarSettings.BaseSpacingHorizontal + ColonistBar_KF.WidthMoodBarHorizontal+ ColonistBar_KF.WidthPSIHorizontal) * 0.5f;
             }
             return new Vector2(x, y);
         }

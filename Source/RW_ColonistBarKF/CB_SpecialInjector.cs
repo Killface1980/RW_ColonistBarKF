@@ -19,7 +19,7 @@ namespace ColonistBarKF
         public override bool Inject()
         {
 
-            #region Automatic hookup
+            
             // Loop through all detour attributes and try to hook them up
             foreach (Type targetType in Assembly.GetTypes())
             {
@@ -36,6 +36,7 @@ namespace ColonistBarKF
                                 Log.Error(string.Format("ColonistBar_KF :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
                                 return false;
                             }
+
                             if (!Detours.TryDetourFromTo(sourceMethod, targetMethod))
                             {
                                 return false;
@@ -44,7 +45,7 @@ namespace ColonistBarKF
                     }
                 }
             }
-            #endregion
+            
 
             return true;
         

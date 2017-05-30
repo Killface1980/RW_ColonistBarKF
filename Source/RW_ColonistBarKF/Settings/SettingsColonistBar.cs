@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using static ColonistBarKF.Position;
+﻿using static ColonistBarKF.Position;
 
 namespace ColonistBarKF
 {

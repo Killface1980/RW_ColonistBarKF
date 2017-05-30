@@ -18,6 +18,7 @@ namespace ColonistBarKF.Detouring
             {
                 Find.WorldSelector.ClearSelection();
             }
+
             bool flag = false;
             if (Current.ProgramState == ProgramState.Playing)
             {
@@ -28,6 +29,7 @@ namespace ColonistBarKF.Detouring
                     Find.WorldSelector.Select(list[i], true);
                 }
             }
+
             if (!flag && Current.ProgramState == ProgramState.Playing)
             {
                 List<Thing> list2 = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(Find.WorldSelector.dragBox.ScreenRect);
@@ -44,6 +46,7 @@ namespace ColonistBarKF.Detouring
                     }
                 }
             }
+
             if (!flag)
             {
                 List<WorldObject> list3 = WorldObjectSelectionUtility.MultiSelectableWorldObjectsInScreenRectDistinct(Find.WorldSelector.dragBox.ScreenRect).ToList();
@@ -55,12 +58,14 @@ namespace ColonistBarKF.Detouring
                         list3.RemoveAll(x => x.Faction != Faction.OfPlayer);
                     }
                 }
+
                 for (int k = 0; k < list3.Count; k++)
                 {
                     flag = true;
                     Find.WorldSelector.Select(list3[k], true);
                 }
             }
+
             if (!flag)
             {
                 bool canSelectTile = Find.WorldSelector.dragBox.Diagonal < 30f;
@@ -94,9 +99,11 @@ namespace ColonistBarKF.Detouring
                     {
                         CameraJumper.TryJump(thing);
                     }
+
                     return;
                 }
             }
+
             bool flag;
             bool flag2;
             List<WorldObject> list = SelectableObjectsUnderMouse(out flag, out flag2).ToList();
@@ -104,6 +111,7 @@ namespace ColonistBarKF.Detouring
             {
                 canSelectTile = false;
             }
+
             if (list.Count == 0)
             {
                 if (!ShiftIsHeld)
@@ -144,6 +152,7 @@ namespace ColonistBarKF.Detouring
                     {
                         Find.WorldSelector.ClearSelection();
                     }
+
                     Find.WorldSelector.Select(list[0], true);
                 }
             }
@@ -186,11 +195,13 @@ namespace ColonistBarKF.Detouring
             {
                 num3 = 0;
             }
+
             Find.WorldSelector.ClearSelection();
             if (num3 >= 0)
             {
                 Find.WorldSelector.Select(objects[num3], true);
             }
+
             Find.WorldSelector.selectedTile = num2;
         }
 
@@ -208,6 +219,7 @@ namespace ColonistBarKF.Detouring
                     return Gen.YieldSingle<WorldObject>(caravan);
                 }
             }
+
             List<WorldObject> list = GenWorldUI.WorldObjectsUnderMouse(UI.MousePositionOnUI);
             clickedDirectlyOnCaravan = false;
             if (list.Count > 0 && list[0] is Caravan && list[0].DistanceToMouse(UI.MousePositionOnUI) < GenWorldUI.CaravanDirectClickRadius)
@@ -222,6 +234,7 @@ namespace ColonistBarKF.Detouring
                     }
                 }
             }
+
             usedColonistBar = false;
             return list;
         }

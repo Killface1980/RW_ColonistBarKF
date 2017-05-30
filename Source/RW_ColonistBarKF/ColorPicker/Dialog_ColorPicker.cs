@@ -14,14 +14,21 @@ namespace ColonistBarKF.ColorPicker
         // the color we're going to pass out if requested
         public Color Color = Color.blue;
 
-        public Vector2 initialPosition = Vector2.zero,
-                            windowSize = Vector2.zero;
+        public Vector2 initialPosition = Vector2.zero;
 
-        public int numPresets = 0,
-                            pickerSize = 300,
-                            sliderWidth = 15,
-                            alphaBGBlockSize = 10,
-                            previewSize = 90, // odd multiple of alphaBGblocksize forces alternation of the background texture grid.
+        public Vector2 windowSize = Vector2.zero;
+
+        public int numPresets = 0;
+
+        public int pickerSize = 300;
+
+        public int sliderWidth = 15;
+
+        public int alphaBGBlockSize = 10;
+
+        public int previewSize = 90;
+
+        public int // odd multiple of alphaBGblocksize forces alternation of the background texture grid.
                             handleSize = 10;
 
         // used in the picker only
@@ -29,37 +36,55 @@ namespace ColonistBarKF.ColorPicker
 
         private controls _activeControl = controls.none;
 
-        private Color _alphaBGColorA = Color.white,
-                            _alphaBGColorB = new Color(.85f, .85f, .85f);
+        private Color _alphaBGColorA = Color.white;
+
+        private Color _alphaBGColorB = new Color(.85f, .85f, .85f);
 
         private Action _callback;
 
-        private Texture2D _colorPickerBG,
-                            _huePickerBG,
-                            _alphaPickerBG,
-                            _tempPreviewBG,
-                            _previewBG,
-                            _pickerAlphaBG,
-                            _sliderAlphaBG,
-                            _previewAlphaBG;
+        private Texture2D _colorPickerBG;
 
-        private string _hexOut,
-                            _hexIn;
+        private Texture2D _huePickerBG;
 
-        private float _margin = 6f,
-                            _fieldHeight = 30f,
-                            _huePosition,
-                            _alphaPosition,
-                            _unitsPerPixel,
-                            _H,
-                            _S = 1f,
-                            _V = 1f,
-                            _A = 1f;
+        private Texture2D _alphaPickerBG;
+
+        private Texture2D _tempPreviewBG;
+
+        private Texture2D _previewBG;
+
+        private Texture2D _pickerAlphaBG;
+
+        private Texture2D _sliderAlphaBG;
+
+        private Texture2D _previewAlphaBG;
+
+        private string _hexOut;
+
+        private string _hexIn;
+
+        private float _margin = 6f;
+
+        private float _fieldHeight = 30f;
+
+        private float _huePosition;
+
+        private float _alphaPosition;
+
+        private float _unitsPerPixel;
+
+        private float _H;
+
+        private float _S = 1f;
+
+        private float _V = 1f;
+
+        private float _A = 1f;
 
         private Vector2 _pickerPosition = Vector2.zero;
 
-        private bool _preview = true,
-                            _autoApply;
+        private bool _preview = true;
+
+        private bool _autoApply;
 
         // reference type containing the in/out parameter
         private ColorWrapper _wrapper;
@@ -110,6 +135,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 return _A;
             }
+
             set
             {
                 _A = Mathf.Clamp(value, 0f, 1f);
@@ -126,6 +152,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     CreateAlphaPickerBG();
                 }
+
                 return _alphaPickerBG;
             }
         }
@@ -138,6 +165,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     CreateColorPickerBG();
                 }
+
                 return _colorPickerBG;
             }
         }
@@ -148,6 +176,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 return _H;
             }
+
             set
             {
                 _H = Mathf.Clamp(value, 0f, 1f);
@@ -165,6 +194,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     CreateHuePickerBG();
                 }
+
                 return _huePickerBG;
             }
         }
@@ -177,6 +207,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _pickerAlphaBG = CreateAlphaBG(pickerSize, pickerSize);
                 }
+
                 return _pickerAlphaBG;
             }
         }
@@ -189,6 +220,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _previewAlphaBG = CreateAlphaBG(previewSize, previewSize);
                 }
+
                 return _previewAlphaBG;
             }
         }
@@ -201,6 +233,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _previewBG = CreatePreviewBG(Color);
                 }
+
                 return _previewBG;
             }
         }
@@ -211,6 +244,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 return _S;
             }
+
             set
             {
                 _S = Mathf.Clamp(value, 0f, 1f);
@@ -227,6 +261,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _sliderAlphaBG = CreateAlphaBG(sliderWidth, pickerSize);
                 }
+
                 return _sliderAlphaBG;
             }
         }
@@ -239,6 +274,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _tempPreviewBG = CreatePreviewBG(tempColor);
                 }
+
                 return _tempPreviewBG;
             }
         }
@@ -251,6 +287,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _unitsPerPixel = 1f / pickerSize;
                 }
+
                 return _unitsPerPixel;
             }
         }
@@ -261,6 +298,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 return _V;
             }
+
             set
             {
                 _V = Mathf.Clamp(value, 0f, 1f);
@@ -275,6 +313,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 return windowSize;
             }
+
             set
             {
                 windowSize = value;
@@ -367,7 +406,7 @@ namespace ColonistBarKF.ColorPicker
             Widgets.DrawBox(alphaHandleRect);
             GUI.color = Color.white;
 
-            #region UI interactions
+            
 
             // reset active control on mouseup
             if (Input.GetMouseButtonUp(0))
@@ -382,6 +421,7 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _activeControl = controls.colorPicker;
                 }
+
                 if (_activeControl == controls.colorPicker)
                 {
                     Vector2 MousePosition = Event.current.mousePosition;
@@ -398,12 +438,14 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _activeControl = controls.huePicker;
                 }
+
                 if (Event.current.type == EventType.ScrollWheel)
                 {
                     H -= Event.current.delta.y * UnitsPerPixel;
                     _huePosition = Mathf.Clamp(_huePosition + Event.current.delta.y, 0f, pickerSize);
                     Event.current.Use();
                 }
+
                 if (_activeControl == controls.huePicker)
                 {
                     float MousePosition = Event.current.mousePosition.y;
@@ -420,12 +462,14 @@ namespace ColonistBarKF.ColorPicker
                 {
                     _activeControl = controls.alphaPicker;
                 }
+
                 if (Event.current.type == EventType.ScrollWheel)
                 {
                     A -= Event.current.delta.y * UnitsPerPixel;
                     _alphaPosition = Mathf.Clamp(_alphaPosition + Event.current.delta.y, 0f, pickerSize);
                     Event.current.Use();
                 }
+
                 if (_activeControl == controls.alphaPicker)
                 {
                     float MousePosition = Event.current.mousePosition.y;
@@ -445,11 +489,13 @@ namespace ColonistBarKF.ColorPicker
                     Apply();
                     Close();
                 }
+
                 if (Widgets.ButtonText(applyRect, "Apply"))
                 {
                     Apply();
                     SetColor();
                 }
+
                 if (Widgets.ButtonText(cancelRect, "Cancel"))
                 {
                     Close();
@@ -469,11 +515,13 @@ namespace ColonistBarKF.ColorPicker
                         GUI.color = Color.red;
                     }
                 }
+
                 _hexIn = Widgets.TextField(hexRect, _hexIn);
             }
+
             GUI.color = Color.white;
 
-            #endregion UI interactions
+            
         }
 
         public void HueAction(float pos)
@@ -547,10 +595,12 @@ namespace ColonistBarKF.ColorPicker
             }
 
             // set the windowsize
-            if (windowSize == Vector2.zero) // not specifically set in construction, calculate size from elements.
+            if (windowSize == Vector2.zero)
             {
+                // not specifically set in construction, calculate size from elements.
                 // default window size.
                 float width, height;
+
                 // size of main picker + the standard window margins.
                 width = height = pickerSize + StandardMargin * 2;
 
@@ -629,9 +679,10 @@ namespace ColonistBarKF.ColorPicker
                 int column = row;
                 for (int y = 0; y < height; y = y + alphaBGBlockSize)
                 {
-                    tex.SetPixels(x, y, alphaBGBlockSize, alphaBGBlockSize, (column % 2 == 0 ? bgA : bgB));
+                    tex.SetPixels(x, y, alphaBGBlockSize, alphaBGBlockSize, column % 2 == 0 ? bgA : bgB);
                     column++;
                 }
+
                 row++;
             }
 
@@ -652,6 +703,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 _alphaPickerBG.SetPixel(0, y, new Color(tempColor.r, tempColor.g, tempColor.b, y * hu));
             }
+
             _alphaPickerBG.Apply();
         }
 
@@ -676,6 +728,7 @@ namespace ColonistBarKF.ColorPicker
                     _colorPickerBG.SetPixel(x, y, ColorHelper.HSVtoRGB(H, S, V, A));
                 }
             }
+
             _colorPickerBG.Apply();
         }
 
@@ -692,6 +745,7 @@ namespace ColonistBarKF.ColorPicker
             {
                 _huePickerBG.SetPixel(0, y, ColorHelper.HSVtoRGB(hu * y, 1f, 1f));
             }
+
             _huePickerBG.Apply();
         }
 

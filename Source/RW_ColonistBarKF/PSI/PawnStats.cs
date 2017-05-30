@@ -23,8 +23,7 @@ namespace ColonistBarKF.PSI
 
         public float ApparelHealth = 1f;
 
-        //    public float Drunkness = 0f;
-
+        // public float Drunkness = 0f;
         public int BedStatus = -1;
 
         public bool IsSick = false;
