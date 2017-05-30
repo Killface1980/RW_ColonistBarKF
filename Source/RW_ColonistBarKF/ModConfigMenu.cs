@@ -15,7 +15,7 @@ namespace ColonistBarKF
 
     public class ColonistBarKF_Settings : Window
     {
-        private static string cbkfversion = "Colonist Bar KF 0.17.1.2";
+        private static string cbkfversion = "Colonist Bar KF 0.17.1.3";
 
         public static int lastupdate = -5000;
 

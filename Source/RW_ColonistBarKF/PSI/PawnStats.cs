@@ -3,11 +3,11 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace ColonistBarKF.PSI
+namespace ColonistBarKF
 {
-    public class PawnStats
+    public class PawnStats : IExposable
     {
-        public int IconCount = 0;
+        public Pawn Pawn;
 
         public float TotalEfficiency = 1f;
 
@@ -40,10 +40,10 @@ namespace ColonistBarKF.PSI
 
         public bool HasLifeThreateningDisease = false;
 
-        public List<Thought> Thoughts;
+        public List<Thought> Thoughts = new List<Thought>();
         public double LastStatUpdate = 0;
-        public MentalBreaker Mb;
-        public Need_Mood Mood;
+        public MentalBreaker Mb = null;
+        public Need_Mood Mood = null;
         public int drugDesire = 0;
         public bool traitsCheck = false;
         public bool isAddict = false;
@@ -63,9 +63,9 @@ namespace ColonistBarKF.PSI
         public int unburied = -1;
         public bool isPacifist = false;
         public bool isPyromaniac = false;
-        public bool isMasochist=false;
+        public bool isMasochist = false;
         public float withDrawalPercent = 0f;
-        public float pawnHealth =1f;
+        public float pawnHealth = 1f;
         public float severity;
         public float immunity;
         public string humpTip;
@@ -79,5 +79,12 @@ namespace ColonistBarKF.PSI
 
         public string BedStatusTip;
         public Color BGColor = Color.gray;
+
+        public int thisColCount;
+
+        public void ExposeData()
+        {
+
+        }
     }
 }

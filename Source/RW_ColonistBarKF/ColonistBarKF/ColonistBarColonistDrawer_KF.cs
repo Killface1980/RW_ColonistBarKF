@@ -50,8 +50,7 @@ namespace ColonistBarKF
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            PawnStats pawnStats = null;
-            StatsDict.TryGetValue(colonist, out pawnStats);
+            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(colonist);
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width
@@ -72,7 +71,7 @@ namespace ColonistBarKF
             Rect moodBorderRect;
             Rect psiRect;
 
-            BuildRects(outerRect, out pawnRect, out moodBorderRect, out psiRect);
+            BuildRects(pawnStats, ref outerRect, out pawnRect, out moodBorderRect, out psiRect);
 
             Color bgColor = color;
             if (ColBarSettings.UseGender)
@@ -107,7 +106,8 @@ namespace ColonistBarKF
                 }
             }
 
-            Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
+        //    Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
+            Rect rect2 = outerRect.ContractedBy(-2f);
 
             if (colonistAlive && !WorldRendererUtility.WorldRenderedNow)
             {
@@ -420,8 +420,52 @@ namespace ColonistBarKF
             this.pawnLabelsCache.Clear();
         }
 
-        private static void BuildRects(Rect outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect)
+        private static void BuildRects(PawnStats pawnStats, ref Rect outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect)
         {
+            float offsetX = 0f;
+            bool flag = false;
+
+            float widthPsiFloatX = ColonistBar_KF.WidthPSIHorizontal * ColonistBar_KF.Scale;
+
+            if (ColBarSettings.UsePsi)
+            {
+                if (pawnStats != null)
+                {
+                    if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
+                    {
+                        if (ColonistBar_KF.PsiRowsOnBar == 2)
+                        {
+                            if (pawnStats.thisColCount == 1)
+                            {
+                                offsetX = widthPsiFloatX / 2;
+                            }
+                            if (pawnStats.thisColCount == 0)
+                            {
+                                offsetX = widthPsiFloatX;
+                            }
+                        }
+                        else if (ColonistBar_KF.PsiRowsOnBar == 1)
+                        {
+                            offsetX = widthPsiFloatX;
+                            flag = true;
+                        }
+
+                        switch (ColBarSettings.ColBarPsiIconPos)
+                        {
+                            case Position.Alignment.Left:
+                            case Position.Alignment.Right:
+                                if (!flag)
+                                {
+                                    outerRect.x += offsetX / 2;
+                                }
+                                outerRect.width -= offsetX;
+                                break;
+
+                        }
+                    }
+                }
+            }
+
             pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
 
             moodBorderRect = new Rect(pawnRect);
@@ -457,16 +501,16 @@ namespace ColonistBarKF
                     switch (ColBarSettings.ColBarPsiIconPos)
                     {
                         case Position.Alignment.Left:
-                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
-                            moodBorderRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
+                            pawnRect.x += widthPsiFloatX;
+                            moodBorderRect.x += widthPsiFloatX;
                             psiRect.x = Mathf.Min(moodBorderRect.xMin, pawnRect.xMin) - psiRect.width;
                             break;
                         case Position.Alignment.Right:
                             psiRect.x = Mathf.Max(pawnRect.xMax, moodBorderRect.xMax);
                             break;
                         case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
-                            moodBorderRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
+                            pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
+                            moodBorderRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
                             psiRect.yMax = Mathf.Min(pawnRect.yMin, moodBorderRect.yMin);
                             break;
                         case Position.Alignment.Bottom:
@@ -482,13 +526,13 @@ namespace ColonistBarKF
                     switch (ColBarSettings.ColBarPsiIconPos)
                     {
                         case Position.Alignment.Left:
-                            pawnRect.x += ColonistBar_KF.WidthPSIHorizontal* ColonistBar_KF.Scale;
+                            pawnRect.x += widthPsiFloatX;
                             break;
                         case Position.Alignment.Right:
                             psiRect.x = pawnRect.xMax;
                             break;
                         case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical* ColonistBar_KF.Scale;
+                            pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
                             break;
                         case Position.Alignment.Bottom:
                             psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;

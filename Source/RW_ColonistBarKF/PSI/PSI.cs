@@ -68,14 +68,16 @@ namespace ColonistBarKF.PSI
 
         public static void DrawColonistIcons(Pawn pawn, bool psi, float rectalpha = 1f, Rect psiRect = new Rect())
         {
-            PawnStats pawnStats;
             if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null)
-                || !Settings.StatsDict.TryGetValue(pawn, out pawnStats)) return;
+                ) return;
+
+            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
+
 
             pawnStats.LastStatUpdate += Time.fixedDeltaTime;
             if (pawnStats.LastStatUpdate > Rand.Range(1, 3))
             {
-                UpdateColonistStats(pawn);
+                UpdateColonistStats(pawnStats);
                 pawnStats.LastStatUpdate = 0.0;
             }
 
@@ -246,8 +248,6 @@ namespace ColonistBarKF.PSI
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColorYellowAlert, rectAlpha, tooltip);
                 }
 
-
-
             // Hungry
             if (colBarSettings.ShowHungry)
                 if (pawn.needs.food.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
@@ -376,7 +376,8 @@ namespace ColonistBarKF.PSI
                     ref barIconNum,
                     Icons.Tired,
                     pawn.needs.rest.CurLevel / Settings.PsiSettings.LimitRestLess,
-                    rectAlpha, tooltip);
+                    rectAlpha,
+                    tooltip);
             }
 
             // Too Cold & too hot
@@ -541,14 +542,17 @@ namespace ColonistBarKF.PSI
             //    pawnStats.IconCount = colBarSettings.IconsInColumn * 2;
             //}
             //else
-            {
-                pawnStats.IconCount = barIconNum;
-            }
 
-            int currentCount = Settings.StatsDict.Aggregate(0, (current, colonist) => Mathf.Max(current, colonist.Value.IconCount));
+            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.ColBarSettings.IconsInColumn);
 
-            int newCount = Mathf.CeilToInt((float)currentCount / Settings.ColBarSettings.IconsInColumn);
-            if (newCount > 2) newCount = 2;
+
+            pawnStats.thisColCount = colCount;
+
+            int newCount = MapComponent_PSI.PawnCache.Aggregate(
+                0,
+                (current, colonist) => Mathf.Max(current, colonist.thisColCount));
+
+
             if (newCount != ColonistBar_KF.PsiRowsOnBar)
             {
                 ColonistBar_KF.PsiRowsOnBar = newCount;
@@ -1206,19 +1210,18 @@ namespace ColonistBarKF.PSI
         public override void FinalizeInit()
         {
             Reinit();
-            UpdateDictionary();
             this._fDelta = 0;
         }
 
         public override void StartedNewGame()
         {
-            Settings.StatsDict = new Dictionary<Pawn, PawnStats>();
+            MapComponent_PSI.ResetList();
             base.StartedNewGame();
         }
 
         public override void LoadedGame()
         {
-            Settings.StatsDict = new Dictionary<Pawn, PawnStats>();
+            MapComponent_PSI.ResetList();
             base.LoadedGame();
         }
 
@@ -1255,8 +1258,6 @@ namespace ColonistBarKF.PSI
             this._fDelta += Time.fixedDeltaTime;
             if (this._fDelta < 5) return;
             this._fDelta = 0.0;
-
-            UpdateDictionary();
         }
 
         public override void GameComponentUpdate()
@@ -1350,15 +1351,11 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        private static void UpdateColonistStats(Pawn pawn)
+        public static void UpdateColonistStats(PawnStats pawnStats)
         {
-            if (pawn == null) return;
-
-            if (!Settings.StatsDict.ContainsKey(pawn)) Settings.StatsDict.Add(pawn, new PawnStats());
-
+            Pawn pawn = pawnStats.Pawn;
             List<Thought> thoughts = new List<Thought>();
 
-            PawnStats pawnStats = Settings.StatsDict[pawn];
             pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
             pawnStats.Thoughts = thoughts;
             pawnStats.pawnHealth = pawn.health.summaryHealth.SummaryHealthPercent;
@@ -1680,30 +1677,6 @@ namespace ColonistBarKF.PSI
                         if (pawnStats.addictionLabel.NullOrEmpty()) pawnStats.addictionLabel = hediff.LabelCap;
                         else pawnStats.addictionLabel += "\n" + hediff.LabelCap;
                     }
-
-            Settings.StatsDict[pawn] = pawnStats;
-        }
-
-        private static void UpdateDictionary()
-        {
-            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned)
-            {
-                if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || (pawn.Name == null)) continue;
-
-              
-                if (Settings.StatsDict.ContainsKey(pawn)) continue;
-
-                try
-                {
-                    UpdateColonistStats(pawn);
-                }
-                catch (Exception ex)
-                {
-                    Debug.Log(ex);
-
-                    // Log.Notify_Exception(ex);
-                }
-            }
         }
     }
 }

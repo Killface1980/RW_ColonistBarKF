@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="Settings\Settings.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />
     <None Include="ColorPicker\ColorWrapper.cs" />
