@@ -230,7 +230,7 @@ namespace ColonistBarKF.PSI
             string tooltip = null)
         {
             // only two columns visible
-            if (num + 1 > Settings.ColBarSettings.IconsInColumn * 2)
+            if (num  == Settings.ColBarSettings.IconsInColumn * 2)
                 return;
 
             Material material = PSIMaterials[icon];

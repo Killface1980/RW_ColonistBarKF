@@ -83,7 +83,7 @@ namespace ColonistBarKF
             if (CurrentlyFollowing)
                 StopFollow("New game started");
 
-            base.LoadedGame();
+            base.StartedNewGame();
         }
 
         public static void TryStartFollow(Thing thing)

@@ -52,6 +52,8 @@ namespace ColonistBarKF.PSI
             }
         }
 
+
+
         public static void DrawAnimalIcons(Pawn animal)
         {
             if (!animal.InAggroMentalState) return;
@@ -208,7 +210,13 @@ namespace ColonistBarKF.PSI
                 // ColorHealthBarGreen, ColorYellowAlert, ColorOrangeAlert, ColorRedAlert, rectAlpha, tooltip);
                 // }
             }
-
+            if (colBarSettings.ShowMedicalAttention)
+            {
+                string tooltip = "NeedsTendingNow".Translate();
+                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha, tooltip);
+                else if (HealthAIUtility.ShouldBeTendedNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
+                else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
+            }
 
             // Idle - bar icon already included - vanilla
             bool pacifist = pawnStats.isPacifist;
@@ -238,10 +246,7 @@ namespace ColonistBarKF.PSI
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColorYellowAlert, rectAlpha, tooltip);
                 }
 
-            if (colBarSettings.ShowMedicalAttention)
-                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha);
-                else if (HealthAIUtility.ShouldBeTendedNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
-                else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha);
+
 
             // Hungry
             if (colBarSettings.ShowHungry)
@@ -364,16 +369,19 @@ namespace ColonistBarKF.PSI
 
             // Tired
             if (colBarSettings.ShowTired && (pawn.needs.rest.CurLevel < (double)Settings.PsiSettings.LimitRestLess))
-                if (pawn.needs.rest.CurLevel < (double)Settings.PsiSettings.LimitRestLess)
-                    DrawIcon_FadeRedAlertToNeutral(
-                        psiRect,
-                        ref barIconNum,
-                        Icons.Tired,
-                        pawn.needs.rest.CurLevel / Settings.PsiSettings.LimitRestLess,
-                        rectAlpha);
+            {
+                string tooltip = pawn.needs.rest.CurCategory.GetLabel();
+                DrawIcon_FadeRedAlertToNeutral(
+                    psiRect,
+                    ref barIconNum,
+                    Icons.Tired,
+                    pawn.needs.rest.CurLevel / Settings.PsiSettings.LimitRestLess,
+                    rectAlpha, tooltip);
+            }
 
             // Too Cold & too hot
             if (colBarSettings.ShowTooCold && (pawnStats.TooCold > 0f))
+            {
                 if (pawnStats.TooCold <= 1f)
                     DrawIcon_FadeFloatWithTwoColors(
                         psiRect,
@@ -401,8 +409,10 @@ namespace ColonistBarKF.PSI
                         ColorOrangeAlert,
                         ColorRedAlert,
                         rectAlpha);
+            }
 
             if (colBarSettings.ShowTooHot && (pawnStats.TooHot > 0f))
+            {
                 if (pawnStats.TooHot <= 1f)
                     DrawIcon_FadeFloatWithTwoColors(
                         psiRect,
@@ -430,6 +440,7 @@ namespace ColonistBarKF.PSI
                         ColorOrangeAlert,
                         ColorRedAlert,
                         rectAlpha);
+            }
 
             // Bed status
             if (colBarSettings.ShowBedroom)
@@ -534,9 +545,10 @@ namespace ColonistBarKF.PSI
                 pawnStats.IconCount = barIconNum;
             }
 
-            int maxCount = Settings.StatsDict.Aggregate(0, (current, colonist) => Mathf.Max(current, colonist.Value.IconCount));
-            int newCount = Mathf.CeilToInt((float)maxCount / Settings.ColBarSettings.IconsInColumn);
+            int currentCount = Settings.StatsDict.Aggregate(0, (current, colonist) => Mathf.Max(current, colonist.Value.IconCount));
 
+            int newCount = Mathf.CeilToInt((float)currentCount / Settings.ColBarSettings.IconsInColumn);
+            if (newCount > 2) newCount = 2;
             if (newCount != ColonistBar_KF.PsiRowsOnBar)
             {
                 ColonistBar_KF.PsiRowsOnBar = newCount;
@@ -635,10 +647,9 @@ namespace ColonistBarKF.PSI
             }
 
             // Health
-
-            // Infection
             if (psiSettings.ShowHealth)
             {
+                // Infection
                 if (pawnStats.IsSick)
                 {
                     if (pawnStats.HasLifeThreateningDisease)
@@ -1199,6 +1210,18 @@ namespace ColonistBarKF.PSI
             this._fDelta = 0;
         }
 
+        public override void StartedNewGame()
+        {
+            Settings.StatsDict = new Dictionary<Pawn, PawnStats>();
+            base.StartedNewGame();
+        }
+
+        public override void LoadedGame()
+        {
+            Settings.StatsDict = new Dictionary<Pawn, PawnStats>();
+            base.LoadedGame();
+        }
+
         public override void GameComponentOnGUI()
         {
             if (Current.ProgramState != ProgramState.Playing) return;
@@ -1667,6 +1690,7 @@ namespace ColonistBarKF.PSI
             {
                 if (pawn.Dead || pawn.DestroyedOrNull() || !pawn.Name.IsValid || (pawn.Name == null)) continue;
 
+              
                 if (Settings.StatsDict.ContainsKey(pawn)) continue;
 
                 try

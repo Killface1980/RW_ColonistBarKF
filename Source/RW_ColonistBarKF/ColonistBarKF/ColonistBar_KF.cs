@@ -342,12 +342,13 @@ namespace ColonistBarKF
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static void MarkColonistsDirty()
         {
+            RecalcSizes();
             BarHelperKf.entriesDirty = true;
 
             // Log.Message("Colonists marked dirty.01");
         }
 
-        public static void RecalcPositions()
+        public static void RecalcSizes()
         {
             widthMoodBarHorizontal = 0f;
 

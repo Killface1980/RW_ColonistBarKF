@@ -7,7 +7,7 @@ namespace ColonistBarKF
     using System;
     using System.Collections.Generic;
 
-    using ColonistBarKF.PSI;
+    using PSI;
 
     using RimWorld;
     using RimWorld.Planet;
