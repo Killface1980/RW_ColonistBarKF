@@ -1414,7 +1414,10 @@ namespace ColonistBarKF.PSI
                     pawnStats.traitsCheck = true;
                 }
 
-            if (pawn.Dead) pawnStats.BGColor = Color.gray;
+            if (pawn.Dead)
+            {
+                pawnStats.BGColor = Color.gray;
+            }
 
             // efficiency
             float efficiency = 10f;

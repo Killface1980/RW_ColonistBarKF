@@ -52,17 +52,25 @@ namespace ColonistBarKF
         // public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
         public static float Scale => BarHelperKf.cachedScale;
 
-        public static float SpaceBetweenColonistsHorizontal
-        {
-            get
-            {
-                return Settings.ColBarSettings.BaseSpacingHorizontal * Scale;
-            }
-        }
-
         public static float WidthMoodBarHorizontal => widthMoodBarHorizontal;
 
         public static float WidthPSIHorizontal => widthPsiHorizontal;
+
+        public static float WidthSpacingHorizontal
+        {
+            get
+            {
+                return Settings.ColBarSettings.BaseSpacingHorizontal + WidthMoodBarHorizontal + WidthPSIHorizontal;
+            }
+        }
+
+        public static float HeightSpacingVertical
+        {
+            get
+            {
+                return Settings.ColBarSettings.BaseSpacingVertical + HeightMoodBarVertical + HeightPSIVertical;
+            }
+        }
 
         private static bool ShowGroupFrames
         {
