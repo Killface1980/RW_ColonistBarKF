@@ -99,7 +99,7 @@ namespace ColonistBarKF
 
 
 
-        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+ //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Caravan CaravanMemberCaravanAt(Vector2 at)
         {
             if (!Visible)
@@ -116,7 +116,7 @@ namespace ColonistBarKF
             return null;
         }
 
-        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+ //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
         {
             BarHelperKf.tmpCaravans.Clear();
@@ -134,7 +134,7 @@ namespace ColonistBarKF
             return BarHelperKf.tmpCaravans;
         }
 
-        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+  //      [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
             BarHelperKf.tmpCaravanPawns.Clear();
@@ -215,7 +215,8 @@ namespace ColonistBarKF
             }
         }
 
-        [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        // Detour not working -> RW
+        //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Thing ColonistOrCorpseAt(Vector2 pos)
         {
             if (!Visible)
