@@ -8,7 +8,7 @@ using Verse;
 
 namespace ColonistBarKF.Detouring
 {
-    class _WorldSelector
+    public class _WorldSelector
     {
         // RimWorld.Planet.WorldSelector
         [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
@@ -211,7 +211,7 @@ namespace ColonistBarKF.Detouring
             Vector2 mousePositionOnUIInverted = UI.MousePositionOnUIInverted;
             if (Current.ProgramState == ProgramState.Playing)
             {
-                Caravan caravan = Find.ColonistBar.CaravanMemberCaravanAt(mousePositionOnUIInverted);
+                Caravan caravan = ColonistBar_KF.CaravanMemberCaravanAt(mousePositionOnUIInverted);
                 if (caravan != null)
                 {
                     clickedDirectlyOnCaravan = true;

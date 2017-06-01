@@ -191,8 +191,9 @@ namespace ColonistBarKF
                         {
                             switch (Event.current.button)
                             {
+                                // LMB
+                                // Double click
                                 case 0:
-                                    // if (clickedColonist == colonist && Time.time - clickedAt < ColBarSettings.DoubleClickTime)
                                     if (Event.current.clickCount == 2)
                                     {
                                         // use event so it doesn't bubble through
@@ -216,11 +217,11 @@ namespace ColonistBarKF
                                     // clickedColonist = colonist;
                                     // }
                                     break;
-
+                                // RMB
                                 case 1:
                                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
-                                    if (colonist != null && SelPawn != null && SelPawn != colonist)
+                                    if (colonist != null && SelPawn != null && SelPawn != colonist && colonist.Map != null)
                                     {
                                         foreach (FloatMenuOption choice in
                                             FloatMenuMakerMap.ChoicesAtFor(colonist.TrueCenter(), SelPawn))
@@ -233,19 +234,22 @@ namespace ColonistBarKF
                                                 new FloatMenuOption("--------------------", delegate { }));
                                     }
 
-                                    if (!FollowMe.CurrentlyFollowing)
+                                    if (colonist.Map != null)
                                     {
-                                        floatOptionList.Add(
-                                            new FloatMenuOption(
-                                                "FollowMe.StartFollow".Translate(),
-                                                delegate { FollowMe.TryStartFollow(colonist); }));
-                                    }
-                                    else
-                                    {
-                                        floatOptionList.Add(
-                                            new FloatMenuOption(
-                                                "FollowMe.StopFollow".Translate(),
-                                                delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
+                                        if (!FollowMe.CurrentlyFollowing)
+                                        {
+                                            floatOptionList.Add(
+                                                new FloatMenuOption(
+                                                    "FollowMe.StartFollow".Translate() + " - " + colonist.LabelShort,
+                                                    delegate { FollowMe.TryStartFollow(colonist); }));
+                                        }
+                                        else
+                                        {
+                                            floatOptionList.Add(
+                                                new FloatMenuOption(
+                                                    "FollowMe.StopFollow".Translate(),
+                                                    delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
+                                        }
                                     }
 
                                     floatOptionList.Add(
@@ -338,7 +342,7 @@ namespace ColonistBarKF
                             break;
                         }
                 }
-
+                // MMB
                 if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
                 {
                     // start following
@@ -357,56 +361,59 @@ namespace ColonistBarKF
             }
         }
 
+        // RimWorld.ColonistBarColonistDrawer
         public void HandleGroupFrameClicks(int group)
         {
             Rect rect = this.GroupFrameRect(group);
-            if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect)
-                && !ColonistBar_KF.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect))
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive)
-                    || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
+                ColonistBar.Entry entry =
+                    ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.@group == @group);
+                Map map = entry.map;
+
+                if (!ColonistBar_KF.BarHelperKf.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
                 {
-                    Find.Selector.dragBox.active = false;
-                    Find.WorldSelector.dragBox.active = false;
-                    ColonistBar.Entry entry =
-                        ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
-                    Map map = entry.map;
-                    if (map == null)
+                    if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive)
+                        || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
                     {
-                        if (WorldRendererUtility.WorldRenderedNow)
+                        Find.Selector.dragBox.active = false;
+                        Find.WorldSelector.dragBox.active = false;
+                        if (map == null)
                         {
-                            CameraJumper.TrySelect(entry.pawn);
+                            if (worldRenderedNow)
+                            {
+                                CameraJumper.TrySelect(entry.pawn);
+                            }
+                            else
+                            {
+                                CameraJumper.TryJumpAndSelect(entry.pawn);
+                            }
                         }
                         else
                         {
-                            CameraJumper.TryJumpAndSelect(entry.pawn);
+                            if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
+                            {
+                                SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                            }
+                            Current.Game.VisibleMap = map;
                         }
-                    }
-                    else
-                    {
-                        if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
-                        {
-                            SoundDefOf.MapSelected.PlayOneShotOnCamera();
-                        }
-
-                        Current.Game.VisibleMap = map;
                     }
                 }
             }
-
-            // if (Event.current.button == 1 && Widgets.ButtonInvisible(outerRect, false))
-            // {
-            // ColonistBar.Entry entry2 = ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
-            // if (entry2.map != null)
-            // {
-            // CameraJumper.TryJumpAndSelect(CameraJumper.GetWorldTargetOfMap(entry2.map));
-            // }
-            // else if (entry2.pawn != null)
-            // {
-            // CameraJumper.TryJumpAndSelect(entry2.pawn);
-            // }
-            // }
+            // RMB vanilla - not wanted
+            //         if (Event.current.button == 1 && Widgets.ButtonInvisible(rect, false))
+            //         {
+            //             ColonistBar.Entry entry2 = ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
+            //             if (entry2.map != null)
+            //             {
+            //                 CameraJumper.TryJumpAndSelect(CameraJumper.GetWorldTargetOfMap(entry2.map));
+            //             }
+            //             else if (entry2.pawn != null)
+            //             {
+            //                 CameraJumper.TryJumpAndSelect(entry2.pawn);
+            //             }
+            //         }
         }
 
         public void Notify_RecachedEntries()
@@ -423,39 +430,35 @@ namespace ColonistBarKF
 
             if (ColBarSettings.UsePsi)
             {
-                if (pawnStats != null)
+                if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
                 {
-                    if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
+                    if (ColonistBar_KF.PsiRowsOnBar == 2)
                     {
-                        if (ColonistBar_KF.PsiRowsOnBar == 2)
+                        if (pawnStats.thisColCount == 1)
                         {
-                            if (pawnStats.thisColCount == 1)
-                            {
-                                offsetX = widthPsiFloatX / 2;
-                            }
-                            if (pawnStats.thisColCount == 0)
-                            {
-                                offsetX = widthPsiFloatX;
-                            }
+                            offsetX = widthPsiFloatX / 2;
                         }
-                        else if (ColonistBar_KF.PsiRowsOnBar == 1)
+                        if (pawnStats.thisColCount == 0)
                         {
                             offsetX = widthPsiFloatX;
-                            flag = true;
                         }
+                    }
+                    else if (ColonistBar_KF.PsiRowsOnBar == 1)
+                    {
+                        offsetX = widthPsiFloatX;
+             //           flag = true;
+                    }
 
-                        switch (ColBarSettings.ColBarPsiIconPos)
-                        {
-                            case Position.Alignment.Left:
-                            case Position.Alignment.Right:
-                                if (!flag)
-                                {
-                                    outerRect.x += offsetX / 2;
-                                }
-                                outerRect.width -= offsetX;
-                                break;
-
-                        }
+                    switch (ColBarSettings.ColBarPsiIconPos)
+                    {
+                        case Position.Alignment.Left:
+                        case Position.Alignment.Right:
+                            if (!flag)
+                            {
+                                outerRect.x += offsetX / 2;
+                            }
+                            outerRect.width -= offsetX;
+                            break;
                     }
                 }
             }
@@ -943,6 +946,8 @@ namespace ColonistBarKF
                 pos_y = ColBarSettings.MarginTop;
                 height -= ColBarSettings.MarginTop;
             }
+
+            height += ColonistBar_KF.SpacingLabel;
 
             return new Rect(pos_x, pos_y, num2 - pos_x, height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }

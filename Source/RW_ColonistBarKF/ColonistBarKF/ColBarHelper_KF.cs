@@ -135,6 +135,32 @@ namespace ColonistBarKF
             ColonistBar_KF.drawLocsFinder.CalculateDrawLocs(cachedDrawLocs, out cachedScale);
         }
 
+        public bool AnyColonistOrCorpseAt(Vector2 pos)
+        {
+            ColonistBar.Entry entry;
+            return TryGetEntryAt(pos, out entry) && entry.pawn != null;
+        }
+
+        public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
+        {
+            List<Vector2> drawLocs = cachedDrawLocs;
+            List<ColonistBar.Entry> entries = Entries;
+            Vector2 size = ColonistBar_KF.FullSize;
+            for (int i = 0; i < drawLocs.Count; i++)
+            {
+                Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y);
+                if (rect.Contains(pos))
+                {
+                    entry = entries[i];
+                    return true;
+                }
+            }
+
+            entry = default(ColonistBar.Entry);
+            return false;
+        }
+
+
         private static void SortCachedColonists(ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
@@ -146,39 +172,35 @@ namespace ColonistBarKF
                     break;
 
                 case SettingsColonistBar.SortByWhat.byName:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.LabelCap != null).ThenBy(x => x.LabelCap);
-                    tmpColonists = orderedEnumerable.ToList();
+                    tmpColonists.SortBy(x => x.LabelCap);
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.sexage:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.gender.GetLabel() != null).ThenBy(x => x?.gender.GetLabel()).ThenBy(x => x?.ageTracker.AgeBiologicalYears);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.gender.GetLabel() != null).ThenBy(x => x?.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.health:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.health?.summaryHealth?.SummaryHealthPercent);
-                    tmpColonists = orderedEnumerable.ToList();
+                    tmpColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.mood:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurLevelPercentage);
-                    tmpColonists = orderedEnumerable.ToList();
+                    tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists.OrderByDescending(a => a?.equipment?.Primary != null && a.equipment.Primary.def.IsMeleeWeapon)
-                        .ThenByDescending(c => c?.equipment?.Primary != null && c.equipment.Primary.def.IsRangedWeapon).ThenByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
+                        .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.medic:
-                    orderedEnumerable = tmpColonists.OrderByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                    tmpColonists = orderedEnumerable.ToList();
+                    tmpColonists.SortByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
                     SaveBarSettings();
                     break;
 

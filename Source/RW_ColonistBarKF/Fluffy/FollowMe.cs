@@ -181,7 +181,7 @@ namespace ColonistBarKF
 
         private static void Follow()
         {
-            if (!CurrentlyFollowing || _followedThing == null)
+            if (!CurrentlyFollowing || _followedThing?.Map == null)
                 return;
 
             TryJumpSmooth(_followedThing);

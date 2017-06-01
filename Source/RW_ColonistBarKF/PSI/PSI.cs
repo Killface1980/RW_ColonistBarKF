@@ -68,11 +68,13 @@ namespace ColonistBarKF.PSI
 
         public static void DrawColonistIcons(Pawn pawn, bool psi, float rectalpha = 1f, Rect psiRect = new Rect())
         {
-            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null)
-                ) return;
-
             PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
 
+            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null))
+            {
+                pawnStats.thisColCount = 0;
+                return;
+            }
 
             pawnStats.LastStatUpdate += Time.fixedDeltaTime;
             if (pawnStats.LastStatUpdate > Rand.Range(1, 3))
@@ -81,8 +83,14 @@ namespace ColonistBarKF.PSI
                 pawnStats.LastStatUpdate = 0.0;
             }
 
-            if (psi) DrawColonistIconsPsi(pawn, pawnStats);
-            else DrawColonistIconsBar(pawn, pawnStats, psiRect, rectalpha);
+            if (psi)
+            {
+                DrawColonistIconsPsi(pawn, pawnStats);
+            }
+            else
+            {
+                DrawColonistIconsBar(pawn, pawnStats, psiRect, rectalpha);
+            }
         }
 
         public static void DrawColonistIconsBar(Pawn pawn, PawnStats pawnStats, Rect psiRect, float rectAlpha)
@@ -153,8 +161,8 @@ namespace ColonistBarKF.PSI
                         {
                             // if (pawnStats.pawnHealth < pawnStats.HealthDisease)
                             string tooltip = "Immunity".Translate() + " / " + "PSI.WoundInfection".Translate() + ": \n"
-                                             + pawnStats.immunity.ToStringPercent() + "/"
-                                             + pawnStats.severity.ToStringPercent() + "\n" + pawnStats.painTip;
+                                             + pawnStats.immunity.ToStringPercent() + " / "
+                                             + pawnStats.severity.ToStringPercent() + "\n";
 
                             DrawIcon_FadeFloatWithFourColorsHB(
                                 psiRect,
@@ -214,10 +222,23 @@ namespace ColonistBarKF.PSI
             }
             if (colBarSettings.ShowMedicalAttention)
             {
-                string tooltip = "NeedsTendingNow".Translate();
-                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha, tooltip);
-                else if (HealthAIUtility.ShouldBeTendedNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
-                else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn)) DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
+                // Check for map, else error in HealthUtility
+                if (pawn.Map != null)
+                {
+                    string tooltip = "NeedsTendingNow".Translate();
+                    if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
+                    {
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorRedAlert, rectAlpha, tooltip);
+                    }
+                    else if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                    {
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
+                    }
+                    else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
+                    {
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColorYellowAlert, rectAlpha, tooltip);
+                    }
+                }
             }
 
             // Idle - bar icon already included - vanilla
@@ -235,8 +256,7 @@ namespace ColonistBarKF.PSI
                 if (pacifist)
                     if ((pawn.drafter != null) && !pawn.Drafted)
                     {
-                        string tooltip;
-                        tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
+                        string tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
                         DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColBlueishGreen, rectAlpha, tooltip);
                     }
 
@@ -696,17 +716,21 @@ namespace ColonistBarKF.PSI
 
             if (psiSettings.ShowMedicalAttention)
             {
-                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
+                // Check for map, else error in HealthUtility
+                if (pawn.Map != null)
                 {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorRedAlert, ViewOpacityCrit);
-                }
-                else if (HealthAIUtility.ShouldBeTendedNow(pawn))
-                {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, ViewOpacityCrit);
-                }
-                else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
-                {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, ViewOpacityCrit);
+                    if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorRedAlert, ViewOpacityCrit);
+                    }
+                    else if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, ViewOpacityCrit);
+                    }
+                    else if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
+                    {
+                        DrawIconOnColonist(bodyLoc, ref iconNum, Icons.MedicalAttention, ColorYellowAlert, ViewOpacityCrit);
+                    }
                 }
             }
 
@@ -1531,10 +1555,13 @@ namespace ColonistBarKF.PSI
             }
 
             if (pawnStats.IsSick && !pawn.Destroyed && (pawn.playerSettings.medCare >= 0))
+            {
                 if (hediffs != null)
+                {
                     foreach (Hediff hediff in hediffs)
                     {
-                        if (!hediff.Visible) continue;
+                        if (!hediff.Visible)
+                            continue;
 
                         pawnStats.ToxicBuildUp = 0;
 
@@ -1574,6 +1601,8 @@ namespace ColonistBarKF.PSI
 
                         if (pawnStats.DiseaseDisappearance > compImmunizable.Immunity) pawnStats.DiseaseDisappearance = compImmunizable.Immunity;
                     }
+                }
+            }
 
             // Apparel Calc
             float worstApparel = 999f;

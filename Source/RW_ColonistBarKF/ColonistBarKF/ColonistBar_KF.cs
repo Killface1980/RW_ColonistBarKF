@@ -15,6 +15,8 @@ namespace ColonistBarKF
     [StaticConstructorOnStartup]
     public static class ColonistBar_KF
     {
+
+
         public const float SpacingLabel = 15f;
 
         private const float PawnTextureHorizontalPadding = 1f;
@@ -95,11 +97,7 @@ namespace ColonistBarKF
             }
         }
 
-        public static bool AnyColonistOrCorpseAt(Vector2 pos)
-        {
-            ColonistBar.Entry entry;
-            return TryGetEntryAt(pos, out entry) && entry.pawn != null;
-        }
+
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Caravan CaravanMemberCaravanAt(Vector2 at)
@@ -224,16 +222,14 @@ namespace ColonistBarKF
             {
                 return null;
             }
-
             ColonistBar.Entry entry;
-            if (!TryGetEntryAt(pos, out entry))
+            if (!BarHelperKf.TryGetEntryAt(pos, out entry))
             {
                 return null;
             }
-
             Pawn pawn = entry.pawn;
             Thing result;
-            if (pawn != null && pawn.Dead && pawn.Corpse != null && pawn.Corpse.MapHeld != null)
+            if (pawn != null && pawn.Dead && pawn.Corpse != null && pawn.Corpse.SpawnedOrAnyParentSpawned)
             {
                 result = pawn.Corpse;
             }
@@ -241,62 +237,9 @@ namespace ColonistBarKF
             {
                 result = pawn;
             }
-
             return result;
         }
 
-        public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
-        {
-            List<Vector2> drawLocs = BarHelperKf.cachedDrawLocs;
-            List<ColonistBar.Entry> entries = BarHelperKf.Entries;
-            Vector2 size = FullSize;
-            BarHelperKf.tmpColonistsWithMap.Clear();
-            for (int i = 0; i < drawLocs.Count; i++)
-            {
-                if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
-                {
-                    Pawn pawn = entries[i].pawn;
-                    if (pawn != null)
-                    {
-                        Thing first;
-                        if (pawn.Dead && pawn.Corpse != null && pawn.Corpse.MapHeld != null)
-                        {
-                            first = pawn.Corpse;
-                        }
-                        else
-                        {
-                            first = pawn;
-                        }
-
-                        BarHelperKf.tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].map));
-                    }
-                }
-            }
-
-            if (WorldRendererUtility.WorldRenderedNow)
-            {
-                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == null))
-                {
-                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != null);
-                    goto IL_1A1;
-                }
-            }
-
-            if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
-            {
-                BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
-            }
-
-            IL_1A1:
-            BarHelperKf.tmpColonists.Clear();
-            for (int j = 0; j < BarHelperKf.tmpColonistsWithMap.Count; j++)
-            {
-                BarHelperKf.tmpColonists.Add(BarHelperKf.tmpColonistsWithMap[j].First);
-            }
-
-            BarHelperKf.tmpColonistsWithMap.Clear();
-            return BarHelperKf.tmpColonists;
-        }
 
         [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Pawn> GetColonistsInOrder()
@@ -356,6 +299,54 @@ namespace ColonistBarKF
             // Log.Message("Colonists marked dirty.01");
         }
 
+        public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
+        {
+            List<Vector2> drawLocs = BarHelperKf.DrawLocs;
+            List<ColonistBar.Entry> entries = BarHelperKf.Entries;
+            Vector2 size = FullSize;
+            BarHelperKf.tmpColonistsWithMap.Clear();
+            for (int i = 0; i < drawLocs.Count; i++)
+            {
+                if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
+                {
+                    Pawn pawn = entries[i].pawn;
+                    if (pawn != null)
+                    {
+                        Thing first;
+                        if (pawn.Dead && pawn.Corpse != null && pawn.Corpse.SpawnedOrAnyParentSpawned)
+                        {
+                            first = pawn.Corpse;
+                        }
+                        else
+                        {
+                            first = pawn;
+                        }
+                        BarHelperKf.tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].map));
+                    }
+                }
+            }
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                if (BarHelperKf.tmpColonistsWithMap.Any((Pair<Thing, Map> x) => x.Second == null))
+                {
+                    BarHelperKf.tmpColonistsWithMap.RemoveAll((Pair<Thing, Map> x) => x.Second != null);
+                    goto IL_1A1;
+                }
+            }
+            if (BarHelperKf.tmpColonistsWithMap.Any((Pair<Thing, Map> x) => x.Second == Find.VisibleMap))
+            {
+                BarHelperKf.tmpColonistsWithMap.RemoveAll((Pair<Thing, Map> x) => x.Second != Find.VisibleMap);
+            }
+            IL_1A1:
+            BarHelperKf.tmpColonists.Clear();
+            for (int j = 0; j < BarHelperKf.tmpColonistsWithMap.Count; j++)
+            {
+                BarHelperKf.tmpColonists.Add(BarHelperKf.tmpColonistsWithMap[j].First);
+            }
+            BarHelperKf.tmpColonistsWithMap.Clear();
+            return BarHelperKf.tmpColonists;
+        }
+
         public static void RecalcSizes()
         {
             widthMoodBarHorizontal = 0f;
@@ -403,23 +394,6 @@ namespace ColonistBarKF
             }
         }
 
-        public static bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
-        {
-            List<Vector2> drawLocs = BarHelperKf.cachedDrawLocs;
-            List<ColonistBar.Entry> entries = BarHelperKf.Entries;
-            Vector2 size = FullSize;
-            for (int i = 0; i < drawLocs.Count; i++)
-            {
-                Rect rect = new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y);
-                if (rect.Contains(pos))
-                {
-                    entry = entries[i];
-                    return true;
-                }
-            }
 
-            entry = default(ColonistBar.Entry);
-            return false;
-        }
     }
 }
