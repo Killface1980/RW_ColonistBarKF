@@ -49,7 +49,13 @@ namespace ColonistBarKF
         public static Vector2 PawnSize => (new Vector2(Settings.ColBarSettings.BaseSizeFloat, Settings.ColBarSettings.BaseSizeFloat))
                                           * Scale;
 
-        public static int PsiRowsOnBar { get; set; }
+        public static int PsiRowsOnBar
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
         // public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
         public static float Scale => BarHelperKf.cachedScale;
@@ -99,7 +105,7 @@ namespace ColonistBarKF
 
 
 
- //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static Caravan CaravanMemberCaravanAt(Vector2 at)
         {
             if (!Visible)
@@ -116,7 +122,7 @@ namespace ColonistBarKF
             return null;
         }
 
- //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        //       [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Caravan> CaravanMembersCaravansInScreenRect(Rect rect)
         {
             BarHelperKf.tmpCaravans.Clear();
@@ -134,7 +140,7 @@ namespace ColonistBarKF
             return BarHelperKf.tmpCaravans;
         }
 
-  //      [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
+        //      [Detour(typeof(ColonistBar), bindingFlags = BindingFlags.Instance | BindingFlags.Public)]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
             BarHelperKf.tmpCaravanPawns.Clear();

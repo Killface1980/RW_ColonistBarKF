@@ -87,7 +87,7 @@ namespace ColonistBarKF
             {
                 if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                 {
-                    if (pawnStats != null)
+                    if (pawnStats.Mood != null && pawnStats.Mb != null)
                     {
                         // string tooltip = colonist.needs.mood.GetTipString();
                         DrawNewMoodRect(moodBorderRect, pawnStats.Mood, pawnStats.Mb);
@@ -110,8 +110,8 @@ namespace ColonistBarKF
             {
                 if (FollowMe.CurrentlyFollowing)
                 {
-                  //Pawn follow = FollowMe._followedThing as Pawn;
-                  //if (follow != null && follow == colonist)
+                    //Pawn follow = FollowMe._followedThing as Pawn;
+                    //if (follow != null && follow == colonist)
                     {
                         Color col = ColYellow;
                         col.a = color.a;
@@ -862,7 +862,7 @@ namespace ColonistBarKF
                 SelectionDrawer.SelectTimes,
                 textureSize,
                 ColBarSettings.BaseSizeFloat * ColonistBar_KF.Scale);
-            this.DrawSelectionOverlayOnGUI( bracketLocs, num);
+            this.DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
         private void DrawSelectionOverlayOnGUI(Vector2[] bracketLocs, float selectedTexScale)
