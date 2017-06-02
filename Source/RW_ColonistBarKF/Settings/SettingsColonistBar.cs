@@ -4,6 +4,7 @@ namespace ColonistBarKF
 {
     public class SettingsColonistBar
     {
+        // to do 0.18: rename to BaseIconSize
         public float BaseSizeFloat = 48f;
 
         public float BaseSpacingHorizontal = 24f;

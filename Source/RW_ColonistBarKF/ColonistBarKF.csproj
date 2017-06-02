@@ -80,7 +80,7 @@
     <Compile Include="ColonistBarKF\_Selector.cs" />
     <Compile Include="ColonistBarKF\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
-    <None Include="ModInitializer.cs" />
+    <None Include="Mod.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />

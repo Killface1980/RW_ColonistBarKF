@@ -55,7 +55,7 @@ namespace ColonistBarKF
         private static bool _cameraHasJumpedAtLeastOnce;
         public static bool CurrentlyFollowing;
         private static bool _enabled = true;
-        private static Thing _followedThing;
+        public static Thing _followedThing;
 
         private KeyBindingDef[] _followBreakingKeyBindingDefs =
         {

@@ -152,18 +152,18 @@ namespace ColonistBarKF.PSI
 
             // Health
             // Infection
-            if (colBarSettings.ShowHealth)
+            if (pawnStats.IsSick)
             {
-                if (pawnStats.IsSick)
+                if (colBarSettings.ShowHealth)
                 {
+                    string tooltip = pawnStats.sickTip + "\n" + pawnStats.healthTip + "\n" + "Immunity".Translate()
+                                     + " / " + "PSI.DiseaseProgress".Translate() + ": \n"
+                                     + pawnStats.immunity.ToStringPercent() + " / "
+                                     + pawnStats.severity.ToStringPercent();
                     if (pawnStats.HasLifeThreateningDisease)
                     {
                         {
                             // if (pawnStats.pawnHealth < pawnStats.HealthDisease)
-                            string tooltip = "Immunity".Translate() + " / " + "PSI.WoundInfection".Translate() + ": \n"
-                                             + pawnStats.immunity.ToStringPercent() + " / "
-                                             + pawnStats.severity.ToStringPercent() + "\n";
-
                             DrawIcon_FadeFloatWithFourColorsHB(
                                 psiRect,
                                 ref barIconNum,
@@ -180,10 +180,6 @@ namespace ColonistBarKF.PSI
                     else if (pawnStats.DiseaseDisappearance < Settings.PsiSettings.LimitDiseaseLess)
                     {
                         // Regular Sickness
-                        string tooltip = "Immunity".Translate() + " / " + "PSI.WoundInfection".Translate() + ": \n"
-                                         + pawnStats.immunity.ToStringPercent() + " / "
-                                         + pawnStats.severity.ToStringPercent();
-
                         DrawIcon_FadeFloatWithFourColorsHB(
                             psiRect,
                             ref barIconNum,
@@ -196,30 +192,46 @@ namespace ColonistBarKF.PSI
                             rectAlpha,
                             tooltip);
                     }
+                    else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+                    {
+                        tooltip = "Health".Translate() + ": "
+                                  + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
+                        DrawIcon_FadeFloatWithFourColorsHB(
+                            psiRect,
+                            ref barIconNum,
+                            Icons.Health,
+                            pawnStats.pawnHealth,
+                            ColorHealthBarGreen,
+                            ColorYellowAlert,
+                            ColorOrangeAlert,
+                            ColorRedAlert,
+                            rectAlpha,
+                            tooltip);
+                    }
+
+                    // else
+                    // {
+                    // string tooltip = pawnStats.sickTip;
+                    // DrawIcon_FadeFloatWithFourColorsHB(psiRect, ref barIconNum, Icons.Health, pawnStats.HealthDisease,
+                    // ColorHealthBarGreen, ColorYellowAlert, ColorOrangeAlert, ColorRedAlert, rectAlpha, tooltip);
+                    // }
                 }
-                else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+
+                // Toxicity buildup
+                if (colBarSettings.ShowToxicity && pawnStats.ToxicBuildUp > 0.04f)
                 {
-                    string tooltip = "Health".Translate() + ": "
-                                     + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
-                    DrawIcon_FadeFloatWithFourColorsHB(
-                        psiRect,
-                        ref barIconNum,
-                        Icons.Health,
-                        pawnStats.pawnHealth,
+                    string tooltip = pawnStats.toxicTip;
+                    iconColor = IconColor(
+                        pawnStats.ToxicBuildUp,
+                        ColorNeutralStatusFade,
                         ColorHealthBarGreen,
                         ColorYellowAlert,
                         ColorOrangeAlert,
-                        ColorRedAlert,
-                        rectAlpha,
-                        tooltip);
+                        ColorRedAlert);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Toxicity, iconColor, rectAlpha, tooltip);
                 }
-                // else
-                // {
-                // string tooltip = pawnStats.sickTip;
-                // DrawIcon_FadeFloatWithFourColorsHB(psiRect, ref barIconNum, Icons.Health, pawnStats.HealthDisease,
-                // ColorHealthBarGreen, ColorYellowAlert, ColorOrangeAlert, ColorRedAlert, rectAlpha, tooltip);
-                // }
             }
+
             if (colBarSettings.ShowMedicalAttention)
             {
                 // Check for map, else error in HealthUtility
@@ -252,35 +264,34 @@ namespace ColonistBarKF.PSI
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.Unarmed, ColReddishPurple, rectAlpha, tooltip);
                 }
 
-            if (colBarSettings.ShowPacific)
-                if (pacifist)
-                    if ((pawn.drafter != null) && !pawn.Drafted)
-                    {
-                        string tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
-                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColBlueishGreen, rectAlpha, tooltip);
-                    }
+            if (colBarSettings.ShowPacific && pacifist)
+            {
+                if ((pawn.drafter != null) && !pawn.Drafted)
+                {
+                    string tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColBlueishGreen, rectAlpha, tooltip);
+                }
+            }
 
             // Trait Pyromaniac
-            if (colBarSettings.ShowPyromaniac)
-                if (pawnStats.isPyromaniac)
-                {
-                    string tooltip = "PSI.Settings.Visibility.Pyromaniac".Translate();
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColorYellowAlert, rectAlpha, tooltip);
-                }
+            if (colBarSettings.ShowPyromaniac && pawnStats.isPyromaniac)
+            {
+                string tooltip = "PSI.Settings.Visibility.Pyromaniac".Translate();
+                DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColorYellowAlert, rectAlpha, tooltip);
+            }
 
             // Hungry
-            if (colBarSettings.ShowHungry)
-                if (pawn.needs.food.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
-                {
-                    string tooltip = pawn.needs.food.GetTipString();
-                    DrawIcon_FadeRedAlertToNeutral(
-                        psiRect,
-                        ref barIconNum,
-                        Icons.Hungry,
-                        pawn.needs.food.CurLevel / Settings.PsiSettings.LimitFoodLess,
-                        rectAlpha,
-                        tooltip);
-                }
+            if (colBarSettings.ShowHungry && pawn.needs.food.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
+            {
+                string tooltip = pawn.needs.food.GetTipString();
+                DrawIcon_FadeRedAlertToNeutral(
+                    psiRect,
+                    ref barIconNum,
+                    Icons.Hungry,
+                    pawn.needs.food.CurLevel / Settings.PsiSettings.LimitFoodLess,
+                    rectAlpha,
+                    tooltip);
+            }
 
             // Addictions
             if (colBarSettings.ShowDrunk && (pawnStats.isAddict || (pawnStats.drugDesire != 0)))
@@ -337,18 +348,7 @@ namespace ColonistBarKF.PSI
             // if (psi && PsiSettings.ShowSad && pawn.needs.mood.CurLevel < (double)PsiSettings.LimitMoodLess)
             // DrawIcon_FadeRedAlertToNeutral(bodyLoc, iconNum, Icons.Sad, pawn.needs.mood.CurLevel / PsiSettings.LimitMoodLess);
 
-            // Toxicity buildup
-            if (colBarSettings.ShowToxicity && pawnStats.ToxicBuildUp > 0.04f)
-            {
-                iconColor = IconColor(
-                    pawnStats.ToxicBuildUp,
-                    ColorNeutralStatusFade,
-                    ColorHealthBarGreen,
-                    ColorYellowAlert,
-                    ColorOrangeAlert,
-                    ColorRedAlert);
-                DrawIconOnBar(psiRect, ref barIconNum, Icons.Toxicity, iconColor, rectAlpha);
-            }
+
 
             // Pain
             if (colBarSettings.ShowPain && pawnStats.PainMoodLevel > -1)
@@ -547,22 +547,23 @@ namespace ColonistBarKF.PSI
                 {
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.CabinFever, ColorNeutralStatusFade, rectAlpha, tooltip);
                 }
+
                 if (pawnStats.CabinFeverMoodLevel == 1)
                 {
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.CabinFever, ColorYellowAlert, rectAlpha, tooltip);
                 }
+
                 if (pawnStats.CabinFeverMoodLevel == 2)
                 {
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.CabinFever, ColorOrangeAlert, rectAlpha, tooltip);
                 }
             }
 
-            //if (barIconNum >= colBarSettings.IconsInColumn * 2)
-            //{
-            //    pawnStats.IconCount = colBarSettings.IconsInColumn * 2;
-            //}
-            //else
-
+            // if (barIconNum >= colBarSettings.IconsInColumn * 2)
+            // {
+            // pawnStats.IconCount = colBarSettings.IconsInColumn * 2;
+            // }
+            // else
             int colCount = Mathf.CeilToInt((float)barIconNum / Settings.ColBarSettings.IconsInColumn);
 
 
@@ -671,10 +672,10 @@ namespace ColonistBarKF.PSI
             }
 
             // Health
-            if (psiSettings.ShowHealth)
+            if (pawnStats.IsSick)
             {
                 // Infection
-                if (pawnStats.IsSick)
+                if (psiSettings.ShowHealth)
                 {
                     if (pawnStats.HasLifeThreateningDisease)
                         DrawIcon_FadeFloatWithFourColorsHB(
@@ -700,18 +701,32 @@ namespace ColonistBarKF.PSI
                             ColorOrangeAlert,
                             ColorRedAlert,
                             ViewOpacityCrit);
+                    else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+                        DrawIcon_FadeFloatWithFourColorsHB(
+                            bodyLoc,
+                            ref iconNum,
+                            Icons.Health,
+                            pawnStats.pawnHealth,
+                            ColorHealthBarGreen,
+                            ColorYellowAlert,
+                            ColorOrangeAlert,
+                            ColorRedAlert,
+                            ViewOpacityCrit);
                 }
-                else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
-                    DrawIcon_FadeFloatWithFourColorsHB(
-                        bodyLoc,
-                        ref iconNum,
-                        Icons.Health,
-                        pawnStats.pawnHealth,
+
+                // Toxicity buildup
+                if (psiSettings.ShowToxicity && pawnStats.ToxicBuildUp > 0.04f)
+                {
+                    iconColor = IconColor(
+                        pawnStats.ToxicBuildUp,
+                        ColorNeutralStatusFade,
                         ColorHealthBarGreen,
                         ColorYellowAlert,
                         ColorOrangeAlert,
-                        ColorRedAlert,
-                        ViewOpacityCrit);
+                        ColorRedAlert);
+
+                    DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Toxicity, iconColor, ViewOpacityCrit);
+                }
             }
 
             if (psiSettings.ShowMedicalAttention)
@@ -826,20 +841,7 @@ namespace ColonistBarKF.PSI
             // if (psi && PsiSettings.ShowSad && pawn.needs.mood.CurLevel < (double)PsiSettings.LimitMoodLess)
             // DrawIcon_FadeRedAlertToNeutral(bodyLoc, iconNum, Icons.Sad, pawn.needs.mood.CurLevel / PsiSettings.LimitMoodLess);
 
-            // Toxicity buildup
-            if (psiSettings.ShowToxicity && pawnStats.ToxicBuildUp > 0.04f)
-            {
-                iconColor = IconColor(
-                    pawnStats.ToxicBuildUp,
-                    ColorNeutralStatusFade,
-                    ColorHealthBarGreen,
-                    ColorYellowAlert,
-                    ColorOrangeAlert,
-                    ColorRedAlert);
 
-                DrawIconOnColonist(bodyLoc, ref iconNum, Icons.Toxicity, iconColor, ViewOpacityCrit);
-
-            }
 
             // Pain
             if (psiSettings.ShowPain && pawnStats.PainMoodLevel > -1)
@@ -1259,15 +1261,31 @@ namespace ColonistBarKF.PSI
 
             this._viewRect = Find.CameraDriver.CurrentViewRect;
             this._viewRect = this._viewRect.ExpandedBy(5);
+            var map = Find.VisibleMap;
 
-            foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned)
+            foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsAndPrisonersSpawned)
             {
-                if (!this._viewRect.Contains(pawn.Position)) continue;
+                if (pawn.Map == null)
+                    continue;
+
+                if (pawn.Map != map)
+                    continue;
+
+                if (!this._viewRect.Contains(pawn.Position))
+                {
+                    continue;
+                }
                 {
                     // if (useGUILayout)
-                    if (pawn.RaceProps.Animal) DrawAnimalIcons(pawn);
+                    if (pawn.RaceProps.Animal)
+                    {
+                        DrawAnimalIcons(pawn);
+                    }
                     else if ((Settings.PsiSettings.UsePsi && pawn.IsColonist)
-                             || (Settings.PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner)) DrawColonistIcons(pawn, true);
+                             || (Settings.PsiSettings.UsePsiOnPrisoner && pawn.IsPrisoner))
+                    {
+                        DrawColonistIcons(pawn, true);
+                    }
                 }
             }
         }
@@ -1302,9 +1320,15 @@ namespace ColonistBarKF.PSI
         {
             tooltip = null;
             stage = -1;
+            if (thoughts == null || !thoughts.Any())
+                return;
+
             foreach (Thought thought in thoughts)
             {
-                if (thought.def != tdef) continue;
+                if (thought.def != tdef)
+                {
+                    continue;
+                }
 
                 stage = thought.CurStageIndex;
                 tooltip = thought.CurStage.description + "\n" + thought.LabelCap;
@@ -1520,7 +1544,10 @@ namespace ColonistBarKF.PSI
                     */
             // Mental Sanity
             pawnStats.MentalSanity = null;
-            if ((pawn.mindState != null) && pawn.InMentalState) pawnStats.MentalSanity = pawn.MentalStateDef;
+            if ((pawn.mindState != null) && pawn.InMentalState)
+            {
+                pawnStats.MentalSanity = pawn.MentalStateDef;
+            }
 
             // Mental Breaker for MoodBars
             if (pawn.needs?.mood != null)
@@ -1560,13 +1587,23 @@ namespace ColonistBarKF.PSI
                 {
                     foreach (Hediff hediff in hediffs)
                     {
-                        if (!hediff.Visible)
+                        if (!hediff.Visible || hediff.IsOld())
                             continue;
 
+
                         pawnStats.ToxicBuildUp = 0;
+                        pawnStats.healthTip = hediff.LabelCap;
+                        int dummy;
+                        GetThought(thoughts, ThoughtDef.Named("Sick"), out dummy, out pawnStats.sickTip);
 
                         // pawnStats.ToxicBuildUp
-                        if (hediff.def == HediffDefOf.ToxicBuildup) pawnStats.ToxicBuildUp = hediff.Severity;
+                        if (hediff.def == HediffDefOf.ToxicBuildup)
+                        {
+                            pawnStats.healthTip = hediff.LabelCap;
+                            pawnStats.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
+                            pawnStats.ToxicBuildUp = hediff.Severity;
+                        }
+
                         HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
                         if (compImmunizable != null)
                         {
@@ -1576,8 +1613,6 @@ namespace ColonistBarKF.PSI
                                                - 0.25f;
                             pawnStats.HasLifeThreateningDisease = true;
                             pawnStats.HealthDisease = basehealth;
-                            int dummy;
-                            GetThought(thoughts, ThoughtDef.Named("Sick"), out dummy, out pawnStats.sickTip);
                         }
                         else
                         {
@@ -1599,7 +1634,10 @@ namespace ColonistBarKF.PSI
 
                         if (Math.Abs(pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05) continue;
 
-                        if (pawnStats.DiseaseDisappearance > compImmunizable.Immunity) pawnStats.DiseaseDisappearance = compImmunizable.Immunity;
+                        if (pawnStats.DiseaseDisappearance > compImmunizable.Immunity)
+                        {
+                            pawnStats.DiseaseDisappearance = compImmunizable.Immunity;
+                        }
                     }
                 }
             }
@@ -1681,10 +1719,16 @@ namespace ColonistBarKF.PSI
                         out pawnStats.nightOwlTip);
 
                 // Greedy
-                if (pawnStats.greedy) pawnStats.greedyThought = HasThought(thoughts, ThoughtDef.Named("Greedy"));
+                if (pawnStats.greedy)
+                {
+                    pawnStats.greedyThought = HasThought(thoughts, ThoughtDef.Named("Greedy"));
+                }
 
                 // Jealous
-                if (pawnStats.jealous) pawnStats.jealousThought = HasThought(thoughts, ThoughtDef.Named("Jealous"));
+                if (pawnStats.jealous)
+                {
+                    pawnStats.jealousThought = HasThought(thoughts, ThoughtDef.Named("Jealous"));
+                }
 
                 // Unburied
                 GetThought(

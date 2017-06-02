@@ -143,7 +143,7 @@
   <PSI.Settings.Visibility.Toxicity>Toxic Buildup</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.LeftUnburied>Colonist left unburied</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>Marriage</PSI.Settings.Visibility.Marriage>
-  <PSI.WoundInfection>Infection</PSI.WoundInfection>
+  <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
 
 </LanguageData>

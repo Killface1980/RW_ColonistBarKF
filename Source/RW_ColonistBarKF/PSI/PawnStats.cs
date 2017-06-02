@@ -82,6 +82,10 @@ namespace ColonistBarKF
 
         public int thisColCount;
 
+        public string toxicTip;
+
+        public string healthTip;
+
         public void ExposeData()
         {
 

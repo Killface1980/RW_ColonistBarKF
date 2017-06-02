@@ -143,7 +143,7 @@
   <PSI.Settings.Visibility.Toxicity>Vergiftung</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.LeftUnburied>Kolonist nicht begraben</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
-  <PSI.WoundInfection>Infektion</PSI.WoundInfection>
+  <PSI.DiseaseProgress>Krankheit</PSI.DiseaseProgress>
   <PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
 
 </LanguageData>

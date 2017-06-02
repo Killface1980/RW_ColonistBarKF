@@ -108,7 +108,18 @@ namespace ColonistBarKF
 
             if (colonistAlive && !WorldRendererUtility.WorldRenderedNow)
             {
+                if (FollowMe.CurrentlyFollowing)
+                {
+                  //Pawn follow = FollowMe._followedThing as Pawn;
+                  //if (follow != null && follow == colonist)
+                    {
+                        Color col = ColYellow;
+                        col.a = color.a;
+                        GUI.color = col;
+                    }
+                }
                 this.DrawSelectionOverlayOnGUI(colonist, rect2);
+                GUI.color = color;
             }
             else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember()
                      && Find.WorldSelector.IsSelected(colonist.GetCaravan()))
@@ -446,7 +457,7 @@ namespace ColonistBarKF
                     else if (ColonistBar_KF.PsiRowsOnBar == 1)
                     {
                         offsetX = widthPsiFloatX;
-             //           flag = true;
+                        //           flag = true;
                     }
 
                     switch (ColBarSettings.ColBarPsiIconPos)
@@ -750,7 +761,7 @@ namespace ColonistBarKF
                 rect,
                 WorldSelectionDrawer.SelectTimes,
                 textureSize,
-                20f * ColonistBar_KF.Scale);
+                ColBarSettings.BaseSizeFloat * ColonistBar_KF.Scale);
             this.DrawSelectionOverlayOnGUI(bracketLocs, num);
         }
 
@@ -832,6 +843,7 @@ namespace ColonistBarKF
 
         private void DrawSelectionOverlayOnGUI(Pawn colonist, Rect rect)
         {
+
             Thing obj = colonist;
             if (colonist.Dead)
             {
@@ -842,14 +854,15 @@ namespace ColonistBarKF
             Vector2 textureSize = new Vector2(
                                       SelectionDrawerUtility.SelectedTexGUI.width * num,
                                       SelectionDrawerUtility.SelectedTexGUI.height * num);
+
             SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(
-                bracketLocs,
+                 bracketLocs,
                 obj,
                 rect,
                 SelectionDrawer.SelectTimes,
                 textureSize,
-                ColBarSettings.BaseSizeFloat * 0.4f * ColonistBar_KF.Scale);
-            this.DrawSelectionOverlayOnGUI(bracketLocs, num);
+                ColBarSettings.BaseSizeFloat * ColonistBar_KF.Scale);
+            this.DrawSelectionOverlayOnGUI( bracketLocs, num);
         }
 
         private void DrawSelectionOverlayOnGUI(Vector2[] bracketLocs, float selectedTexScale)
