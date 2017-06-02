@@ -70,7 +70,11 @@ namespace ColonistBarKF.PSI
         {
             PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
 
-            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null))
+            if (pawn == null)
+            {
+                return;
+            }
+            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null) || pawn.Map == null)
             {
                 pawnStats.thisColCount = 0;
                 return;
@@ -1402,6 +1406,10 @@ namespace ColonistBarKF.PSI
         public static void UpdateColonistStats(PawnStats pawnStats)
         {
             Pawn pawn = pawnStats.Pawn;
+
+            if (pawn == null || !pawn.Spawned)
+                return;
+
             List<Thought> thoughts = new List<Thought>();
 
             pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
