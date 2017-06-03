@@ -146,5 +146,6 @@
 
   <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
+  <PSI.MedicalSurgerySuccessChance>Surgery success chance</PSI.MedicalSurgerySuccessChance>
 
 </LanguageData>

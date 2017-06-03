@@ -110,13 +110,15 @@ namespace ColonistBarKF
             {
                 if (FollowMe.CurrentlyFollowing)
                 {
-                    //Pawn follow = FollowMe._followedThing as Pawn;
-                    //if (follow != null && follow == colonist)
+                    Color col = ColYellow;
+
+                    Pawn follow = FollowMe._followedThing as Pawn;
+                    if (follow != null && follow == colonist)
                     {
-                        Color col = ColYellow;
-                        col.a = color.a;
-                        GUI.color = col;
+                        col = ColVermillion;
                     }
+                    col.a = color.a;
+                    GUI.color = col;
                 }
                 this.DrawSelectionOverlayOnGUI(colonist, rect2);
                 GUI.color = color;
@@ -325,6 +327,16 @@ namespace ColonistBarKF
 
                                                     // CheckRecacheEntries();
                                                 }));
+                                    floatOptionList.Add(
+                                       new FloatMenuOption(
+                                           "PSI.MedicalSurgerySuccessChance".Translate(),
+                                           delegate
+                                           {
+                                               ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medicSurgerySuccess;
+                                               ColonistBar_KF.MarkColonistsDirty();
+
+                                               // CheckRecacheEntries();
+                                           }));
                                     floatOptionList.Add(
                                         new FloatMenuOption(
                                             "CBKF.Settings.Weapons".Translate(),

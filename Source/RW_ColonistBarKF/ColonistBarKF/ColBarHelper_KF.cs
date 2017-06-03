@@ -188,19 +188,27 @@ namespace ColonistBarKF
                     break;
 
                 case SettingsColonistBar.SortByWhat.mood:
-                    tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood.CurInstantLevelPercentage);
+                    tmpColonists = orderedEnumerable.ToList();
+                    //    tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists.OrderByDescending(a => a.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
+                    orderedEnumerable = tmpColonists.OrderByDescending(a => a?.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
                         .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
                     SaveBarSettings();
                     break;
 
                 case SettingsColonistBar.SortByWhat.medic:
-                    tmpColonists.SortByDescending(b => b.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    tmpColonists = orderedEnumerable.ToList();
+                    SaveBarSettings();
+                    break;
+
+                case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
+                    tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
                     SaveBarSettings();
                     break;
 

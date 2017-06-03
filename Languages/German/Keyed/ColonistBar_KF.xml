@@ -145,5 +145,6 @@
   <PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
   <PSI.DiseaseProgress>Krankheit</PSI.DiseaseProgress>
   <PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
+  <PSI.MedicalSurgerySuccessChance>OP-Erfolgsquote</PSI.MedicalSurgerySuccessChance>
 
 </LanguageData>

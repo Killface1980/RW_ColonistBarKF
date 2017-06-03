@@ -143,4 +143,7 @@
   <PSI.Settings.Visibility.LeftUnburied>Не похороненный колонист</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>Свадьба</PSI.Settings.Visibility.Marriage>
 
+  <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
+  <PSI.Efficiency>Efficiency</PSI.Efficiency>
+  <PSI.MedicalSurgerySuccessChance>Surgery success chance</PSI.MedicalSurgerySuccessChance>
 </LanguageData>

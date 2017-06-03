@@ -1440,6 +1440,7 @@ namespace ColonistBarKF.PSI
 
             // One time traits check
             if (!pawnStats.traitsCheck)
+            {
                 if (pawn.story?.traits != null)
                 {
                     if (pawn.RaceProps.hasGenders)
@@ -1490,7 +1491,7 @@ namespace ColonistBarKF.PSI
                     if (pawn.story.traits.HasTrait(TraitDefOf.Greedy)) pawnStats.greedy = true;
 
                     pawnStats.traitsCheck = true;
-                }
+                }}
 
             if (pawn.Dead)
             {
@@ -1503,8 +1504,14 @@ namespace ColonistBarKF.PSI
             array = _pawnCapacities;
             foreach (PawnCapacityDef pawnCapacityDef in array)
             {
-                if (pawnCapacityDef != PawnCapacityDefOf.Consciousness) efficiency = Math.Min(efficiency, pawn.health.capacities.GetLevel(pawnCapacityDef));
-                if (efficiency < 0f) efficiency = 0f;
+                if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
+                {
+                    efficiency = Math.Min(efficiency, pawn.health.capacities.GetLevel(pawnCapacityDef));
+                }
+                if (efficiency < 0f)
+                {
+                    efficiency = 0f;
+                }
             }
 
             pawnStats.TotalEfficiency = efficiency;
@@ -1615,6 +1622,8 @@ namespace ColonistBarKF.PSI
             {
                 if (hediffs != null)
                 {
+                    pawnStats.severity = 0f;
+                    pawnStats.immunity = 0f;
                     foreach (Hediff hediff in hediffs)
                     {
                         if (!hediff.Visible || hediff.IsOld())
@@ -1637,7 +1646,7 @@ namespace ColonistBarKF.PSI
                         HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
                         if (compImmunizable != null)
                         {
-                            pawnStats.severity = hediff.Severity;
+                            pawnStats.severity = Mathf.Max(pawnStats.severity, hediff.Severity);
                             pawnStats.immunity = compImmunizable.Immunity;
                             float basehealth = pawnStats.HealthDisease - (pawnStats.severity - pawnStats.immunity / 4)
                                                - 0.25f;
@@ -1649,13 +1658,17 @@ namespace ColonistBarKF.PSI
                             continue;
                         }
 
-                        if (!hediff.def.PossibleToDevelopImmunityNaturally()) continue;
+                        if (!hediff.def.PossibleToDevelopImmunityNaturally())
+                            continue;
 
-                        if (hediff.CurStage?.capMods == null) continue;
+                        if (hediff.CurStage?.capMods == null)
+                            continue;
 
-                        if (!hediff.CurStage.everVisible) continue;
+                        if (!hediff.CurStage.everVisible)
+                            continue;
 
-                        if (hediff.FullyImmune()) continue;
+                        if (hediff.FullyImmune())
+                            continue;
 
                         // if (hediff.def.naturallyHealed) continue;
                         if (!hediff.def.makesSickThought) continue;

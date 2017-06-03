@@ -161,7 +161,10 @@ namespace ColonistBarKF
 
             medic,
 
+            medicSurgerySuccess,
+
             byName
+
         }
 
         public bool UseNewMood = true;
