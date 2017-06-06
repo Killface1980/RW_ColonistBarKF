@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
+    using System;
+    using System.Reflection;
 
     [AttributeUsage(AttributeTargets.Method)]
     internal class DetourAttribute : Attribute

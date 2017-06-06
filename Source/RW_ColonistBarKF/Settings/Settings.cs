@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using ColonistBarKF.PSI;
-using Verse;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
+    using System.IO;
+
+    using Verse;
+
     public static class Settings
     {
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();

@@ -1,17 +1,21 @@
 ﻿// Karel Kroeze
 // FollowMe.cs
 // 2016-12-27
-using System;
-using System.Linq;
-using System.Reflection;
-using RimWorld;
-using RimWorld.Planet;
-using UnityEngine;
-using Verse;
-using Verse.Sound;
 
 namespace ColonistBarKF
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.Sound;
+
     public class FollowMe : GameComponent
     {
         public FollowMe(Game game)
@@ -30,11 +34,14 @@ namespace ColonistBarKF
             get
             {
                 if (_followedThing == null)
+                {
                     return string.Empty;
+                }
 
-                Pawn pawn = _followedThing as Pawn;
-                if (pawn != null)
+                if (_followedThing is Pawn pawn)
+                {
                     return pawn.NameStringShort;
+                }
 
                 return _followedThing.LabelCap;
             }
@@ -74,14 +81,19 @@ namespace ColonistBarKF
         public override void LoadedGame()
         {
             if (CurrentlyFollowing)
+            {
                 StopFollow("Game loaded");
+            }
+
             base.LoadedGame();
         }
 
         public override void StartedNewGame()
         {
             if (CurrentlyFollowing)
+            {
                 StopFollow("New game started");
+            }
 
             base.StartedNewGame();
         }
@@ -89,26 +101,40 @@ namespace ColonistBarKF
         public static void TryStartFollow(Thing thing)
         {
             if (!CurrentlyFollowing && thing == null)
+            {
                 if (Find.Selector.NumSelected > 1)
+                {
                     Messages.Message("FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput);
+                }
                 else if (Find.Selector.NumSelected == 0)
+                {
                     Messages.Message("FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput);
+                }
                 else
+                {
                     Messages.Message("FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput);
+                }
+            }
 
             // cancel current follow (toggle or thing == null)
             else if (CurrentlyFollowing && thing == null || thing == _followedThing)
+            {
                 StopFollow("toggled");
+            }
 
             // follow new thing
             else if (thing != null)
+            {
                 StartFollow(thing);
+            }
         }
 
         private static void StartFollow(Thing thing)
         {
             if (thing == null)
+            {
                 throw new ArgumentNullException(nameof(thing));
+            }
 
             _followedThing = thing;
             CurrentlyFollowing = true;
@@ -151,21 +177,25 @@ namespace ColonistBarKF
         public override void GameComponentUpdate()
         {
             if (!_enabled)
+            {
                 return;
+            }
 
             try
             {
                 if (CurrentlyFollowing)
                 {
-                    CheckKeyScroll();
-                    CheckScreenEdgeScroll();
-                    CheckCameraJump();
+                    this.CheckKeyScroll();
+                    this.CheckScreenEdgeScroll();
+                    this.CheckCameraJump();
                     CheckDolly();
                 }
 
                 // start/stop following thing on key press
-                if (_followKey.KeyDownEvent)
+                if (this._followKey.KeyDownEvent)
+                {
                     TryStartFollow(Find.Selector.SingleSelectedObject as Thing);
+                }
 
                 // move camera
                 Follow();
@@ -182,7 +212,9 @@ namespace ColonistBarKF
         private static void Follow()
         {
             if (!CurrentlyFollowing || _followedThing?.Map == null)
+            {
                 return;
+            }
 
             TryJumpSmooth(_followedThing);
         }
@@ -198,10 +230,16 @@ namespace ColonistBarKF
 
             // we have to use our own logic for following spawned things, as CameraJumper
             // uses integer positions - which would be jerky.
-            if (target.HasThing) TryJumpSmoothInternal(target.Thing);
+            if (target.HasThing)
+            {
+                TryJumpSmoothInternal(target.Thing);
+            }
 
             // However, if we don't have a thing to follow, integer positions will do just fine.
-            else CameraJumper.TryJump(target);
+            else
+            {
+                CameraJumper.TryJump(target);
+            }
 
             _cameraHasJumpedAtLeastOnce = true;
         }
@@ -211,7 +249,9 @@ namespace ColonistBarKF
             // copypasta from Verse.CameraJumper.TryJumpInternal( Thing ),
             // but with drawPos instead of PositionHeld.
             if (Current.ProgramState != ProgramState.Playing)
+            {
                 return;
+            }
 
             Map mapHeld = thing.MapHeld;
             if (mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds(mapHeld))
@@ -221,7 +261,9 @@ namespace ColonistBarKF
                 {
                     Current.Game.VisibleMap = mapHeld;
                     if (!flag)
+                    {
                         SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                    }
                 }
 
                 Find.CameraDriver.JumpToVisibleMapLoc(thing.DrawPos); // <---
@@ -237,7 +279,9 @@ namespace ColonistBarKF
             get
             {
                 if (_cameraDriverRootPosField == null)
+                {
                     throw new NullReferenceException("CameraDriver.rootPos field info NULL");
+                }
 
                 return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
             }
@@ -248,7 +292,9 @@ namespace ColonistBarKF
             get
             {
                 if (_cameraDriverDesiredDollyField == null)
+                {
                     throw new NullReferenceException("CameraDriver.desiredDolly field info NULL");
+                }
 
                 return (Vector2)_cameraDriverDesiredDollyField.GetValue(Find.CameraDriver);
             }
@@ -257,13 +303,17 @@ namespace ColonistBarKF
         private static void CheckDolly()
         {
             if (CameraDesiredDolly != Vector2.zero)
+            {
                 StopFollow("dolly");
+            }
         }
 
         private void CheckKeyScroll()
         {
-            if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
+            if (this._followBreakingKeyBindingDefs.Any(key => key.IsDown))
+            {
                 StopFollow("moved map (key)");
+            }
         }
 
         private void CheckCameraJump()
@@ -282,7 +332,9 @@ namespace ColonistBarKF
                 // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
                 // following our thing.
                 if ((currentCameraPosition - requestedCameraPosition).LengthHorizontal > 1)
+                {
                     StopFollow("map moved (camera jump)");
+                }
             }
         }
 
@@ -291,7 +343,9 @@ namespace ColonistBarKF
         private void CheckScreenEdgeScroll()
         {
             if (!Prefs.EdgeScreenScroll || MouseOverUI)
+            {
                 return;
+            }
 
             Vector3 mousePosition = Input.mousePosition;
             Rect[] screenCorners = {
@@ -301,11 +355,15 @@ namespace ColonistBarKF
                                     new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
                                 };
             if (screenCorners.Any(e => e.Contains(mousePosition)))
+            {
                 return;
+            }
 
             if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
                  || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+            {
                 StopFollow("moved map (dolly)");
+            }
         }
 
         #endregion Methods

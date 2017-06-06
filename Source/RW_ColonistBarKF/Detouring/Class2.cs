@@ -15,7 +15,7 @@ namespace ColonistBarKF.Detouring
     class _WorldSelectorHarmony
     {
 
-        //    [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
+        // [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         [HarmonyPatch(typeof(WorldSelector), "SelectInsideDragBox")]
         static class SelectInsideDragBox_Pretfix
         {
@@ -26,6 +26,7 @@ namespace ColonistBarKF.Detouring
                 {
                     __instance.ClearSelection();
                 }
+
                 bool flag = false;
                 if (Current.ProgramState == ProgramState.Playing)
                 {
@@ -36,6 +37,7 @@ namespace ColonistBarKF.Detouring
                         __instance.Select(list[i], true);
                     }
                 }
+
                 if (!flag && Current.ProgramState == ProgramState.Playing)
                 {
                     List<Thing> list2 = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(__instance.dragBox.ScreenRect);
@@ -52,6 +54,7 @@ namespace ColonistBarKF.Detouring
                         }
                     }
                 }
+
                 if (!flag)
                 {
                     List<WorldObject> list3 = WorldObjectSelectionUtility.MultiSelectableWorldObjectsInScreenRectDistinct(__instance.dragBox.ScreenRect).ToList<WorldObject>();
@@ -63,12 +66,14 @@ namespace ColonistBarKF.Detouring
                             list3.RemoveAll((WorldObject x) => x.Faction != Faction.OfPlayer);
                         }
                     }
+
                     for (int k = 0; k < list3.Count; k++)
                     {
                         flag = true;
                         __instance.Select(list3[k], true);
                     }
                 }
+
                 if (!flag)
                 {
                     bool canSelectTile = __instance.dragBox.Diagonal < 30f;
@@ -83,7 +88,8 @@ namespace ColonistBarKF.Detouring
             private static readonly FieldInfo selectedField = AccessTools.Field(typeof(WorldSelector), "selected");
 
             [HarmonyPrefix]
-            //    [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
+
+            // [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
             public static void SelectUnderMouse(WorldSelector __instance, bool canSelectTile = true)
             {
                 List<object> __result = (List<object>)selectedField.GetValue(__instance);
@@ -102,9 +108,11 @@ namespace ColonistBarKF.Detouring
                         {
                             CameraJumper.TryJump(thing);
                         }
+
                         return;
                     }
                 }
+
                 bool flag;
                 bool flag2;
                 List<WorldObject> list = SelectableObjectsUnderMouse(out flag, out flag2).ToList<WorldObject>();
@@ -112,6 +120,7 @@ namespace ColonistBarKF.Detouring
                 {
                     canSelectTile = false;
                 }
+
                 if (list.Count == 0)
                 {
                     if (!ShiftIsHeld)
@@ -125,9 +134,8 @@ namespace ColonistBarKF.Detouring
                 }
                 else
                 {
-                    WorldObject worldObject = (from obj in list
-                                               where __result.Contains(obj)
-                                               select obj).FirstOrDefault<WorldObject>();
+                    WorldObject worldObject = (from obj in list where __result.Contains(obj) select obj)
+                        .FirstOrDefault<WorldObject>();
                     if (worldObject != null)
                     {
                         if (!ShiftIsHeld)
@@ -152,12 +160,11 @@ namespace ColonistBarKF.Detouring
                         {
                             __instance.ClearSelection();
                         }
+
                         __instance.Select(list[0], true);
                     }
                 }
             }
-
-
         }
 
 
@@ -167,7 +174,8 @@ namespace ColonistBarKF.Detouring
             private static readonly FieldInfo selectedField = AccessTools.Field(typeof(WorldSelector), "selected");
 
             [HarmonyPrefix]
-            //    [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
+
+            // [Detour(typeof(WorldSelector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
             public static void SelectFirstOrNextFrom(WorldSelector __instance, List<WorldObject> objects, int tile)
             {
                 List<object> __result = (List<object>)selectedField.GetValue(__instance);
@@ -205,11 +213,13 @@ namespace ColonistBarKF.Detouring
                 {
                     num3 = 0;
                 }
+
                 __instance.ClearSelection();
                 if (num3 >= 0)
                 {
                     __instance.Select(objects[num3], true);
                 }
+
                 __instance.selectedTile = num2;
             }
         }

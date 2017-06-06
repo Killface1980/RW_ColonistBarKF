@@ -1,5 +1,7 @@
-﻿namespace ColonistBarKF
+﻿namespace ColonistBarKF.Patches
 {
+    using ColonistBarKF.Bar;
+
     using Harmony;
 
     using RimWorld;
@@ -26,22 +28,22 @@
     // }
     // }
 
-  //// patching not working - JIT?!?
-  // [HarmonyPatch(typeof(ColonistBar), "MarkColonistsDirty")]
-  // static class MarkColonistsDirty_Prefix
-  // {
-  // [HarmonyPrefix]
-  // private static void MarkColonistsDirty()
-  // {
-  // ColonistBar_KF.BarHelperKf.entriesDirty = true;
-  // // Log.Message("Colonists marked dirty.x02");
-  // }
-  // }
+    //// patching not working - JIT?!?
+    // [HarmonyPatch(typeof(ColonistBar), "MarkColonistsDirty")]
+    // static class MarkColonistsDirty_Prefix
+    // {
+    // [HarmonyPrefix]
+    // private static void MarkColonistsDirty()
+    // {
+    // ColonistBar_KF.BarHelperKf.entriesDirty = true;
+    // // Log.Message("Colonists marked dirty.x02");
+    // }
+    // }
     static class MarkDirty_Helper
     {
         public static void Dirty()
         {
-            ColonistBar_KF.BarHelperKf.entriesDirty = true;
+            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
         }
     }
 
@@ -107,7 +109,10 @@
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
-            if (flag != Find.PlaySettings.showColonistBar) MarkDirty_Helper.Dirty();
+            if (flag != Find.PlaySettings.showColonistBar)
+            {
+                MarkDirty_Helper.Dirty();
+            }
 
             // Log.Message("Colonists marked dirty.x06");
         }
@@ -121,7 +126,10 @@
         {
             Pawn InnerPawn = __instance.InnerPawn;
 
-            if (InnerPawn == null) return;
+            if (InnerPawn == null)
+            {
+                return;
+            }
 
             if (InnerPawn.Faction == Faction.OfPlayer && Current.ProgramState == ProgramState.Playing)
             {
@@ -150,7 +158,10 @@
         [HarmonyPostfix]
         private static void MarkColonistsDirty()
         {
-            if (Current.ProgramState != ProgramState.Playing) return;
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
 
             MarkDirty_Helper.Dirty();
 
@@ -208,9 +219,20 @@
         private static void MarkColonistsDirty(Thing __instance)
         {
             Pawn pawn = __instance as Pawn;
-            if (pawn == null) return;
-            if (pawn.Faction != Faction.OfPlayer) return;
-            if (!pawn.RaceProps.Humanlike) return;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            if (pawn.Faction != Faction.OfPlayer)
+            {
+                return;
+            }
+
+            if (!pawn.RaceProps.Humanlike)
+            {
+                return;
+            }
 
             MarkDirty_Helper.Dirty();
 
@@ -225,9 +247,20 @@
         private static void MarkColonistsDirty(Thing __instance)
         {
             Pawn pawn = __instance as Pawn;
-            if (pawn == null) return;
-            if (pawn.Faction != Faction.OfPlayer) return;
-            if (!pawn.RaceProps.Humanlike) return;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            if (pawn.Faction != Faction.OfPlayer)
+            {
+                return;
+            }
+
+            if (!pawn.RaceProps.Humanlike)
+            {
+                return;
+            }
 
             if (__instance is IThingHolder && Find.ColonistBar != null)
             {
@@ -244,8 +277,7 @@
         [HarmonyPostfix]
         private static void MarkColonistsDirty(Thing __instance)
         {
-            Corpse corpse = __instance as Corpse;
-            if (corpse != null && !corpse.Bugged && corpse.InnerPawn.Faction != null
+            if (__instance is Corpse corpse && !corpse.Bugged && corpse.InnerPawn.Faction != null
                 && corpse.InnerPawn.Faction.IsPlayer && Current.ProgramState == ProgramState.Playing)
             {
                 MarkDirty_Helper.Dirty();

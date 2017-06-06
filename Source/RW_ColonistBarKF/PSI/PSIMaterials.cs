@@ -1,10 +1,12 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
-using Verse;
-
-namespace ColonistBarKF.PSI
+﻿namespace ColonistBarKF.PSI
 {
+    using System;
+    using System.Linq;
+
+    using UnityEngine;
+
+    using Verse;
+
     public enum Icons
     {
         None,
@@ -49,16 +51,19 @@ namespace ColonistBarKF.PSI
 
     public class Materials
     {
+        public static Material skinMat;
+        public static Material hairMat;
+        public static Material targetMat;
 
         private readonly Material[] _data = new Material[40];
         private readonly string _matLibName;
 
         public Materials(string matLib = "default")
         {
-            _matLibName = matLib;
+            this._matLibName = matLib;
         }
 
-        public Material this[Icons icon] => _data[(int)icon];
+        public Material this[Icons icon] => this._data[(int)icon];
 
         private Material LoadIconMat(string path, bool smooth = false)
         {
@@ -106,11 +111,13 @@ namespace ColonistBarKF.PSI
                     case Icons.Length:
                         continue;
                     default:
-                        string path = _matLibName + "/" + Enum.GetName(typeof(Icons), icons);
-                        _data[(int)icons] = LoadIconMat(path, smooth);
+                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icons), icons);
+                        this._data[(int)icons] = this.LoadIconMat(path, smooth);
                         continue;
                 }
             }
         }
     }
+
+
 }

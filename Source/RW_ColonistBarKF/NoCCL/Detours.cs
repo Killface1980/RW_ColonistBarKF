@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Verse;
-
-namespace ColonistBarKF.NoCCL
+﻿namespace ColonistBarKF.NoCCL
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Verse;
+
     /// <summary>
     /// For when CCL is not available
     /// </summary>
@@ -106,6 +107,5 @@ namespace ColonistBarKF.NoCCL
             // done!
             return true;
         }
-
     }
 }

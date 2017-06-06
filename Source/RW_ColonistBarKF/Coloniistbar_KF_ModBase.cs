@@ -1,6 +1,8 @@
 ﻿namespace ColonistBarKF
 {
-    public class Coloniistbar_KF_ModBase : HugsLib.ModBase
+    using HugsLib;
+
+    public class Coloniistbar_KF_ModBase : ModBase
     {
         public override string ModIdentifier { get { return "ColonistBarKF"; } }
     }

@@ -65,20 +65,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
-    <None Include="ColonistBarKF\Class2.cs" />
-    <None Include="ColonistBarKF\Class3.cs" />
+    <None Include="Detouring\Class2.cs" />
+    <None Include="Detouring\Class3.cs" />
+    <None Include="Patches\Class1.cs" />
     <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="Settings\Settings.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />
     <None Include="ColorPicker\ColorWrapper.cs" />
     <None Include="ColorPicker\Dialog_ColorPicker.cs" />
-    <Compile Include="ColonistBarKF\ColonistBarColonistDrawer_KF.cs" />
-    <Compile Include="ColonistBarKF\ColonistBarDrawLocsFinder_KF.cs" />
-    <Compile Include="ColonistBarKF\ColBarHelper_KF.cs" />
-    <Compile Include="Harmony_Patches_Dirty.cs" />
+    <Compile Include="Bar\ColonistBarColonistDrawer_KF.cs" />
+    <Compile Include="Bar\ColonistBarDrawLocsFinder_KF.cs" />
+    <Compile Include="ColBarHelper_KF.cs" />
+    <Compile Include="Patches\Harmony_Patches_Dirty.cs" />
     <Compile Include="Coloniistbar_KF_ModBase.cs" />
-    <Compile Include="ColonistBarKF\_Selector.cs" />
-    <Compile Include="ColonistBarKF\_WorldSelector.cs" />
+    <Compile Include="Detouring\_Selector.cs" />
+    <Compile Include="Detouring\_WorldSelector.cs" />
     <None Include="NoCCL\Class1.cs" />
     <None Include="Mod.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
@@ -88,14 +89,14 @@
     <Compile Include="PSI\PawnStats.cs" />
     <None Include="DetourInjector.cs" />
     <Compile Include="CB_SpecialInjector.cs" />
-    <Compile Include="ColonistBarKF\ColonistBarTextures.cs" />
+    <Compile Include="Bar\ColonistBarTextures.cs" />
     <Compile Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />
     <Compile Include="Fluffy\ZoomToMouse.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Settings\SettingsColonistBar.cs" />
-    <Compile Include="ColonistBarKF\ColonistBar_KF.cs" />
+    <Compile Include="Bar\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

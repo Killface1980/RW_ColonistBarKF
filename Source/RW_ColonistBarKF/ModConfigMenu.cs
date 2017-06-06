@@ -7,6 +7,7 @@ namespace ColonistBarKF
     using System.Collections.Generic;
     using System.IO;
 
+    using ColonistBarKF.Bar;
     using ColonistBarKF.PSI;
 
     using UnityEngine;
@@ -15,7 +16,7 @@ namespace ColonistBarKF
 
     public class ColonistBarKF_Settings : Window
     {
-        private static string cbkfversion = "Colonist Bar KF 0.17.1.7";
+        private static string cbkfversion = "Colonist Bar KF 0.17.1.8";
 
         public static int lastupdate = -5000;
 
@@ -53,7 +54,10 @@ namespace ColonistBarKF
                 iconInRow = 0;
             }
 
-            if (iconInRow > 0 && _iconLimit != 1) GUILayout.Space(Text.LineHeight / 2);
+            if (iconInRow > 0 && _iconLimit != 1)
+            {
+                GUILayout.Space(Text.LineHeight / 2);
+            }
 
             GUILayout.BeginVertical(this._fondImages);
 
@@ -354,8 +358,6 @@ namespace ColonistBarKF
             GUILayout.EndVertical();
 
             // listing.Gap(3f);
-
-
             
             GUILayout.BeginVertical(this._fondBoxes);
             ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
@@ -403,7 +405,7 @@ namespace ColonistBarKF
             // ColBarSettings.DoubleClickTime = 0.5f;
             // }
             // #endregion
-            #region Mood Bar
+            
 
             GUILayout.BeginVertical(this._fondBoxes);
             ColBarSettings.UseNewMood = GUILayout.Toggle(
@@ -431,7 +433,7 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
 
-            #endregion
+            
 
             GUILayout.EndVertical();
 
@@ -443,40 +445,40 @@ namespace ColonistBarKF
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("PSI.Settings.IconSet".Translate() + PsiSettings.IconSet))
             {
-                List<FloatMenuOption> options = new List<FloatMenuOption>();
-
-                options.Add(
+                List<FloatMenuOption> options = new List<FloatMenuOption>
+                {
                     new FloatMenuOption(
                         "PSI.Settings.Preset.0".Translate(),
                         () =>
+                        {
+                            try
                             {
-                                try
-                                {
-                                    PsiSettings.IconSet = "default";
-                                    PsiSettings.UseColoredTarget = true;
-                                    SavePsiSettings();
-                                }
-                                catch (IOException)
-                                {
-                                    Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
-                                }
-                            }));
-                options.Add(
+                                PsiSettings.IconSet = "default";
+                                PsiSettings.UseColoredTarget = true;
+                                SavePsiSettings();
+                            }
+                            catch (IOException)
+                            {
+                                Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
+                            }
+                        }),
                     new FloatMenuOption(
                         "PSI.Settings.Preset.1".Translate(),
                         () =>
+                        {
+                            try
                             {
-                                try
-                                {
-                                    PsiSettings.IconSet = "original";
-                                    PsiSettings.UseColoredTarget = false;
-                                    SavePsiSettings();
-                                }
-                                catch (IOException)
-                                {
-                                    Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
-                                }
-                            }));
+                                PsiSettings.IconSet = "original";
+                                PsiSettings.UseColoredTarget = false;
+                                SavePsiSettings();
+                            }
+                            catch (IOException)
+                            {
+                                Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
+                            }
+                        })
+                };
+
 
                 Find.WindowStack.Add(new FloatMenu(options));
             }
@@ -910,6 +912,9 @@ namespace ColonistBarKF
             PsiSettings.UsePsiOnPrisoner = GUILayout.Toggle(
                 PsiSettings.UsePsiOnPrisoner,
                 "PSI.Settings.UsePSIOnPrisoner".Translate());
+            PsiSettings.UsePsiOnAnimals = GUILayout.Toggle(
+                PsiSettings.UsePsiOnAnimals,
+                "PSI.Settings.UsePsiOnAnimals".Translate());
 
             if (PsiSettings.UsePsi || PsiSettings.UsePsiOnPrisoner)
             {
@@ -937,8 +942,14 @@ namespace ColonistBarKF
 
                 int num = (int)(PsiSettings.IconSize * 4.5);
 
-                if (num > 8) num = 8;
-                else if (num < 0) num = 0;
+                if (num > 8)
+                {
+                    num = 8;
+                }
+                else if (num < 0)
+                {
+                    num = 0;
+                }
 
                 GUILayout.Space(Text.LineHeight / 2);
                 GUILayout.Label(
@@ -1202,7 +1213,11 @@ namespace ColonistBarKF
 
             set
             {
-                if (value == this.psiPositionInt) return;
+                if (value == this.psiPositionInt)
+                {
+                    return;
+                }
+
                 switch (value)
                 {
                     case 0:

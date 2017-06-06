@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using RimWorld;
-using RimWorld.Planet;
-using UnityEngine;
-using Verse;
-
-namespace ColonistBarKF.Detouring
+﻿namespace ColonistBarKF.Detouring
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using ColonistBarKF.Bar;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class _WorldSelector
     {
         // RimWorld.Planet.WorldSelector

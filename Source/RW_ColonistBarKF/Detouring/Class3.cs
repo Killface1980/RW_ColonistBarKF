@@ -24,7 +24,8 @@ namespace ColonistBarKF.Detouring
             private static readonly FieldInfo selectedField = AccessTools.Field(typeof(Selector), "selected");
 
             [HarmonyPrefix]
-            //   [Detour(typeof(Selector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
+
+            // [Detour(typeof(Selector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
             public static void SelectUnderMouse(Selector __instance)
             {
                 List<object> __result = (List<object>)selectedField.GetValue(__instance);
@@ -35,12 +36,14 @@ namespace ColonistBarKF.Detouring
                     CameraJumper.TryJumpAndSelect(caravan);
                     return;
                 }
+
                 Thing thing = ColonistBar_KF.ColonistOrCorpseAt(UI.MousePositionOnUIInverted);
                 if (thing != null && !thing.Spawned)
                 {
                     CameraJumper.TryJump(thing);
                     return;
                 }
+
                 List<object> list = SelectableObjectsUnderMouse().ToList<object>();
                 if (list.Count == 0)
                 {
@@ -68,9 +71,7 @@ namespace ColonistBarKF.Detouring
                 }
                 else if (list.Count > 1)
                 {
-                    object obj2 = (from obj in list
-                                   where __result.Contains(obj)
-                                   select obj).FirstOrDefault<object>();
+                    object obj2 = (from obj in list where __result.Contains(obj) select obj).FirstOrDefault<object>();
                     if (obj2 != null)
                     {
                         if (!ShiftIsHeld)
@@ -80,6 +81,7 @@ namespace ColonistBarKF.Detouring
                             {
                                 num -= list.Count;
                             }
+
                             __instance.ClearSelection();
                             __instance.Select(list[num], true, true);
                         }
@@ -100,6 +102,7 @@ namespace ColonistBarKF.Detouring
                         {
                             __instance.ClearSelection();
                         }
+
                         __instance.Select(list[0], true, true);
                     }
                 }
@@ -118,14 +121,16 @@ namespace ColonistBarKF.Detouring
                 {
                     return;
                 }
+
                 Thing clickedThing = list.FirstOrDefault((object o) => o is Pawn && ((Pawn)o).Faction == Faction.OfPlayer && !((Pawn)o).IsPrisoner) as Thing;
-                clickedThing = (list.FirstOrDefault((object o) => o is Pawn) as Thing);
+                clickedThing = list.FirstOrDefault((object o) => o is Pawn) as Thing;
                 if (clickedThing == null)
                 {
-                    clickedThing = ((from o in list
+                    clickedThing = (from o in list
                                      where o is Thing && !((Thing)o).def.neverMultiSelect
-                                     select o).FirstOrDefault<object>() as Thing);
+                                     select o).FirstOrDefault<object>() as Thing;
                 }
+
                 Rect rect = new Rect(0f, 0f, (float)UI.screenWidth, (float)UI.screenHeight);
                 if (clickedThing != null)
                 {
@@ -136,6 +141,7 @@ namespace ColonistBarKF.Detouring
                         {
                             return false;
                         }
+
                         Pawn pawn = clickedThing as Pawn;
                         if (pawn != null)
                         {
@@ -144,11 +150,13 @@ namespace ColonistBarKF.Detouring
                             {
                                 return false;
                             }
+
                             if (pawn2.HostFaction != pawn.HostFaction)
                             {
                                 return false;
                             }
                         }
+
                         return true;
                     };
                     foreach (Thing obj in enumerable)
@@ -158,12 +166,15 @@ namespace ColonistBarKF.Detouring
                             __instance.Select(obj, true, true);
                         }
                     }
+
                     return;
                 }
+
                 if (list.FirstOrDefault((object o) => o is Zone && ((Zone)o).IsMultiselectable) == null)
                 {
                     return;
                 }
+
                 IEnumerable<Zone> enumerable2 = ThingSelectionUtility.MultiSelectableZonesInScreenRectDistinct(rect);
                 foreach (Zone current in enumerable2)
                 {
@@ -186,6 +197,7 @@ namespace ColonistBarKF.Detouring
                 {
                     __instance.ClearSelection();
                 }
+
                 bool selectedSomething = false;
                 List<Thing> list = ColonistBar_KF.MapColonistsOrCorpsesInScreenRect(__instance.dragBox.ScreenRect);
                 for (int i = 0; i < list.Count; i++)
@@ -193,10 +205,12 @@ namespace ColonistBarKF.Detouring
                     selectedSomething = true;
                     __instance.Select(list[i], true, true);
                 }
+
                 if (selectedSomething)
                 {
                     return;
                 }
+
                 List<Caravan> list2 = ColonistBar_KF.CaravanMembersCaravansInScreenRect(__instance.dragBox.ScreenRect);
                 for (int j = 0; j < list2.Count; j++)
                 {
@@ -210,10 +224,12 @@ namespace ColonistBarKF.Detouring
                         Find.WorldSelector.Select(list2[j], true);
                     }
                 }
+
                 if (selectedSomething)
                 {
                     return;
                 }
+
                 List<Thing> boxThings = ThingSelectionUtility.MultiSelectableThingsInScreenRectDistinct(__instance.dragBox.ScreenRect).ToList<Thing>();
                 Func<Predicate<Thing>, bool> func = delegate (Predicate<Thing> predicate)
                 {
@@ -224,6 +240,7 @@ namespace ColonistBarKF.Detouring
                         __instance.Select(current2, true, true);
                         selectedSomething = true;
                     }
+
                     return selectedSomething;
                 };
                 Predicate<Thing> arg = (Thing t) => t.def.category == ThingCategory.Pawn && ((Pawn)t).RaceProps.Humanlike && t.Faction == Faction.OfPlayer;
@@ -231,35 +248,42 @@ namespace ColonistBarKF.Detouring
                 {
                     return;
                 }
+
                 Predicate<Thing> arg2 = (Thing t) => t.def.category == ThingCategory.Pawn && ((Pawn)t).RaceProps.Humanlike;
                 if (func(arg2))
                 {
                     return;
                 }
+
                 Predicate<Thing> arg3 = (Thing t) => t.def.CountAsResource;
                 if (func(arg3))
                 {
                     return;
                 }
+
                 Predicate<Thing> arg4 = (Thing t) => t.def.category == ThingCategory.Pawn;
                 if (func(arg4))
                 {
                     return;
                 }
+
                 if (func((Thing t) => t.def.selectable))
                 {
                     return;
                 }
+
                 List<Zone> list3 = ThingSelectionUtility.MultiSelectableZonesInScreenRectDistinct(__instance.dragBox.ScreenRect).ToList<Zone>();
                 foreach (Zone current in list3)
                 {
                     selectedSomething = true;
                     __instance.Select(current, true, true);
                 }
+
                 if (selectedSomething)
                 {
                     return;
                 }
+
                 SelectUnderMouse_Pretfix.SelectUnderMouse(__instance);
             }
         }

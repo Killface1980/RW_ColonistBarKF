@@ -11,8 +11,7 @@ namespace ColonistBarKF
 
         public float BaseSpacingVertical = 32f;
 
-      //  public Position.Alignment ColBarPos = Position.Alignment.Top;
-
+      // public Position.Alignment ColBarPos = Position.Alignment.Top;
         public Alignment ColBarPsiIconPos = Alignment.Left;
 
 
@@ -36,8 +35,6 @@ namespace ColonistBarKF
         public float LimitDiseaseLess = 1f;
 
         // public float LimitMoodLess = 0.25f;
-
-
 
         public float MarginHorizontal = 520f;
 
@@ -159,12 +156,12 @@ namespace ColonistBarKF
 
             weapons,
 
-            medic,
+            medicTendQuality,
 
+            // medic,
             medicSurgerySuccess,
 
             byName
-
         }
 
         public bool UseNewMood = true;

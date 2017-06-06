@@ -1,10 +1,11 @@
-﻿using System.Reflection;
-using UnityEngine;
-using Verse;
-using static ColonistBarKF.Settings;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
+    using System.Reflection;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class ZoomToMouse : GameComponent
     {
         public ZoomToMouse(Game game)
@@ -14,7 +15,6 @@ namespace ColonistBarKF
 
         public ZoomToMouse()
         {
-            //
         }
 
         // backing private fields / properties
@@ -30,33 +30,44 @@ namespace ColonistBarKF
         private Vector3 _lastMouseMapPosition = Vector3.zero;
         private Vector3 CurrentMouseMapPosition => UI.MouseMapPosition();
 
-        private Vector3 MouseMapOffset => _lastMouseMapPosition - CurrentMouseMapPosition;
+        private Vector3 MouseMapOffset => this._lastMouseMapPosition - this.CurrentMouseMapPosition;
 
         // reflection helpers
-        private float CurrentSize => (float)_curSizeFi.GetValue(Current.CameraDriver);
-        private float DesiredSize => (float)_desSizeFi.GetValue(Current.CameraDriver);
-        private Vector3 CurrentRealPosition => (Vector3)_curPos.Invoke(Current.CameraDriver, null);
+        private float CurrentSize => (float)this._curSizeFi.GetValue(Current.CameraDriver);
+        private float DesiredSize => (float)this._desSizeFi.GetValue(Current.CameraDriver);
+        private Vector3 CurrentRealPosition => (Vector3)this._curPos.Invoke(Current.CameraDriver, null);
 
         public override void GameComponentOnGUI()
         {
             if (Current.ProgramState != ProgramState.Playing)
+            {
                 return;
+            }
 
-            if (!ColBarSettings.useZoomToMouse)
+            if (!Settings.ColBarSettings.useZoomToMouse)
+            {
                 return;
+            }
 
             if (FollowMe.CurrentlyFollowing)
+            {
                 return;
+            }
 
             // determine zoom action
-            float action = CurrentSize - DesiredSize;
+            float action = this.CurrentSize - this.DesiredSize;
 
             // zoom action has taken place
-            if (action > tolerance)
-                Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
+            if (action > this.tolerance)
+            {
+                Current.CameraDriver.JumpToVisibleMapLoc(this.CurrentRealPosition + this.MouseMapOffset);
+            }
             else
+            {
+
                 // update last known location.
-                _lastMouseMapPosition = CurrentMouseMapPosition;
+                this._lastMouseMapPosition = this.CurrentMouseMapPosition;
+            }
 
             // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).
             // the net result is the current simple but slightly wonky behavious. Movement of the map is a bit jittery, and moving the mouse during scroll moves the map directly.

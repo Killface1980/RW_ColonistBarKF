@@ -145,6 +145,9 @@
 
   <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
+  <PSI.MedicalTendQuality>Medical tend quality</PSI.MedicalTendQuality>
   <PSI.MedicalSurgerySuccessChance>Surgery success chance</PSI.MedicalSurgerySuccessChance>
+
+	<PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
 
 </LanguageData>

@@ -2,6 +2,8 @@
 
 namespace ColonistBarKF.PSI
 {
+    using ColonistBarKF.Bar;
+
     using RimWorld.Planet;
 
     using UnityEngine;
@@ -22,15 +24,18 @@ namespace ColonistBarKF.PSI
             {
                 return Color.Lerp(c1, c2, v * 5);
             }
-            else if (v < 0.4f)
+
+            if (v < 0.4f)
             {
                 return Color.Lerp(c2, c3, (v - 0.2f) * 5);
             }
-            else if (v < 0.6f)
+
+            if (v < 0.6f)
             {
                 return Color.Lerp(c3, c4, (v - 0.4f) * 5);
             }
-            else if (v < 0.8f)
+
+            if (v < 0.8f)
             {
                 return Color.Lerp(c4, c5, (v - 0.6f) * 5);
             }
@@ -204,7 +209,10 @@ namespace ColonistBarKF.PSI
                 vectorAtBody.x += posOffset.x * 45f;
                 vectorAtBody.y -= posOffset.z * 45f;
             }
-            else vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
+            else
+            {
+                vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
+            }
 
             float num2 = wordscale * (Settings.PsiSettings.IconSizeMult * 0.5f);
 
@@ -231,11 +239,16 @@ namespace ColonistBarKF.PSI
         {
             // only two columns visible
             if (num  == Settings.ColBarSettings.IconsInColumn * 2)
+            {
                 return;
+            }
 
             Material material = PSIMaterials[icon];
 
-            if (material == null) return;
+            if (material == null)
+            {
+                return;
+            }
 
             DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, tooltip);
 
@@ -244,7 +257,10 @@ namespace ColonistBarKF.PSI
 
         public static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icons icon, Color color, float opacity)
         {
-            if (WorldRendererUtility.WorldRenderedNow) return;
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                return;
+            }
 
             Material material = PSIMaterials[icon];
             if (material == null)
@@ -328,7 +344,10 @@ namespace ColonistBarKF.PSI
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
 
-            if (tooltip != null) TooltipHandler.TipRegion(iconRect, tooltip);
+            if (tooltip != null)
+            {
+                TooltipHandler.TipRegion(iconRect, tooltip);
+            }
         }
     }
 }

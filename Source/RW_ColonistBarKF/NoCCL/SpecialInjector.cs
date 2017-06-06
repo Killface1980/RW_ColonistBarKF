@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Reflection;
-using Verse;
-
-namespace ColonistBarKF.NoCCL
+﻿namespace ColonistBarKF.NoCCL
 {
+    using System.Linq;
+    using System.Reflection;
+
+    using Verse;
+
     public class SpecialInjector
     {
 
@@ -28,8 +29,14 @@ namespace ColonistBarKF.NoCCL
         private static void Inject()
         {
             CB_SpecialInjector injector = new CB_SpecialInjector();
-            if (injector.Inject()) Log.Message(AssemblyName + " injected.");
-            else Log.Error(AssemblyName + " failed to get injected properly.");
+            if (injector.Inject())
+            {
+                Log.Message(AssemblyName + " injected.");
+            }
+            else
+            {
+                Log.Error(AssemblyName + " failed to get injected properly.");
+            }
         }
 
 #endif

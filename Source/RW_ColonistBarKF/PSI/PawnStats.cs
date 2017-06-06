@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
-using RimWorld;
-using UnityEngine;
-using Verse;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
+    using System.Collections.Generic;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class PawnStats : IExposable
     {
-        public Pawn Pawn;
+
+        public Pawn pawn;
 
         public float TotalEfficiency = 1f;
 
@@ -40,8 +44,7 @@ namespace ColonistBarKF
 
         public bool HasLifeThreateningDisease = false;
 
-        public List<Thought> Thoughts = new List<Thought>();
-        public double LastStatUpdate = 0;
+        public float NextStatUpdate = 1f;
         public MentalBreaker Mb = null;
         public Need_Mood Mood = null;
         public int drugDesire = 0;
@@ -85,6 +88,14 @@ namespace ColonistBarKF
         public string toxicTip;
 
         public string healthTip;
+
+        public bool ShouldBeTendedNowUrgent;
+
+        public bool ShouldBeTendedNow;
+
+        public bool ShouldHaveSurgeryDoneNow;
+
+        public int LastStatUpdate;
 
         public void ExposeData()
         {

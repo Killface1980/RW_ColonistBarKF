@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using RimWorld;
-using RimWorld.Planet;
-using UnityEngine;
-using Verse;
-
-namespace ColonistBarKF.Detouring
+﻿namespace ColonistBarKF.Detouring
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
+
+    using ColonistBarKF.Bar;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class _Selector
     {
-      
+
         // RimWorld.Selector
         [Detour(typeof(Selector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         private void SelectUnderMouse()
@@ -107,7 +112,7 @@ namespace ColonistBarKF.Detouring
                 return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             }
         }
-   
+
         // RimWorld.Selector
         [Detour(typeof(Selector), bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)]
         private void SelectAllMatchingObjectUnderMouseOnScreen()
@@ -123,8 +128,8 @@ namespace ColonistBarKF.Detouring
             if (clickedThing == null)
             {
                 clickedThing = (from o in list
-                                 where o is Thing && !((Thing)o).def.neverMultiSelect
-                                 select o).FirstOrDefault() as Thing;
+                                where o is Thing && !((Thing)o).def.neverMultiSelect
+                                select o).FirstOrDefault() as Thing;
             }
 
             Rect rect = new Rect(0f, 0f, UI.screenWidth, UI.screenHeight);
@@ -132,29 +137,29 @@ namespace ColonistBarKF.Detouring
             {
                 IEnumerable enumerable = ThingSelectionUtility.MultiSelectableThingsInScreenRectDistinct(rect);
                 Predicate<Thing> predicate = delegate (Thing t)
-                {
-                    if (t.def != clickedThing.def || t.Faction != clickedThing.Faction || Find.Selector.IsSelected(t))
                     {
-                        return false;
-                    }
-
-                    Pawn pawn = clickedThing as Pawn;
-                    if (pawn != null)
-                    {
-                        Pawn pawn2 = t as Pawn;
-                        if (pawn2.RaceProps != pawn.RaceProps)
+                        if (t.def != clickedThing.def || t.Faction != clickedThing.Faction || Find.Selector.IsSelected(t))
                         {
                             return false;
                         }
 
-                        if (pawn2.HostFaction != pawn.HostFaction)
+                        Pawn pawn = clickedThing as Pawn;
+                        if (pawn != null)
                         {
-                            return false;
-                        }
-                    }
+                            Pawn pawn2 = t as Pawn;
+                            if (pawn2.RaceProps != pawn.RaceProps)
+                            {
+                                return false;
+                            }
 
-                    return true;
-                };
+                            if (pawn2.HostFaction != pawn.HostFaction)
+                            {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    };
                 foreach (Thing obj in enumerable)
                 {
                     if (predicate(obj))
@@ -224,17 +229,17 @@ namespace ColonistBarKF.Detouring
 
             List<Thing> boxThings = ThingSelectionUtility.MultiSelectableThingsInScreenRectDistinct(Find.Selector.dragBox.ScreenRect).ToList();
             Func<Predicate<Thing>, bool> func = delegate (Predicate<Thing> predicate)
-            {
-                foreach (Thing current2 in from t in boxThings
-                                           where predicate(t)
-                                           select t)
                 {
-                    Find.Selector.Select(current2, true, true);
-                    selectedSomething = true;
-                }
+                    foreach (Thing current2 in from t in boxThings
+                                               where predicate(t)
+                                               select t)
+                    {
+                        Find.Selector.Select(current2, true, true);
+                        selectedSomething = true;
+                    }
 
-                return selectedSomething;
-            };
+                    return selectedSomething;
+                };
             Predicate<Thing> arg = t => t.def.category == ThingCategory.Pawn && ((Pawn)t).RaceProps.Humanlike && t.Faction == Faction.OfPlayer;
             if (func(arg))
             {
@@ -292,12 +297,14 @@ namespace ColonistBarKF.Detouring
             }
             else if (UI.MouseCell().InBounds(Find.VisibleMap))
             {
-                TargetingParameters selectParams = new TargetingParameters();
-                selectParams.mustBeSelectable = true;
-                selectParams.canTargetPawns = true;
-                selectParams.canTargetBuildings = true;
-                selectParams.canTargetItems = true;
-                selectParams.mapObjectTargetsMustBeAutoAttackable = false;
+                TargetingParameters selectParams = new TargetingParameters
+                                                       {
+                    mustBeSelectable = true,
+                    canTargetPawns = true,
+                    canTargetBuildings = true,
+                    canTargetItems = true,
+                    mapObjectTargetsMustBeAutoAttackable = false
+                };
                 List<Thing> selectableList = GenUI.ThingsUnderMouse(UI.MouseMapPosition(), 1f, selectParams);
                 if (selectableList.Count > 0 && selectableList[0] is Pawn && (selectableList[0].DrawPos - UI.MouseMapPosition()).MagnitudeHorizontal() < 0.4f)
                 {

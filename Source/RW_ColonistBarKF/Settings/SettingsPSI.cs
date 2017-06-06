@@ -118,5 +118,7 @@
         public float IconOpacityCritical = 0.6f;
 
         public bool UseColoredTarget = true;
+
+        public bool UsePsiOnAnimals = true;
     }
 }

@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RimWorld;
-using UnityEngine;
-using Verse;
-using static ColonistBarKF.Settings;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF.Bar
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class ColonistBarDrawLocsFinder_KF
     {
         private List<int> entriesInGroup = new List<int>();
 
         private List<int> horizontalSlotsPerGroup = new List<int>();
 
-
         private static float MaxColonistBarWidth
         {
             get
             {
-                return Screen.width - ColBarSettings.MarginHorizontal;
+                return Screen.width - Settings.ColBarSettings.MarginHorizontal;
 
             }
         }
@@ -31,28 +32,28 @@ namespace ColonistBarKF
                 scale = 1f;
                 return;
             }
-            CalculateColonistsInGroup();
-            bool onlyOneRow;
-            int maxPerGlobalRow;
 
-            scale = FindBestScale(out onlyOneRow, out maxPerGlobalRow);
+            this.CalculateColonistsInGroup();
 
-            CalculateDrawLocs(outDrawLocs, scale, onlyOneRow, maxPerGlobalRow);
+            scale = this.FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow);
+
+            this.CalculateDrawLocs(outDrawLocs, scale, onlyOneRow, maxPerGlobalRow);
         }
 
         private void CalculateColonistsInGroup()
         {
-            entriesInGroup.Clear();
+            this.entriesInGroup.Clear();
             List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
-            int num = CalculateGroupsCount();
+            int num = this.CalculateGroupsCount();
             for (int i = 0; i < num; i++)
             {
-                entriesInGroup.Add(0);
+                this.entriesInGroup.Add(0);
             }
+
             for (int j = 0; j < entries.Count; j++)
             {
                 List<int> list;
-                List<int> expr_49 = list = entriesInGroup;
+                List<int> expr_49 = list = this.entriesInGroup;
                 int num2;
                 int expr_5C = num2 = entries[j].group;
                 num2 = list[num2];
@@ -73,6 +74,7 @@ namespace ColonistBarKF
                     num = entries[i].group;
                 }
             }
+
             return num2;
         }
 
@@ -80,15 +82,15 @@ namespace ColonistBarKF
         {
             float bestScale = 1f;
             List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
-            int groupsCount = CalculateGroupsCount();
+            int groupsCount = this.CalculateGroupsCount();
             while (true)
             {
-                //float num3 = (ColonistBar.BaseSize.x + 24f) * num;
+                // float num3 = (ColonistBar.BaseSize.x + 24f) * num;
                 float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * bestScale;
                 float availableScreen = MaxColonistBarWidth - (groupsCount - 1) * 25f * bestScale;
                 maxPerGlobalRow = Mathf.FloorToInt(availableScreen / neededPerEntry);
                 onlyOneRow = true;
-                if (TryDistributeHorizontalSlotsBetweenGroups(maxPerGlobalRow))
+                if (this.TryDistributeHorizontalSlotsBetweenGroups(maxPerGlobalRow))
                 {
                     int allowedRowsCountForScale = GetAllowedRowsCountForScale(bestScale);
                     bool flag = true;
@@ -98,11 +100,12 @@ namespace ColonistBarKF
                         if (num5 != entries[i].group)
                         {
                             num5 = entries[i].group;
-                            int num6 = Mathf.CeilToInt(entriesInGroup[entries[i].group] / (float)horizontalSlotsPerGroup[entries[i].group]);
+                            int num6 = Mathf.CeilToInt(this.entriesInGroup[entries[i].group] / (float)this.horizontalSlotsPerGroup[entries[i].group]);
                             if (num6 > 1)
                             {
                                 onlyOneRow = false;
                             }
+
                             if (num6 > allowedRowsCountForScale)
                             {
                                 flag = false;
@@ -110,116 +113,136 @@ namespace ColonistBarKF
                             }
                         }
                     }
+
                     if (flag)
                     {
                         break;
                     }
                 }
+
                 bestScale -= 0.01f;
             }
+
             return bestScale;
         }
 
         private bool TryDistributeHorizontalSlotsBetweenGroups(int maxPerGlobalRow)
         {
-            int groupsCount = CalculateGroupsCount();
-            horizontalSlotsPerGroup.Clear();
+            int groupsCount = this.CalculateGroupsCount();
+            this.horizontalSlotsPerGroup.Clear();
             for (int k = 0; k < groupsCount; k++)
             {
-                horizontalSlotsPerGroup.Add(0);
+                this.horizontalSlotsPerGroup.Add(0);
             }
-            GenMath.DHondtDistribution(horizontalSlotsPerGroup, i => (float)entriesInGroup[i], maxPerGlobalRow);
-            for (int j = 0; j < horizontalSlotsPerGroup.Count; j++)
+
+            GenMath.DHondtDistribution(this.horizontalSlotsPerGroup, i => (float)this.entriesInGroup[i], maxPerGlobalRow);
+            for (int j = 0; j < this.horizontalSlotsPerGroup.Count; j++)
             {
-                if (horizontalSlotsPerGroup[j] == 0)
+                if (this.horizontalSlotsPerGroup[j] == 0)
                 {
-                    int num2 = horizontalSlotsPerGroup.Max();
+                    int num2 = this.horizontalSlotsPerGroup.Max();
                     if (num2 <= 1)
                     {
                         return false;
                     }
-                    int num3 = horizontalSlotsPerGroup.IndexOf(num2);
+
+                    int num3 = this.horizontalSlotsPerGroup.IndexOf(num2);
                     List<int> list;
-                    List<int> listInt = list = horizontalSlotsPerGroup;
+                    List<int> listInt = list = this.horizontalSlotsPerGroup;
                     int num4;
                     int index = num4 = num3;
                     num4 = list[num4];
                     listInt[index] = num4 - 1;
                     List<int> list2;
-                    List<int> expr_AB = list2 = horizontalSlotsPerGroup;
+                    List<int> expr_AB = list2 = this.horizontalSlotsPerGroup;
                     int integerK = num4 = j;
                     num4 = list2[num4];
                     expr_AB[integerK] = num4 + 1;
                 }
             }
+
             return true;
         }
 
-        //modded
+        // modded
         private static int GetAllowedRowsCountForScale(float scale)
         {
-            if (ColBarSettings.UseCustomRowCount)
+            if (Settings.ColBarSettings.UseCustomRowCount)
             {
-                switch (ColBarSettings.MaxRowsCustom)
+                switch (Settings.ColBarSettings.MaxRowsCustom)
                 {
                     case 1:
                         {
                             return 1;
                         }
+
                     case 2:
                         {
                             if (scale > 0.54f)
                             {
                                 return 1;
                             }
+
                             return 2;
                         }
+
                     case 3:
                         {
                             if (scale > 0.66f)
                             {
                                 return 1;
                             }
+
                             if (scale > 0.54f)
                             {
                                 return 2;
                             }
+
                             return 3;
                         }
+
                     case 4:
                         {
                             if (scale > 0.78f)
                             {
                                 return 1;
                             }
+
                             if (scale > 0.66f)
                             {
                                 return 2;
                             }
+
                             if (scale > 0.54f)
                             {
                                 return 3;
                             }
+
                             return 4;
                         }
+
                     case 5:
                         {
                             if (scale > 0.9f)
                             {
                                 return 1;
                             }
+
                             if (scale > 0.78f)
                             {
                                 return 2;
                             }
+
                             if (scale > 0.66f)
                             {
                                 return 3;
                             }
+
                             if (scale > 0.54f)
                             {
                                 return 4;
                             }
+
                             return 5;
                         }
 
@@ -231,10 +254,12 @@ namespace ColonistBarKF
             {
                 return 1;
             }
+
             if (scale > 0.42f)
             {
                 return 2;
             }
+
             return 3;
         }
 
@@ -244,13 +269,15 @@ namespace ColonistBarKF
             int entriesCount = maxPerGlobalRow;
             if (onlyOneRow)
             {
-                for (int i = 0; i < horizontalSlotsPerGroup.Count; i++)
+                for (int i = 0; i < this.horizontalSlotsPerGroup.Count; i++)
                 {
-                    horizontalSlotsPerGroup[i] = Mathf.Min(horizontalSlotsPerGroup[i], entriesInGroup[i]);
+                    this.horizontalSlotsPerGroup[i] = Mathf.Min(this.horizontalSlotsPerGroup[i], this.entriesInGroup[i]);
                 }
+
                 entriesCount = ColonistBar_KF.BarHelperKf.Entries.Count;
             }
-            int groupsCount = CalculateGroupsCount();
+
+            int groupsCount = this.CalculateGroupsCount();
             float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * scale;
             float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
             List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
@@ -264,8 +291,9 @@ namespace ColonistBarKF
                     if (index >= 0)
                     {
                         groupStartX += 25f * scale;
-                        groupStartX += horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal);
+                        groupStartX += this.horizontalSlotsPerGroup[index] * scale * (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal);
                     }
+
                     numInGroup = 0;
                     index = entries[j].group;
                 }
@@ -273,7 +301,8 @@ namespace ColonistBarKF
                 {
                     numInGroup++;
                 }
-                Vector2 drawLoc = GetDrawLoc(groupStartX, ColBarSettings.MarginTop, entries[j].group, numInGroup, scale);
+
+                Vector2 drawLoc = this.GetDrawLoc(groupStartX, Settings.ColBarSettings.MarginTop, entries[j].group, numInGroup, scale);
                 outDrawLocs.Add(drawLoc);
             }
         }
@@ -281,19 +310,20 @@ namespace ColonistBarKF
         private Vector2 GetDrawLoc(float groupStartX, float groupStartY, int group, int numInGroup, float scale)
         {
             float x = groupStartX +
-                      numInGroup % horizontalSlotsPerGroup[group] * scale *
+                      numInGroup % this.horizontalSlotsPerGroup[group] * scale *
                       (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal);
             float y = groupStartY +
-                      numInGroup / horizontalSlotsPerGroup[group] * scale *
+                      numInGroup / this.horizontalSlotsPerGroup[group] * scale *
                       (ColonistBar_KF.BaseSize.y + ColonistBar_KF.HeightSpacingVertical);
-            y += numInGroup / horizontalSlotsPerGroup[group] * ColonistBar_KF.SpacingLabel;
+            y += numInGroup / this.horizontalSlotsPerGroup[group] * ColonistBar_KF.SpacingLabel;
 
-            bool flag = numInGroup >= entriesInGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
+            bool flag = numInGroup >= this.entriesInGroup[group] - this.entriesInGroup[group] % this.horizontalSlotsPerGroup[group];
             if (flag)
             {
-                int num2 = horizontalSlotsPerGroup[group] - entriesInGroup[group] % horizontalSlotsPerGroup[group];
+                int num2 = this.horizontalSlotsPerGroup[group] - this.entriesInGroup[group] % this.horizontalSlotsPerGroup[group];
                 x += num2 * scale * (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * 0.5f;
             }
+
             return new Vector2(x, y);
         }
     }

@@ -1,9 +1,11 @@
-﻿namespace Verse
+﻿namespace ColonistBarKF.Bar
 {
     using UnityEngine;
 
+    using Verse;
+
     [StaticConstructorOnStartup]
-    internal class ColonistBarTextures
+    internal static class ColonistBarTextures
     {
         public static readonly Texture2D BGTex = Command.BGTex;
 

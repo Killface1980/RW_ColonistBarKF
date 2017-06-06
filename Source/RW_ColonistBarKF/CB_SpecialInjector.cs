@@ -1,11 +1,12 @@
-﻿using System;
-using System.Reflection;
-using ColonistBarKF.NoCCL;
-using Verse;
-
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
+    using System;
+    using System.Reflection;
+
+    using ColonistBarKF.NoCCL;
+
+    using Verse;
+
     public class CB_SpecialInjector : SpecialInjector
     {
 
