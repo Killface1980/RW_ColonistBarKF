@@ -7,6 +7,12 @@
     [StaticConstructorOnStartup]
     internal static class ColonistBarTextures
     {
+        public static Material skinMat;
+
+        public static Material hairMat;
+
+        public static Material targetMat;
+
         public static readonly Texture2D BGTex = Command.BGTex;
 
         public static readonly Texture2D BGTexGrey = ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_grey");

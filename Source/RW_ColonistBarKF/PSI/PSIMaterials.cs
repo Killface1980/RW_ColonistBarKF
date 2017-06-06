@@ -51,9 +51,7 @@
 
     public class Materials
     {
-        public static Material skinMat;
-        public static Material hairMat;
-        public static Material targetMat;
+
 
         private readonly Material[] _data = new Material[40];
         private readonly string _matLibName;

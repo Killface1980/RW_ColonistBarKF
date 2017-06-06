@@ -714,22 +714,22 @@ namespace ColonistBarKF.PSI
 
 
 
-                    if (Materials.skinMat == null)
+                    if (skinMat == null)
                     {
                         return;
                     }
 
-                    if (Materials.hairMat == null)
+                    if (hairMat == null)
                     {
                         return;
                     }
 
-                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, Materials.skinMat, skinColor, 1f);
-                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, Materials.hairMat, hairColor, 1f);
+                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, skinMat, skinColor, 1f);
+                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, hairMat, hairColor, 1f);
                 }
                 else
                 {
-                    if (Materials.targetMat == null)
+                    if (targetMat == null)
                     {
                         return;
                     }
@@ -737,7 +737,7 @@ namespace ColonistBarKF.PSI
                     DrawIcon_posOffset(
                         pawnStats.TargetPos,
                         Vector3.zero,
-                        Materials.targetMat,
+                        targetMat,
                         ColorNeutralStatusSolid,
                         viewOpacity);
                 }
@@ -1420,9 +1420,9 @@ namespace ColonistBarKF.PSI
                             // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
                             PSIMaterials.ReloadTextures(true);
 
-                            Materials.skinMat = PSIMaterials[Icons.TargetSkin];
-                            Materials.hairMat = PSIMaterials[Icons.TargetHair];
-                            Materials.targetMat = PSIMaterials[Icons.Target];
+                            skinMat = PSIMaterials[Icons.TargetSkin];
+                            hairMat = PSIMaterials[Icons.TargetHair];
+                            targetMat = PSIMaterials[Icons.Target];
 
                             // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
                         });
