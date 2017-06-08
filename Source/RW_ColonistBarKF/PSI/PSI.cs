@@ -177,8 +177,25 @@ namespace ColonistBarKF.PSI
                     string tooltip = pawnStats.sickTip + "\n" + pawnStats.healthTip + "\n" + "Immunity".Translate() + " / "
                                     + "PSI.DiseaseProgress".Translate() + ": \n" + pawnStats.immunity.ToStringPercent()
                                     + " / " + pawnStats.severity.ToStringPercent();
-                    if (pawnStats.HasLifeThreateningDisease)
+
+                     if (pawnStats.DiseaseDisappearance < Settings.PsiSettings.LimitDiseaseLess)
                     {
+                        // Regular Sickness
+                        DrawIcon_FadeFloatWithFourColorsHB(
+                            psiRect,
+                            ref barIconNum,
+                            Icons.Health,
+                            pawnStats.DiseaseDisappearance / colBarSettings.LimitDiseaseLess,
+                            ColorNeutralStatus,
+                            ColorYellowAlert,
+                            ColorOrangeAlert,
+                            ColorRedAlert,
+                            rectAlpha,
+                            tooltip);
+                    }
+                     else
+                     {
+                   //     if (pawnStats.HasLifeThreateningDisease)
                         {
                             // if (pawnStats.pawnHealth < pawnStats.HealthDisease)
                             DrawIcon_FadeFloatWithFourColorsHB(
@@ -193,21 +210,6 @@ namespace ColonistBarKF.PSI
                                 rectAlpha,
                                 tooltip);
                         }
-                    }
-                    else if (pawnStats.DiseaseDisappearance < Settings.PsiSettings.LimitDiseaseLess)
-                    {
-                        // Regular Sickness
-                        DrawIcon_FadeFloatWithFourColorsHB(
-                            psiRect,
-                            ref barIconNum,
-                            Icons.Health,
-                            pawnStats.DiseaseDisappearance / colBarSettings.LimitDiseaseLess,
-                            ColorNeutralStatus,
-                            ColorYellowAlert,
-                            ColorOrangeAlert,
-                            ColorRedAlert,
-                            rectAlpha,
-                            tooltip);
                     }
                 }
                 else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
@@ -529,7 +531,7 @@ namespace ColonistBarKF.PSI
             // Naked
             if (colBarSettings.ShowNaked)
             {
-                if (pawnStats.feelsNaked > 1)
+                if (pawnStats.feelsNaked > -1)
                 {
                     string tooltip = pawnStats.nakedTip;
                     DrawIconOnBar(psiRect, ref barIconNum, Icons.Naked, Color10To06, rectAlpha, tooltip);
@@ -803,22 +805,8 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.IsSick)
                 {
-                    if (pawnStats.HasLifeThreateningDisease)
-                    {
-                        DrawIcon_FadeFloatWithFourColorsHB(
-                            bodyLoc,
-                            ref iconNum,
-                            Icons.Health,
-                            pawnStats.pawnHealth,
-                            ColorHealthBarGreen,
-                            ColorYellowAlert,
-                            ColorOrangeAlert,
-                            ColorRedAlert,
-                            ViewOpacityCrit);
-                    }
-
                     // Regular Sickness
-                    else if (pawnStats.DiseaseDisappearance < psiSettings.LimitDiseaseLess)
+                     if (pawnStats.DiseaseDisappearance < psiSettings.LimitDiseaseLess)
                     {
                         DrawIcon_FadeFloatWithFourColorsHB(
                             bodyLoc,
@@ -830,6 +818,22 @@ namespace ColonistBarKF.PSI
                             ColorOrangeAlert,
                             ColorRedAlert,
                             ViewOpacityCrit);
+                    }
+                     else
+                     {
+                   //     if (pawnStats.HasLifeThreateningDisease)
+                        {
+                            DrawIcon_FadeFloatWithFourColorsHB(
+                                bodyLoc,
+                                ref iconNum,
+                                Icons.Health,
+                                pawnStats.pawnHealth,
+                                ColorHealthBarGreen,
+                                ColorYellowAlert,
+                                ColorOrangeAlert,
+                                ColorRedAlert,
+                                ViewOpacityCrit);
+                        }
                     }
                 }
                 else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
@@ -1880,7 +1884,7 @@ namespace ColonistBarKF.PSI
                     pawnStats.immunity = 0f;
                     foreach (Hediff hediff in hediffs)
                     {
-                        if (!hediff.Visible || hediff.IsOld())
+                        if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought)
                         {
                             continue;
                         }
@@ -1892,7 +1896,6 @@ namespace ColonistBarKF.PSI
                         // pawnStats.ToxicBuildUp
                         if (hediff.def == HediffDefOf.ToxicBuildup)
                         {
-                            pawnStats.healthTip = hediff.LabelCap;
                             pawnStats.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
                             pawnStats.ToxicBuildUp = hediff.Severity;
                         }
@@ -1932,12 +1935,6 @@ namespace ColonistBarKF.PSI
                             continue;
                         }
 
-                        // if (hediff.def.naturallyHealed) continue;
-                        if (!hediff.def.makesSickThought)
-                        {
-                            continue;
-                        }
-
                         if (!hediff.def.tendable)
                         {
                             continue;
@@ -1952,6 +1949,7 @@ namespace ColonistBarKF.PSI
                         {
                             pawnStats.DiseaseDisappearance = compImmunizable.Immunity;
                         }
+                   //     break;
                     }
                 }
             }
