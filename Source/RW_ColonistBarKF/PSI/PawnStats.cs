@@ -57,12 +57,12 @@
         public int wantsToHump = -1;
         public int feelsNaked = -1;
         public int prostho = 0;
-        public int prosthoWant = 0;
+        public int prosthoUnhappy = 0;
         public int nightOwlUnhappy = -1;
-        public bool greedy = false;
-        public bool greedyThought = false;
-        public bool jealous = false;
-        public bool jealousThought = false;
+        public bool isGreedy = false;
+        public int greedyThought = -1;
+        public bool isJealous = false;
+        public int jealousThought = -1;
         public int unburied = -1;
         public bool isPacifist = false;
         public bool isPyromaniac = false;
@@ -96,6 +96,36 @@
         public bool ShouldHaveSurgeryDoneNow;
 
         public int LastStatUpdate;
+
+        public float sickMoodOffset;
+
+        public float unburiedMoodOffset;
+
+        public float nightOwlMoodOffset;
+
+        public float nakedMoodOffset;
+
+        public float BedStatusMoodOffset;
+
+        public float humpMoodOffset;
+
+        public float CabinFeverMoodOffset;
+
+        public float PainMoodOffset;
+
+        public float prosthoMoodOffset;
+
+        public int prosthoStage;
+
+        public string prosthoTooltip;
+
+        public float jealousMoodOffset;
+
+        public float greedyMoodOffset;
+
+        public string greedyTooltip;
+
+        public string jealousTooltip;
 
         public void ExposeData()
         {

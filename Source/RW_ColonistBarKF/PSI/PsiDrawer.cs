@@ -14,32 +14,10 @@ namespace ColonistBarKF.PSI
     {
         public static Gradient gradient4 = new Gradient();
 
+        public static Gradient gradient4Mood = new Gradient();
+
         public static Gradient gradientRedAlertToNeutral = new Gradient();
 
-        public static void DrawIcon_FadeFloatWithTwoColors(
-            Vector3 bodyPos,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            float opacity)
-        {
-            DrawIconOnColonist(bodyPos, ref num, icon, Color.Lerp(c1, c2, v), opacity);
-        }
-
-        public static void DrawIcon_FadeFloatWithTwoColors(
-            Rect rect,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            float rectAlpha,
-            string tooltip = null)
-        {
-            DrawIconOnBar(rect, ref num, icon, Color.Lerp(c1, c2, v), rectAlpha, tooltip);
-        }
 
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,

@@ -119,32 +119,19 @@
 
         public static Color Color05AndLess = new Color(0.8f, 0.75f, 0.59f);
 
-        public static Color Color10To06 = ColReddishPurple;
-
-        public static Color Color15To11 = ColYellow;
 
         // public static Color Color25To21 = new Color(0.95f, 0f, 0f);
-        public static Color Color20To16 = ColOrange;
 
-        public static Color Color25To21 = ColVermillion;
-
-        public static Color ColorHealthBarGreen = ColBlueishGreen;
-
-        public static Color ColorMoodBoost = ColBlueishGreen;
 
         // public static Color ColorMoodBoost = new Color(0f, 0.8f, 0f);
         public static Color ColorNeutralStatus = new Color(0.8f, 0.8f, 0.8f);
-
-        public static Color ColorOrangeAlert = ColOrange;
+        public static Color ColorNeutralStatusOpaque = new Color(0.8f, 0.8f, 0.8f, 0.5f);
 
         // public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f);
 
         // public static Color ColorRedAlert = new Color(0.95f, 0, 0);
         // public static Color ColorOrangeAlert = Color20To16;
         // public static Color ColorYellowAlert = Color15To11;
-        public static Color ColorRedAlert = ColVermillion;
-
-        public static Color ColorYellowAlert = ColYellow;
 
         public static Texture2D resolvedIcon;
     }
