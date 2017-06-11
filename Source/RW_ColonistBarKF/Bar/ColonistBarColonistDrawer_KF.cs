@@ -682,7 +682,7 @@
                 moodCol = ColonistBarTextures.ColBlue;
                 if (moodPercent < 0.3f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatusSolid, Mathf.InverseLerp(0.3f, 0f, moodPercent));
+                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.3f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColYellow;
                     showCritical = true;
                 }
@@ -693,7 +693,7 @@
                 moodCol = ColonistBarTextures.ColYellow;
                 if (moodPercent < 0.4f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatusSolid, Mathf.InverseLerp(0.4f, 0f, moodPercent));
+                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.4f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColOrange;
                     showCritical = true;
                 }
@@ -704,7 +704,7 @@
                 moodCol = ColonistBarTextures.ColOrange;
                 if (moodPercent < 0.5f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatusSolid, Mathf.InverseLerp(0.5f, 0f, moodPercent));
+                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.5f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColVermillion;
                     showCritical = true;
                 }
@@ -886,7 +886,7 @@
             {
                 this.DrawIcon(ColonistBarTextures.Icon_Attacking, ref vector, "ActivityIconAttacking".Translate());
             }
-            else if (colonist.mindState.IsIdle && GenDate.DaysPassed >= 1)
+            else if (colonist.mindState.IsIdle && GenDate.DaysPassed >= 0.1)
             {
                 // DrawIcon(PSI.PSI.PSIMaterials[Icons.Idle].mainTexture as Texture2D, ref vector, "ActivityIconIdle".Translate());
                 this.DrawIcon(ColonistBarTextures.Icon_Idle, ref vector, "ActivityIconIdle".Translate());

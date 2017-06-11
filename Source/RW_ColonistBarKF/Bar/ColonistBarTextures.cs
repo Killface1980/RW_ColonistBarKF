@@ -135,16 +135,6 @@
         // public static Color ColorMoodBoost = new Color(0f, 0.8f, 0f);
         public static Color ColorNeutralStatus = new Color(0.8f, 0.8f, 0.8f);
 
-        public static Color ColorNeutralStatusFade = new Color(
-                                                         ColorNeutralStatus.r,
-                                                         ColorNeutralStatus.g,
-                                                         ColorNeutralStatus.b / 4);
-
-        public static Color ColorNeutralStatusSolid = new Color(
-                                                          ColorNeutralStatus.r,
-                                                          ColorNeutralStatus.g,
-                                                          ColorNeutralStatus.b);
-
         public static Color ColorOrangeAlert = ColOrange;
 
         // public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f);

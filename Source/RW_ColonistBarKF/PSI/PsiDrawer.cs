@@ -2,143 +2,19 @@
 
 namespace ColonistBarKF.PSI
 {
-    using ColonistBarKF.Bar;
-
     using RimWorld.Planet;
 
     using UnityEngine;
 
     using Verse;
 
+    using static ColonistBarKF.Bar.ColonistBarTextures;
+
     public static class PSIDrawer
     {
-        public static Color IconColor(
-            float v,
-            Color c1,
-            Color c2,
-            Color c3,
-            Color c4,
-            Color c5)
-        {
-            if (v < 0.2f)
-            {
-                return Color.Lerp(c1, c2, v * 5);
-            }
+        public static Gradient gradient4 = new Gradient();
 
-            if (v < 0.4f)
-            {
-                return Color.Lerp(c2, c3, (v - 0.2f) * 5);
-            }
-
-            if (v < 0.6f)
-            {
-                return Color.Lerp(c3, c4, (v - 0.4f) * 5);
-            }
-
-            if (v < 0.8f)
-            {
-                return Color.Lerp(c4, c5, (v - 0.6f) * 5);
-            }
-
-            return c5;
-
-        }
-
-
-        public static void DrawIcon_FadeFloatWithFourColorsHB(
-            Vector3 bodyPos,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            Color c3,
-            Color c4,
-            float opacity)
-        {
-            if (v > 0.8f)
-            {
-                DrawIconOnColonist(bodyPos, ref num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5), opacity);
-            }
-            else if (v > 0.6f)
-            {
-                DrawIconOnColonist(bodyPos, ref num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5), opacity);
-            }
-            else if (v > 0.4f)
-            {
-                DrawIconOnColonist(bodyPos, ref num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5), opacity);
-            }
-            else
-            {
-                DrawIconOnColonist(bodyPos, ref num, icon, c4, opacity);
-            }
-        }
-
-        public static void DrawIcon_FadeFloatWithFourColorsHB(
-            Rect rect,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            Color c3,
-            Color c4,
-            float rectAlpha,
-            string tooltip = null)
-        {
-            if (v > 0.8f)
-            {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c2, c1, (v - 0.8f) * 5), rectAlpha, tooltip);
-            }
-            else if (v > 0.6f)
-            {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c3, c2, (v - 0.6f) * 5), rectAlpha, tooltip);
-            }
-            else if (v > 0.4f)
-            {
-                DrawIconOnBar(rect, ref num, icon, Color.Lerp(c4, c3, (v - 0.4f) * 5), rectAlpha, tooltip);
-            }
-            else
-            {
-                DrawIconOnBar(rect, ref num, icon, c4, rectAlpha, tooltip);
-            }
-        }
-
-        public static void DrawIcon_FadeFloatWithThreeColors(
-            Vector3 bodyPos,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            Color c3,
-            float opacity)
-        {
-            DrawIconOnColonist(
-                bodyPos,
-                ref num,
-                icon,
-                v < 0.5 ? Color.Lerp(c1, c2, v * 2f) : Color.Lerp(c2, c3, (float)((v - 0.5) * 2.0)),
-                opacity);
-        }
-
-        public static void DrawIcon_FadeFloatWithThreeColors(
-            Rect rect,
-            ref int num,
-            Icons icon,
-            float v,
-            Color c1,
-            Color c2,
-            Color c3,
-            float rectAlpha)
-        {
-            DrawIconOnBar(
-                rect,
-                ref num,
-                icon,
-                v < 0.5 ? Color.Lerp(c1, c2, v * 2f) : Color.Lerp(c2, c3, (float)((v - 0.5) * 2.0)),
-                rectAlpha);
-        }
+        public static Gradient gradientRedAlertToNeutral = new Gradient();
 
         public static void DrawIcon_FadeFloatWithTwoColors(
             Vector3 bodyPos,
@@ -163,29 +39,6 @@ namespace ColonistBarKF.PSI
             string tooltip = null)
         {
             DrawIconOnBar(rect, ref num, icon, Color.Lerp(c1, c2, v), rectAlpha, tooltip);
-        }
-
-        public static void DrawIcon_FadeRedAlertToNeutral(
-            Vector3 bodyPos,
-            ref int num,
-            Icons icon,
-            float v,
-            float opacity)
-        {
-            v = v * 0.9f; // max settings according to neutral icon
-            DrawIconOnColonist(bodyPos, ref num, icon, new Color(0.9f, v, v), opacity);
-        }
-
-        public static void DrawIcon_FadeRedAlertToNeutral(
-            Rect rect,
-            ref int num,
-            Icons icon,
-            float v,
-            float rectAlpha,
-            string tooltip = null)
-        {
-            v = v * 0.9f; // max settings according to neutral icon
-            DrawIconOnBar(rect, ref num, icon, new Color(0.9f, v, v, 1f), rectAlpha, tooltip);
         }
 
         public static void DrawIcon_posOffset(
@@ -238,7 +91,7 @@ namespace ColonistBarKF.PSI
             string tooltip = null)
         {
             // only two columns visible
-            if (num  == Settings.ColBarSettings.IconsInColumn * 2)
+            if (num == Settings.ColBarSettings.IconsInColumn * 2)
             {
                 return;
             }
@@ -333,7 +186,7 @@ namespace ColonistBarKF.PSI
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
+            GUI.DrawTexture(iconRect, BGTexIconPSI);
             GUI.color = color;
 
             iconRect.x += iconRect.width * 0.1f;

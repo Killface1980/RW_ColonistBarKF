@@ -36,7 +36,7 @@
 
         public int PainMoodLevel = 0;
 
-        public float ToxicBuildUp = 0;
+        public float ToxicBuildUpVisible = 0;
 
         public MentalStateDef MentalSanity = null;
 

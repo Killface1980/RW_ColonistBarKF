@@ -22,7 +22,7 @@ namespace ColonistBarKF
 
         private static int _iconLimit;
 
-  // private static ColorWrapper colourWrapper;
+        // private static ColorWrapper colourWrapper;
         public Window OptionsDialog;
 
         public ColonistBarKF_Settings()
@@ -291,7 +291,7 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
 
-            
+
 
             // if (ColBarSettings.UseGender)
             // {
@@ -327,7 +327,7 @@ namespace ColonistBarKF
             // ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
             // }
             // }
-            
+
         }
 
         private void FillPageMain()
@@ -358,7 +358,7 @@ namespace ColonistBarKF
             GUILayout.EndVertical();
 
             // listing.Gap(3f);
-            
+
             GUILayout.BeginVertical(this._fondBoxes);
             ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
                 ColBarSettings.UseCustomRowCount,
@@ -371,9 +371,9 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
 
-            
 
-            
+
+
 
             GUILayout.BeginVertical(this._fondBoxes);
 
@@ -405,7 +405,7 @@ namespace ColonistBarKF
             // ColBarSettings.DoubleClickTime = 0.5f;
             // }
             // #endregion
-            
+
 
             GUILayout.BeginVertical(this._fondBoxes);
             ColBarSettings.UseNewMood = GUILayout.Toggle(
@@ -433,11 +433,11 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
 
-            
+
 
             GUILayout.EndVertical();
 
-            
+
         }
 
         private void FillPagePSIIconSet(Rect viewRect)
@@ -1018,7 +1018,7 @@ namespace ColonistBarKF
         {
             get
             {
-                return new Vector2(512f, 590f);
+                return new Vector2(540f, 650f);
             }
         }
 
@@ -1296,45 +1296,45 @@ namespace ColonistBarKF
         }
 
         readonly GUIStyle _fontBold = new GUIStyle
-                                          {
-                                              fontStyle = FontStyle.Bold,
-                                              normal = {
-                                                          textColor = Color.white 
+        {
+            fontStyle = FontStyle.Bold,
+            normal = {
+                                                          textColor = Color.white
                                                        },
-                                              padding = new RectOffset(0, 0, 5, 0)
-                                          };
+            padding = new RectOffset(0, 0, 5, 0)
+        };
 
         readonly GUIStyle _headline = new GUIStyle
-                                          {
-                                              fontStyle = FontStyle.Bold,
-                                              fontSize = 16,
-                                              normal = {
-                                                          textColor = Color.white 
+        {
+            fontStyle = FontStyle.Bold,
+            fontSize = 16,
+            normal = {
+                                                          textColor = Color.white
                                                        },
-                                              padding = new RectOffset(0, 0, 12, 6)
-                                          };
+            padding = new RectOffset(0, 0, 12, 6)
+        };
 
         readonly GUIStyle _fondBoxes = new GUIStyle
-                                           {
-                                               normal = {
-                                                           background = ColonistBarTextures.DarkGrayFond 
+        {
+            normal = {
+                                                           background = ColonistBarTextures.DarkGrayFond
                                                         },
-                                               hover = {
-                                                          background = ColonistBarTextures.GrayFond 
+            hover = {
+                                                          background = ColonistBarTextures.GrayFond
                                                        },
-                                               padding = new RectOffset(15, 15, 6, 10),
-                                               margin = new RectOffset(0, 0, 10, 10)
-                                           };
+            padding = new RectOffset(15, 15, 6, 10),
+            margin = new RectOffset(0, 0, 10, 10)
+        };
 
         readonly GUIStyle _fondImages = new GUIStyle
-                                            {
-                                                normal = {
-                                                            background = ColonistBarTextures.DarkGrayFond 
+        {
+            normal = {
+                                                            background = ColonistBarTextures.DarkGrayFond
                                                          },
-                                                hover = {
-                                                           background = ColonistBarTextures.RedHover 
+            hover = {
+                                                           background = ColonistBarTextures.RedHover
                                                         }
-                                            };
+        };
 
         readonly GUIStyle _darkGrayBgImage = new GUIStyle { normal = { background = ColonistBarTextures.GrayFond } };
 
