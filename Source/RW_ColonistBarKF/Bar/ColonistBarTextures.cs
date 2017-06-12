@@ -125,7 +125,7 @@
 
         // public static Color ColorMoodBoost = new Color(0f, 0.8f, 0f);
         public static Color ColorNeutralStatus = new Color(0.8f, 0.8f, 0.8f);
-        public static Color ColorNeutralStatusOpaque = new Color(0.8f, 0.8f, 0.8f, 0.5f);
+        public static Color ColorNeutralStatusOpaque = new Color(0.8f, 0.8f, 0.8f, 0.8f);
 
         // public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f);
 

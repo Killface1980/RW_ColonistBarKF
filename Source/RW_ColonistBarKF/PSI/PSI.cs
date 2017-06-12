@@ -54,6 +54,11 @@ namespace ColonistBarKF.PSI
 
         public static void DrawAnimalIcons(Pawn animal)
         {
+            if (!animal.Spawned)
+            {
+                return;
+            }
+
             if (!animal.InAggroMentalState)
             {
                 return;
@@ -64,10 +69,6 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            if (!animal.Spawned)
-            {
-                return;
-            }
 
             Vector3 drawPos = animal.DrawPos;
             Vector3 bodyPos = drawPos;
@@ -486,7 +487,7 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.TotalEfficiency < (double)Settings.PsiSettings.LimitEfficiencyLess)
                 {
-                    string tooltip = "PSI.Efficiency".Translate() + ": " + pawnStats.TotalEfficiency.ToStringPercent();
+                    string tooltip = "PSI.Efficiency".Translate() + ": " + +pawnStats.efficiencyTip + " " + pawnStats.TotalEfficiency.ToStringPercent();
                     DrawIconOnBar(
                         psiRect,
                         ref barIconNum,
@@ -535,7 +536,7 @@ namespace ColonistBarKF.PSI
 
         private static Color Evaluate(float moodOffset)
         {
-            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25, 15, moodOffset));
+            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
 
         public static void CheckStats(PawnStats pawnStats)
@@ -551,7 +552,7 @@ namespace ColonistBarKF.PSI
             if (Find.TickManager.TicksGame > nextUpdate)
             {
                 UpdateColonistStats(pawnStats);
-                pawnStats.NextStatUpdate = Rand.Range(300, 600);
+                pawnStats.NextStatUpdate = Rand.Range(150, 450);
                 pawnStats.LastStatUpdate = Find.TickManager.TicksGame;
 
                 //   Log.Message(
@@ -988,12 +989,12 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.CabinFeverMoodLevel > -1)
                 {
-                        DrawIconOnColonist(
-                            bodyLoc,
-                            ref iconNum,
-                            Icons.CabinFever,
-                            Evaluate(pawnStats.CabinFeverMoodOffset),
-                            ViewOpacityCrit);
+                    DrawIconOnColonist(
+                        bodyLoc,
+                        ref iconNum,
+                        Icons.CabinFever,
+                        Evaluate(pawnStats.CabinFeverMoodOffset),
+                        ViewOpacityCrit);
                 }
             }
 
@@ -1212,7 +1213,7 @@ namespace ColonistBarKF.PSI
             gck[3].color = ColVermillion;
             gck[3].time = 1f;
             GradientAlphaKey[] gak = new GradientAlphaKey[3];
-            gak[0].alpha = 0.5f;
+            gak[0].alpha = 0.8f;
             gak[0].time = 0.0f;
             gak[1].alpha = 1f;
             gak[1].time = 0.1625f;
@@ -1220,25 +1221,23 @@ namespace ColonistBarKF.PSI
             gak[2].time = 1.0f;
             gradient4.SetKeys(gck, gak);
 
-            gck = new GradientColorKey[6];
+            gck = new GradientColorKey[5];
             gck[0].color = ColVermillion;
             gck[0].time = 0f;
             gck[1].color = ColOrange;
-            gck[1].time = 0.15625f;
-            gck[2].color = ColReddishPurple;
-            gck[2].time = 0.3125f;
-            gck[3].color = ColYellow;
-            gck[3].time = 0.46875f;
-            gck[4].color = ColorNeutralStatus;
-            gck[4].time = 0.625f;
-            gck[5].color = ColBlueishGreen;
-            gck[5].time = 1f;
+            gck[1].time = 0.375f;
+            gck[2].color = ColYellow;
+            gck[2].time = 0.5f;
+            gck[3].color = ColorNeutralStatus;
+            gck[3].time = 0.625f;
+            gck[4].color = ColBlueishGreen;
+            gck[4].time = 1f;
             gak = new GradientAlphaKey[4];
             gak[0].alpha = 1.0f;
             gak[0].time = 0.0f;
             gak[1].alpha = 1.0f;
-            gak[1].time = 0.46875f;
-            gak[2].alpha = 0.5f;
+            gak[1].time = 0.5f;
+            gak[2].alpha = 0.8f;
             gak[2].time = 0.625f;
             gak[3].alpha = 1.0f;
             gak[3].time = 0.75f;
@@ -1254,7 +1253,7 @@ namespace ColonistBarKF.PSI
             gak[0].time = 0.0f;
             gak[1].alpha = 1.0f;
             gak[1].time = 0.75f;
-            gak[2].alpha = 0.5f;
+            gak[2].alpha = 0.8f;
             gak[2].time = 1.0f;
             gradientRedAlertToNeutral.SetKeys(gck, gak);
         }
@@ -1389,8 +1388,8 @@ namespace ColonistBarKF.PSI
                     continue;
 
                 stage = thought.CurStageIndex;
-                tooltip = thought.CurStage.description + "\n" + thought.LabelCap;
-                moodOffset = thought.CurStage.baseMoodEffect;
+                moodOffset = thought.MoodOffset();
+                tooltip = thought.CurStage.description + "\n" + thought.LabelCap + "\n" + moodOffset;
                 break;
             }
         }
@@ -1559,7 +1558,13 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
                 {
-                    efficiency = Math.Min(efficiency, pawn.health.capacities.GetLevel(pawnCapacityDef));
+                    float level = pawn.health.capacities.GetLevel(pawnCapacityDef);
+
+                    if (efficiency > level)
+                    {
+                        efficiency = level;
+                        pawnStats.efficiencyTip = pawnCapacityDef.LabelCap;
+                    }
                 }
 
                 if (efficiency < 0f)

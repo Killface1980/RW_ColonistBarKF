@@ -127,6 +127,8 @@
 
         public string jealousTooltip;
 
+        public string efficiencyTip;
+
         public void ExposeData()
         {
 
