@@ -3,11 +3,13 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using RimWorld;
+
     using Verse;
 
     class MapComponent_PSI : MapComponent
     {
-       
+
         private static List<PawnStats> _pawnCache = new List<PawnStats>();
 
 
@@ -22,7 +24,11 @@
             }
             PawnStats n = new PawnStats { pawn = pawn };
             _pawnCache.Add(n);
-            PSI.PSI.UpdateColonistStats(n);
+
+            if (pawn.Faction == Faction.OfPlayer)
+            {
+                PSI.PSI.UpdateColonistStats(n);
+            }
             return n;
 
             // if (!PawnApparelStatCaches.ContainsKey(pawn))
@@ -53,7 +59,7 @@
         {
             base.ExposeData();
 
-     // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
+            // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
             if (_pawnCache == null)
             {
                 _pawnCache = new List<PawnStats>();

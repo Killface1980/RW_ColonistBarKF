@@ -5,6 +5,7 @@ namespace ColonistBarKF.PSI
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using ColonistBarKF.Bar;
 
@@ -487,7 +488,7 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.TotalEfficiency < (double)Settings.PsiSettings.LimitEfficiencyLess)
                 {
-                    string tooltip = "PSI.Efficiency".Translate() + ": " + +pawnStats.efficiencyTip + " " + pawnStats.TotalEfficiency.ToStringPercent();
+                    string tooltip = "PSI.Efficiency".Translate() + ": " + pawnStats.efficiencyTip + " " + pawnStats.TotalEfficiency.ToStringPercent();
                     DrawIconOnBar(
                         psiRect,
                         ref barIconNum,
@@ -539,6 +540,13 @@ namespace ColonistBarKF.PSI
             return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
 
+        public static void CheckStats(Pawn pawn)
+        {
+            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
+            if (pawnStats != null)
+                CheckStats(pawnStats);
+        }
+
         public static void CheckStats(PawnStats pawnStats)
         {
             if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
@@ -552,8 +560,10 @@ namespace ColonistBarKF.PSI
             if (Find.TickManager.TicksGame > nextUpdate)
             {
                 UpdateColonistStats(pawnStats);
-                pawnStats.NextStatUpdate = Rand.Range(150, 450);
+                pawnStats.NextStatUpdate = Rand.Range(150f, 450f);
                 pawnStats.LastStatUpdate = Find.TickManager.TicksGame;
+
+
 
                 //   Log.Message(
                 //       "CBKF updated stat " + pawnStats.pawn.Name + ", next update in " + pawnStats.NextStatUpdate*Find.TickManager.TickRateMultiplier
@@ -562,19 +572,33 @@ namespace ColonistBarKF.PSI
 
         }
 
-        public static void DrawColonistIconsPsi(Pawn pawn, bool isPrisoner)
+        public static void CheckRelationWithColonists(PawnStats pawnStats)
         {
+            if (pawnStats.pawn.relations.RelatedToAnyoneOrAnyoneRelatedToMe)
+            {
 
-            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
+                foreach (Pawn related in pawnStats.pawn.relations.RelatedPawns)
+                {
+                    if (related.Faction == Faction.OfPlayer) pawnStats.hasRelationWithColonist = true;
+                    break;
+                }
 
-            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null) || pawn.Map == null || pawnStats == null)
+            }
+            pawnStats.relationChecked = true;
+
+        }
+
+        public static void DrawColonistIconsPsi(Pawn pawn)
+        {
+            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null) || pawn.Map == null)
             {
                 return;
             }
+            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
 
-            if (isPrisoner)
+            if (pawnStats == null)
             {
-                CheckStats(pawnStats);
+                return;
             }
 
             SettingsPSI psiSettings = Settings.PsiSettings;
@@ -583,6 +607,9 @@ namespace ColonistBarKF.PSI
             int iconNum = 0;
 
             Vector3 bodyLoc = pawn.DrawPos;
+
+
+
 
             // Target Point 
             if (psiSettings.ShowTargetPoint && (pawnStats.TargetPos != Vector3.zero))
@@ -1153,6 +1180,44 @@ namespace ColonistBarKF.PSI
             // }
         }
 
+        public static void DrawColonistRelationIconsPsi(Pawn pawn)
+        {
+    //        Log.Message("Begin Drawing");
+            if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null) || pawn.Map == null)
+            {
+                return;
+            }
+            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
+
+            if (pawnStats == null)
+            {
+                return;
+            }
+
+            if (!pawnStats.relationChecked)
+                CheckRelationWithColonists(pawnStats);
+      //      Log.Message("Relations checked");
+            if (!pawnStats.hasRelationWithColonist)
+                return;
+     //       Log.Message("Has relation");
+
+            int iconNum = 0;
+
+            Vector3 bodyLoc = pawn.DrawPos;
+
+            {
+                DrawIconOnColonist(
+                    bodyLoc,
+                    ref iconNum,
+                    Icons.Health,
+                    gradient4.Evaluate(1f-pawn.health.summaryHealth.SummaryHealthPercent),
+                    ViewOpacityCrit);
+            }
+            return;
+        }
+
+
+
         public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
         {
             _pawnCapacities = new[]
@@ -1287,7 +1352,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            if (!Settings.PsiSettings.UsePsi && !Settings.PsiSettings.UsePsiOnPrisoner)
+            if (!Settings.PsiSettings.UsePsi && !Settings.PsiSettings.UsePsiOnPrisoner && !Settings.PsiSettings.ShowRelationsOnStrangers)
             {
                 return;
             }
@@ -1296,7 +1361,7 @@ namespace ColonistBarKF.PSI
             this._viewRect = this._viewRect.ExpandedBy(5);
             Map map = Find.VisibleMap;
 
-            foreach (Pawn pawn in PawnsFinder.AllMaps_Spawned)
+            foreach (Pawn pawn in  PawnsFinder.AllMaps_Spawned)
             {
                 if (!this._viewRect.Contains(pawn.Position))
                 {
@@ -1318,13 +1383,23 @@ namespace ColonistBarKF.PSI
                     if (Settings.PsiSettings.UsePsiOnAnimals)
                         DrawAnimalIcons(pawn);
                 }
-                else
+                else if (pawn.RaceProps.Humanlike)
                 {
                     bool isPrisoner = pawn.IsPrisoner;
-                    if (Settings.PsiSettings.UsePsi && pawn.IsColonist
-                        || Settings.PsiSettings.UsePsiOnPrisoner && isPrisoner)
+                    bool isStranger = pawn.Faction != Faction.OfPlayer;
+
+                    if (Settings.PsiSettings.UsePsi && pawn.IsColonist)
                     {
-                        DrawColonistIconsPsi(pawn, isPrisoner);
+                        DrawColonistIconsPsi(pawn);
+                    }
+                    else if (Settings.PsiSettings.UsePsiOnPrisoner && isPrisoner)
+                    {
+                        CheckStats(pawn);
+                        DrawColonistIconsPsi(pawn);
+                    }
+                    else if (Settings.PsiSettings.ShowRelationsOnStrangers && isStranger)
+                    {
+                        DrawColonistRelationIconsPsi(pawn);
                     }
                 }
             }
@@ -1362,8 +1437,7 @@ namespace ColonistBarKF.PSI
                     Settings.PsiSettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(),
                     MessageSound.Standard);
             }
-
-            WorldScale = Screen.height / (2f * Camera.current.orthographicSize);
+            WorldScale = (float)UI.screenHeight / (2f * Camera.current.orthographicSize);
         }
 
         private static void GetThought(List<Thought> thoughts, ThoughtDef tdef, out int stage, out string tooltip, out float moodOffset)
@@ -1466,6 +1540,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
+
             List<Thought> thoughts = new List<Thought>();
 
             pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
@@ -1486,8 +1561,7 @@ namespace ColonistBarKF.PSI
                             case Gender.Female:
                                 pawnStats.BGColor = FemaleColor;
                                 break;
-                            default:
-                                break;
+                            default: break;
                         }
                     }
 
@@ -1542,6 +1616,8 @@ namespace ColonistBarKF.PSI
                     }
 
                     pawnStats.traitsCheck = true;
+
+
                 }
             }
 

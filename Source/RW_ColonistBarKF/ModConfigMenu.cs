@@ -228,6 +228,117 @@ namespace ColonistBarKF
             iconInRow += 2;
         }
 
+
+        private void FillPageMain()
+        {
+            GUILayout.BeginVertical(this._fondBoxes);
+            ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
+                ColBarSettings.UseCustomMarginTop,
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y \n"
+                + "CBKF.Settings.MaxColonistBarWidth".Translate() + ": "
+                + ((float)UI.screenWidth - (int)ColBarSettings.MarginHorizontal) + " px");
+
+            if (ColBarSettings.UseCustomMarginTop)
+            {
+                GUILayout.Space(Text.LineHeight / 2);
+                ColBarSettings.MarginTop = GUILayout.HorizontalSlider(ColBarSettings.MarginTop, 0f, (float)UI.screenHeight / 6);
+                ColBarSettings.MarginHorizontal = GUILayout.HorizontalSlider(
+                    ColBarSettings.MarginHorizontal,
+                    (float)UI.screenWidth * 3 / 5,
+                    0f);
+            }
+            else
+            {
+                ColBarSettings.MarginTop = 21f;
+                ColBarSettings.MarginHorizontal = 520f;
+            }
+
+            // listing.Gap(3f);
+            GUILayout.EndVertical();
+
+            // listing.Gap(3f);
+
+            GUILayout.BeginVertical(this._fondBoxes);
+            ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
+                ColBarSettings.UseCustomRowCount,
+                "PSI.Settings.Arrangement.ColonistsPerColumn".Translate()
+                + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
+            if (ColBarSettings.UseCustomRowCount)
+            {
+                ColBarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
+            }
+
+            GUILayout.EndVertical();
+
+
+
+
+
+            GUILayout.BeginVertical(this._fondBoxes);
+
+            ColBarSettings.UseWeaponIcons = GUILayout.Toggle(
+                ColBarSettings.UseWeaponIcons,
+                "CBKF.Settings.UseWeaponIcons".Translate());
+
+            ColBarSettings.UseGender = GUILayout.Toggle(ColBarSettings.UseGender, "CBKF.Settings.useGender".Translate());
+
+            ColBarSettings.useZoomToMouse = GUILayout.Toggle(
+                ColBarSettings.useZoomToMouse,
+                "CBKF.Settings.useZoomToMouse".Translate());
+
+            GUILayout.Label("FollowMe.MiddleClick".Translate());
+
+            // #region DoubleClickTime
+            // ColBarSettings.UseCustomDoubleClickTime = GUILayout.Toggle(
+            // ColBarSettings.UseCustomDoubleClickTime,
+            // "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2")
+            // + " s");
+            // if (ColBarSettings.UseCustomDoubleClickTime)
+            // {
+            // // listing.Gap(3f);
+            // GUILayout.Space(Text.LineHeight / 2);
+            // ColBarSettings.DoubleClickTime = GUILayout.HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f);
+            // }
+            // else
+            // {
+            // ColBarSettings.DoubleClickTime = 0.5f;
+            // }
+            // #endregion
+
+
+            GUILayout.BeginVertical(this._fondBoxes);
+            ColBarSettings.UseNewMood = GUILayout.Toggle(
+                ColBarSettings.UseNewMood,
+                "CBKF.Settings.UseNewMood".Translate());
+
+            if (ColBarSettings.UseNewMood)
+            {
+                ColBarSettings.UseExternalMoodBar = GUILayout.Toggle(
+                    ColBarSettings.UseExternalMoodBar,
+                    "CBKF.Settings.UseExternalMoodBar".Translate());
+
+                if (ColBarSettings.UseExternalMoodBar)
+                {
+                    GUILayout.BeginHorizontal();
+                    this.MoodBarPositionInt = GUILayout.Toolbar(this.MoodBarPositionInt, this.positionStrings);
+                    GUILayout.FlexibleSpace();
+                    GUILayout.EndHorizontal();
+                }
+            }
+            else
+            {
+                ColBarSettings.UseExternalMoodBar = false;
+            }
+
+            GUILayout.EndVertical();
+
+
+
+            GUILayout.EndVertical();
+
+
+        }
+
         private void FillPageAdvanced()
         {
             GUILayout.BeginVertical(this._fondBoxes);
@@ -327,116 +438,6 @@ namespace ColonistBarKF
             // ColBarSettings.MaleColor = new Color(0.52f, 0.75f, 0.92f, 1f);
             // }
             // }
-
-        }
-
-        private void FillPageMain()
-        {
-            GUILayout.BeginVertical(this._fondBoxes);
-            ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
-                ColBarSettings.UseCustomMarginTop,
-                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y \n"
-                + "CBKF.Settings.MaxColonistBarWidth".Translate() + ": "
-                + (Screen.width - (int)ColBarSettings.MarginHorizontal) + " px");
-
-            if (ColBarSettings.UseCustomMarginTop)
-            {
-                GUILayout.Space(Text.LineHeight / 2);
-                ColBarSettings.MarginTop = GUILayout.HorizontalSlider(ColBarSettings.MarginTop, 0f, Screen.height / 6);
-                ColBarSettings.MarginHorizontal = GUILayout.HorizontalSlider(
-                    ColBarSettings.MarginHorizontal,
-                    Screen.width * 2 / 5,
-                    0f);
-            }
-            else
-            {
-                ColBarSettings.MarginTop = 21f;
-                ColBarSettings.MarginHorizontal = 520f;
-            }
-
-            // listing.Gap(3f);
-            GUILayout.EndVertical();
-
-            // listing.Gap(3f);
-
-            GUILayout.BeginVertical(this._fondBoxes);
-            ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
-                ColBarSettings.UseCustomRowCount,
-                "PSI.Settings.Arrangement.ColonistsPerColumn".Translate()
-                + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
-            if (ColBarSettings.UseCustomRowCount)
-            {
-                ColBarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
-            }
-
-            GUILayout.EndVertical();
-
-
-
-
-
-            GUILayout.BeginVertical(this._fondBoxes);
-
-            ColBarSettings.UseWeaponIcons = GUILayout.Toggle(
-                ColBarSettings.UseWeaponIcons,
-                "CBKF.Settings.UseWeaponIcons".Translate());
-
-            ColBarSettings.UseGender = GUILayout.Toggle(ColBarSettings.UseGender, "CBKF.Settings.useGender".Translate());
-
-            ColBarSettings.useZoomToMouse = GUILayout.Toggle(
-                ColBarSettings.useZoomToMouse,
-                "CBKF.Settings.useZoomToMouse".Translate());
-
-            GUILayout.Label("FollowMe.MiddleClick".Translate());
-
-            // #region DoubleClickTime
-            // ColBarSettings.UseCustomDoubleClickTime = GUILayout.Toggle(
-            // ColBarSettings.UseCustomDoubleClickTime,
-            // "CBKF.Settings.DoubleClickTime".Translate() + ": " + ColBarSettings.DoubleClickTime.ToString("N2")
-            // + " s");
-            // if (ColBarSettings.UseCustomDoubleClickTime)
-            // {
-            // // listing.Gap(3f);
-            // GUILayout.Space(Text.LineHeight / 2);
-            // ColBarSettings.DoubleClickTime = GUILayout.HorizontalSlider(ColBarSettings.DoubleClickTime, 0.1f, 1.5f);
-            // }
-            // else
-            // {
-            // ColBarSettings.DoubleClickTime = 0.5f;
-            // }
-            // #endregion
-
-
-            GUILayout.BeginVertical(this._fondBoxes);
-            ColBarSettings.UseNewMood = GUILayout.Toggle(
-                ColBarSettings.UseNewMood,
-                "CBKF.Settings.UseNewMood".Translate());
-
-            if (ColBarSettings.UseNewMood)
-            {
-                ColBarSettings.UseExternalMoodBar = GUILayout.Toggle(
-                    ColBarSettings.UseExternalMoodBar,
-                    "CBKF.Settings.UseExternalMoodBar".Translate());
-
-                if (ColBarSettings.UseExternalMoodBar)
-                {
-                    GUILayout.BeginHorizontal();
-                    this.MoodBarPositionInt = GUILayout.Toolbar(this.MoodBarPositionInt, this.positionStrings);
-                    GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
-                }
-            }
-            else
-            {
-                ColBarSettings.UseExternalMoodBar = false;
-            }
-
-            GUILayout.EndVertical();
-
-
-
-            GUILayout.EndVertical();
-
 
         }
 
@@ -909,6 +910,9 @@ namespace ColonistBarKF
 
             GUILayout.BeginVertical(this._fondBoxes);
             PsiSettings.UsePsi = GUILayout.Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
+            PsiSettings.ShowRelationsOnStrangers = GUILayout.Toggle(
+                PsiSettings.ShowRelationsOnStrangers,
+                "PSI.Settings.ShowRelationsOnStrangers".Translate());
             PsiSettings.UsePsiOnPrisoner = GUILayout.Toggle(
                 PsiSettings.UsePsiOnPrisoner,
                 "PSI.Settings.UsePSIOnPrisoner".Translate());
@@ -1304,37 +1308,30 @@ namespace ColonistBarKF
             padding = new RectOffset(0, 0, 5, 0)
         };
 
-        readonly GUIStyle _headline = new GUIStyle
-        {
-            fontStyle = FontStyle.Bold,
-            fontSize = 16,
-            normal = {
-                                                          textColor = Color.white
-                                                       },
-            padding = new RectOffset(0, 0, 12, 6)
-        };
+        private readonly GUIStyle _headline =
+            new GUIStyle
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 16,
+                normal = { textColor = Color.white },
+                padding = new RectOffset(0, 0, 12, 6)
+            };
 
-        readonly GUIStyle _fondBoxes = new GUIStyle
-        {
-            normal = {
-                                                           background = ColonistBarTextures.DarkGrayFond
-                                                        },
-            hover = {
-                                                          background = ColonistBarTextures.GrayFond
-                                                       },
-            padding = new RectOffset(15, 15, 6, 10),
-            margin = new RectOffset(0, 0, 10, 10)
-        };
+        private readonly GUIStyle _fondBoxes =
+            new GUIStyle
+            {
+                normal = { background = ColonistBarTextures.DarkGrayFond },
+                hover = { background = ColonistBarTextures.GrayFond },
+                padding = new RectOffset(15, 15, 6, 10),
+                margin = new RectOffset(0, 0, 10, 10)
+            };
 
-        readonly GUIStyle _fondImages = new GUIStyle
-        {
-            normal = {
-                                                            background = ColonistBarTextures.DarkGrayFond
-                                                         },
-            hover = {
-                                                           background = ColonistBarTextures.RedHover
-                                                        }
-        };
+        private readonly GUIStyle _fondImages =
+            new GUIStyle
+            {
+                normal = { background = ColonistBarTextures.DarkGrayFond },
+                hover = { background = ColonistBarTextures.RedHover }
+            };
 
         readonly GUIStyle _darkGrayBgImage = new GUIStyle { normal = { background = ColonistBarTextures.GrayFond } };
 

@@ -129,6 +129,10 @@
 
         public string efficiencyTip;
 
+        public bool hasRelationWithColonist = false;
+
+        public bool relationChecked = false;
+
         public void ExposeData()
         {
 

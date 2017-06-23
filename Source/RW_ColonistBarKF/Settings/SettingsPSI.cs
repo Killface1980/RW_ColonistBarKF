@@ -120,5 +120,7 @@
         public bool UseColoredTarget = true;
 
         public bool UsePsiOnAnimals = true;
+
+        public bool ShowRelationsOnStrangers = true;
     }
 }

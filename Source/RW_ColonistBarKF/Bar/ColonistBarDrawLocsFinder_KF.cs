@@ -19,7 +19,7 @@
         {
             get
             {
-                return Screen.width - Settings.ColBarSettings.MarginHorizontal;
+                return ((float)UI.screenWidth - (Settings.ColBarSettings.MarginHorizontal));
 
             }
         }
@@ -86,7 +86,7 @@
             while (true)
             {
                 // float num3 = (ColonistBar.BaseSize.x + 24f) * num;
-                float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * bestScale;
+                float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * bestScale ;
                 float availableScreen = MaxColonistBarWidth - (groupsCount - 1) * 25f * bestScale;
                 maxPerGlobalRow = Mathf.FloorToInt(availableScreen / neededPerEntry);
                 onlyOneRow = true;

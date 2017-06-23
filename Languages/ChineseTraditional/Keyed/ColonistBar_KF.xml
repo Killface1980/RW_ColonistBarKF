@@ -149,5 +149,6 @@
   <PSI.MedicalSurgerySuccessChance>Surgery success chance</PSI.MedicalSurgerySuccessChance>
 
 	<PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
 
 </LanguageData>

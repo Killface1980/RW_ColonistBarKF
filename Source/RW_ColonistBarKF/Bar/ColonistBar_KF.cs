@@ -37,8 +37,10 @@
             => new Vector2(Settings.ColBarSettings.BaseSizeFloat, Settings.ColBarSettings.BaseSizeFloat);
 
         public static Vector2 FullSize => new Vector2(
-                                              Settings.ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal + WidthPSIHorizontal,
-                                              Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical + HeightPSIVertical) * Scale;
+                                              Settings.ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal
+                                              + WidthPSIHorizontal,
+                                              Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical
+                                              + HeightPSIVertical) * Scale;
 
         public static float HeightMoodBarVertical => heightMoodBarVertical;
 
@@ -56,9 +58,9 @@
 
         public static float WidthPSIHorizontal => widthPsiHorizontal;
 
-        public static float WidthSpacingHorizontal => Settings.ColBarSettings.BaseSpacingHorizontal + WidthMoodBarHorizontal + WidthPSIHorizontal;
+        public static float WidthSpacingHorizontal => (Settings.ColBarSettings.BaseSpacingHorizontal + WidthMoodBarHorizontal + WidthPSIHorizontal);
 
-        public static float HeightSpacingVertical => Settings.ColBarSettings.BaseSpacingVertical + HeightMoodBarVertical + HeightPSIVertical;
+        public static float HeightSpacingVertical => (Settings.ColBarSettings.BaseSpacingVertical + HeightMoodBarVertical + HeightPSIVertical);
 
         private static bool ShowGroupFrames
         {

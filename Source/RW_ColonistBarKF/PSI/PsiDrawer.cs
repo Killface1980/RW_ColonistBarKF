@@ -32,10 +32,10 @@ namespace ColonistBarKF.PSI
             GUI.color = color;
             Vector2 vectorAtBody;
 
-            float wordscale = WorldScale;
+            float worldScale = WorldScale;
             if (Settings.PsiSettings.IconsScreenScale)
             {
-                wordscale = 45f;
+                worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
                 vectorAtBody.x += posOffset.x * 45f;
                 vectorAtBody.y -= posOffset.z * 45f;
@@ -45,7 +45,7 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = wordscale * (Settings.PsiSettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.PsiSettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(

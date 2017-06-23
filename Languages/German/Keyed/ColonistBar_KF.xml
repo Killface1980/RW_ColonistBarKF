@@ -18,6 +18,7 @@
 	<CBKF.Settings.MarginHorizontal>Maximale Leistenbreite: </CBKF.Settings.MarginHorizontal>
 	<CBKF.Settings.MarginRight>Rechter Abstand</CBKF.Settings.MarginRight>
 	<CBKF.Settings.MarginTop>Oberer Abstand</CBKF.Settings.MarginTop>
+  <CBKF.Settings.MaxColonistBarWidth>Maximale Leistenbreite</CBKF.Settings.MaxColonistBarWidth>
 	<CBKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</CBKF.Settings.MaxColonistBarHeight>
 	<CBKF.Settings.Medic>Medizin</CBKF.Settings.Medic>
 	<CBKF.Settings.Mood>Stimmung</CBKF.Settings.Mood>
@@ -149,5 +150,6 @@
 	<PSI.MedicalSurgerySuccessChance>OP-Erfolgsquote</PSI.MedicalSurgerySuccessChance>
 
 	<PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.ShowRelationsOnStrangers>Zeige Pawn Health Icon™ on Fremden mit Verwandschaft</PSI.Settings.ShowRelationsOnStrangers>
 
 </LanguageData>

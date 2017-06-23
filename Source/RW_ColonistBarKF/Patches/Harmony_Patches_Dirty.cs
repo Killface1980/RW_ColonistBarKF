@@ -1,5 +1,7 @@
 ﻿namespace ColonistBarKF.Patches
 {
+    using System.Reflection;
+
     using ColonistBarKF.Bar;
 
     using Harmony;
@@ -8,6 +10,18 @@
     using RimWorld.Planet;
 
     using Verse;
+
+    [StaticConstructorOnStartup]
+    class Main
+    {
+        static Main()
+        {
+            var harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            Log.Message("Colonist Bar KF: Adding Harmony fixes for MarkDirty_Helper.");
+        }
+    }
 
     //// patching not working - JIT?!?
     // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnAt", new Type[] { typeof(Vector3) })]
