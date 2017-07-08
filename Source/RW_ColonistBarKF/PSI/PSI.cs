@@ -1182,7 +1182,7 @@ namespace ColonistBarKF.PSI
 
         public static void DrawColonistRelationIconsPsi(Pawn pawn)
         {
-    //        Log.Message("Begin Drawing");
+            //        Log.Message("Begin Drawing");
             if (pawn.Dead || !pawn.Spawned || (pawn.holdingOwner == null) || pawn.Map == null)
             {
                 return;
@@ -1196,10 +1196,10 @@ namespace ColonistBarKF.PSI
 
             if (!pawnStats.relationChecked)
                 CheckRelationWithColonists(pawnStats);
-      //      Log.Message("Relations checked");
+            //      Log.Message("Relations checked");
             if (!pawnStats.hasRelationWithColonist)
                 return;
-     //       Log.Message("Has relation");
+            //       Log.Message("Has relation");
 
             int iconNum = 0;
 
@@ -1210,7 +1210,7 @@ namespace ColonistBarKF.PSI
                     bodyLoc,
                     ref iconNum,
                     Icons.Health,
-                    gradient4.Evaluate(1f-pawn.health.summaryHealth.SummaryHealthPercent),
+                    gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
                     ViewOpacityCrit);
             }
             return;
@@ -1361,7 +1361,7 @@ namespace ColonistBarKF.PSI
             this._viewRect = this._viewRect.ExpandedBy(5);
             Map map = Find.VisibleMap;
 
-            foreach (Pawn pawn in  PawnsFinder.AllMaps_Spawned)
+            foreach (Pawn pawn in PawnsFinder.AllMaps_Spawned)
             {
                 if (!this._viewRect.Contains(pawn.Position))
                 {
@@ -1535,7 +1535,7 @@ namespace ColonistBarKF.PSI
         {
             Pawn pawn = pawnStats.pawn;
 
-            if (!pawn.Spawned)
+            if (!pawn.Spawned || pawn == null || pawn.mindState == null || pawn.Map == null)
             {
                 return;
             }
@@ -1804,7 +1804,8 @@ namespace ColonistBarKF.PSI
 
                         pawnStats.ToxicBuildUpVisible = 0;
                         pawnStats.healthTip = hediff.LabelCap;
-                        GetThought(thoughts, ThoughtDef.Named("Sick"), out int dummy, out pawnStats.sickTip, out pawnStats.sickMoodOffset);
+                        if (!thoughts.NullOrEmpty())
+                            GetThought(thoughts, ThoughtDef.Named("Sick"), out int dummy, out pawnStats.sickTip, out pawnStats.sickMoodOffset);
 
                         // pawnStats.ToxicBuildUpVisible
                         if (hediff.def == HediffDefOf.ToxicBuildup)
@@ -1881,7 +1882,7 @@ namespace ColonistBarKF.PSI
 
             pawnStats.ApparelHealth = worstApparel;
 
-            if (thoughts != null)
+            if (!thoughts.NullOrEmpty())
             {
                 if (pawnStats.prostho != 0)
                 {
