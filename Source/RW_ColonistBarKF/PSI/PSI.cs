@@ -1535,7 +1535,7 @@ namespace ColonistBarKF.PSI
         {
             Pawn pawn = pawnStats.pawn;
 
-            if (!pawn.Spawned || pawn == null || pawn.mindState == null || pawn.Map == null)
+            if (!pawn.Spawned || pawn?.mindState == null || pawn.Map == null || !pawn.RaceProps.Humanlike)
             {
                 return;
             }
@@ -1797,7 +1797,7 @@ namespace ColonistBarKF.PSI
                     pawnStats.immunity = 0f;
                     foreach (Hediff hediff in hediffs)
                     {
-                        if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought)
+                        if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought || hediff.LabelCap.NullOrEmpty() || hediff.SeverityLabel.NullOrEmpty())
                         {
                             continue;
                         }
