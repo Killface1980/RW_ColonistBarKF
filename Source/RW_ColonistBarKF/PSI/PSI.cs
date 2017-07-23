@@ -544,7 +544,9 @@ namespace ColonistBarKF.PSI
         {
             PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
             if (pawnStats != null)
+            {
                 CheckStats(pawnStats);
+            }
         }
 
         public static void CheckStats(PawnStats pawnStats)
@@ -574,12 +576,14 @@ namespace ColonistBarKF.PSI
 
         public static void CheckRelationWithColonists(PawnStats pawnStats)
         {
-            if (pawnStats.pawn.relations.RelatedToAnyoneOrAnyoneRelatedToMe)
+            if (pawnStats.pawn.relations.FamilyByBlood.Any())
             {
-
-                foreach (Pawn related in pawnStats.pawn.relations.RelatedPawns)
+                foreach (Pawn related in pawnStats.pawn.relations.FamilyByBlood)
                 {
-                    if (related.Faction == Faction.OfPlayer) pawnStats.hasRelationWithColonist = true;
+                    if (related.Faction == Faction.OfPlayer)
+                    {
+                        pawnStats.hasRelationWithColonist = true;
+                    }
                     break;
                 }
 
@@ -594,6 +598,7 @@ namespace ColonistBarKF.PSI
             {
                 return;
             }
+
             PawnStats pawnStats = MapComponent_PSI.Get.GetCache(pawn);
 
             if (pawnStats == null)
@@ -1361,7 +1366,7 @@ namespace ColonistBarKF.PSI
             this._viewRect = this._viewRect.ExpandedBy(5);
             Map map = Find.VisibleMap;
 
-            foreach (Pawn pawn in PawnsFinder.AllMaps_Spawned)
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
                 if (!this._viewRect.Contains(pawn.Position))
                 {
@@ -1540,6 +1545,10 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
 
             List<Thought> thoughts = new List<Thought>();
 

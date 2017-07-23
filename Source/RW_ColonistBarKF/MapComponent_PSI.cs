@@ -76,5 +76,21 @@
         {
             _pawnCache = new List<PawnStats>();
         }
+
+        public override void MapComponentTick()
+        {
+            base.MapComponentTick();
+
+            if (!Settings.PsiSettings.UsePsi)
+            {
+                foreach (PawnStats pawnStats in _pawnCache)
+                {
+                    if (Find.TickManager.TicksGame - pawnStats.LastStatUpdate > 600)
+                    {
+                        PSI.PSI.CheckStats(pawnStats);
+                    }
+                }
+            }
+        }
     }
 }
