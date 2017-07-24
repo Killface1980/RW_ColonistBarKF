@@ -35,11 +35,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoCCL|AnyCPU'">
     <OutputPath>..\..\Assemblies\</OutputPath>
-    <DefineConstants>TRACE;NoCCL</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -61,10 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
-    <None Include="Detouring\Class2.cs" />
-    <None Include="Detouring\Class3.cs" />
-    <None Include="Patches\Class1.cs" />
     <Compile Include="MapComponent_PSI.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="PawnstatsChecker.cs" />
     <Compile Include="Settings\Settings.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />
     <None Include="ColorPicker\ColorWrapper.cs" />
@@ -72,24 +71,17 @@
     <Compile Include="Bar\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="Bar\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="ColBarHelper_KF.cs" />
-    <Compile Include="Patches\Harmony_Patches_Dirty.cs" />
     <None Include="Coloniistbar_KF_ModBase.cs" />
-    <Compile Include="Detouring\_Selector.cs" />
-    <Compile Include="Detouring\_WorldSelector.cs" />
-    <None Include="NoCCL\Class1.cs" />
     <None Include="Mod.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSI\PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
     <Compile Include="PSI\PawnStats.cs" />
-    <Compile Include="CB_SpecialInjector.cs" />
+    <None Include="CB_SpecialInjector.cs" />
     <Compile Include="Bar\ColonistBarTextures.cs" />
-    <Compile Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />
     <Compile Include="Fluffy\ZoomToMouse.cs" />
-    <Compile Include="NoCCL\Detours.cs" />
-    <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Settings\SettingsColonistBar.cs" />
     <Compile Include="Bar\ColonistBar_KF.cs" />
     <Compile Include="ModConfigMenu.cs" />

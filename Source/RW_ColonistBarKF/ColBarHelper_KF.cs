@@ -1,50 +1,46 @@
 ﻿namespace ColonistBarKF
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using ColonistBarKF.Bar;
-
     using RimWorld;
     using RimWorld.Planet;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using UnityEngine;
-
     using Verse;
 
     public class ColBarHelper_KF
     {
-        public bool EntriesDirty = true;
+        #region Fields
 
         public List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        public List<Vector2> DrawLocs
-        {
-            get
-            {
-                return this.cachedDrawLocs;
-            }
-        }
+        public List<ColonistBar.Entry> cachedEntries = new List<ColonistBar.Entry>();
 
         public float cachedScale;
 
-        public List<ColonistBar.Entry> cachedEntries = new List<ColonistBar.Entry>();
+        public bool EntriesDirty = true;
 
-        public List<Pawn> tmpPawns = new List<Pawn>();
-
-        public List<Map> tmpMaps = new List<Map>();
+        public List<Pawn> tmpCaravanPawns = new List<Pawn>();
 
         public List<Caravan> tmpCaravans = new List<Caravan>();
+
+        public List<Thing> tmpColonists = new List<Thing>();
 
         public List<Pawn> tmpColonistsInOrder = new List<Pawn>();
 
         public List<Pair<Thing, Map>> tmpColonistsWithMap = new List<Pair<Thing, Map>>();
 
-        public List<Thing> tmpColonists = new List<Thing>();
-
         public List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
-        public List<Pawn> tmpCaravanPawns = new List<Pawn>();
+        public List<Map> tmpMaps = new List<Map>();
+
+        public List<Pawn> tmpPawns = new List<Pawn>();
+
+        #endregion Fields
+
+        #region Properties
+
+        public List<Vector2> DrawLocs => this.cachedDrawLocs;
 
         public List<ColonistBar.Entry> Entries
         {
@@ -53,6 +49,15 @@
                 this.CheckRecacheEntries();
                 return this.cachedEntries;
             }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public bool AnyColonistOrCorpseAt(Vector2 pos)
+        {
+            return this.TryGetEntryAt(pos, out ColonistBar.Entry entry) && entry.pawn != null;
         }
 
         public void CheckRecacheEntries()
@@ -147,12 +152,6 @@
             this.tmpCaravans.Clear();
             ColonistBar_KF.drawLocsFinder.CalculateDrawLocs(this.cachedDrawLocs, out this.cachedScale);
         }
-
-        public bool AnyColonistOrCorpseAt(Vector2 pos)
-        {
-            return this.TryGetEntryAt(pos, out ColonistBar.Entry entry) && entry.pawn != null;
-        }
-
         public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
             List<Vector2> drawLocs = this.cachedDrawLocs;
@@ -172,7 +171,6 @@
             return false;
         }
 
-
         private static void SortCachedColonists(ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
@@ -189,7 +187,8 @@
                     break;
 
                 case SettingsColonistBar.SortByWhat.sexage:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null).ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
+                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null)
+                        .ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
                     tmpColonists = orderedEnumerable.ToList();
                     Settings.SaveBarSettings();
                     break;
@@ -208,17 +207,21 @@
                     break;
 
                 case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists.OrderByDescending(a => a?.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon).ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+                    orderedEnumerable = tmpColonists
+                        .OrderByDescending(
+                            a => a?.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
+                        .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
+                            b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
                     tmpColonists = orderedEnumerable.ToList();
                     Settings.SaveBarSettings();
                     break;
 
-                    // skill not really relevant
-             // case SettingsColonistBar.SortByWhat.medic:
-             // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-             // tmpColonists = orderedEnumerable.ToList();
-             // SaveBarSettings();
-             // break;
+                // skill not really relevant
+                // case SettingsColonistBar.SortByWhat.medic:
+                // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                // tmpColonists = orderedEnumerable.ToList();
+                // SaveBarSettings();
+                // break;
                 case SettingsColonistBar.SortByWhat.medicTendQuality:
                     tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
                     Settings.SaveBarSettings();
@@ -236,5 +239,6 @@
             }
         }
 
+        #endregion Methods
     }
 }

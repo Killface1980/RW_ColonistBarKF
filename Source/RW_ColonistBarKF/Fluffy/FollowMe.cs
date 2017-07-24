@@ -4,15 +4,12 @@
 
 namespace ColonistBarKF
 {
+    using RimWorld;
+    using RimWorld.Planet;
     using System;
     using System.Linq;
     using System.Reflection;
-
-    using RimWorld;
-    using RimWorld.Planet;
-
     using UnityEngine;
-
     using Verse;
     using Verse.Sound;
 
@@ -51,28 +48,27 @@ namespace ColonistBarKF
 
         #region Fields
 
-        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos",
-                                                                                                       BindingFlags
-                                                                                                           .Instance |
-                                                                                                       BindingFlags
-                                                                                                           .NonPublic);
+        private static readonly FieldInfo _cameraDriverRootPosField =
+            typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+
         private static readonly FieldInfo _cameraDriverDesiredDollyField =
             typeof(CameraDriver).GetField("desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic);
 
         private static bool _cameraHasJumpedAtLeastOnce;
+
         public static bool CurrentlyFollowing;
+
         private static bool _enabled = true;
+
         public static Thing _followedThing;
 
-        private KeyBindingDef[] _followBreakingKeyBindingDefs =
-        {
-            KeyBindingDefOf.MapDollyDown,
-            KeyBindingDefOf.MapDollyUp,
-            KeyBindingDefOf.MapDollyRight,
-            KeyBindingDefOf.MapDollyLeft
-        };
+        private readonly KeyBindingDef[] _followBreakingKeyBindingDefs =
+            {
+                KeyBindingDefOf.MapDollyDown, KeyBindingDefOf.MapDollyUp, KeyBindingDefOf.MapDollyRight,
+                KeyBindingDefOf.MapDollyLeft
+            };
 
-        private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
+        private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
         #endregion Fields
 
@@ -348,19 +344,19 @@ namespace ColonistBarKF
             }
 
             Vector3 mousePosition = Input.mousePosition;
-            Rect[] screenCorners = {
-                                    new Rect( 0f, 0f, 200f, 200f ),
-                                    new Rect( Screen.width - 250, 0f, 255f, 255f ),
-                                    new Rect( 0f, Screen.height - 250, 225f, 255f ),
-                                    new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
-                                };
+            Rect[] screenCorners =
+                {
+                    new Rect(0f, 0f, 200f, 200f), new Rect(Screen.width - 250, 0f, 255f, 255f),
+                    new Rect(0f, Screen.height - 250, 225f, 255f),
+                    new Rect(Screen.width - 250, Screen.height - 250, 255f, 255f)
+                };
             if (screenCorners.Any(e => e.Contains(mousePosition)))
             {
                 return;
             }
 
-            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
-                 || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20 || mousePosition.y > Screen.height - 20f
+                || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
             {
                 StopFollow("moved map (dolly)");
             }

@@ -1,31 +1,32 @@
 ﻿namespace ColonistBarKF.Bar
 {
-    using System;
-    using System.Collections.Generic;
-
     using ColonistBarKF.PSI;
-
+    using FacialStuff.Detouring;
     using RimWorld;
     using RimWorld.Planet;
-
-    using static Settings;
-
+    using System;
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
     using Verse.AI.Group;
     using Verse.Sound;
 
+    using static Settings;
+
     [StaticConstructorOnStartup]
     public class ColonistBarColonistDrawer_KF
     {
-        private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        #region Fields
 
         private static readonly Vector2[] bracketLocs = new Vector2[4];
-
+        private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
         private static Vector3 pawnTextureCameraOffset;
 
         private readonly Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
+
+        #endregion Fields
+
+        #region Properties
 
         private static Vector3 PawnTextureCameraOffset
         {
@@ -34,23 +35,24 @@
                 float pawnTextureCameraOffsetNew = ColBarSettings.PawnTextureCameraZoom / 1.28205f;
                 float posx = ColBarSettings.PawnTextureCameraHorizontalOffset / pawnTextureCameraOffsetNew;
                 float posz = ColBarSettings.PawnTextureCameraVerticalOffset / pawnTextureCameraOffsetNew;
-                pawnTextureCameraOffset =
-                    new Vector3(
-                        posx,
-                        0f,
-                        posz);
+                pawnTextureCameraOffset = new Vector3(posx, 0f, posz);
                 return pawnTextureCameraOffset;
             }
         }
 
-        private static Vector2 PawnTextureSize
-            => new Vector2(ColBarSettings.BaseSizeFloat - 2f, ColBarSettings.BaseSizeFloat * 1.5f);
+        private static Vector2 PawnTextureSize => new Vector2(
+            ColBarSettings.BaseSizeFloat - 2f,
+            ColBarSettings.BaseSizeFloat * 1.5f);
 
         private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
+        #endregion Properties
+
+        #region Methods
+
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            PawnStats pawnStats = MapComponent_PSI.Get.GetCache(colonist);
+            PawnStats pawnStats = colonist.GetCache();
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width
@@ -83,7 +85,9 @@
                 GUI.color = background;
             }
 
-            GUI.DrawTexture(pawnRect, ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+            GUI.DrawTexture(
+                pawnRect,
+                ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
             GUI.color = color;
 
             if (colonist.needs?.mood != null)
@@ -290,7 +294,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -301,7 +305,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -312,7 +316,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -323,7 +327,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -334,7 +338,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -344,7 +348,7 @@
                                             delegate
                                                 {
                                                     ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -356,7 +360,7 @@
                                     // delegate
                                     // {
                                     // ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medic;
-                                    // ColonistBar_KF.MarkColonistsDirty();
+                                    // HarmonyPatches.MarkColonistsDirty_Postfix();
                                     // // CheckRecacheEntries();
                                     // }));
                                     floatOptionList.Add(
@@ -366,7 +370,7 @@
                                                 {
                                                     ColBarSettings.SortBy =
                                                         SettingsColonistBar.SortByWhat.medicTendQuality;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -377,7 +381,7 @@
                                                 {
                                                     ColBarSettings.SortBy =
                                                         SettingsColonistBar.SortByWhat.medicSurgerySuccess;
-                                                    ColonistBar_KF.MarkColonistsDirty();
+                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
 
                                                     // CheckRecacheEntries();
                                                 }));
@@ -426,14 +430,13 @@
             if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect))
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                ColonistBar.Entry entry =
-                    ColonistBar_KF.BarHelperKf.Entries.Find(x => x.group == group);
+                ColonistBar.Entry entry = ColonistBar_KF.BarHelperKf.Entries.Find(x => x.group == group);
                 Map map = entry.map;
 
                 if (!ColonistBar_KF.BarHelperKf.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
                 {
-                    if ((!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive)
-                        || (worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive))
+                    if (!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive
+                        || worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive)
                     {
                         Find.Selector.dragBox.active = false;
                         Find.WorldSelector.dragBox.active = false;
@@ -481,7 +484,12 @@
             this.pawnLabelsCache.Clear();
         }
 
-        private static void BuildRects(PawnStats pawnStats, ref Rect outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect)
+        private static void BuildRects(
+            PawnStats pawnStats,
+            ref Rect outerRect,
+            out Rect pawnRect,
+            out Rect moodBorderRect,
+            out Rect psiRect)
         {
             float offsetX = 0f;
             bool flag = false;
@@ -540,14 +548,17 @@
                         moodBorderRect.width /= 4;
                         pawnRect.x += moodBorderRect.width;
                         break;
+
                     case Position.Alignment.Right:
                         moodBorderRect.width /= 4;
                         moodBorderRect.x = pawnRect.xMax;
                         break;
+
                     case Position.Alignment.Top:
                         moodBorderRect.height /= 4;
                         pawnRect.y += moodBorderRect.height;
                         break;
+
                     case Position.Alignment.Bottom:
                         moodBorderRect.height /= 4;
                         moodBorderRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
@@ -565,14 +576,17 @@
                             moodBorderRect.x += widthPsiFloatX;
                             psiRect.x = Mathf.Min(moodBorderRect.xMin, pawnRect.xMin) - psiRect.width;
                             break;
+
                         case Position.Alignment.Right:
                             psiRect.x = Mathf.Max(pawnRect.xMax, moodBorderRect.xMax);
                             break;
+
                         case Position.Alignment.Top:
                             pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
                             moodBorderRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
                             psiRect.yMax = Mathf.Min(pawnRect.yMin, moodBorderRect.yMin);
                             break;
+
                         case Position.Alignment.Bottom:
                             psiRect.y = Math.Max(pawnRect.yMax + ColonistBar_KF.SpacingLabel, moodBorderRect.yMax);
                             break;
@@ -588,12 +602,15 @@
                         case Position.Alignment.Left:
                             pawnRect.x += widthPsiFloatX;
                             break;
+
                         case Position.Alignment.Right:
                             psiRect.x = pawnRect.xMax;
                             break;
+
                         case Position.Alignment.Top:
                             pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
                             break;
+
                         case Position.Alignment.Bottom:
                             psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
                             break;
@@ -636,6 +653,38 @@
             if (!jobDescription.NullOrEmpty())
             {
                 TooltipHandler.TipRegion(pawnRect, jobDescription);
+            }
+        }
+
+        private static void DrawCurrentMood(
+            Rect moodRect,
+            Texture2D moodTex,
+            float moodPercent,
+            Need mood,
+            out Rect rect1,
+            out Rect rect2)
+        {
+            float x = moodRect.x + moodRect.width * mood.CurInstantLevelPercentage;
+            switch (ColBarSettings.MoodBarPos)
+            {
+                default:
+                    float y = moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage;
+                    rect1 = new Rect(moodRect.x, y, moodRect.width, 1);
+                    rect2 = new Rect(moodRect.xMax + 1, y - 1, 2, 3);
+                    GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
+                    break;
+
+                case Position.Alignment.Top:
+                    rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
+                    rect2 = new Rect(x - 1, moodRect.yMin - 1, 3, 2);
+                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
+                    break;
+
+                case Position.Alignment.Bottom:
+                    rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
+                    rect2 = new Rect(x - 1, moodRect.yMax + 1, 3, 2);
+                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
+                    break;
             }
         }
 
@@ -682,7 +731,10 @@
                 moodCol = ColonistBarTextures.ColBlue;
                 if (moodPercent < 0.3f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.3f, 0f, moodPercent));
+                    critColor = Color.Lerp(
+                        ColonistBarTextures.ColorNeutralSoft,
+                        ColonistBarTextures.ColorNeutralStatus,
+                        Mathf.InverseLerp(0.3f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColYellow;
                     showCritical = true;
                 }
@@ -693,7 +745,10 @@
                 moodCol = ColonistBarTextures.ColYellow;
                 if (moodPercent < 0.4f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.4f, 0f, moodPercent));
+                    critColor = Color.Lerp(
+                        ColonistBarTextures.ColorNeutralSoft,
+                        ColonistBarTextures.ColorNeutralStatus,
+                        Mathf.InverseLerp(0.4f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColOrange;
                     showCritical = true;
                 }
@@ -704,7 +759,10 @@
                 moodCol = ColonistBarTextures.ColOrange;
                 if (moodPercent < 0.5f)
                 {
-                    critColor = Color.Lerp(ColonistBarTextures.ColorNeutralSoft, ColonistBarTextures.ColorNeutralStatus, Mathf.InverseLerp(0.5f, 0f, moodPercent));
+                    critColor = Color.Lerp(
+                        ColonistBarTextures.ColorNeutralSoft,
+                        ColonistBarTextures.ColorNeutralStatus,
+                        Mathf.InverseLerp(0.5f, 0f, moodPercent));
                     critColor *= ColonistBarTextures.ColVermillion;
                     showCritical = true;
                 }
@@ -715,7 +773,6 @@
                 moodPercent = 1f;
                 moodCol = ColonistBarTextures.ColVermillion;
             }
-
 
             moodCol.a = color.a;
 
@@ -729,7 +786,13 @@
                 GUI.color = moodCol;
             }
 
-            DrawCurrentMood(moodRect, ColonistBarTextures.MoodNeutralTex, moodPercent, mood, out Rect rect1, out Rect rect2);
+            DrawCurrentMood(
+                moodRect,
+                ColonistBarTextures.MoodNeutralTex,
+                moodPercent,
+                mood,
+                out Rect rect1,
+                out Rect rect2);
             GUI.color = color;
 
             DrawMentalThreshold(moodRect, mb.BreakThresholdExtreme);
@@ -741,56 +804,6 @@
 
             // TooltipHandler.TipRegion(moodRect, tooltip);
         }
-
-        private static void DrawCurrentMood(Rect moodRect, Texture2D moodTex, float moodPercent, Need mood, out Rect rect1, out Rect rect2)
-        {
-            float x = moodRect.x + moodRect.width * mood.CurInstantLevelPercentage;
-            switch (ColBarSettings.MoodBarPos)
-            {
-                default:
-                    float y = moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage;
-                    rect1 = new Rect(
-                                moodRect.x,
-                                y,
-                                moodRect.width,
-                                1);
-                    rect2 = new Rect(
-                                moodRect.xMax + 1,
-                                y - 1,
-                                2,
-                                3);
-                    GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
-                    break;
-
-                case Position.Alignment.Top:
-                    rect1 = new Rect(
-                                x,
-                                moodRect.y,
-                                1,
-                                moodRect.height);
-                    rect2 = new Rect(
-                                x - 1,
-                                moodRect.yMin - 1,
-                                3,
-                                2);
-                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
-                    break;
-                case Position.Alignment.Bottom:
-                    rect1 = new Rect(
-                                x,
-                                moodRect.y,
-                                1,
-                                moodRect.height);
-                    rect2 = new Rect(
-                                x - 1,
-                                moodRect.yMax + 1,
-                                3,
-                                2);
-                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
-                    break;
-            }
-        }
-
         private void ApplyEntryInAnotherMapAlphaFactor(Map map, ref float alpha)
         {
             if (map == null)
@@ -809,8 +822,8 @@
         private void DrawCaravanSelectionOverlayOnGUI(Caravan caravan, Rect rect)
         {
             float num = 0.4f * ColonistBar_KF.Scale;
-            var x = SelectionDrawerUtility.SelectedTexGUI.width * num;
-            var y = SelectionDrawerUtility.SelectedTexGUI.height * num;
+            float x = SelectionDrawerUtility.SelectedTexGUI.width * num;
+            float y = SelectionDrawerUtility.SelectedTexGUI.height * num;
             Vector2 textureSize = new Vector2(x, y);
             SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(
                 bracketLocs,
@@ -865,7 +878,10 @@
             else if (colonist.InMentalState)
             {
                 // DrawIcon(PSI.PSI.PSIMaterials[Icons.Dazed].mainTexture as Texture2D, ref vector, colonist.MentalStateDef.LabelCap);
-                this.DrawIcon(ColonistBarTextures.Icon_MentalStateNonAggro, ref vector, colonist.MentalStateDef.LabelCap);
+                this.DrawIcon(
+                    ColonistBarTextures.Icon_MentalStateNonAggro,
+                    ref vector,
+                    colonist.MentalStateDef.LabelCap);
             }
             else if (colonist.InBed() && colonist.CurrentBed().Medical)
             {
@@ -908,11 +924,11 @@
 
             float num = 0.4f * ColonistBar_KF.Scale;
             Vector2 textureSize = new Vector2(
-                                      SelectionDrawerUtility.SelectedTexGUI.width * num,
-                                      SelectionDrawerUtility.SelectedTexGUI.height * num);
+                SelectionDrawerUtility.SelectedTexGUI.width * num,
+                SelectionDrawerUtility.SelectedTexGUI.height * num);
 
             SelectionDrawerUtility.CalculateSelectionBracketPositionsUI(
-                 bracketLocs,
+                bracketLocs,
                 obj,
                 rect,
                 SelectionDrawer.SelectTimes,
@@ -926,7 +942,11 @@
             int num = 90;
             for (int i = 0; i < 4; i++)
             {
-                Widgets.DrawTextureRotated(bracketLocs[i], SelectionDrawerUtility.SelectedTexGUI, num, selectedTexScale);
+                Widgets.DrawTextureRotated(
+                    bracketLocs[i],
+                    SelectionDrawerUtility.SelectedTexGUI,
+                    num,
+                    selectedTexScale);
                 num += 90;
             }
         }
@@ -952,18 +972,27 @@
                 }
                 else
                 {
-                    ColonistBarTextures.resolvedIcon = thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
+                    ColonistBarTextures.resolvedIcon =
+                        thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
                 }
 
                 // color labe by thing
                 if (thing.def.IsMeleeWeapon)
                 {
-                    GUI.color = new Color(ColonistBarTextures.ColVermillion.r, ColonistBarTextures.ColVermillion.g, ColonistBarTextures.ColVermillion.b, entryRectAlpha);
+                    GUI.color = new Color(
+                        ColonistBarTextures.ColVermillion.r,
+                        ColonistBarTextures.ColVermillion.g,
+                        ColonistBarTextures.ColVermillion.b,
+                        entryRectAlpha);
                 }
 
                 if (thing.def.IsRangedWeapon)
                 {
-                    GUI.color = new Color(ColonistBarTextures.ColBlue.r, ColonistBarTextures.ColBlue.g, ColonistBarTextures.ColBlue.b, entryRectAlpha);
+                    GUI.color = new Color(
+                        ColonistBarTextures.ColBlue.r,
+                        ColonistBarTextures.ColBlue.g,
+                        ColonistBarTextures.ColBlue.b,
+                        entryRectAlpha);
                 }
 
                 Color iconcolor = new Color(0.5f, 0.5f, 0.5f, 0.8f * entryRectAlpha);
@@ -1020,5 +1049,7 @@
 
             return new Rect(posX, posY, num2 - posX, height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }
+
+        #endregion Methods
     }
 }

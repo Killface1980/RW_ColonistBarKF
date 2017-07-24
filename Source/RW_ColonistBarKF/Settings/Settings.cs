@@ -7,12 +7,14 @@
     public static class Settings
     {
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
+
         public static SettingsPSI PsiSettings = new SettingsPSI();
 
         internal static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-            SettingsColonistBar result = DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
+            SettingsColonistBar result =
+                DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
             return result;
         }
 

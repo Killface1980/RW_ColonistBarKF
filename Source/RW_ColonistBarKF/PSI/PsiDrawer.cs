@@ -2,13 +2,13 @@
 
 namespace ColonistBarKF.PSI
 {
+    using ColonistBarKF.Bar;
+
     using RimWorld.Planet;
 
     using UnityEngine;
 
     using Verse;
-
-    using static ColonistBarKF.Bar.ColonistBarTextures;
 
     public static class PSIDrawer
     {
@@ -17,7 +17,6 @@ namespace ColonistBarKF.PSI
         public static Gradient gradient4Mood = new Gradient();
 
         public static Gradient gradientRedAlertToNeutral = new Gradient();
-
 
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,
@@ -49,10 +48,10 @@ namespace ColonistBarKF.PSI
 
             // On Colonist
             Rect position = new Rect(
-                                vectorAtBody.x,
-                                vectorAtBody.y,
-                                num2 * Settings.PsiSettings.IconSize,
-                                num2 * Settings.PsiSettings.IconSize);
+                vectorAtBody.x,
+                vectorAtBody.y,
+                num2 * Settings.PsiSettings.IconSize,
+                num2 * Settings.PsiSettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -135,6 +134,7 @@ namespace ColonistBarKF.PSI
                     // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Left)
                     // iconRect.x -= rect.width / 4;
                     break;
+
                 case Position.Alignment.Right:
                     iconRect.x = rect.xMin;
                     iconRect.y = rect.yMax - iconRect.width;
@@ -142,12 +142,14 @@ namespace ColonistBarKF.PSI
                     // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Right)
                     // iconRect.x += rect.width / 4;
                     break;
+
                 case Position.Alignment.Top:
                     iconRect.y = rect.yMax - iconRect.height;
 
                     // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Top)
                     // iconRect.y -= rect.height / 4;
                     break;
+
                 case Position.Alignment.Bottom:
                     iconRect.y = rect.yMin;
 
@@ -164,7 +166,7 @@ namespace ColonistBarKF.PSI
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, BGTexIconPSI);
+            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
             GUI.color = color;
 
             iconRect.x += iconRect.width * 0.1f;

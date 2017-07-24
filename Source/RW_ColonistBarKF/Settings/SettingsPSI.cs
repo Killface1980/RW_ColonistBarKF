@@ -2,20 +2,8 @@
 {
     public class SettingsPSI
     {
-        public bool ShowLove = true;
-
-        public bool ShowDeadColonists = false;
-
         // PSI settings
         public int IconAlignment = 0;
-
-        public bool UsePsi = true;
-
-        public bool UsePsiOnPrisoner = true;
-
-        public float IconSize = 1f;
-
-        public float IconSizeMult = 1f;
 
         public float IconMarginX = 1f;
 
@@ -25,102 +13,114 @@
 
         public float IconOffsetY = 1f;
 
-        public int IconsInColumn = 3;
+        public float IconOpacity = 0.7f;
 
-        public bool IconsHorizontal;
-
-        public bool IconsScreenScale = true;
+        public float IconOpacityCritical = 0.6f;
 
         public string IconSet = "default";
 
-        public bool ShowTargetPoint = true;
+        public bool IconsHorizontal;
 
-        public bool ShowAggressive = true;
+        public int IconsInColumn = 3;
 
-        public bool ShowDazed = true;
+        public float IconSize = 1f;
 
-        public bool ShowLeave = true;
+        public float IconSizeMult = 1f;
 
-        public bool ShowDraft = true;
+        public bool IconsScreenScale = true;
 
-        public bool ShowIdle = true;
+        public float LimitApparelHealthLess = 0.5f;
 
-        public bool ShowUnarmed = true;
+        public float LimitBleedMult = 3f;
 
-        public bool ShowHungry = true;
+        public float LimitDiseaseLess = 1f;
 
-        public bool ShowSad = true;
-
-        public bool ShowTired = true;
-
-        public bool ShowMedicalAttention = true;
-
-        public bool ShowEffectiveness = true;
-
-        public bool ShowBloodloss = true;
-
-        public bool ShowTooHot = true;
-
-        public bool ShowTooCold = true;
-
-        public bool ShowNaked = true;
-
-        public bool ShowDrunk = true;
-
-        public bool ShowApparelHealth = true;
-
-        public bool ShowPacific = true;
-
-        public bool ShowProsthophile = true;
-
-        public bool ShowProsthophobe = true;
-
-        public bool ShowNightOwl = true;
-
-        public bool ShowGreedy = true;
-
-        public bool ShowJealous = true;
-
-        public bool ShowLeftUnburied = true;
-
-        public bool ShowCabinFever = true;
-
-        public bool ShowPain = true;
-
-        public bool ShowBedroom = true;
-
-        public bool ShowToxicity = true;
-
-        public bool ShowHealth = true;
-
-        // public bool ShowMarriage = true;
-        public bool ShowPyromaniac = true;
-
-        public bool ShowPanic = true;
+        public float LimitEfficiencyLess = 0.33f;
 
         // public float LimitMoodLess = 0.25f;
         public float LimitFoodLess = 0.25f;
 
         public float LimitRestLess = 0.25f;
 
-        public float LimitEfficiencyLess = 0.33f;
-
-        public float LimitDiseaseLess = 1f;
-
-        public float LimitBleedMult = 3f;
-
-        public float LimitApparelHealthLess = 0.5f;
-
         public float LimitTempComfortOffset;
 
-        public float IconOpacity = 0.7f;
+        public bool ShowAggressive = true;
 
-        public float IconOpacityCritical = 0.6f;
+        public bool ShowApparelHealth = true;
+
+        public bool ShowBedroom = true;
+
+        public bool ShowBloodloss = true;
+
+        public bool ShowCabinFever = true;
+
+        public bool ShowDazed = true;
+
+        public bool ShowDeadColonists = false;
+
+        public bool ShowDraft = true;
+
+        public bool ShowDrunk = true;
+
+        public bool ShowEffectiveness = true;
+
+        public bool ShowGreedy = true;
+
+        public bool ShowHealth = true;
+
+        public bool ShowHungry = true;
+
+        public bool ShowIdle = true;
+
+        public bool ShowJealous = true;
+
+        public bool ShowLeave = true;
+
+        public bool ShowLeftUnburied = true;
+
+        public bool ShowLove = true;
+
+        public bool ShowMedicalAttention = true;
+
+        public bool ShowNaked = true;
+
+        public bool ShowNightOwl = true;
+
+        public bool ShowPacific = true;
+
+        public bool ShowPain = true;
+
+        public bool ShowPanic = true;
+
+        public bool ShowProsthophile = true;
+
+        public bool ShowProsthophobe = true;
+
+        // public bool ShowMarriage = true;
+        public bool ShowPyromaniac = true;
+
+        public bool ShowRelationsOnStrangers = true;
+
+        public bool ShowSad = true;
+
+        public bool ShowTargetPoint = true;
+
+        public bool ShowTired = true;
+
+        public bool ShowTooCold = true;
+
+        public bool ShowTooHot = true;
+
+        public bool ShowToxicity = true;
+
+        public bool ShowUnarmed = true;
 
         public bool UseColoredTarget = true;
 
+        public bool UsePsi = true;
+
         public bool UsePsiOnAnimals = true;
 
-        public bool ShowRelationsOnStrangers = true;
+        public bool UsePsiOnPrisoner = true;
     }
 }

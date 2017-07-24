@@ -61,7 +61,7 @@ namespace ColonistBarKF
             // _lastStatUpdate = Find.TickManager.TicksGame;
             // }
 
-            // PSI 
+            // PSI
             if (_reinjectNeeded)
             {
                 _reinjectTime -= Time.fixedDeltaTime;
