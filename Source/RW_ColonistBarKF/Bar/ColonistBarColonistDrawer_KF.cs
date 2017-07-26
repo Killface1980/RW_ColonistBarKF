@@ -650,8 +650,10 @@
 
             outerRect.x += offsetX;
             outerRect.width -= offsetX * 2;
-            outerRect.yMax = height;
-           
+            outerRect.yMax = ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                                 ? height
+                                 : height + ColonistBar_KF.SpacingLabel;
+
         }
 
         private static void DrawCurrentJobTooltip(Pawn colonist, Rect pawnRect)

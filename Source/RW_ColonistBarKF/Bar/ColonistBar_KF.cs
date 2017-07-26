@@ -39,7 +39,20 @@
                                               Settings.ColBarSettings.BaseSizeFloat,
                                               Settings.ColBarSettings.BaseSizeFloat) * Scale;
 
-        public static int PsiRowsOnBar => 2;
+        public static int PsiRowsOnBar
+        {
+            get
+            {
+                return 2;
+
+                int maxRows = 0;
+                foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsSpawned)
+                {
+                    maxRows = Mathf.Max(pawn.GetCache().thisColCount, maxRows);
+                }
+                return maxRows;
+            }
+        }
 
         // public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
         public static float Scale => BarHelperKf.cachedScale;
@@ -73,7 +86,7 @@
 
         #endregion Properties
 
-  
+
         #region Methods
 
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
