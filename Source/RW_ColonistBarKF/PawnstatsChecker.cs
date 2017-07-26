@@ -31,7 +31,7 @@
             PawnStats n = new PawnStats { pawn = pawn };
             _pawnCache.Add(n);
 
-            if (pawn.Faction == Faction.OfPlayer)
+            if (pawn.IsColonist)
             {
                 PSI.PSI.UpdateColonistStats(n);
             }

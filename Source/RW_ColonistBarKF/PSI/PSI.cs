@@ -88,16 +88,18 @@ namespace ColonistBarKF.PSI
             int barIconNum = 0;
 
             // Drafted
+            int rowCount = pawnStats.thisColCount;
+
             if (colBarSettings.ShowDraft && pawn.Drafted)
             {
                 if (pawnStats.isPacifist)
                 {
                     string tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColYellow, rectAlpha, tooltip);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColYellow, rectAlpha, rowCount, tooltip);
                 }
                 else
                 {
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Draft, ColVermillion, rectAlpha);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Draft, ColVermillion, rectAlpha, rowCount);
                 }
             }
 
@@ -106,7 +108,7 @@ namespace ColonistBarKF.PSI
                 // Berserk
                 if (colBarSettings.ShowAggressive && pawn.InAggroMentalState)
                 {
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Aggressive, ColVermillion, rectAlpha);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Aggressive, ColVermillion, rectAlpha, rowCount);
                 }
 
                 // Give Up Exit
@@ -115,7 +117,7 @@ namespace ColonistBarKF.PSI
                     if (pawnStats.MentalSanity == MentalStateDefOf.PanicFlee)
                     {
                         // was GiveUpExit
-                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Leave, ColVermillion, rectAlpha);
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Leave, ColVermillion, rectAlpha, rowCount);
                     }
                 }
 
@@ -125,7 +127,7 @@ namespace ColonistBarKF.PSI
                     if (pawnStats.MentalSanity == MentalStateDefOf.WanderSad)
                     {
                         // + MentalStateDefOf.WanderPsychotic
-                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Dazed, ColYellow, rectAlpha);
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Dazed, ColYellow, rectAlpha, rowCount);
                     }
                 }
 
@@ -134,7 +136,7 @@ namespace ColonistBarKF.PSI
                 {
                     if (pawnStats.MentalSanity == MentalStateDefOf.PanicFlee)
                     {
-                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Panic, ColYellow, rectAlpha);
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.Panic, ColYellow, rectAlpha, rowCount);
                     }
                 }
             }
@@ -152,6 +154,7 @@ namespace ColonistBarKF.PSI
                         Icons.Bloodloss,
                         gradientRedAlertToNeutral.Evaluate(1.0f - pawnStats.BleedRate),
                         rectAlpha,
+                        rowCount,
                         tooltip);
                 }
             }
@@ -176,6 +179,7 @@ namespace ColonistBarKF.PSI
                             Icons.Health,
                             gradient4.Evaluate(pawnStats.DiseaseDisappearance / colBarSettings.LimitDiseaseLess),
                             rectAlpha,
+                            rowCount,
                             tooltip);
                     }
                     else
@@ -189,6 +193,7 @@ namespace ColonistBarKF.PSI
                                 Icons.Health,
                                 gradient4.Evaluate(pawnStats.pawnHealth),
                                 rectAlpha,
+                                rowCount,
                                 tooltip);
                         }
                     }
@@ -203,6 +208,7 @@ namespace ColonistBarKF.PSI
                         Icons.Health,
                         gradient4.Evaluate(pawnStats.pawnHealth),
                         rectAlpha,
+                        rowCount,
                         tooltip);
                 }
 
@@ -225,6 +231,7 @@ namespace ColonistBarKF.PSI
                     Icons.Toxicity,
                     gradient4.Evaluate(pawnStats.ToxicBuildUpVisible),
                     rectAlpha,
+                    rowCount,
                     tooltip);
             }
 
@@ -242,11 +249,12 @@ namespace ColonistBarKF.PSI
                             Icons.MedicalAttention,
                             ColVermillion,
                             rectAlpha,
+                            rowCount,
                             tooltip);
                     }
                     else if (pawnStats.ShouldBeTendedNow)
                     {
-                        DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColYellow, rectAlpha, tooltip);
+                        DrawIconOnBar(psiRect, ref barIconNum, Icons.MedicalAttention, ColYellow, rectAlpha, rowCount, tooltip);
                     }
                     else if (pawnStats.ShouldHaveSurgeryDoneNow)
                     {
@@ -256,6 +264,7 @@ namespace ColonistBarKF.PSI
                             Icons.MedicalAttention,
                             ColBlueishGreen,
                             rectAlpha,
+                            rowCount,
                             tooltip);
                     }
                 }
@@ -271,6 +280,7 @@ namespace ColonistBarKF.PSI
                     Icons.Hungry,
                     gradientRedAlertToNeutral.Evaluate(pawn.needs.food.CurLevel / Settings.PsiSettings.LimitFoodLess),
                     rectAlpha,
+                    rowCount,
                     tooltip);
             }
 
@@ -284,6 +294,7 @@ namespace ColonistBarKF.PSI
                     Icons.Tired,
                     gradientRedAlertToNeutral.Evaluate(pawn.needs.rest.CurLevel / Settings.PsiSettings.LimitRestLess),
                     rectAlpha,
+                    rowCount,
                     tooltip);
             }
 
@@ -296,7 +307,7 @@ namespace ColonistBarKF.PSI
                 if (pawn.equipment.Primary == null && !pawn.IsPrisoner && !pacifist)
                 {
                     string tooltip = "PSI.Settings.Visibility.Unarmed".Translate();
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Unarmed, ColorNeutralStatusOpaque, rectAlpha, tooltip);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Unarmed, ColorNeutralStatusOpaque, rectAlpha, rowCount, tooltip);
                 }
             }
 
@@ -305,7 +316,7 @@ namespace ColonistBarKF.PSI
                 if (pawn.drafter != null && !pawn.Drafted)
                 {
                     string tooltip = "IsIncapableOfViolence".Translate(pawn.NameStringShort);
-                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColBlueishGreen, rectAlpha, tooltip);
+                    DrawIconOnBar(psiRect, ref barIconNum, Icons.Pacific, ColBlueishGreen, rectAlpha, rowCount, tooltip);
                 }
             }
 
@@ -313,7 +324,7 @@ namespace ColonistBarKF.PSI
             if (colBarSettings.ShowPyromaniac && pawnStats.isPyromaniac)
             {
                 string tooltip = "PSI.Settings.Visibility.Pyromaniac".Translate();
-                DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColYellow, rectAlpha, tooltip);
+                DrawIconOnBar(psiRect, ref barIconNum, Icons.Pyromaniac, ColYellow, rectAlpha, rowCount, tooltip);
             }
 
             // Addictions
@@ -364,7 +375,7 @@ namespace ColonistBarKF.PSI
                     tooltip = pawnStats.drugUserLabel;
                 }
 
-                DrawIconOnBar(psiRect, ref barIconNum, Icons.Drunk, color, rectAlpha, tooltip);
+                DrawIconOnBar(psiRect, ref barIconNum, Icons.Drunk, color, rectAlpha, rowCount, tooltip);
             }
 
             // Bad Mood
@@ -381,7 +392,8 @@ namespace ColonistBarKF.PSI
                     ref barIconNum,
                     Icons.TooCold,
                     gradient4.Evaluate(pawnStats.TooCold / 2),
-                    rectAlpha);
+                    rectAlpha,
+                    rowCount);
             }
 
             if (colBarSettings.ShowTooHot && pawnStats.TooHot > 0f)
@@ -391,7 +403,8 @@ namespace ColonistBarKF.PSI
                     ref barIconNum,
                     Icons.TooHot,
                     gradient4.Evaluate(pawnStats.TooHot / 2),
-                    rectAlpha);
+                    rectAlpha,
+                    rowCount);
             }
 
             // Pain
@@ -405,6 +418,7 @@ namespace ColonistBarKF.PSI
                     Icons.Pain,
                     Evaluate(pawnStats.PainMoodOffset),
                     rectAlpha,
+                    rowCount,
                     tooltip);
             }
 
@@ -419,6 +433,7 @@ namespace ColonistBarKF.PSI
                         Icons.Bedroom,
                         Evaluate(pawnStats.humpMoodOffset),
                         rectAlpha,
+                        rowCount,
                         pawnStats.humpTip);
                 }
                 else if (pawnStats.BedStatus > -1)
@@ -429,6 +444,7 @@ namespace ColonistBarKF.PSI
                         Icons.Bedroom,
                         Evaluate(pawnStats.BedStatusMoodOffset),
                         rectAlpha,
+                        rowCount,
                         pawnStats.BedStatusTip);
                 }
             }
@@ -445,6 +461,7 @@ namespace ColonistBarKF.PSI
                         Icons.Naked,
                         Evaluate(pawnStats.nakedMoodOffset),
                         rectAlpha,
+                        rowCount,
                         tooltip);
                 }
             }
@@ -460,7 +477,8 @@ namespace ColonistBarKF.PSI
                         ref barIconNum,
                         Icons.ApparelHealth,
                         gradientRedAlertToNeutral.Evaluate((float)pawnApparelHealth),
-                        rectAlpha);
+                        rectAlpha,
+                        rowCount);
                 }
             }
 
@@ -477,6 +495,7 @@ namespace ColonistBarKF.PSI
                             Icons.Prosthophile,
                             Evaluate(pawnStats.prosthoMoodOffset),
                             rectAlpha,
+                            rowCount,
                             pawnStats.prosthoTooltip);
                     }
                 }
@@ -491,6 +510,7 @@ namespace ColonistBarKF.PSI
                             Icons.Prosthophobe,
                             Evaluate(pawnStats.prosthoMoodOffset),
                             rectAlpha,
+                            rowCount,
                             pawnStats.prosthoTooltip);
                     }
                 }
@@ -506,6 +526,7 @@ namespace ColonistBarKF.PSI
                         Icons.NightOwl,
                         Evaluate(pawnStats.nightOwlMoodOffset),
                         rectAlpha,
+                        rowCount,
                         pawnStats.nightOwlTip);
                 }
             }
@@ -518,6 +539,7 @@ namespace ColonistBarKF.PSI
                     Icons.Greedy,
                     Evaluate(pawnStats.greedyMoodOffset),
                     rectAlpha,
+                    rowCount,
                     pawnStats.greedyTooltip);
             }
 
@@ -529,6 +551,7 @@ namespace ColonistBarKF.PSI
                     Icons.Jealous,
                     Evaluate(pawnStats.jealousMoodOffset),
                     rectAlpha,
+                    rowCount,
                     pawnStats.jealousTooltip);
             }
 
@@ -546,6 +569,7 @@ namespace ColonistBarKF.PSI
                         gradientRedAlertToNeutral.Evaluate(
                             pawnStats.TotalEfficiency / Settings.PsiSettings.LimitEfficiencyLess),
                         rectAlpha,
+                        rowCount,
                         tooltip);
                 }
             }
@@ -562,6 +586,7 @@ namespace ColonistBarKF.PSI
                         Icons.LeftUnburied,
                         Evaluate(pawnStats.unburiedMoodOffset),
                         rectAlpha,
+                        rowCount,
                         tooltip);
                 }
             }
@@ -576,6 +601,7 @@ namespace ColonistBarKF.PSI
                     Icons.CabinFever,
                     Evaluate(pawnStats.CabinFeverMoodOffset),
                     rectAlpha,
+                    rowCount,
                     tooltip);
             }
 
@@ -634,25 +660,25 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        public static void CheckRelationWithColonists(PawnStats pawnStats)
+        public static void CheckRelationWithColonists(Pawn pawn)
         {
-            if (pawnStats.pawn.relations.FamilyByBlood.Any())
+            if (pawn.relations.RelatedPawns.Any())
             {
-                foreach (Pawn related in pawnStats.pawn.relations.FamilyByBlood)
+                foreach (Pawn related in pawn.relations.RelatedPawns)
                 {
-                    if (related.Faction == Faction.OfPlayer)
+                    if (related.IsColonist)
                     {
-                        pawnStats.hasRelationWithColonist = true;
+                        pawn.GetCache().hasRelationWithColonist = true;
                     }
 
                     break;
                 }
             }
 
-            pawnStats.relationChecked = true;
+            pawn.GetCache().relationChecked = true;
         }
 
-        public static void DrawColonistIconsPsi(Pawn pawn)
+        public static void DrawColonistIconsPSI(Pawn pawn)
         {
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
@@ -1284,7 +1310,7 @@ namespace ColonistBarKF.PSI
             // }
         }
 
-        public static void DrawColonistRelationIconsPsi(Pawn pawn)
+        public static void DrawColonistRelationIconsPSI(Pawn pawn)
         {
             // Log.Message("Begin Drawing");
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
@@ -1301,7 +1327,7 @@ namespace ColonistBarKF.PSI
 
             if (!pawnStats.relationChecked)
             {
-                CheckRelationWithColonists(pawnStats);
+                CheckRelationWithColonists(pawn);
             }
 
             // Log.Message("Relations checked");
@@ -1475,11 +1501,6 @@ namespace ColonistBarKF.PSI
                     continue;
                 }
 
-                if (pawn.Map == null)
-                {
-                    continue;
-                }
-
                 if (pawn.Map != map)
                 {
                     continue;
@@ -1495,21 +1516,24 @@ namespace ColonistBarKF.PSI
                 }
                 else if (pawn.RaceProps.Humanlike)
                 {
-                    bool isPrisoner = pawn.IsPrisoner;
-                    bool isStranger = pawn.Faction != Faction.OfPlayer;
-
-                    if (Settings.PsiSettings.UsePsi && pawn.IsColonist)
+                    if (pawn.IsColonist)
                     {
-                        DrawColonistIconsPsi(pawn);
+                        if (Settings.PsiSettings.UsePsi)
+                        {
+                            DrawColonistIconsPSI(pawn);
+                        }
                     }
-                    else if (Settings.PsiSettings.UsePsiOnPrisoner && isPrisoner)
+                    else
                     {
-                        CheckStats(pawn);
-                        DrawColonistIconsPsi(pawn);
-                    }
-                    else if (Settings.PsiSettings.ShowRelationsOnStrangers && isStranger)
-                    {
-                        DrawColonistRelationIconsPsi(pawn);
+                        if (pawn.IsPrisoner && Settings.PsiSettings.UsePsiOnPrisoner)
+                        {
+                            CheckStats(pawn);
+                            DrawColonistIconsPSI(pawn);
+                        }
+                        else if (Settings.PsiSettings.ShowRelationsOnStrangers)
+                        {
+                            DrawColonistRelationIconsPSI(pawn);
+                        }
                     }
                 }
             }

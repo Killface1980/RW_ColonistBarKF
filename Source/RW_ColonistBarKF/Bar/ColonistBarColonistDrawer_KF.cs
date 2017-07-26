@@ -1,12 +1,17 @@
 ﻿namespace ColonistBarKF.Bar
 {
-    using ColonistBarKF.PSI;
-    using FacialStuff.Detouring;
-    using RimWorld;
-    using RimWorld.Planet;
     using System;
     using System.Collections.Generic;
+
+    using ColonistBarKF.PSI;
+
+    using FacialStuff.Detouring;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
     using UnityEngine;
+
     using Verse;
     using Verse.AI.Group;
     using Verse.Sound;
@@ -73,8 +78,9 @@
             GUI.color = color;
 
             // testing
-            // GUI.DrawTexture(outerRect, DarkGrayFond);
+        //    Widgets.DrawBox(outerRect);
             BuildRects(pawnStats, ref outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect);
+          //  Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
 
             Color background = color;
             if (ColBarSettings.UseGender)
@@ -488,137 +494,164 @@
             PawnStats pawnStats,
             ref Rect outerRect,
             out Rect pawnRect,
-            out Rect moodBorderRect,
+            out Rect moodRect,
             out Rect psiRect)
         {
-            float offsetX = 0f;
-            bool flag = false;
-
-            float widthPsiFloatX = ColonistBar_KF.WidthPSIHorizontal * ColonistBar_KF.Scale;
-
-            if (ColBarSettings.UsePsi)
-            {
-                if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
-                {
-                    if (ColonistBar_KF.PsiRowsOnBar == 2)
-                    {
-                        if (pawnStats.thisColCount == 1)
-                        {
-                            offsetX = widthPsiFloatX / 2;
-                        }
-
-                        if (pawnStats.thisColCount == 0)
-                        {
-                            offsetX = widthPsiFloatX;
-                        }
-                    }
-                    else if (ColonistBar_KF.PsiRowsOnBar == 1)
-                    {
-                        offsetX = widthPsiFloatX;
-
-                        // flag = true;
-                    }
-
-                    switch (ColBarSettings.ColBarPsiIconPos)
-                    {
-                        case Position.Alignment.Left:
-                        case Position.Alignment.Right:
-                            if (!flag)
-                            {
-                                outerRect.x += offsetX / 2;
-                            }
-
-                            outerRect.width -= offsetX;
-                            break;
-                    }
-                }
-            }
-
             pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
 
-            moodBorderRect = new Rect(pawnRect);
-            psiRect = new Rect(pawnRect);
 
-            if (ColBarSettings.UseExternalMoodBar)
+            float widthMoodFloat = pawnRect.width;
+            float heightMoodFloat = pawnRect.height;
+
+            float modifier = 1;
+
+            bool psiHorizontal = ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left
+                                || ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right;
+
+            bool moodHorizontal = ColBarSettings.MoodBarPos == Position.Alignment.Left
+                                || ColBarSettings.MoodBarPos == Position.Alignment.Right;
+
+            float widthPsiFloat;
+            float heightPsiFloat;
+            float heightFullPsiFloat;
+
+            if (psiHorizontal)
             {
-                // draw mood border
-                switch (ColBarSettings.MoodBarPos)
-                {
-                    case Position.Alignment.Left:
-                        moodBorderRect.width /= 4;
-                        pawnRect.x += moodBorderRect.width;
-                        break;
-
-                    case Position.Alignment.Right:
-                        moodBorderRect.width /= 4;
-                        moodBorderRect.x = pawnRect.xMax;
-                        break;
-
-                    case Position.Alignment.Top:
-                        moodBorderRect.height /= 4;
-                        pawnRect.y += moodBorderRect.height;
-                        break;
-
-                    case Position.Alignment.Bottom:
-                        moodBorderRect.height /= 4;
-                        moodBorderRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
-                        break;
-                }
-
-                psiRect = new Rect(pawnRect);
-
-                if (ColBarSettings.UsePsi)
-                {
-                    switch (ColBarSettings.ColBarPsiIconPos)
-                    {
-                        case Position.Alignment.Left:
-                            pawnRect.x += widthPsiFloatX;
-                            moodBorderRect.x += widthPsiFloatX;
-                            psiRect.x = Mathf.Min(moodBorderRect.xMin, pawnRect.xMin) - psiRect.width;
-                            break;
-
-                        case Position.Alignment.Right:
-                            psiRect.x = Mathf.Max(pawnRect.xMax, moodBorderRect.xMax);
-                            break;
-
-                        case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
-                            moodBorderRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
-                            psiRect.yMax = Mathf.Min(pawnRect.yMin, moodBorderRect.yMin);
-                            break;
-
-                        case Position.Alignment.Bottom:
-                            psiRect.y = Math.Max(pawnRect.yMax + ColonistBar_KF.SpacingLabel, moodBorderRect.yMax);
-                            break;
-                    }
-                }
+                widthPsiFloat = ColonistBar_KF.WidthPSIHorizontal * ColonistBar_KF.Scale;
+                heightPsiFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
+                heightFullPsiFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
             }
             else
             {
-                if (ColBarSettings.UsePsi)
+                widthPsiFloat = outerRect.width;
+                heightPsiFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
+                heightFullPsiFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
+            }
+
+            if (ColBarSettings.UsePsi)
+            {
+                // If lesser rows, move the rect
+                if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
                 {
-                    switch (ColBarSettings.ColBarPsiIconPos)
+                    switch (pawnStats.thisColCount)
                     {
-                        case Position.Alignment.Left:
-                            pawnRect.x += widthPsiFloatX;
+                        case 0:
+                            modifier = 0f;
                             break;
-
-                        case Position.Alignment.Right:
-                            psiRect.x = pawnRect.xMax;
+                        case 1:
+                            modifier = 0.5f;
                             break;
-
-                        case Position.Alignment.Top:
-                            pawnRect.y += ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
-                            break;
-
-                        case Position.Alignment.Bottom:
-                            psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
+                        default:
                             break;
                     }
 
-                    moodBorderRect = new Rect(pawnRect);
+                    if (psiHorizontal)
+                    {
+                        widthPsiFloat *= modifier;
+                    }
+                    else
+                    {
+                        heightPsiFloat *= modifier;
+                    }
                 }
             }
+
+            if (ColBarSettings.UseExternalMoodBar)
+            {
+                if (moodHorizontal)
+                {
+                    widthMoodFloat /= 4;
+                }
+                else
+                {
+                    heightMoodFloat /= 4;
+                }
+            }
+
+            psiRect = new Rect(
+                outerRect.x,
+                outerRect.y,
+                widthPsiFloat,
+                heightPsiFloat);
+
+            //    Widgets.DrawBoxSolid(psiRect, new Color(0.5f, 0.5f, 0.5f, 0.5f));
+
+            switch (ColBarSettings.ColBarPsiIconPos)
+            {
+                case Position.Alignment.Left:
+                    pawnRect.x += widthPsiFloat;
+                    break;
+                case Position.Alignment.Right:
+                    psiRect.x = pawnRect.xMax;
+                    break;
+                case Position.Alignment.Top:
+                    pawnRect.y += heightFullPsiFloat;
+                    psiRect.y += heightFullPsiFloat - heightPsiFloat;
+                    break;
+                case Position.Alignment.Bottom:
+                    psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            moodRect = new Rect(pawnRect.x, pawnRect.y, widthMoodFloat, heightMoodFloat);
+
+            if (ColBarSettings.UseExternalMoodBar)
+            {
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    case Position.Alignment.Left:
+                        pawnRect.x += widthMoodFloat;
+                        if (ColBarSettings.ColBarPsiIconPos != Position.Alignment.Left)
+                        {
+                            psiRect.x += widthMoodFloat;
+                        }
+                        if (!psiHorizontal)
+                        {
+                            psiRect.width -= widthMoodFloat;
+                        }
+                        break;
+                    case Position.Alignment.Right:
+                        moodRect.x = pawnRect.xMax;
+                        psiRect.x += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right
+                                         ? widthMoodFloat
+                                         : 0f;
+                        break;
+                    case Position.Alignment.Top:
+                        pawnRect.y += heightMoodFloat;
+                        psiRect.y += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                                         ? heightMoodFloat
+                                         : 0f;
+                        break;
+                    case Position.Alignment.Bottom:
+                        moodRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
+                        psiRect.y += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                                         ? heightMoodFloat
+                                         : 0f;
+                        if (psiHorizontal)
+                        {
+                            psiRect.height -= heightMoodFloat;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            float offsetX = outerRect.x - Mathf.Min(psiRect.x, moodRect.x, pawnRect.x);
+            offsetX += outerRect.xMax - Mathf.Max(psiRect.xMax, moodRect.xMax, pawnRect.xMax);
+            offsetX /= 2;
+
+            float height = Mathf.Max(psiRect.yMax, moodRect.yMax, pawnRect.yMax);
+
+            psiRect.x += offsetX;
+            moodRect.x += offsetX;
+            pawnRect.x += offsetX;
+
+            outerRect.x += offsetX;
+            outerRect.width -= offsetX * 2;
+            outerRect.yMax = height;
+           
         }
 
         private static void DrawCurrentJobTooltip(Pawn colonist, Rect pawnRect)
@@ -665,42 +698,50 @@
             out Rect rect2)
         {
             float x = moodRect.x + moodRect.width * mood.CurInstantLevelPercentage;
-            switch (ColBarSettings.MoodBarPos)
+            float y = moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage;
+            rect1 = new Rect(moodRect.x, y, moodRect.width, 1);
+            rect2 = new Rect(moodRect.xMax + 1, y - 1, 2, 3);
+
+            if (ColBarSettings.UseExternalMoodBar)
             {
-                default:
-                    float y = moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage;
-                    rect1 = new Rect(moodRect.x, y, moodRect.width, 1);
-                    rect2 = new Rect(moodRect.xMax + 1, y - 1, 2, 3);
-                    GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
-                    break;
+                switch (ColBarSettings.MoodBarPos)
+                {
+                    default:
+                        GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
+                        break;
 
-                case Position.Alignment.Top:
-                    rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
-                    rect2 = new Rect(x - 1, moodRect.yMin - 1, 3, 2);
-                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
-                    break;
+                    case Position.Alignment.Top:
+                        rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
+                        rect2 = new Rect(x - 1, moodRect.yMin - 1, 3, 2);
+                        GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
+                        break;
 
-                case Position.Alignment.Bottom:
-                    rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
-                    rect2 = new Rect(x - 1, moodRect.yMax + 1, 3, 2);
-                    GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
-                    break;
+                    case Position.Alignment.Bottom:
+                        rect1 = new Rect(x, moodRect.y, 1, moodRect.height);
+                        rect2 = new Rect(x - 1, moodRect.yMax + 1, 3, 2);
+                        GUI.DrawTexture(moodRect.LeftPart(moodPercent), moodTex);
+                        break;
+                }
+            }
+            else
+            {
+                GUI.DrawTexture(moodRect.BottomPart(moodPercent), moodTex);
             }
         }
 
         private static void DrawMentalThreshold(Rect moodRect, float threshold)
         {
-            if (ColBarSettings.MoodBarPos == Position.Alignment.Left
-                || ColBarSettings.MoodBarPos == Position.Alignment.Right)
+            if (ColBarSettings.UseExternalMoodBar && (ColBarSettings.MoodBarPos == Position.Alignment.Top
+                                                      || ColBarSettings.MoodBarPos == Position.Alignment.Bottom))
             {
                 GUI.DrawTexture(
-                    new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1),
+                    new Rect(moodRect.x + moodRect.width * threshold, moodRect.y, 1, moodRect.height),
                     ColonistBarTextures.MoodBreakTex);
             }
             else
             {
                 GUI.DrawTexture(
-                    new Rect(moodRect.x + moodRect.width * threshold, moodRect.y, 1, moodRect.height),
+                    new Rect(moodRect.x, moodRect.yMax - moodRect.height * threshold, moodRect.width, 1),
                     ColonistBarTextures.MoodBreakTex);
             }
 
@@ -804,6 +845,7 @@
 
             // TooltipHandler.TipRegion(moodRect, tooltip);
         }
+
         private void ApplyEntryInAnotherMapAlphaFactor(Map map, ref float alpha)
         {
             if (map == null)

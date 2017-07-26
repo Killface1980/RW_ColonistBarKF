@@ -59,13 +59,7 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        public static void DrawIconOnBar(
-            Rect psiRect,
-            ref int num,
-            Icons icon,
-            Color color,
-            float rectAlpha,
-            string tooltip = null)
+        public static void DrawIconOnBar(Rect psiRect, ref int num, Icons icon, Color color, float rectAlpha, int rowCount, string tooltip = null)
         {
             // only two columns visible
             if (num == Settings.ColBarSettings.IconsInColumn * 2)
@@ -80,7 +74,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, tooltip);
+            DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
 
             num++;
         }
@@ -103,14 +97,10 @@ namespace ColonistBarKF.PSI
             num++;
         }
 
-        private static void DrawIcon_onBar(
-            Rect rect,
-            Vector3 posOffset,
-            Material material,
-            Color color,
-            float rectAlpha,
-            string tooltip = null)
+        private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha, int rowCount, string tooltip = null)
         {
+        //    Widgets.DrawBoxSolid(rect, Color.cyan);
+
             color.a *= rectAlpha;
             Color GuiColor = GUI.color;
             GuiColor.a = rectAlpha;
@@ -120,47 +110,35 @@ namespace ColonistBarKF.PSI
 
             Rect iconRect = new Rect(rect);
 
-            iconRect.width /= Settings.ColBarSettings.IconsInColumn;
-            iconRect.height = iconRect.width;
-            iconRect.x = rect.xMin;
-            iconRect.y = rect.yMax;
+            float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
+
+            iconRect.height = iconRect.width = size;
+
 
             switch (Settings.ColBarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
-                    iconRect.x = rect.xMax - iconRect.width;
-                    iconRect.y = rect.yMax - iconRect.width;
-
-                    // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Left)
-                    // iconRect.x -= rect.width / 4;
+                    iconRect.x = rect.xMax - size;
+                    iconRect.y = rect.yMax - size;
                     break;
 
                 case Position.Alignment.Right:
                     iconRect.x = rect.xMin;
-                    iconRect.y = rect.yMax - iconRect.width;
-
-                    // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Right)
-                    // iconRect.x += rect.width / 4;
+                    iconRect.y = rect.yMax - size;
                     break;
 
                 case Position.Alignment.Top:
-                    iconRect.y = rect.yMax - iconRect.height;
-
-                    // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Top)
-                    // iconRect.y -= rect.height / 4;
+                    iconRect.y = rect.yMax - size;
                     break;
 
                 case Position.Alignment.Bottom:
                     iconRect.y = rect.yMin;
-
-                    // if (ColBarSettings.UseExternalMoodBar && ColBarSettings.MoodBarPos == Alignment.Bottom)
-                    // iconRect.y += rect.height / 4;
                     break;
             }
 
             // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * iconRect.width;
+            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * size;
             iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
 
             // On Colonist
@@ -169,7 +147,7 @@ namespace ColonistBarKF.PSI
             GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
             GUI.color = color;
 
-            iconRect.x += iconRect.width * 0.1f;
+            iconRect.x += size * 0.1f;
             iconRect.y += iconRect.height * 0.1f;
             iconRect.width *= 0.8f;
             iconRect.height *= 0.8f;

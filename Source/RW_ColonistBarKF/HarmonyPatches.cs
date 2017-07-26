@@ -26,6 +26,8 @@
         {
             HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
 
+            #region Colonist Bar Patches
+
             harmony.Patch(
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI)),
                 new HarmonyMethod(typeof(ColonistBar_KF), nameof(ColonistBarOnGUI_Prefix)),
@@ -60,6 +62,11 @@
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.MarkColonistsDirty)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(MarkColonistsDirty_Postfix)));
+            #endregion
+
+            #region Caravan
+
+            
 
             harmony.Patch(
                 AccessTools.Method(typeof(Caravan), nameof(Caravan.Notify_PawnAdded)),
@@ -80,6 +87,7 @@
                 AccessTools.Method(typeof(Caravan), nameof(Caravan.PostRemove)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Dirty_Postfix)));
+            #endregion
 
             harmony.Patch(
                 AccessTools.Method(typeof(Game), nameof(Game.AddMap)),
@@ -136,7 +144,6 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(PlaySettingsDirty_Prefix)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(PlaySettingsDirty_Postfix)));
 
-            // harmony.PatchAll(Assembly.GetExecutingAssembly());
             Log.Message(
                 "Colonistbar KF successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
