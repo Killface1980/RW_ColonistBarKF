@@ -78,9 +78,9 @@
             GUI.color = color;
 
             // testing
-        //    Widgets.DrawBox(outerRect);
+            //    Widgets.DrawBox(outerRect);
             BuildRects(pawnStats, ref outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect);
-          //  Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
+            //  Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
 
             Color background = color;
             if (ColBarSettings.UseGender)
@@ -638,6 +638,7 @@
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
             float offsetX = outerRect.x - Mathf.Min(psiRect.x, moodRect.x, pawnRect.x);
             offsetX += outerRect.xMax - Mathf.Max(psiRect.xMax, moodRect.xMax, pawnRect.xMax);
             offsetX /= 2;
@@ -650,10 +651,11 @@
 
             outerRect.x += offsetX;
             outerRect.width -= offsetX * 2;
-            outerRect.yMax = ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
-                                 ? height
-                                 : height + ColonistBar_KF.SpacingLabel;
-
+            outerRect.yMax =
+                ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                || ColBarSettings.MoodBarPos == Position.Alignment.Bottom
+                    ? height 
+                    : height + ColonistBar_KF.SpacingLabel;
         }
 
         private static void DrawCurrentJobTooltip(Pawn colonist, Rect pawnRect)

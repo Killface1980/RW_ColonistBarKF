@@ -35,6 +35,7 @@
             {
                 PSI.PSI.UpdateColonistStats(n);
             }
+            n.SpawnedAt = Find.TickManager.TicksGame;
             return n;
 
             // if (!PawnApparelStatCaches.ContainsKey(pawn))

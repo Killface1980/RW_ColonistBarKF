@@ -133,6 +133,8 @@
 
         public bool relationChecked = false;
 
+        public int SpawnedAt;
+
         public void ExposeData()
         {
 

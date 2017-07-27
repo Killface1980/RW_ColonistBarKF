@@ -662,20 +662,24 @@ namespace ColonistBarKF.PSI
 
         public static void CheckRelationWithColonists(Pawn pawn)
         {
-            if (pawn.relations.RelatedPawns.Any())
-            {
-                foreach (Pawn related in pawn.relations.RelatedPawns)
-                {
-                    if (related.IsColonist)
-                    {
-                        pawn.GetCache().hasRelationWithColonist = true;
-                    }
+            var skip = false;
 
-                    break;
+            if (pawn.relations.RelatedPawns.Any(x => x.IsColonist))
+            {
+
+                pawn.GetCache().hasRelationWithColonist = true;
+                skip = true;
+
+            }
+            if (!skip)
+            {
+                if (pawn.relations.DirectRelations.Any(x => x.otherPawn.IsColonist))
+                {
+                    pawn.GetCache().hasRelationWithColonist = true;
                 }
             }
-
             pawn.GetCache().relationChecked = true;
+
         }
 
         public static void DrawColonistIconsPSI(Pawn pawn)
@@ -1327,7 +1331,12 @@ namespace ColonistBarKF.PSI
 
             if (!pawnStats.relationChecked)
             {
-                CheckRelationWithColonists(pawn);
+                // wait till the pawn is properly spawned. Else FS won't find a relation.
+                if (pawnStats.SpawnedAt + 120 > Find.TickManager.TicksGame)
+                {
+                    CheckRelationWithColonists(pawn);
+                }
+                return;
             }
 
             // Log.Message("Relations checked");
@@ -1339,6 +1348,7 @@ namespace ColonistBarKF.PSI
             // Log.Message("Has relation");
             int iconNum = 0;
 
+            // Pawn is no colonist, thus no further stat checks
             Vector3 bodyLoc = pawn.DrawPos;
             {
                 DrawIconOnColonist(
@@ -1682,7 +1692,7 @@ namespace ColonistBarKF.PSI
             List<Thought> thoughts = new List<Thought>();
 
             pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
-            pawnStats.pawnHealth = pawn.health.summaryHealth.SummaryHealthPercent;
+            pawnStats.pawnHealth = 1f - pawn.health.summaryHealth.SummaryHealthPercent;
 
             // One time traits check
             if (!pawnStats.traitsCheck)
