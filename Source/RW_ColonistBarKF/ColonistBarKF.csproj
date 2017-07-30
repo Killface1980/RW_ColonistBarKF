@@ -64,7 +64,8 @@
     <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PawnstatsChecker.cs" />
-    <Compile Include="PSI\DrawIconEntry.cs" />
+    <Compile Include="PSI\Class1.cs" />
+    <Compile Include="PSI\IconEntryBar.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="CompPSI.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />

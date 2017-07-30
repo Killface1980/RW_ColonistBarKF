@@ -59,9 +59,9 @@
         public int prostho = 0;
         public int prosthoUnhappy = 0;
         public int nightOwlUnhappy = -1;
-        public bool isGreedy = false;
+        public bool hasGreedyTrait = false;
         public int greedyThought = -1;
-        public bool isJealous = false;
+        public bool hasJealousTrait = false;
         public int jealousThought = -1;
         public int unburied = -1;
         public bool isPacifist = false;
@@ -121,17 +121,17 @@
 
         public string jealousTooltip;
 
-        public string efficiencyTip;
-
         public bool hasRelationWithColonist = false;
 
         public bool relationChecked = false;
 
         public int SpawnedAt;
 
-        private List<DrawIconEntry> barIcons;
+        private List<IconEntryBar> barIcons;
 
-        public List<DrawIconEntry> BarIcons
+        private List<IconEntryPSI> psiIcons;
+
+        public List<IconEntryBar> BarIcons
         {
             get
             {
@@ -141,6 +141,18 @@
             set
             {
                 this.barIcons = value;
+            }
+        }
+
+        public List<IconEntryPSI> PSIIcons
+        {
+            get
+            {
+                return this.psiIcons;
+            }
+            set
+            {
+                psiIcons = value;
             }
         }
 

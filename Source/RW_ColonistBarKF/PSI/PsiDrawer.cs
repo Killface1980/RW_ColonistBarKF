@@ -59,23 +59,23 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        public static void DrawIconOnBar(Rect psiRect, DrawIconEntry iconEntry, int entry, int rowCount, int countOffset = 0)
+        public static void DrawIconOnBar(Rect psiRect, IconEntryBar iconEntryBar, int entry, int rowCount)
         {
 
-            Material material = PSIMaterials[iconEntry.icon];
+            Material material = PSIMaterials[iconEntryBar.icon];
 
             if (material == null)
             {
                 return;
             }
 
-            var posOffset = IconPosRectsBar[entry+countOffset];
+            var posOffset = IconPosRectsBar[entry];
 
             Color GuiColor = GUI.color;
-            GuiColor.a = iconEntry.color.a;
+            GuiColor.a = iconEntryBar.color.a;
             GUI.color = GuiColor;
 
-            material.color = iconEntry.color;
+            material.color = iconEntryBar.color;
 
             Rect iconRect = new Rect(psiRect);
 
@@ -114,7 +114,7 @@ namespace ColonistBarKF.PSI
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
             GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
-            GUI.color = iconEntry.color;
+            GUI.color = iconEntryBar.color;
 
             iconRect.x += size * 0.1f;
             iconRect.y += iconRect.height * 0.1f;
@@ -124,9 +124,9 @@ namespace ColonistBarKF.PSI
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = GuiColor;
 
-            if (iconEntry.tooltip != null)
+            if (iconEntryBar.tooltip != null)
             {
-                TooltipHandler.TipRegion(iconRect, iconEntry.tooltip);
+                TooltipHandler.TipRegion(iconRect, iconEntryBar.tooltip);
             }
         }
 
@@ -149,6 +149,57 @@ namespace ColonistBarKF.PSI
             DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
 
             num++;
+        }
+
+        public static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryBar, int entryCount, float opacity)
+        {
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                return;
+            }
+
+            Material material = PSIMaterials[entryBar.icon];
+            if (material == null)
+            {
+                Debug.LogError("Material = null.");
+                return;
+            }
+
+            Vector3 posOffset = IconPosVectorsPSI[entryCount];
+
+            entryBar.color.a = opacity;
+            material.color = entryBar.color;
+            Color guiColor = GUI.color;
+            GUI.color = entryBar.color;
+            Vector2 vectorAtBody;
+
+            float worldScale = WorldScale;
+            if (Settings.PsiSettings.IconsScreenScale)
+            {
+                worldScale = 45f;
+                vectorAtBody = bodyPos.MapToUIPosition();
+                vectorAtBody.x += posOffset.x * 45f;
+                vectorAtBody.y -= posOffset.z * 45f;
+            }
+            else
+            {
+                vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
+            }
+
+            float num2 = worldScale * (Settings.PsiSettings.IconSizeMult * 0.5f);
+
+            // On Colonist
+            Rect position = new Rect(
+                vectorAtBody.x,
+                vectorAtBody.y,
+                num2 * Settings.PsiSettings.IconSize,
+                num2 * Settings.PsiSettings.IconSize);
+            position.x -= position.width * 0.5f;
+            position.y -= position.height * 0.5f;
+
+            GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
+            GUI.color = guiColor;
+
         }
 
         public static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icon icon, Color color, float opacity)

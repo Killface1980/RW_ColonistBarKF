@@ -28,11 +28,7 @@ namespace ColonistBarKF
 
         public bool IconsScreenScale = true;
 
-        public float LimitApparelHealthLess = 0.5f;
-
         public float LimitBleedMult = 3f;
-
-        public float LimitDiseaseLess = 1f;
 
         // public float LimitMoodLess = 0.25f;
 

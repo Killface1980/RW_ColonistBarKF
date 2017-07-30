@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public struct DrawIconEntry
+    public struct IconEntryBar
     {
         public Icon icon;
 
@@ -10,7 +10,7 @@
 
         public string tooltip;
 
-        public DrawIconEntry(Icon icon, Color color, string tooltip)
+        public IconEntryBar(Icon icon, Color color, string tooltip)
         {
             this.icon = icon;
             this.color = color;
