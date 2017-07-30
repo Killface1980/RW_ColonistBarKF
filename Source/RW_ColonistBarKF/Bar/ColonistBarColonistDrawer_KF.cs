@@ -57,7 +57,7 @@
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            PawnStats pawnStats = colonist.GetPawnStats();
+            CompPSI pawnStats = colonist.TryGetComp<CompPSI>();
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width
@@ -491,7 +491,7 @@
         }
 
         private static void BuildRects(
-            PawnStats pawnStats,
+            CompPSI pawnStats,
             ref Rect outerRect,
             out Rect pawnRect,
             out Rect moodRect,

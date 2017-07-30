@@ -63,8 +63,8 @@
     <Compile Include="Alignment.cs" />
     <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
-    <Compile Include="PawnstatsChecker.cs" />
-    <Compile Include="PSI\Class1.cs" />
+    <None Include="PawnstatsChecker.cs" />
+    <Compile Include="PSI\IconEntryPSI.cs" />
     <Compile Include="PSI\IconEntryBar.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="CompPSI.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
-    <Compile Include="PSI\PawnStats.cs" />
+    <None Include="PSI\PawnStats.cs" />
     <None Include="CB_SpecialInjector.cs" />
     <Compile Include="Bar\ColonistBarTextures.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />

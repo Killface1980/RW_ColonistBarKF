@@ -48,7 +48,7 @@
                 int maxRows = 0;
                 foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsSpawned)
                 {
-                    maxRows = Mathf.Max(pawn.GetPawnStats().thisColCount, maxRows);
+                    maxRows = Mathf.Max(pawn.TryGetComp<CompPSI>().thisColCount, maxRows);
                 }
                 return maxRows;
             }

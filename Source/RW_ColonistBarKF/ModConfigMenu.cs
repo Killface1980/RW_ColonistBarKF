@@ -1177,7 +1177,7 @@ namespace ColonistBarKF
             GUILayout.BeginVertical(this._fondBoxes);
             GUILayout.Label(
                 "PSI.Settings.Sensitivity.Injured".Translate() + (int)(PsiSettings.LimitEfficiencyLess * 100.0) + " %");
-            PsiSettings.LimitEfficiencyLess = GUILayout.HorizontalSlider(PsiSettings.LimitEfficiencyLess, 0.01f, 0.99f);
+            PsiSettings.LimitEfficiencyLess = GUILayout.HorizontalSlider(PsiSettings.LimitEfficiencyLess, 0.01f, 1f);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this._fondBoxes);

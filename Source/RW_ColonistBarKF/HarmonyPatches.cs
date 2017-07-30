@@ -115,7 +115,7 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(EntriesDirty_Postfix)));
 
             harmony.Patch(
-                AccessTools.Method(typeof(Thing), nameof(Thing.SpawnSetup)),
+                AccessTools.Method(typeof(Pawn), nameof(Pawn.SpawnSetup)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
 
@@ -405,23 +405,23 @@
                 EntriesDirty_Postfix();
             }
 
-         // bool flag = false;
-         // foreach (ThingComp comp in __instance.AllComps)
-         // {
-         //     CompPSI psi = comp as CompPSI;
-         //
-         //     if (psi != null)
-         //     {
-         //         flag = true;
-         //     }
-         // }
-         //
-         // if (!flag)
-         // {
-         //     ThingComp thingComp = (ThingComp)Activator.CreateInstance(typeof(CompPSI));
-         //     thingComp.parent = __instance;
-         //     __instance.AllComps.Add(thingComp);
-         // }
+          bool flag = false;
+          foreach (ThingComp comp in __instance.AllComps)
+          {
+              CompPSI psi = comp as CompPSI;
+         
+              if (psi != null)
+              {
+                  flag = true;
+              }
+          }
+         
+          if (!flag)
+          {
+              ThingComp thingComp = (ThingComp)Activator.CreateInstance(typeof(CompPSI));
+              thingComp.parent = __instance;
+              __instance.AllComps.Add(thingComp);
+          }
         }
 
         #endregion Methods
