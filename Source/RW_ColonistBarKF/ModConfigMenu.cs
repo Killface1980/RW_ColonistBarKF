@@ -804,200 +804,200 @@ namespace ColonistBarKF
 
             this.DrawCheckboxAreaTarget(
                 "PSI.Settings.Visibility.TargetPoint".Translate(),
-                PSIMaterials[Icons.Target],
-                PSIMaterials[Icons.TargetHair],
-                PSIMaterials[Icons.TargetSkin],
+                PSIMaterials[Icon.Target],
+                PSIMaterials[Icon.TargetHair],
+                PSIMaterials[Icon.TargetSkin],
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Draft".Translate(),
-                PSIMaterials[Icons.Draft],
+                PSIMaterials[Icon.Draft],
                 ref ColBarSettings.ShowDraft,
                 ref PsiSettings.ShowDraft,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Unarmed".Translate(),
-                PSIMaterials[Icons.Unarmed],
+                PSIMaterials[Icon.Unarmed],
                 ref ColBarSettings.ShowUnarmed,
                 ref PsiSettings.ShowUnarmed,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Idle".Translate(),
-                PSIMaterials[Icons.Idle],
+                PSIMaterials[Icon.Idle],
                 ref ColBarSettings.ShowIdle,
                 ref PsiSettings.ShowIdle,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Sad".Translate(),
-                PSIMaterials[Icons.Sad],
+                PSIMaterials[Icon.Sad],
                 ref ColBarSettings.ShowSad,
                 ref PsiSettings.ShowSad,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Aggressive".Translate(),
-                PSIMaterials[Icons.Aggressive],
+                PSIMaterials[Icon.Aggressive],
                 ref ColBarSettings.ShowAggressive,
                 ref PsiSettings.ShowAggressive,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Panic".Translate(),
-                PSIMaterials[Icons.Panic],
+                PSIMaterials[Icon.Panic],
                 ref ColBarSettings.ShowPanic,
                 ref PsiSettings.ShowPanic,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Dazed".Translate(),
-                PSIMaterials[Icons.Dazed],
+                PSIMaterials[Icon.Dazed],
                 ref ColBarSettings.ShowDazed,
                 ref PsiSettings.ShowDazed,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Leave".Translate(),
-                PSIMaterials[Icons.Leave],
+                PSIMaterials[Icon.Leave],
                 ref ColBarSettings.ShowLeave,
                 ref PsiSettings.ShowLeave,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Hungry".Translate(),
-                PSIMaterials[Icons.Hungry],
+                PSIMaterials[Icon.Hungry],
                 ref ColBarSettings.ShowHungry,
                 ref PsiSettings.ShowHungry,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Tired".Translate(),
-                PSIMaterials[Icons.Tired],
+                PSIMaterials[Icon.Tired],
                 ref ColBarSettings.ShowTired,
                 ref PsiSettings.ShowTired,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.TooCold".Translate(),
-                PSIMaterials[Icons.TooCold],
+                PSIMaterials[Icon.TooCold],
                 ref ColBarSettings.ShowTooCold,
                 ref PsiSettings.ShowTooCold,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.TooHot".Translate(),
-                PSIMaterials[Icons.TooHot],
+                PSIMaterials[Icon.TooHot],
                 ref ColBarSettings.ShowTooHot,
                 ref PsiSettings.ShowTooHot,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.ApparelHealth".Translate(),
-                PSIMaterials[Icons.ApparelHealth],
+                PSIMaterials[Icon.ApparelHealth],
                 ref ColBarSettings.ShowApparelHealth,
                 ref PsiSettings.ShowApparelHealth,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Naked".Translate(),
-                PSIMaterials[Icons.Naked],
+                PSIMaterials[Icon.Naked],
                 ref ColBarSettings.ShowNaked,
                 ref PsiSettings.ShowNaked,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Health".Translate(),
-                PSIMaterials[Icons.Health],
+                PSIMaterials[Icon.Health],
                 ref ColBarSettings.ShowHealth,
                 ref PsiSettings.ShowHealth,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.MedicalAttention".Translate(),
-                PSIMaterials[Icons.MedicalAttention],
+                PSIMaterials[Icon.MedicalAttention],
                 ref ColBarSettings.ShowMedicalAttention,
                 ref PsiSettings.ShowMedicalAttention,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Injury".Translate(),
-                PSIMaterials[Icons.Effectiveness],
+                PSIMaterials[Icon.Effectiveness],
                 ref ColBarSettings.ShowEffectiveness,
                 ref PsiSettings.ShowEffectiveness,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Bloodloss".Translate(),
-                PSIMaterials[Icons.Bloodloss],
+                PSIMaterials[Icon.Bloodloss],
                 ref ColBarSettings.ShowBloodloss,
                 ref PsiSettings.ShowBloodloss,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pain".Translate(),
-                PSIMaterials[Icons.Pain],
+                PSIMaterials[Icon.Pain],
                 ref ColBarSettings.ShowPain,
                 ref PsiSettings.ShowPain,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Drunk".Translate(),
-                PSIMaterials[Icons.Drunk],
+                PSIMaterials[Icon.Drunk],
                 ref ColBarSettings.ShowDrunk,
                 ref PsiSettings.ShowDrunk,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Toxicity".Translate(),
-                PSIMaterials[Icons.Toxicity],
+                PSIMaterials[Icon.Toxicity],
                 ref ColBarSettings.ShowToxicity,
                 ref PsiSettings.ShowToxicity,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.NightOwl".Translate(),
-                PSIMaterials[Icons.NightOwl],
+                PSIMaterials[Icon.NightOwl],
                 ref ColBarSettings.ShowNightOwl,
                 ref PsiSettings.ShowNightOwl,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.LeftUnburied".Translate(),
-                PSIMaterials[Icons.LeftUnburied],
+                PSIMaterials[Icon.LeftUnburied],
                 ref ColBarSettings.ShowLeftUnburied,
                 ref PsiSettings.ShowLeftUnburied,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.CabinFever".Translate(),
-                PSIMaterials[Icons.CabinFever],
+                PSIMaterials[Icon.CabinFever],
                 ref ColBarSettings.ShowCabinFever,
                 ref PsiSettings.ShowCabinFever,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Bedroom".Translate(),
-                PSIMaterials[Icons.Bedroom],
+                PSIMaterials[Icon.Bedroom],
                 ref ColBarSettings.ShowBedroom,
                 ref PsiSettings.ShowBedroom,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Greedy".Translate(),
-                PSIMaterials[Icons.Greedy],
+                PSIMaterials[Icon.Greedy],
                 ref ColBarSettings.ShowGreedy,
                 ref PsiSettings.ShowGreedy,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Jealous".Translate(),
-                PSIMaterials[Icons.Jealous],
+                PSIMaterials[Icon.Jealous],
                 ref ColBarSettings.ShowJealous,
                 ref PsiSettings.ShowJealous,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pyromaniac".Translate(),
-                PSIMaterials[Icons.Pyromaniac],
+                PSIMaterials[Icon.Pyromaniac],
                 ref ColBarSettings.ShowPyromaniac,
                 ref PsiSettings.ShowPyromaniac,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Prosthophile".Translate(),
-                PSIMaterials[Icons.Prosthophile],
+                PSIMaterials[Icon.Prosthophile],
                 ref ColBarSettings.ShowProsthophile,
                 ref PsiSettings.ShowProsthophile,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Prosthophobe".Translate(),
-                PSIMaterials[Icons.Prosthophobe],
+                PSIMaterials[Icon.Prosthophobe],
                 ref ColBarSettings.ShowProsthophobe,
                 ref PsiSettings.ShowProsthophobe,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pacific".Translate(),
-                PSIMaterials[Icons.Pacific],
+                PSIMaterials[Icon.Pacific],
                 ref ColBarSettings.ShowPacific,
                 ref PsiSettings.ShowPacific,
                 ref num);
@@ -1065,7 +1065,7 @@ namespace ColonistBarKF
                                                                             1f;
                                                                         PsiSettings
                                                                                 .LimitEfficiencyLess =
-                                                                            0.28f;
+                                                                            0.6f;
                                                                         PsiSettings.LimitFoodLess
                                                                             = 0.2f;
 
@@ -1100,7 +1100,7 @@ namespace ColonistBarKF
                                                                             1f;
                                                                         PsiSettings
                                                                                 .LimitEfficiencyLess =
-                                                                            0.33f;
+                                                                            0.75f;
                                                                         PsiSettings.LimitFoodLess
                                                                             = 0.25f;
 
@@ -1135,7 +1135,7 @@ namespace ColonistBarKF
                                                                             1f;
                                                                         PsiSettings
                                                                                 .LimitEfficiencyLess =
-                                                                            0.45f;
+                                                                            0.9f;
                                                                         PsiSettings.LimitFoodLess
                                                                             = 0.3f;
 

@@ -64,7 +64,9 @@
     <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PawnstatsChecker.cs" />
+    <Compile Include="PSI\DrawIconEntry.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="CompPSI.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />
     <None Include="ColorPicker\ColorWrapper.cs" />
     <None Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -75,7 +77,7 @@
     <None Include="Mod.cs" />
     <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
-    <Compile Include="PSI\PSIMaterials.cs" />
+    <Compile Include="PSIMaterials.cs" />
     <Compile Include="PSI\PSI.cs" />
     <Compile Include="PSI\PawnStats.cs" />
     <None Include="CB_SpecialInjector.cs" />

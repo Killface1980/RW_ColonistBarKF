@@ -59,7 +59,79 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        public static void DrawIconOnBar(Rect psiRect, ref int num, Icons icon, Color color, float rectAlpha, int rowCount, string tooltip = null)
+        public static void DrawIconOnBar(Rect psiRect, DrawIconEntry iconEntry, int entry, int rowCount, int countOffset = 0)
+        {
+
+            Material material = PSIMaterials[iconEntry.icon];
+
+            if (material == null)
+            {
+                return;
+            }
+
+            var posOffset = IconPosRectsBar[entry+countOffset];
+
+            Color GuiColor = GUI.color;
+            GuiColor.a = iconEntry.color.a;
+            GUI.color = GuiColor;
+
+            material.color = iconEntry.color;
+
+            Rect iconRect = new Rect(psiRect);
+
+            float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
+
+            iconRect.height = iconRect.width = size;
+
+
+            switch (Settings.ColBarSettings.ColBarPsiIconPos)
+            {
+                case Position.Alignment.Left:
+                    iconRect.x = psiRect.xMax - size;
+                    iconRect.y = psiRect.yMax - size;
+                    break;
+
+                case Position.Alignment.Right:
+                    iconRect.x = psiRect.xMin;
+                    iconRect.y = psiRect.yMax - size;
+                    break;
+
+                case Position.Alignment.Top:
+                    iconRect.y = psiRect.yMax - size;
+                    break;
+
+                case Position.Alignment.Bottom:
+                    iconRect.y = psiRect.yMin;
+                    break;
+            }
+
+            // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
+            // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
+            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * size;
+            iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
+
+            // On Colonist
+            // iconRect.x -= iconRect.width * 0.5f;
+            // iconRect.y -= iconRect.height * 0.5f;
+            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
+            GUI.color = iconEntry.color;
+
+            iconRect.x += size * 0.1f;
+            iconRect.y += iconRect.height * 0.1f;
+            iconRect.width *= 0.8f;
+            iconRect.height *= 0.8f;
+
+            GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
+            GUI.color = GuiColor;
+
+            if (iconEntry.tooltip != null)
+            {
+                TooltipHandler.TipRegion(iconRect, iconEntry.tooltip);
+            }
+        }
+
+
+        public static void DrawIconOnBar(Rect psiRect, ref int num, Icon icon, Color color, float rectAlpha, int rowCount, string tooltip = null)
         {
             // only two columns visible
             if (num == Settings.ColBarSettings.IconsInColumn * 2)
@@ -79,7 +151,7 @@ namespace ColonistBarKF.PSI
             num++;
         }
 
-        public static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icons icon, Color color, float opacity)
+        public static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icon icon, Color color, float opacity)
         {
             if (WorldRendererUtility.WorldRenderedNow)
             {
@@ -93,13 +165,13 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            DrawIcon_posOffset(bodyPos, IconPosVectorsPsi[num], material, color, opacity);
+            DrawIcon_posOffset(bodyPos, IconPosVectorsPSI[num], material, color, opacity);
             num++;
         }
 
         private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha, int rowCount, string tooltip = null)
         {
-        //    Widgets.DrawBoxSolid(rect, Color.cyan);
+            //    Widgets.DrawBoxSolid(rect, Color.cyan);
 
             color.a *= rectAlpha;
             Color GuiColor = GUI.color;

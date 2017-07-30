@@ -1,4 +1,4 @@
-﻿namespace ColonistBarKF.PSI
+﻿namespace ColonistBarKF
 {
     using System;
     using System.Linq;
@@ -7,45 +7,43 @@
 
     using Verse;
 
-    public enum Icons
+    public enum Icon
     {
         None,
+        Draft,
+        Unarmed,
+        Pacific,
+        Pyromaniac,
+        Bloodloss,
+        Health,
+        Hungry,
+        Tired,
+        TooCold,
+        TooHot,
+        Aggressive,
+        Leave,
+        Dazed,
+        Panic,
         Target,
         TargetHair,
         TargetSkin,
-        Aggressive,
         ApparelHealth,
-        Bloodloss,
-        TooCold,
-        Dazed,
-        DeadColonist,
-        Draft,
         Drunk,
         Greedy,
-        Health,
-        TooHot,
-        Hungry,
         Idle,
         Effectiveness,
         Jealous,
-        Leave,
         Naked,
         NightOwl,
-        Pacific,
         Pain,
         Prosthophile,
         Prosthophobe,
-        Pyromaniac,
         CabinFever,
         Sad,
-        Tired,
-        Unarmed,
-        Panic,
         MedicalAttention,
         LeftUnburied,
         Bedroom,
         Toxicity,
-        Marriage,
         Length
     }
 
@@ -61,7 +59,7 @@
             this._matLibName = matLib;
         }
 
-        public Material this[Icons icon] => this._data[(int)icon];
+        public Material this[Icon icon] => this._data[(int)icon];
 
         private Material LoadIconMat(string path, bool smooth = false)
         {
@@ -101,15 +99,15 @@
 
         public void ReloadTextures(bool smooth = false)
         {
-            foreach (Icons icons in Enum.GetValues(typeof(Icons)).Cast<Icons>())
+            foreach (Icon icons in Enum.GetValues(typeof(Icon)).Cast<Icon>())
             {
                 switch (icons)
                 {
-                    case Icons.None:
-                    case Icons.Length:
+                    case Icon.None:
+                    case Icon.Length:
                         continue;
                     default:
-                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icons), icons);
+                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
                         this._data[(int)icons] = this.LoadIconMat(path, smooth);
                         continue;
                 }

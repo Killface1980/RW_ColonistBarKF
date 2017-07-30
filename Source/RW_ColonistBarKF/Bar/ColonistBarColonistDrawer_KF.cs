@@ -57,7 +57,7 @@
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            PawnStats pawnStats = colonist.GetCache();
+            PawnStats pawnStats = colonist.GetPawnStats();
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width

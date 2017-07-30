@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using ColonistBarKF.PSI;
+
     using RimWorld;
 
     using UnityEngine;
@@ -29,8 +31,6 @@
 
         // public float Drunkness = 0f;
         public int BedStatus = -1;
-
-        public bool IsSick = false;
 
         public int CabinFeverMoodLevel = 0;
 
@@ -89,12 +89,6 @@
 
         public string healthTip;
 
-        public bool ShouldBeTendedNowUrgent;
-
-        public bool ShouldBeTendedNow;
-
-        public bool ShouldHaveSurgeryDoneNow;
-
         public int LastStatUpdate;
 
         public float sickMoodOffset;
@@ -135,9 +129,24 @@
 
         public int SpawnedAt;
 
+        private List<DrawIconEntry> barIcons;
+
+        public List<DrawIconEntry> BarIcons
+        {
+            get
+            {
+                return this.barIcons;
+            }
+
+            set
+            {
+                this.barIcons = value;
+            }
+        }
+
         public void ExposeData()
         {
-
+            Scribe_Values.Look(ref this.relationChecked, "relationChecked");
         }
     }
 }

@@ -48,7 +48,7 @@
                 int maxRows = 0;
                 foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsSpawned)
                 {
-                    maxRows = Mathf.Max(pawn.GetCache().thisColCount, maxRows);
+                    maxRows = Mathf.Max(pawn.GetPawnStats().thisColCount, maxRows);
                 }
                 return maxRows;
             }
@@ -69,6 +69,7 @@
         public static Vector2 BaseSize => new Vector2(
                                                                                                     Settings.ColBarSettings.BaseSizeFloat,
             Settings.ColBarSettings.BaseSizeFloat);
+
         private static bool ShowGroupFrames
         {
             get

@@ -19,7 +19,7 @@
 
         #region Methods
 
-        public static PawnStats GetCache(this Pawn pawn)
+        public static PawnStats GetPawnStats(this Pawn pawn)
         {
             foreach (PawnStats c in _pawnCache)
             {
