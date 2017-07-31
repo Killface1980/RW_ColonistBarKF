@@ -2,16 +2,20 @@
 
 namespace ColonistBarKF
 {
-    using ColonistBarKF.Bar;
-    using ColonistBarKF.PSI;
-    using FacialStuff.Detouring;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using UnityEngine;
-    using Verse;
+
+    using ColonistBarKF.Bar;
+    using ColonistBarKF.PSI;
+
+    using FacialStuff.Detouring;
 
     using static Settings;
+
+    using UnityEngine;
+
+    using Verse;
 
     public class ColonistBarKF_Settings : Window
     {

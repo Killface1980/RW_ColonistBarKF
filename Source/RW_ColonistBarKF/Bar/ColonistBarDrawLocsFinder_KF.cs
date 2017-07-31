@@ -1,12 +1,15 @@
 ﻿namespace ColonistBarKF.Bar
 {
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
-    using UnityEngine;
-    using Verse;
+
+    using RimWorld;
 
     using static Settings;
+
+    using UnityEngine;
+
+    using Verse;
 
     public class ColonistBarDrawLocsFinder_KF
     {

@@ -31,7 +31,6 @@ namespace ColonistBarKF
         public float LimitBleedMult = 3f;
 
         // public float LimitMoodLess = 0.25f;
-
         public float MarginHorizontal = 520f;
 
         public float MarginTop = 21f;

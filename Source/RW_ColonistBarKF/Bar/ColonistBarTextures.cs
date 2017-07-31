@@ -132,7 +132,6 @@
         // public static Color ColorRedAlert = new Color(0.95f, 0, 0);
         // public static Color ColorOrangeAlert = Color20To16;
         // public static Color ColorYellowAlert = Color15To11;
-
         public static Texture2D resolvedIcon;
     }
 }

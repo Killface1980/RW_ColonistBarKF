@@ -3,16 +3,19 @@ using static ColonistBarKF.PSI.PSIDrawer;
 
 namespace ColonistBarKF.PSI
 {
-    using FacialStuff.Detouring;
-    using RimWorld;
-    using RimWorld.Planet;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.Detouring;
+
     using Harmony;
 
+    using RimWorld;
+    using RimWorld.Planet;
+
     using UnityEngine;
+
     using Verse;
     using Verse.AI;
 
@@ -46,15 +49,46 @@ namespace ColonistBarKF.PSI
 
         public static float WorldScale { get; private set; } = 1f;
 
-
-
-        public static void DrawAnimalIcons(Pawn animal)
+        private static void DrawAnimalIcons(Pawn animal)
         {
-            if (!animal.Spawned)
+            if (!animal.Spawned || animal.Dead)
             {
                 return;
             }
 
+            int iconNum = 0;
+            Vector3 bodyLoc = animal.DrawPos;
+
+            if (animal.Faction != null && animal.Faction.IsPlayer)
+            {
+                if (animal.health?.hediffSet != null)
+                {
+                    float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
+
+                    if (hediffSetBleedRateTotal > 0.01f)
+                    {
+                        DrawIconOnColonist(
+                            bodyLoc,
+                            ref iconNum,
+                            Icon.Bloodloss,
+                            gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                            ViewOpacityCrit);
+                    }
+                }
+                if (animal.health?.summaryHealth != null)
+                {
+                    float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
+                    if (summaryHealthSummaryHealthPercent > 0.01f)
+                    {
+                        DrawIconOnColonist(
+                            bodyLoc,
+                            ref iconNum,
+                            Icon.Health,
+                            gradient4.Evaluate(summaryHealthSummaryHealthPercent),
+                            ViewOpacityCrit);
+                    }
+                }
+            }
             if (!animal.InAggroMentalState)
             {
                 return;
@@ -65,15 +99,12 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Vector3 drawPos = animal.DrawPos;
-            Vector3 bodyPos = drawPos;
-            int num = 0;
-            DrawIconOnColonist(bodyPos, ref num, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
+            DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
         }
 
         public static void DrawColonistIconsBar(Pawn pawn, Rect psiRect, float rectAlpha)
         {
-            CompPSI pawnStats = pawn.TryGetComp<CompPSI>();
+            CompPSI pawnStats = pawn.GetComp<CompPSI>();
 
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
@@ -109,11 +140,11 @@ namespace ColonistBarKF.PSI
                     iconEntryBar.color.a *= rectAlpha;
                     DrawIconOnBar(psiRect, iconEntryBar, index + barIconNum, rowCount);
                 }
+
                 barIconNum += maxRowCount;
             }
 
             // Idle - bar icon already included - vanilla
-
             int colCount = Mathf.CeilToInt((float)barIconNum / Settings.ColBarSettings.IconsInColumn);
 
             pawnStats.thisColCount = colCount;
@@ -126,13 +157,12 @@ namespace ColonistBarKF.PSI
         public static void DrawColonistIconsPSI(Pawn pawn)
         {
             // TODO: Make list item like ...OnBar
-
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
                 return;
             }
 
-            CompPSI pawnStats = pawn.TryGetComp<CompPSI>();
+            CompPSI pawnStats = pawn.GetComp<CompPSI>();
 
             if (pawnStats == null)
             {
@@ -190,6 +220,7 @@ namespace ColonistBarKF.PSI
                     DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Draft, ColVermillion, ViewOpacityCrit);
                 }
             }
+
             List<IconEntryPSI> drawIconEntries = pawnStats.PSIIcons;
             if (!drawIconEntries.NullOrEmpty())
             {
@@ -209,7 +240,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            CompPSI pawnStats = pawn.TryGetComp<CompPSI>();
+            CompPSI pawnStats = pawn.GetComp<CompPSI>();
 
             if (pawnStats == null)
             {
@@ -223,6 +254,7 @@ namespace ColonistBarKF.PSI
                 {
                     pawnStats.CheckRelationWithColonists(pawn);
                 }
+
                 return;
             }
 
@@ -238,12 +270,25 @@ namespace ColonistBarKF.PSI
             // Pawn is no colonist, thus no further stat checks
             Vector3 bodyLoc = pawn.DrawPos;
             {
+                float hediffSetBleedRateTotal = pawn.health.hediffSet.BleedRateTotal;
+
+                if (hediffSetBleedRateTotal > 0.01f)
+                {
+                    DrawIconOnColonist(
+                        bodyLoc,
+                        ref iconNum,
+                        Icon.Bloodloss,
+                        gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                        ViewOpacityCrit);
+                }
+
                 DrawIconOnColonist(
                     bodyLoc,
                     ref iconNum,
                     Icon.Health,
                     gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
                     ViewOpacityCrit);
+
             }
         }
 
@@ -352,10 +397,6 @@ namespace ColonistBarKF.PSI
             gradientRedAlertToNeutral.SetKeys(gck, gak);
         }
 
-        public override void FinalizeInit()
-        {
-            Reinit();
-        }
 
         public override void GameComponentOnGUI()
         {
@@ -456,8 +497,56 @@ namespace ColonistBarKF.PSI
             WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);
         }
 
+        public override void LoadedGame()
+        {
+            base.LoadedGame();
+        }
 
+        public override void StartedNewGame()
+        {
+            base.StartedNewGame();
+        }
 
+        public override void FinalizeInit()
+        {
+            InjectCompPSI();
+            Reinit();
+        }
+
+        private static void InjectCompPSI()
+        {
+            Log.Message("Start injecting PSI to pawns ...");
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(x => x.race != null && x.race.Humanlike && x.race.IsFlesh))
+            {
+                Log.Message("PSI check: " + def);
+                if (def?.comps != null)
+                {
+                    def.comps.Add(new CompProperties(typeof(CompPSI)));
+                    Log.Message("PSI injected " + def);
+                }
+            }
+
+            // foreach (Pawn pawn in PawnsFinder.AllMaps)
+            // {
+            // if (pawn.RaceProps.Animal)
+            // {
+            // continue;
+            // }
+            // bool flag = false;
+            // foreach (ThingComp comp in pawn.AllComps)
+            // {
+            // CompPSI psi = comp as CompPSI;
+            // if (psi != null)
+            // {
+            // flag = true;
+            // }
+            // }
+            // if (flag)
+            // {
+            // pawn.InitializeComps();
+            // }
+            // }
+        }
 
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)
         // {
@@ -503,6 +592,7 @@ namespace ColonistBarKF.PSI
                     num1 = num2;
                     num2 = num3;
                 }
+
                 float y = Altitudes.AltitudeFor(AltitudeLayer.MetaOverlays);
 
                 IconPosVectorsPSI[index] = new Vector3(

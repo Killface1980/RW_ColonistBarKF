@@ -5,7 +5,9 @@ using System.Text;
 
 namespace ColonistBarKF
 {
+    using static ColonistBarKF.Bar.ColonistBarTextures;
     using ColonistBarKF.PSI;
+    using static ColonistBarKF.PSI.PSIDrawer;
 
     using RimWorld;
 
@@ -13,10 +15,6 @@ namespace ColonistBarKF
 
     using Verse;
     using Verse.AI;
-
-    using static ColonistBarKF.Bar.ColonistBarTextures;
-
-    using static ColonistBarKF.PSI.PSIDrawer;
 
     public class CompPSI : ThingComp
     {
@@ -163,34 +161,49 @@ namespace ColonistBarKF
             {
                 return this.psiIcons;
             }
+
             set
             {
                 this.psiIcons = value;
             }
         }
 
-        public override void CompTickRare()
+        public override void CompTick()
         {
-            base.CompTickRare();
-            CheckStats();
+            base.CompTick();
+
+            if (!this.PSIPawn.IsColonist && !this.PSIPawn.IsPrisoner)
+            {
+                return;
+            }
+
+            if (this.entriesDirty)
+            {
+                this.UpdateColonistStats();
+                this.entriesDirty = false;
+            }
+
+            this.CheckStats();
 
         }
 
-        private void CheckStats()
+        private bool entriesDirty = true;
+
+        public void CheckStats()
         {
             if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
             {
                 return;
             }
 
-            float nextUpdate = LastStatUpdate
-                               + NextStatUpdate * Find.TickManager.TickRateMultiplier;
+            float nextUpdate = this.LastStatUpdate
+                               + this.NextStatUpdate * Find.TickManager.TickRateMultiplier;
 
             if (Find.TickManager.TicksGame > nextUpdate)
             {
-                UpdateColonistStats();
-                NextStatUpdate = Rand.Range(60f, 180f);
-                LastStatUpdate = Find.TickManager.TicksGame;
+                this.UpdateColonistStats();
+                this.NextStatUpdate = Rand.Range(60f, 180f);
+                this.LastStatUpdate = Find.TickManager.TicksGame;
 
                 // Log.Message(
                 // "CBKF updated stat " + pawnStats.pawn.Name + ", next update in " + pawnStats.NextStatUpdate*Find.TickManager.TickRateMultiplier
@@ -200,23 +213,24 @@ namespace ColonistBarKF
 
         public void CheckRelationWithColonists(Pawn pawn)
         {
-            var skip = false;
+            bool skip = false;
 
             if (pawn.relations.RelatedPawns.Any(x => x.IsColonist))
             {
-
-                hasRelationWithColonist = true;
+                this.hasRelationWithColonist = true;
                 skip = true;
 
             }
+
             if (!skip)
             {
                 if (pawn.relations.DirectRelations.Any(x => x.otherPawn.IsColonist))
                 {
-                    hasRelationWithColonist = true;
+                    this.hasRelationWithColonist = true;
                 }
             }
-            relationChecked = true;
+
+            this.relationChecked = true;
 
         }
 
@@ -227,22 +241,15 @@ namespace ColonistBarKF
 
         public Pawn PSIPawn => this.psiPawn ?? (this.psiPawn = this.parent as Pawn);
 
-        public override void CompTick()
-        {
-            base.CompTick();
-            this.UpdateColonistStats();
-        }
-
         private void UpdateColonistStats()
         {
             Pawn pawn = this.PSIPawn;
-            var psiIconList = new List<IconEntryPSI>();
-            var barIconList = new List<IconEntryBar>();
-            var barSettings = Settings.ColBarSettings;
-            var psiSettings = Settings.PsiSettings;
+            List<IconEntryPSI> psiIconList = new List<IconEntryPSI>();
+            List<IconEntryBar> barIconList = new List<IconEntryBar>();
+            SettingsColonistBar barSettings = Settings.ColBarSettings;
+            SettingsPSI psiSettings = Settings.PsiSettings;
 
-
-            if (!pawn.Spawned || pawn.Map == null || !pawn.RaceProps.Humanlike)
+            if (!pawn.Spawned || pawn.Map == null)
             {
                 return;
             }
@@ -251,6 +258,7 @@ namespace ColonistBarKF
             {
                 return;
             }
+
             float viewOpacity = psiSettings.IconOpacity;
             float viewOpacityCrit = PSI.PSI.ViewOpacityCrit;
 
@@ -273,11 +281,6 @@ namespace ColonistBarKF
                 this.CheckTraits(pawn);
             }
 
-            if (pawn.Dead)
-            {
-                this.BGColor = Color.gray;
-            }
-
             if (this.isPacifist)
             {
                 if (barSettings.ShowPacific)
@@ -288,13 +291,10 @@ namespace ColonistBarKF
                             ColBlueishGreen,
                             "IsIncapableOfViolence".Translate(pawn.NameStringShort)));
                 }
+
                 if (psiSettings.ShowPacific)
                 {
-                    psiIconList.Add(
-                        new IconEntryPSI(
-                            Icon.Pacific,
-                            ColBlueishGreen,
-                            viewOpacity));
+                    psiIconList.Add(new IconEntryPSI(Icon.Pacific, ColBlueishGreen, viewOpacity));
                 }
             }
 
@@ -308,35 +308,25 @@ namespace ColonistBarKF
                             ColorNeutralStatusOpaque,
                             "PSI.Settings.Visibility.Unarmed".Translate()));
                 }
+
                 if (psiSettings.ShowUnarmed)
                 {
-                    psiIconList.Add(
-                        new IconEntryPSI(
-                            Icon.Unarmed,
-                            ColorNeutralStatusOpaque,
-                            viewOpacity));
+                    psiIconList.Add(new IconEntryPSI(Icon.Unarmed, ColorNeutralStatusOpaque, viewOpacity));
                 }
             }
 
             // Trait Pyromaniac
-
             if (this.isPyromaniac)
             {
                 if (barSettings.ShowPyromaniac)
                 {
                     barIconList.Add(
-                        new IconEntryBar(
-                            Icon.Pyromaniac,
-                            ColYellow,
-                            "PSI.Settings.Visibility.Pyromaniac".Translate()));
+                        new IconEntryBar(Icon.Pyromaniac, ColYellow, "PSI.Settings.Visibility.Pyromaniac".Translate()));
                 }
+
                 if (psiSettings.ShowPyromaniac)
                 {
-                    psiIconList.Add(
-                        new IconEntryPSI(
-                            Icon.Pyromaniac,
-                            ColYellow,
-                            viewOpacityCrit));
+                    psiIconList.Add(new IconEntryPSI(Icon.Pyromaniac, ColYellow, viewOpacityCrit));
                 }
             }
 
@@ -348,8 +338,8 @@ namespace ColonistBarKF
             array = PSI.PSI._pawnCapacities;
             foreach (PawnCapacityDef pawnCapacityDef in array)
             {
-                if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
                 {
+                    // if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
                     float level = pawn.health.capacities.GetLevel(pawnCapacityDef);
                     if (level < efficiency)
                     {
@@ -363,11 +353,13 @@ namespace ColonistBarKF
                             efficiencyTip += "\n" + "PSI.Efficiency".Translate() + ": " + pawnCapacityDef.LabelCap + " "
                                              + level.ToStringPercent();
                         }
+
                         efficiencyTotal = Mathf.Min(level, efficiencyTotal);
                         flag2 = true;
                     }
                 }
             }
+
             if (flag2)
             {
                 if (barSettings.ShowEffectiveness)
@@ -375,15 +367,18 @@ namespace ColonistBarKF
                     barIconList.Add(
                         new IconEntryBar(
                             Icon.Effectiveness,
-                            gradientRedAlertToNeutral.Evaluate(efficiencyTotal / Settings.PsiSettings.LimitEfficiencyLess),
+                            gradientRedAlertToNeutral.Evaluate(
+                                efficiencyTotal / Settings.PsiSettings.LimitEfficiencyLess),
                             efficiencyTip));
                 }
+
                 if (psiSettings.ShowEffectiveness)
                 {
                     psiIconList.Add(
                         new IconEntryPSI(
                             Icon.Effectiveness,
-                            gradientRedAlertToNeutral.Evaluate(efficiencyTotal / Settings.PsiSettings.LimitEfficiencyLess),
+                            gradientRedAlertToNeutral.Evaluate(
+                                efficiencyTotal / Settings.PsiSettings.LimitEfficiencyLess),
                             viewOpacityCrit));
                 }
             }
@@ -463,11 +458,10 @@ namespace ColonistBarKF
             float temperatureForCell = GenTemperature.GetTemperatureForCell(pawn.Position, pawn.Map);
 
             this.TooCold = (float)((pawn.ComfortableTemperatureRange().min
-                                         - (double)Settings.PsiSettings.LimitTempComfortOffset - temperatureForCell)
-                                        / 10f);
+                                    - (double)Settings.PsiSettings.LimitTempComfortOffset - temperatureForCell) / 10f);
 
             this.TooHot = (float)((temperatureForCell - (double)pawn.ComfortableTemperatureRange().max
-                                        - Settings.PsiSettings.LimitTempComfortOffset) / 10f);
+                                   - Settings.PsiSettings.LimitTempComfortOffset) / 10f);
 
             this.TooCold = Mathf.Clamp(this.TooCold, 0f, 2f);
 
@@ -478,15 +472,14 @@ namespace ColonistBarKF
             {
                 if (barSettings.ShowTooCold)
                 {
-                    barIconList.Add(new IconEntryBar(Icon.TooCold, gradient4.Evaluate(this.TooCold / 2), "TooCold".Translate()));
+                    barIconList.Add(
+                        new IconEntryBar(Icon.TooCold, gradient4.Evaluate(this.TooCold / 2), "TooCold".Translate()));
                 }
+
                 if (psiSettings.ShowTooCold)
                 {
                     psiIconList.Add(
-                        new IconEntryPSI(
-                            Icon.TooCold,
-                            gradient4.Evaluate(this.TooCold / 2),
-                            viewOpacityCrit));
+                        new IconEntryPSI(Icon.TooCold, gradient4.Evaluate(this.TooCold / 2), viewOpacityCrit));
                 }
             }
 
@@ -494,8 +487,10 @@ namespace ColonistBarKF
             {
                 if (barSettings.ShowTooHot)
                 {
-                    barIconList.Add(new IconEntryBar(Icon.TooCold, gradient4.Evaluate(this.TooHot / 2), "TooHot".Translate()));
+                    barIconList.Add(
+                        new IconEntryBar(Icon.TooCold, gradient4.Evaluate(this.TooHot / 2), "TooHot".Translate()));
                 }
+
                 if (psiSettings.ShowTooHot)
                 {
                     psiIconList.Add(
@@ -532,6 +527,7 @@ namespace ColonistBarKF
                             barIconList.Add(new IconEntryBar(Icon.Leave, ColVermillion, null));
                         }
                     }
+
                     if (psiSettings.ShowLeave)
                     {
                         if (this.MentalSanity == MentalStateDefOf.PanicFlee)
@@ -548,6 +544,7 @@ namespace ColonistBarKF
                             // + MentalStateDefOf.WanderPsychotic
                             barIconList.Add(new IconEntryBar(Icon.Dazed, ColYellow, null));
                         }
+
                         if (psiSettings.ShowDazed)
                         {
                             // + MentalStateDefOf.WanderPsychotic
@@ -562,6 +559,7 @@ namespace ColonistBarKF
                         {
                             barIconList.Add(new IconEntryBar(Icon.Panic, ColYellow, null));
                         }
+
                         if (psiSettings.ShowPanic)
                         {
                             psiIconList.Add(new IconEntryPSI(Icon.Panic, ColYellow, viewOpacityCrit));
@@ -569,6 +567,7 @@ namespace ColonistBarKF
                     }
                 }
             }
+
             // Hungry
             if (pawn.needs.food.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
             {
@@ -583,6 +582,7 @@ namespace ColonistBarKF
                                 pawn.needs.food.CurLevel / Settings.PsiSettings.LimitFoodLess),
                             tooltip));
                 }
+
                 if (psiSettings.ShowHungry)
                 {
                     string tooltip = pawn.needs.food.GetTipString();
@@ -609,6 +609,7 @@ namespace ColonistBarKF
                                 pawn.needs.rest.CurLevel / Settings.PsiSettings.LimitRestLess),
                             tooltip));
                 }
+
                 if (psiSettings.ShowTired)
                 {
                     string tooltip = pawn.needs.rest.CurCategory.GetLabel();
@@ -620,7 +621,6 @@ namespace ColonistBarKF
                             viewOpacityCrit));
                 }
             }
-
 
             // Mental Breaker for MoodBars
             if (pawn.needs?.mood != null)
@@ -676,50 +676,45 @@ namespace ColonistBarKF
                         if (barSettings.ShowMedicalAttention)
                         {
                             barIconList.Add(
-                            new IconEntryBar(
-                                Icon.MedicalAttention,
-                                ColVermillion,
-                                "NeedsTendingNowUrgent".Translate()));
+                                new IconEntryBar(
+                                    Icon.MedicalAttention,
+                                    ColVermillion,
+                                    "NeedsTendingNowUrgent".Translate()));
                         }
+
                         if (psiSettings.ShowMedicalAttention)
                         {
-                            psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.MedicalAttention,
-                                ColVermillion,
-                                viewOpacityCrit));
+                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColVermillion, viewOpacityCrit));
                         }
                     }
-                    if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                    else if (HealthAIUtility.ShouldBeTendedNow(pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
                             barIconList.Add(
-                             new IconEntryBar(Icon.MedicalAttention, ColYellow, "NeedsTendingNow".Translate()));
+                                new IconEntryBar(Icon.MedicalAttention, ColYellow, "NeedsTendingNow".Translate()));
                         }
+
                         if (psiSettings.ShowMedicalAttention)
                         {
-                            psiIconList.Add(
-                             new IconEntryPSI(Icon.MedicalAttention, ColYellow, viewOpacityCrit));
+                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColYellow, viewOpacityCrit));
                         }
                     }
+
                     if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
                             barIconList.Add(
-                             new IconEntryBar(
-                                 Icon.MedicalAttention,
-                                 ColBlueishGreen,
-                                 "ShouldHaveSurgeryDoneNow".Translate()));
+                                new IconEntryBar(
+                                    Icon.MedicalAttention,
+                                    ColBlueishGreen,
+                                    "ShouldHaveSurgeryDoneNow".Translate()));
                         }
+
                         if (psiSettings.ShowMedicalAttention)
                         {
-                            psiIconList.Add(
-                             new IconEntryPSI(
-                                 Icon.MedicalAttention,
-                                 ColBlueishGreen,
-                                 viewOpacityCrit));
+                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColBlueishGreen, viewOpacityCrit));
                         }
                     }
                 }
@@ -756,6 +751,7 @@ namespace ColonistBarKF
                         {
                             this.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
                             this.ToxicBuildUpVisible = Mathf.InverseLerp(0.049f, 1f, hediff.Severity);
+                            continue;
                         }
 
                         HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
@@ -763,8 +759,7 @@ namespace ColonistBarKF
                         {
                             this.severity = Mathf.Max(this.severity, hediff.Severity);
                             this.immunity = compImmunizable.Immunity;
-                            float basehealth = this.HealthDisease - (this.severity - this.immunity / 4)
-                                               - 0.25f;
+                            float basehealth = this.HealthDisease - (this.severity - this.immunity / 4) - 0.25f;
                             this.HasLifeThreateningDisease = true;
                             this.HealthDisease = basehealth;
                         }
@@ -811,12 +806,12 @@ namespace ColonistBarKF
                         // break;
                     }
                 }
+
                 if (this.DiseaseDisappearance < Settings.PsiSettings.LimitDiseaseLess)
                 {
-                    string tooltip = this.sickTip + "\n" + this.healthTip + "\n" + "Immunity".Translate()
-                                     + " / " + "PSI.DiseaseProgress".Translate() + ": \n"
-                                     + this.immunity.ToStringPercent() + " / "
-                                     + this.severity.ToStringPercent() + ": \n" + this.sickMoodOffset;
+                    string tooltip = this.sickTip + "\n" + this.healthTip + "\n" + "Immunity".Translate() + " / "
+                                     + "PSI.DiseaseProgress".Translate() + ": \n" + this.immunity.ToStringPercent()
+                                     + " / " + this.severity.ToStringPercent() + ": \n" + this.sickMoodOffset;
 
                     if (barSettings.ShowHealth)
                     {
@@ -827,6 +822,7 @@ namespace ColonistBarKF
                                 gradient4.Evaluate(this.DiseaseDisappearance / psiSettings.LimitDiseaseLess),
                                 tooltip));
                     }
+
                     if (psiSettings.ShowHealth)
                     {
                         // Regular Sickness
@@ -837,28 +833,23 @@ namespace ColonistBarKF
                                 viewOpacityCrit));
                     }
                 }
-                else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+            }
+            else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+            {
+                string tooltip = "Health".Translate() + ": "
+                                 + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
+                if (barSettings.ShowHealth)
                 {
-                    string tooltip = "Health".Translate() + ": "
-                                     + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
-                    if (barSettings.ShowHealth)
-                    {
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.Health,
-                                gradient4.Evaluate(this.pawnHealth),
-                                tooltip));
-                    }
-                    if (psiSettings.ShowHealth)
-                    {
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.Health,
-                                gradient4.Evaluate(this.pawnHealth),
-                                viewOpacityCrit));
-                    }
+                    barIconList.Add(new IconEntryBar(Icon.Health, gradient4.Evaluate(this.pawnHealth), tooltip));
+                }
+
+                if (psiSettings.ShowHealth)
+                {
+                    psiIconList.Add(
+                        new IconEntryPSI(Icon.Health, gradient4.Evaluate(this.pawnHealth), viewOpacityCrit));
                 }
             }
+
             // Toxicity buildup
             if (this.ToxicBuildUpVisible > 0f)
             {
@@ -866,16 +857,18 @@ namespace ColonistBarKF
                 {
                     string tooltip = this.toxicTip;
 
-                    barIconList.Add(new IconEntryBar(Icon.Toxicity, gradient4.Evaluate(this.ToxicBuildUpVisible), tooltip));
+                    barIconList.Add(
+                        new IconEntryBar(Icon.Toxicity, gradient4.Evaluate(this.ToxicBuildUpVisible), tooltip));
                 }
+
                 if (psiSettings.ShowToxicity)
                 {
                     string tooltip = this.toxicTip;
 
-                    psiIconList.Add(new IconEntryPSI(Icon.Toxicity, gradient4.Evaluate(this.ToxicBuildUpVisible), viewOpacityCrit));
+                    psiIconList.Add(
+                        new IconEntryPSI(Icon.Toxicity, gradient4.Evaluate(this.ToxicBuildUpVisible), viewOpacityCrit));
                 }
             }
-
 
             // Apparel Calc
             float worstApparel = 999f;
@@ -902,8 +895,8 @@ namespace ColonistBarKF
                             Icon.ApparelHealth,
                             gradientRedAlertToNeutral.Evaluate((float)pawnApparelHealth),
                             null));
-
                 }
+
                 if (psiSettings.ShowApparelHealth)
                 {
                     double pawnApparelHealth = this.ApparelHealth / (double)psiSettings.LimitApparelHealthLess;
@@ -912,7 +905,6 @@ namespace ColonistBarKF
                             Icon.ApparelHealth,
                             gradientRedAlertToNeutral.Evaluate((float)pawnApparelHealth),
                             viewOpacity));
-
                 }
             }
 
@@ -979,11 +971,14 @@ namespace ColonistBarKF
                     if (barSettings.ShowCabinFever)
                     {
                         string tooltip = this.cabinFeverTip;
-                        barIconList.Add(new IconEntryBar(Icon.CabinFever, Evaluate(this.CabinFeverMoodOffset), tooltip));
+                        barIconList.Add(
+                            new IconEntryBar(Icon.CabinFever, Evaluate(this.CabinFeverMoodOffset), tooltip));
                     }
+
                     if (psiSettings.ShowCabinFever)
                     {
-                        psiIconList.Add(new IconEntryPSI(Icon.CabinFever, Evaluate(this.CabinFeverMoodOffset), viewOpacityCrit));
+                        psiIconList.Add(
+                            new IconEntryPSI(Icon.CabinFever, Evaluate(this.CabinFeverMoodOffset), viewOpacityCrit));
                     }
                 }
 
@@ -999,16 +994,12 @@ namespace ColonistBarKF
                     {
                         barIconList.Add(new IconEntryBar(Icon.Pain, Evaluate(this.PainMoodOffset), this.painTip));
                     }
+
                     if (psiSettings.ShowPain)
                     {
                         psiIconList.Add(new IconEntryPSI(Icon.Pain, Evaluate(this.PainMoodOffset), viewOpacityCrit));
                     }
                 }
-
-
-
-
-
 
                 // Naked
                 if (GetThought(
@@ -1020,13 +1011,12 @@ namespace ColonistBarKF
                 {
                     if (barSettings.ShowNaked)
                     {
-                        barIconList.Add(
-                            new IconEntryBar(Icon.Naked, Evaluate(this.nakedMoodOffset), this.nakedTip));
+                        barIconList.Add(new IconEntryBar(Icon.Naked, Evaluate(this.nakedMoodOffset), this.nakedTip));
                     }
+
                     if (psiSettings.ShowNaked)
                     {
-                        psiIconList.Add(
-                            new IconEntryPSI(Icon.Naked, Evaluate(this.nakedMoodOffset), viewOpacity));
+                        psiIconList.Add(new IconEntryPSI(Icon.Naked, Evaluate(this.nakedMoodOffset), viewOpacity));
                     }
                 }
 
@@ -1043,18 +1033,13 @@ namespace ColonistBarKF
                         if (barSettings.ShowNightOwl)
                         {
                             barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.NightOwl,
-                                    Evaluate(this.nightOwlMoodOffset),
-                                    this.nightOwlTip));
+                                new IconEntryBar(Icon.NightOwl, Evaluate(this.nightOwlMoodOffset), this.nightOwlTip));
                         }
+
                         if (psiSettings.ShowNightOwl)
                         {
                             psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.NightOwl,
-                                    Evaluate(this.nightOwlMoodOffset),
-                                    viewOpacityCrit));
+                                new IconEntryPSI(Icon.NightOwl, Evaluate(this.nightOwlMoodOffset), viewOpacityCrit));
                         }
                     }
                 }
@@ -1072,18 +1057,13 @@ namespace ColonistBarKF
                         if (barSettings.ShowGreedy)
                         {
                             barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.Greedy,
-                                    Evaluate(this.greedyMoodOffset),
-                                    this.greedyTooltip));
+                                new IconEntryBar(Icon.Greedy, Evaluate(this.greedyMoodOffset), this.greedyTooltip));
                         }
+
                         if (psiSettings.ShowGreedy)
                         {
                             psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.Greedy,
-                                    Evaluate(this.greedyMoodOffset),
-                                    viewOpacity));
+                                new IconEntryPSI(Icon.Greedy, Evaluate(this.greedyMoodOffset), viewOpacity));
                         }
                     }
                 }
@@ -1101,28 +1081,16 @@ namespace ColonistBarKF
                         if (barSettings.ShowJealous)
                         {
                             barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.Jealous,
-                                    Evaluate(this.jealousMoodOffset),
-                                    this.jealousTooltip));
-
+                                new IconEntryBar(Icon.Jealous, Evaluate(this.jealousMoodOffset), this.jealousTooltip));
                         }
+
                         if (psiSettings.ShowJealous)
                         {
                             psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.Jealous,
-                                    Evaluate(this.jealousMoodOffset),
-                                    viewOpacity));
-
+                                new IconEntryPSI(Icon.Jealous, Evaluate(this.jealousMoodOffset), viewOpacity));
                         }
-
                     }
                 }
-
-
-
-
 
                 // Unburied
                 if (GetThought(
@@ -1135,12 +1103,15 @@ namespace ColonistBarKF
                     if (barSettings.ShowLeftUnburied)
                     {
                         string tooltip = this.unburiedTip;
-                        barIconList.Add(new IconEntryBar(Icon.LeftUnburied, Evaluate(this.unburiedMoodOffset), tooltip));
+                        barIconList.Add(
+                            new IconEntryBar(Icon.LeftUnburied, Evaluate(this.unburiedMoodOffset), tooltip));
                     }
+
                     if (psiSettings.ShowLeftUnburied)
                     {
                         string tooltip = this.unburiedTip;
-                        psiIconList.Add(new IconEntryPSI(Icon.LeftUnburied, Evaluate(this.unburiedMoodOffset), viewOpacity));
+                        psiIconList.Add(
+                            new IconEntryPSI(Icon.LeftUnburied, Evaluate(this.unburiedMoodOffset), viewOpacity));
                     }
                 }
             }
@@ -1170,7 +1141,7 @@ namespace ColonistBarKF
                 }
             }
 
-            if ((this.isAddict || this.drugDesire != 0))
+            if (this.isAddict || this.drugDesire != 0)
             {
                 Color color = new Color();
                 string tooltip = null;
@@ -1178,7 +1149,7 @@ namespace ColonistBarKF
                 {
                     if (this.withDrawal)
                     {
-                        GetWithdrawalColor(out color);
+                        this.GetWithdrawalColor(out color);
                     }
                     else
                     {
@@ -1215,15 +1186,16 @@ namespace ColonistBarKF
 
                     tooltip = this.drugUserLabel;
                 }
+
                 if (barSettings.ShowDrunk)
                 {
                     barIconList.Add(new IconEntryBar(Icon.Drunk, color, tooltip));
                 }
+
                 if (psiSettings.ShowDrunk)
                 {
                     psiIconList.Add(new IconEntryPSI(Icon.Drunk, color, viewOpacityCrit));
                 }
-
             }
 
             // Bed status
@@ -1233,6 +1205,7 @@ namespace ColonistBarKF
                 {
                     barIconList.Add(new IconEntryBar(Icon.Bedroom, Evaluate(this.humpMoodOffset), this.humpTip));
                 }
+
                 if (psiSettings.ShowBedroom)
                 {
                     psiIconList.Add(new IconEntryPSI(Icon.Bedroom, Evaluate(this.humpMoodOffset), viewOpacityCrit));
@@ -1242,8 +1215,10 @@ namespace ColonistBarKF
             {
                 if (barSettings.ShowBedroom)
                 {
-                    barIconList.Add(new IconEntryBar(Icon.Bedroom, Evaluate(this.BedStatusMoodOffset), this.BedStatusTip));
+                    barIconList.Add(
+                        new IconEntryBar(Icon.Bedroom, Evaluate(this.BedStatusMoodOffset), this.BedStatusTip));
                 }
+
                 if (psiSettings.ShowBedroom)
                 {
                     psiIconList.Add(new IconEntryPSI(Icon.Bedroom, Evaluate(this.BedStatusMoodOffset), viewOpacity));
@@ -1262,13 +1237,11 @@ namespace ColonistBarKF
                                     Evaluate(this.prosthoMoodOffset),
                                     this.prosthoTooltip));
                         }
+
                         if (psiSettings.ShowProsthophile)
                         {
                             psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.Prosthophile,
-                                    Evaluate(this.prosthoMoodOffset),
-                                    viewOpacity));
+                                new IconEntryPSI(Icon.Prosthophile, Evaluate(this.prosthoMoodOffset), viewOpacity));
                         }
                     }
 
@@ -1281,29 +1254,25 @@ namespace ColonistBarKF
                                     Icon.Prosthophobe,
                                     Evaluate(this.prosthoMoodOffset),
                                     this.prosthoTooltip));
-
                         }
+
                         if (psiSettings.ShowProsthophobe)
                         {
                             psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.Prosthophobe,
-                                    Evaluate(this.prosthoMoodOffset),
-                                    viewOpacity));
-
+                                new IconEntryPSI(Icon.Prosthophobe, Evaluate(this.prosthoMoodOffset), viewOpacity));
                         }
                     }
                 }
 
-                this.BarIcons = barIconList;
-                this.PSIIcons = psiIconList;
+                this.BarIcons = barIconList.OrderBy(x => x.icon).ToList();
+                this.PSIIcons = psiIconList.OrderBy(x => x.icon).ToList();
             }
         }
 
         private void CheckTraits(Pawn pawn)
         {
-            // One time traits check
             {
+                // One time traits check
                 if (pawn.story?.traits != null)
                 {
                     if (pawn.RaceProps.hasGenders)
@@ -1415,6 +1384,7 @@ namespace ColonistBarKF
                 tooltip = thought.CurStage.description + "\n" + thought.LabelCap + "\n" + moodOffset;
                 return true;
             }
+
             return false;
         }
 
@@ -1484,5 +1454,9 @@ namespace ColonistBarKF
             }
         }
         */
+        public void SetEntriesDirty()
+        {
+            this.entriesDirty = true;
+        }
     }
 }

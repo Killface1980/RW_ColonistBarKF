@@ -150,6 +150,7 @@
             {
                 return this.psiIcons;
             }
+
             set
             {
                 psiIcons = value;

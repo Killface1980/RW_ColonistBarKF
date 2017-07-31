@@ -1,20 +1,21 @@
 ﻿namespace FacialStuff.Detouring
 {
     using System;
-
-    using ColonistBarKF.Bar;
-    using Harmony;
-    using RimWorld;
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Linq;
 
     using ColonistBarKF;
+    using ColonistBarKF.Bar;
+    using static ColonistBarKF.Bar.ColonistBar_KF;
+
+    using Harmony;
+
+    using RimWorld;
+    using RimWorld.Planet;
 
     using UnityEngine;
-    using Verse;
 
-    using static ColonistBarKF.Bar.ColonistBar_KF;
+    using Verse;
 
     [StaticConstructorOnStartup]
     internal class HarmonyPatches
@@ -30,8 +31,6 @@
         static HarmonyPatches()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
-
-            #region Colonist Bar Patches
 
             harmony.Patch(
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI)),
@@ -67,7 +66,7 @@
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.MarkColonistsDirty)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(MarkColonistsDirty_Postfix)));
-            #endregion
+            
 
             #region Caravan
 
@@ -122,7 +121,12 @@
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(Kill_Postfix)));
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Kill_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Pawn), nameof(Pawn.PostApplyDamage)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_PostApplyDamage_Postfix)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(Corpse), "NotifyColonistBar"),
@@ -321,15 +325,32 @@
             }
         }
 
-        private static void Kill_Postfix(Pawn __instance)
+        private static void Pawn_Kill_Postfix(Pawn __instance)
         {
+
             if (__instance.Faction != null && __instance.Faction.IsPlayer
                 && Current.ProgramState == ProgramState.Playing)
             {
                 EntriesDirty_Postfix();
-
-                // Log.Message("Colonists marked dirty.x11");
+                CompPSI compPSI = __instance.GetComp<CompPSI>();
+                if (compPSI != null)
+                {
+                    compPSI.BGColor = Color.gray;
+                    compPSI.thisColCount = 0;
+                }
             }
+        }
+
+        private static void Pawn_PostApplyDamage_Postfix(Pawn __instance)
+        {
+            CompPSI compPSI = __instance.GetComp<CompPSI>();
+            if (compPSI == null)
+            {
+                return;
+            }
+
+            compPSI.SetEntriesDirty();
+            Log.Message(__instance + " damage taken.");
         }
 
         private static void NotifyColonistBar_Postfix(Corpse __instance)
@@ -390,38 +411,41 @@
                 return;
             }
 
-            if (__instance.Faction != Faction.OfPlayer)
+            if (!__instance.RaceProps.Humanlike || !__instance.RaceProps.IsFlesh)
             {
                 return;
             }
 
-            if (!__instance.RaceProps.Humanlike)
-            {
-                return;
-            }
+            CheckAndAddComps(__instance);
 
             if (__instance is IThingHolder && Find.ColonistBar != null)
             {
                 EntriesDirty_Postfix();
             }
+        }
 
-          bool flag = false;
-          foreach (ThingComp comp in __instance.AllComps)
-          {
-              CompPSI psi = comp as CompPSI;
-         
-              if (psi != null)
-              {
-                  flag = true;
-              }
-          }
-         
-          if (!flag)
-          {
-              ThingComp thingComp = (ThingComp)Activator.CreateInstance(typeof(CompPSI));
-              thingComp.parent = __instance;
-              __instance.AllComps.Add(thingComp);
-          }
+        private static void CheckAndAddComps(Pawn __instance)
+        {
+            bool flag = false;
+            foreach (ThingComp comp in __instance.AllComps)
+            {
+                CompPSI psi = comp as CompPSI;
+
+                if (psi != null)
+                {
+                    flag = true;
+                }
+            }
+
+            if (!flag)
+            {
+                ThingComp thingComp = (ThingComp)Activator.CreateInstance(typeof(CompPSI));
+                thingComp.parent = __instance;
+                __instance.AllComps.Add(thingComp);
+            }
+
+            __instance.GetComp<CompPSI>().SpawnedAt = Find.TickManager.TicksGame;
+
         }
 
         #endregion Methods

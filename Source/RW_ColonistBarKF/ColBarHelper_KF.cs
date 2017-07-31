@@ -1,11 +1,15 @@
 ﻿namespace ColonistBarKF
 {
-    using ColonistBarKF.Bar;
-    using RimWorld;
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Linq;
+
+    using ColonistBarKF.Bar;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
     using UnityEngine;
+
     using Verse;
 
     public class ColBarHelper_KF
@@ -152,6 +156,7 @@
             this.tmpCaravans.Clear();
             ColonistBar_KF.drawLocsFinder.CalculateDrawLocs(this.cachedDrawLocs, out this.cachedScale);
         }
+
         public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
         {
             List<Vector2> drawLocs = this.cachedDrawLocs;

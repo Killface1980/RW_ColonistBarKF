@@ -1,9 +1,12 @@
 ﻿namespace ColonistBarKF.Bar
 {
+    using System.Collections.Generic;
+
     using RimWorld;
     using RimWorld.Planet;
-    using System.Collections.Generic;
+
     using UnityEngine;
+
     using Verse;
 
     [StaticConstructorOnStartup]
@@ -48,8 +51,9 @@
                 int maxRows = 0;
                 foreach (Pawn pawn in PawnsFinder.AllMaps_FreeColonistsSpawned)
                 {
-                    maxRows = Mathf.Max(pawn.TryGetComp<CompPSI>().thisColCount, maxRows);
+                    maxRows = Mathf.Max(pawn.GetComp<CompPSI>().thisColCount, maxRows);
                 }
+
                 return maxRows;
             }
         }
@@ -233,6 +237,7 @@
 
             return 1f;
         }
+
         public static void RecalcSizes()
         {
             WidthMoodBarHorizontal = 0f;

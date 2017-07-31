@@ -28,6 +28,7 @@
                     return c;
                 }
             }
+
             PawnStats n = new PawnStats { pawn = pawn };
             _pawnCache.Add(n);
 
@@ -35,6 +36,7 @@
             {
                 PSI.PSI.UpdateColonistStats(n);
             }
+
             n.SpawnedAt = Find.TickManager.TicksGame;
             return n;
 
@@ -48,15 +50,13 @@
 
      // public override void ExposeData()
      // {
-     //     base.ExposeData();
-     //
-     //     // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
-     //     if (_pawnCache == null)
-     //     {
-     //         _pawnCache = new List<PawnStats>();
-     //     }
+     // base.ExposeData();
+     // // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
+     // if (_pawnCache == null)
+     // {
+     // _pawnCache = new List<PawnStats>();
      // }
-
+     // }
         public static void ResetList()
         {
             _pawnCache = new List<PawnStats>();
@@ -66,18 +66,17 @@
 
         // public override void MapComponentTick()
         // {
-        //     base.MapComponentTick();
-        //
-        //     if (!Settings.PsiSettings.UsePsi)
-        //     {
-        //         foreach (PawnStats pawnStats in _pawnCache)
-        //         {
-        //             if (Find.TickManager.TicksGame - pawnStats.LastStatUpdate > 600)
-        //             {
-        //                 PSI.PSI.CheckStats(pawnStats);
-        //             }
-        //         }
-        //     }
+        // base.MapComponentTick();
+        // if (!Settings.PsiSettings.UsePsi)
+        // {
+        // foreach (PawnStats pawnStats in _pawnCache)
+        // {
+        // if (Find.TickManager.TicksGame - pawnStats.LastStatUpdate > 600)
+        // {
+        // PSI.PSI.CheckStats(pawnStats);
+        // }
+        // }
+        // }
         // }
     }
 }

@@ -222,8 +222,7 @@ namespace ColonistBarKF.PSI
 
         private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha, int rowCount, string tooltip = null)
         {
-            //    Widgets.DrawBoxSolid(rect, Color.cyan);
-
+            // Widgets.DrawBoxSolid(rect, Color.cyan);
             color.a *= rectAlpha;
             Color GuiColor = GUI.color;
             GuiColor.a = rectAlpha;

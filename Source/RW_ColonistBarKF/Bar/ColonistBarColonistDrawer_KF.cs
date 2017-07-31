@@ -10,13 +10,13 @@
     using RimWorld;
     using RimWorld.Planet;
 
+    using static Settings;
+
     using UnityEngine;
 
     using Verse;
     using Verse.AI.Group;
     using Verse.Sound;
-
-    using static Settings;
 
     [StaticConstructorOnStartup]
     public class ColonistBarColonistDrawer_KF
@@ -57,63 +57,81 @@
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            CompPSI pawnStats = colonist.TryGetComp<CompPSI>();
+            CompPSI pawnStats = colonist.GetComp<CompPSI>();
+            Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width
             float entryRectAlpha = ColonistBar_KF.GetEntryRectAlpha(outerRect);
             this.ApplyEntryInAnotherMapAlphaFactor(pawnMap, ref entryRectAlpha);
 
-            bool colonistAlive;
-            if (!colonist.Dead)
-            {
-                colonistAlive = Find.Selector.SelectedObjects.Contains(colonist);
-            }
-            else
-            {
-                colonistAlive = Find.Selector.SelectedObjects.Contains(colonist.Corpse);
-            }
+            bool colonistAlive = !colonist.Dead
+                                     ? Find.Selector.SelectedObjects.Contains(colonist)
+                                     : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
 
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
 
             // testing
-            //    Widgets.DrawBox(outerRect);
-            BuildRects(pawnStats, ref outerRect, out Rect pawnRect, out Rect moodBorderRect, out Rect psiRect);
-            //  Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
-
-            Color background = color;
-            if (ColBarSettings.UseGender)
+            // Widgets.DrawBox(outerRect);
+            if (pawnStats != null)
             {
-                background = pawnStats.BGColor;
+                BuildRects(
+                    pawnStats.thisColCount,
+                    ref outerRect,
+                    ref pawnRect,
+                    out Rect moodBorderRect,
+                    out Rect psiRect);
 
-                background.a = entryRectAlpha;
-                GUI.color = background;
-            }
-
-            GUI.DrawTexture(
-                pawnRect,
-                ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
-            GUI.color = color;
-
-            if (colonist.needs?.mood != null)
-            {
-                if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
+                // Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
+                Color background = color;
+                if (ColBarSettings.UseGender)
                 {
-                    if (pawnStats.Mood != null && pawnStats.Mb != null)
+                    background = pawnStats.BGColor;
+
+                    background.a *= entryRectAlpha;
+                    GUI.color = background;
+                }
+
+                GUI.DrawTexture(
+                    pawnRect,
+                    ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+                GUI.color = color;
+
+                if (colonist.needs?.mood != null)
+                {
+                    if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                     {
-                        // string tooltip = colonist.needs.mood.GetTipString();
-                        DrawNewMoodRect(moodBorderRect, pawnStats.Mood, pawnStats.Mb);
+                        if (pawnStats.Mood != null && pawnStats.Mb != null)
+                        {
+                            // string tooltip = colonist.needs.mood.GetTipString();
+                            DrawNewMoodRect(moodBorderRect, pawnStats.Mood, pawnStats.Mb);
+                        }
+                    }
+                    else
+                    {
+                        Rect position = pawnRect.ContractedBy(2f);
+                        float num = position.height * colonist.needs.mood.CurLevelPercentage;
+                        position.yMin = position.yMax - num;
+                        position.height = num;
+                        GUI.DrawTexture(position, ColonistBarTextures.VanillaMoodBGTex);
                     }
                 }
-                else
+
+                // PSI
+                if (ColBarSettings.UsePsi)
                 {
-                    Rect position = pawnRect.ContractedBy(2f);
-                    float num = position.height * colonist.needs.mood.CurLevelPercentage;
-                    position.yMin = position.yMax - num;
-                    position.height = num;
-                    GUI.DrawTexture(position, ColonistBarTextures.VanillaMoodBGTex);
+                    PSI.DrawColonistIconsBar(colonist, psiRect, entryRectAlpha);
                 }
+            }
+            else
+            {
+                Color background = color;
+
+                GUI.DrawTexture(
+                    pawnRect,
+                    ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+                GUI.color = color;
             }
 
             // Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
@@ -170,10 +188,6 @@
             if (colonist.Dead)
             {
                 GUI.DrawTexture(pawnRect, ColonistBarTextures.DeadColonistTex);
-                if (pawnStats != null)
-                {
-                    pawnStats.BGColor = color;
-                }
             }
 
             // float num = 4f * Scale;
@@ -182,11 +196,7 @@
 
             GUI.color = Color.white;
 
-            // PSI
-            if (ColBarSettings.UsePsi)
-            {
-                PSI.DrawColonistIconsBar(colonist, psiRect, entryRectAlpha);
-            }
+
         }
 
         public void DrawGroupFrame(int group)
@@ -490,14 +500,8 @@
             this.pawnLabelsCache.Clear();
         }
 
-        private static void BuildRects(
-            CompPSI pawnStats,
-            ref Rect outerRect,
-            out Rect pawnRect,
-            out Rect moodRect,
-            out Rect psiRect)
+        private static void BuildRects(int thisColCount, ref Rect outerRect, ref Rect pawnRect, out Rect moodRect, out Rect psiRect)
         {
-            pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
 
 
             float widthMoodFloat = pawnRect.width;
@@ -531,9 +535,9 @@
             if (ColBarSettings.UsePsi)
             {
                 // If lesser rows, move the rect
-                if (pawnStats.thisColCount < ColonistBar_KF.PsiRowsOnBar)
+                if (thisColCount < ColonistBar_KF.PsiRowsOnBar)
                 {
-                    switch (pawnStats.thisColCount)
+                    switch (thisColCount)
                     {
                         case 0:
                             modifier = 0f;
@@ -574,8 +578,7 @@
                 widthPsiFloat,
                 heightPsiFloat);
 
-            //    Widgets.DrawBoxSolid(psiRect, new Color(0.5f, 0.5f, 0.5f, 0.5f));
-
+            // Widgets.DrawBoxSolid(psiRect, new Color(0.5f, 0.5f, 0.5f, 0.5f));
             switch (ColBarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
@@ -607,10 +610,12 @@
                         {
                             psiRect.x += widthMoodFloat;
                         }
+
                         if (!psiHorizontal)
                         {
                             psiRect.width -= widthMoodFloat;
                         }
+
                         break;
                     case Position.Alignment.Right:
                         moodRect.x = pawnRect.xMax;
@@ -633,6 +638,7 @@
                         {
                             psiRect.height -= heightMoodFloat;
                         }
+
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -654,7 +660,7 @@
             outerRect.yMax =
                 ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
                 || ColBarSettings.MoodBarPos == Position.Alignment.Bottom
-                    ? height 
+                    ? height
                     : height + ColonistBar_KF.SpacingLabel;
         }
 
