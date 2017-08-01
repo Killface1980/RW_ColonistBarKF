@@ -19,7 +19,7 @@ namespace ColonistBarKF.PSI
     using Verse;
     using Verse.AI;
 
-    public class PSI : GameComponent
+    public class GameComponentPSI : GameComponent
     {
         public static Vector3[] IconPosRectsBar;
 
@@ -39,11 +39,11 @@ namespace ColonistBarKF.PSI
             Settings.PsiSettings.IconOpacityCritical,
             Settings.PsiSettings.IconOpacity);
 
-        public PSI()
+        public GameComponentPSI()
         {
         }
 
-        public PSI(Game game)
+        public GameComponentPSI(Game game)
         {
         }
 
@@ -61,31 +61,35 @@ namespace ColonistBarKF.PSI
 
             if (animal.Faction != null && animal.Faction.IsPlayer)
             {
-                if (animal.health?.hediffSet != null)
+                if (animal.health.HasHediffsNeedingTend())
                 {
-                    float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
 
-                    if (hediffSetBleedRateTotal > 0.01f)
+                    if (animal.health?.hediffSet != null)
                     {
-                        DrawIconOnColonist(
-                            bodyLoc,
-                            ref iconNum,
-                            Icon.Bloodloss,
-                            gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
-                            ViewOpacityCrit);
+                        float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
+
+                        if (hediffSetBleedRateTotal > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Bloodloss,
+                                gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                                ViewOpacityCrit);
+                        }
                     }
-                }
-                if (animal.health?.summaryHealth != null)
-                {
-                    float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
-                    if (summaryHealthSummaryHealthPercent > 0.01f)
+                    if (animal.health?.summaryHealth != null)
                     {
-                        DrawIconOnColonist(
-                            bodyLoc,
-                            ref iconNum,
-                            Icon.Health,
-                            gradient4.Evaluate(summaryHealthSummaryHealthPercent),
-                            ViewOpacityCrit);
+                        float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
+                        if (summaryHealthSummaryHealthPercent > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Health,
+                                gradient4.Evaluate(summaryHealthSummaryHealthPercent),
+                                ViewOpacityCrit);
+                        }
                     }
                 }
             }
@@ -130,8 +134,8 @@ namespace ColonistBarKF.PSI
             }
 
 
-            List<IconEntryBar> drawIconEntries = pawnStats.BarIcons;
-            if (!pawnStats.BarIcons.NullOrEmpty())
+            List<IconEntryBar> drawIconEntries = pawnStats.BarIconList;
+            if (!pawnStats.BarIconList.NullOrEmpty())
             {
                 int maxRowCount = Mathf.Min(Settings.ColBarSettings.IconsInColumn * 2, drawIconEntries.Count);
                 for (int index = 0; index < maxRowCount; index++)
@@ -145,6 +149,7 @@ namespace ColonistBarKF.PSI
             }
 
             // Idle - bar icon already included - vanilla
+
             int colCount = Mathf.CeilToInt((float)barIconNum / Settings.ColBarSettings.IconsInColumn);
 
             pawnStats.thisColCount = colCount;
@@ -221,7 +226,7 @@ namespace ColonistBarKF.PSI
                 }
             }
 
-            List<IconEntryPSI> drawIconEntries = pawnStats.PSIIcons;
+            List<IconEntryPSI> drawIconEntries = pawnStats.PSIIconList;
             if (!drawIconEntries.NullOrEmpty())
             {
                 for (int index = 0; index < drawIconEntries.Count; index++)
@@ -427,7 +432,7 @@ namespace ColonistBarKF.PSI
                     continue;
                 }
 
-                if (pawn.Map != map)
+                if (pawn.Map == null)
                 {
                     continue;
                 }
@@ -497,55 +502,11 @@ namespace ColonistBarKF.PSI
             WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);
         }
 
-        public override void LoadedGame()
-        {
-            base.LoadedGame();
-        }
-
-        public override void StartedNewGame()
-        {
-            base.StartedNewGame();
-        }
-
         public override void FinalizeInit()
         {
-            InjectCompPSI();
+            base.FinalizeInit();
             Reinit();
-        }
 
-        private static void InjectCompPSI()
-        {
-            Log.Message("Start injecting PSI to pawns ...");
-            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(x => x.race != null && x.race.Humanlike && x.race.IsFlesh))
-            {
-                Log.Message("PSI check: " + def);
-                if (def?.comps != null)
-                {
-                    def.comps.Add(new CompProperties(typeof(CompPSI)));
-                    Log.Message("PSI injected " + def);
-                }
-            }
-
-            // foreach (Pawn pawn in PawnsFinder.AllMaps)
-            // {
-            // if (pawn.RaceProps.Animal)
-            // {
-            // continue;
-            // }
-            // bool flag = false;
-            // foreach (ThingComp comp in pawn.AllComps)
-            // {
-            // CompPSI psi = comp as CompPSI;
-            // if (psi != null)
-            // {
-            // flag = true;
-            // }
-            // }
-            // if (flag)
-            // {
-            // pawn.InitializeComps();
-            // }
-            // }
         }
 
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)

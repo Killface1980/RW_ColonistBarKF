@@ -89,7 +89,7 @@
                 {
                     background = pawnStats.BGColor;
 
-                    background.a *= entryRectAlpha;
+                    background.a = entryRectAlpha;
                     GUI.color = background;
                 }
 
@@ -121,18 +121,16 @@
                 // PSI
                 if (ColBarSettings.UsePsi)
                 {
-                    PSI.DrawColonistIconsBar(colonist, psiRect, entryRectAlpha);
+                    GameComponentPSI.DrawColonistIconsBar(colonist, psiRect, entryRectAlpha);
                 }
             }
             else
             {
-                Color background = color;
-
                 GUI.DrawTexture(
                     pawnRect,
                     ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
-                GUI.color = color;
             }
+            GUI.color = color;
 
             // Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
             Rect rect2 = outerRect.ContractedBy(-2f);
@@ -157,13 +155,13 @@
                 }
 
                 this.DrawSelectionOverlayOnGUI(colonist, rect2);
-                GUI.color = color;
             }
             else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember()
                      && Find.WorldSelector.IsSelected(colonist.GetCaravan()))
             {
                 this.DrawCaravanSelectionOverlayOnGUI(colonist.GetCaravan(), rect2);
             }
+            GUI.color = color;
 
             GUI.DrawTexture(
                 this.GetPawnTextureRect(pawnRect.x, pawnRect.y),
@@ -502,8 +500,6 @@
 
         private static void BuildRects(int thisColCount, ref Rect outerRect, ref Rect pawnRect, out Rect moodRect, out Rect psiRect)
         {
-
-
             float widthMoodFloat = pawnRect.width;
             float heightMoodFloat = pawnRect.height;
 

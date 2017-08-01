@@ -1,6 +1,5 @@
 ﻿using System.IO;
 
-using ColonistBarKF.Settings;
 
 using RimWorld;
 
@@ -10,6 +9,10 @@ using Verse;
 
 namespace ColonistBarKF
 {
+    using System.Linq;
+
+    using HugsLib;
+
     // public class ModInitializer : ITab
     // {
     // protected GameObject modInitializerControllerObject;
@@ -25,12 +28,8 @@ namespace ColonistBarKF
     // }
     // protected override void FillTab() { }
     // }
-    public class CBKF : Mod
+    public class CBKF : ModBase
     {
-        public CBKF(ModContentPack content)
-            : base(content)
-        {
-        }
 
         private int _lastStatUpdate;
 
@@ -44,46 +43,37 @@ namespace ColonistBarKF
 
         private float _reinjectTime;
 
-        private void OnLevelWasLoaded(int level)
+        public override void DefsLoaded()
         {
-            _reinjectNeeded = true;
-            _reinjectTime = level >= 0 ? 1f : 0.0f;
+            base.DefsLoaded();
+            if (!ModIsActive)
+            {
+                return;
+            }
+
+            Log.Message("Start injecting PSI to pawns ...");
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(
+                x => x.race != null && x.race.Humanlike && x.race.IsFlesh))
+            {
+                Log.Message("PSI check: " + def);
+                if (def?.comps != null)
+                {
+                    def.comps.Add(new CompProperties(typeof(CompPSI)));
+                    Log.Message("PSI injected " + def);
+                }
+            }
+
         }
 
-        // ReSharper disable once UnusedMember.Global
-        public void FixedUpdate()
+        public override string ModIdentifier
         {
-            if (Current.ProgramState != ProgramState.Playing) return;
-
-            // if (Find.TickManager.TicksGame - _lastStatUpdate > 1900)
-            // {
-            // ColonistBar_KF.MarkColonistsDirty();
-            // _lastStatUpdate = Find.TickManager.TicksGame;
-            // }
-
-            // PSI
-            if (_reinjectNeeded)
+            get
             {
-                _reinjectTime -= Time.fixedDeltaTime;
-                if (_reinjectTime > 0.0) return;
-                _reinjectNeeded = false;
-                _reinjectTime = 0.0f;
+                return "ColonistBarKF";
 
-                // _psiObject = GameObject.Find("PSIMain") ?? new GameObject("PSIMain");
-                // _psiObject.AddComponent<PSI.PSI>();
-                Log.Message("PSI Injected!!");
             }
         }
 
-        public void Start()
-        {
-            ColBarSettings = LoadBarSettings();
-            PsiSettings = LoadPsiSettings();
-            _lastStatUpdate = -5000;
-            ColonistBar_KF.MarkColonistsDirty();
 
-            // PSI
-            OnLevelWasLoaded(0);
-        }
     }
 }

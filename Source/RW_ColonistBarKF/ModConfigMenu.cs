@@ -1,4 +1,4 @@
-﻿using static ColonistBarKF.PSI.PSI;
+﻿using static ColonistBarKF.PSI.GameComponentPSI;
 
 namespace ColonistBarKF
 {
@@ -19,7 +19,7 @@ namespace ColonistBarKF
 
     public class ColonistBarKF_Settings : Window
     {
-        private static readonly string cbkfversion = "Colonist Bar KF 0.17.1.12";
+        private static readonly string cbkfversion = "Colonist Bar KF 0.17.2";
 
         public static int lastupdate = -5000;
 
@@ -30,50 +30,50 @@ namespace ColonistBarKF
 
         private readonly GUIStyle _fondBoxes =
             new GUIStyle
-                {
-                    normal = {
+            {
+                normal = {
                                 background = ColonistBarTextures.DarkGrayFond
                              },
-                    hover = {
+                hover = {
                                background = ColonistBarTextures.GrayFond
                             },
-                    padding = new RectOffset(15, 15, 6, 10),
-                    margin = new RectOffset(0, 0, 10, 10)
-                };
+                padding = new RectOffset(15, 15, 6, 10),
+                margin = new RectOffset(0, 0, 10, 10)
+            };
 
         private readonly GUIStyle _fondImages =
             new GUIStyle
-                {
-                    normal = {
+            {
+                normal = {
                                 background = ColonistBarTextures.DarkGrayFond
                              },
-                    hover = {
+                hover = {
                                background = ColonistBarTextures.RedHover
                             }
-                };
+            };
 
         private readonly GUIStyle _fontBold =
             new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    normal = {
+            {
+                fontStyle = FontStyle.Bold,
+                normal = {
                                 textColor = Color.white
                              },
-                    padding = new RectOffset(0, 0, 5, 0)
-                };
+                padding = new RectOffset(0, 0, 5, 0)
+            };
 
         private readonly GUIStyle _grayLines = new GUIStyle { normal = { background = ColonistBarTextures.GrayLines } };
 
         private readonly GUIStyle _headline =
             new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 16,
-                    normal = {
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 16,
+                normal = {
                                 textColor = Color.white
                              },
-                    padding = new RectOffset(0, 0, 12, 6)
-                };
+                padding = new RectOffset(0, 0, 12, 6)
+            };
 
         private readonly string[] mainToolbarStrings =
             { "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate() };
@@ -759,6 +759,7 @@ namespace ColonistBarKF
                                                                                 .UseColoredTarget =
                                                                             true;
                                                                         SavePsiSettings();
+                                                                        PSI.GameComponentPSI.Reinit(false,true);
                                                                     }
                                                                     catch (IOException)
                                                                     {
@@ -780,6 +781,8 @@ namespace ColonistBarKF
                                                                                 .UseColoredTarget =
                                                                             false;
                                                                         SavePsiSettings();
+                                                                        PSI.GameComponentPSI.Reinit(false,true);
+
                                                                     }
                                                                     catch (IOException)
                                                                     {

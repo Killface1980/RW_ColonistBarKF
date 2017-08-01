@@ -30,6 +30,18 @@
 
         static HarmonyPatches()
         {
+            Log.Message("Start injecting PSI to pawns ...");
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(
+                x => x.race != null && x.race.Humanlike && x.race.IsFlesh))
+            {
+                Log.Message("PSI check: " + def);
+                if (def?.comps != null)
+                {
+                    def.comps.Add(new CompProperties(typeof(CompPSI)));
+                    Log.Message("PSI injected " + def);
+                }
+            }
+
             HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
 
             harmony.Patch(
@@ -66,7 +78,7 @@
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.MarkColonistsDirty)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(MarkColonistsDirty_Postfix)));
-            
+
 
             #region Caravan
 
@@ -118,6 +130,21 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
 
+         // try
+         // {
+         //     ((Action)(() =>
+         //         {
+         //             harmony.Patch(
+         //                 AccessTools.Method(
+         //                     typeof(Psychology.PsychologyPawn),
+         //                     nameof(Psychology.PsychologyPawn.SpawnSetup)),
+         //                 null,
+         //                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
+         //         }))();
+         // }
+         // catch (TypeLoadException) { }
+
+
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
@@ -149,11 +176,6 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(DeSpawn_Postfix)));
 
             harmony.Patch(
-                AccessTools.Method(typeof(Pawn), nameof(Pawn.SpawnSetup)),
-                null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
-
-            harmony.Patch(
                 AccessTools.Method(typeof(PlaySettings), nameof(PlaySettings.DoPlaySettingsGlobalControls)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(PlaySettingsDirty_Prefix)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(PlaySettingsDirty_Postfix)));
@@ -166,6 +188,8 @@
         #endregion Constructors
 
         #region Methods
+
+
 
         private static bool CaravanMemberCaravanAt_Prefix(ref Caravan __result, Vector2 at)
         {
@@ -344,13 +368,8 @@
         private static void Pawn_PostApplyDamage_Postfix(Pawn __instance)
         {
             CompPSI compPSI = __instance.GetComp<CompPSI>();
-            if (compPSI == null)
-            {
-                return;
-            }
 
-            compPSI.SetEntriesDirty();
-            Log.Message(__instance + " damage taken.");
+            compPSI?.SetEntriesDirty();
         }
 
         private static void NotifyColonistBar_Postfix(Corpse __instance)
@@ -416,26 +435,15 @@
                 return;
             }
 
-            CheckAndAddComps(__instance);
-
             if (__instance is IThingHolder && Find.ColonistBar != null)
             {
                 EntriesDirty_Postfix();
             }
         }
 
-        private static void CheckAndAddComps(Pawn __instance)
+        public static void CheckAndAddComps(Pawn __instance)
         {
-            bool flag = false;
-            foreach (ThingComp comp in __instance.AllComps)
-            {
-                CompPSI psi = comp as CompPSI;
-
-                if (psi != null)
-                {
-                    flag = true;
-                }
-            }
+            bool flag = __instance.AllComps.OfType<CompPSI>().Any();
 
             if (!flag)
             {

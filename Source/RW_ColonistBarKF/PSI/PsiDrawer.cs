@@ -1,4 +1,4 @@
-﻿using static ColonistBarKF.PSI.PSI;
+﻿using static ColonistBarKF.PSI.GameComponentPSI;
 
 namespace ColonistBarKF.PSI
 {

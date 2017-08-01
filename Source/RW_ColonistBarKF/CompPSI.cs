@@ -16,6 +16,7 @@ namespace ColonistBarKF
     using Verse;
     using Verse.AI;
 
+    [StaticConstructorOnStartup]
     public class CompPSI : ThingComp
     {
         private Pawn psiPawn;
@@ -46,10 +47,6 @@ namespace ColonistBarKF
         private MentalStateDef MentalSanity = null;
 
         private float HealthDisease = 1f;
-
-        private bool HasLifeThreateningDisease = false;
-
-        private float NextStatUpdate = 1f;
 
         public MentalBreaker Mb = null;
 
@@ -91,13 +88,13 @@ namespace ColonistBarKF
         private string BedStatusTip;
         public Color BGColor = Color.gray;
 
-        public int thisColCount = 0;
+        public int thisColCount = 2;
 
         private string toxicTip;
 
         private string healthTip;
 
-        private int LastStatUpdate;
+        private int LastStatUpdate = 0;
 
         private float sickMoodOffset;
 
@@ -135,78 +132,55 @@ namespace ColonistBarKF
 
         public int SpawnedAt;
 
-        private List<IconEntryBar> barIcons;
+        private List<IconEntryBar> _barIconList = new List<IconEntryBar>();
 
-        private List<IconEntryPSI> psiIcons;
+        private List<IconEntryPSI> _psiIconList = new List<IconEntryPSI>();
 
 
         private static PawnCapacityDef[] array;
 
-        public List<IconEntryBar> BarIcons
-        {
-            get
-            {
-                return this.barIcons;
-            }
+        public List<IconEntryBar> BarIconList => this._barIconList;
 
-            set
-            {
-                this.barIcons = value;
-            }
-        }
-
-        public List<IconEntryPSI> PSIIcons
-        {
-            get
-            {
-                return this.psiIcons;
-            }
-
-            set
-            {
-                this.psiIcons = value;
-            }
-        }
+        public List<IconEntryPSI> PSIIconList => this._psiIconList;
 
         public override void CompTick()
         {
             base.CompTick();
-
-            if (!this.PSIPawn.IsColonist && !this.PSIPawn.IsPrisoner)
+            var pawn = parent as Pawn;
+            if (pawn.IsColonist || pawn.IsPrisoner)
             {
-                return;
+                if (this.entriesDirty)
+                {
+                    this.UpdateColonistStats();
+                    this.entriesDirty = false;
+                }
+                this.CheckStats();
             }
 
-            if (this.entriesDirty)
-            {
-                this.UpdateColonistStats();
-                this.entriesDirty = false;
-            }
-
-            this.CheckStats();
 
         }
 
         private bool entriesDirty = true;
 
+        private int NextStatUpdate = 1;
+
         public void CheckStats()
         {
-            if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
-            {
-                return;
-            }
+            // if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
+            // {
+            //     return;
+            // }
 
-            float nextUpdate = this.LastStatUpdate
-                               + this.NextStatUpdate * Find.TickManager.TickRateMultiplier;
+            int nextUpdate = (int)(this.LastStatUpdate + (NextStatUpdate * Find.TickManager.TickRateMultiplier));
 
             if (Find.TickManager.TicksGame > nextUpdate)
             {
                 this.UpdateColonistStats();
-                this.NextStatUpdate = Rand.Range(60f, 180f);
-                this.LastStatUpdate = Find.TickManager.TicksGame;
 
+                this.LastStatUpdate = Find.TickManager.TicksGame;
+                this.NextStatUpdate = (int)Rand.Range(60f, 180f);
                 // Log.Message(
-                // "CBKF updated stat " + pawnStats.pawn.Name + ", next update in " + pawnStats.NextStatUpdate*Find.TickManager.TickRateMultiplier
+                // "CBKF updated stat " + (this.parent as Pawn).Name + ", next update in " + NextStatUpdate * Find.TickManager.TickRateMultiplier
                 // + " ticks.");
             }
         }
@@ -239,15 +213,19 @@ namespace ColonistBarKF
             Scribe_Values.Look(ref this.relationChecked, "relationChecked");
         }
 
-        public Pawn PSIPawn => this.psiPawn ?? (this.psiPawn = this.parent as Pawn);
-
         private void UpdateColonistStats()
         {
-            Pawn pawn = this.PSIPawn;
+            Pawn pawn = this.parent as Pawn;
             List<IconEntryPSI> psiIconList = new List<IconEntryPSI>();
             List<IconEntryBar> barIconList = new List<IconEntryBar>();
             SettingsColonistBar barSettings = Settings.ColBarSettings;
             SettingsPSI psiSettings = Settings.PsiSettings;
+
+            if (barSettings == null || psiSettings == null)
+            {
+                GameComponentPSI.Reinit(true, false, false);
+                return;
+            }
 
             if (!pawn.Spawned || pawn.Map == null)
             {
@@ -260,13 +238,13 @@ namespace ColonistBarKF
             }
 
             float viewOpacity = psiSettings.IconOpacity;
-            float viewOpacityCrit = PSI.PSI.ViewOpacityCrit;
+            float viewOpacityCrit = PSI.GameComponentPSI.ViewOpacityCrit;
 
             List<Thought> thoughts = new List<Thought>();
 
             pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
             this.pawnHealth = 1f - pawn.health.summaryHealth.SummaryHealthPercent;
-
+         //   Log.Message(pawn + " health: " + this.pawnHealth);
             // Idle - Colonist icon only
             if (pawn.mindState.IsIdle)
             {
@@ -335,7 +313,7 @@ namespace ColonistBarKF
             float efficiencyTotal = 1f;
             string efficiencyTip = null;
             bool flag2 = false;
-            array = PSI.PSI._pawnCapacities;
+            array = PSI.GameComponentPSI._pawnCapacities;
             foreach (PawnCapacityDef pawnCapacityDef in array)
             {
                 {
@@ -439,11 +417,11 @@ namespace ColonistBarKF
                 bool flag;
                 if (targetInfo != null)
                 {
-                    IntVec3 arg2420 = targetInfo.Cell;
                     flag = false;
                 }
                 else
                 {
+            //        this.TargetPos = pawn.Position.ToVector3Shifted();
                     flag = true;
                 }
 
@@ -636,7 +614,6 @@ namespace ColonistBarKF
 
             // Health Calc
             this.DiseaseDisappearance = 1f;
-            this.HasLifeThreateningDisease = false;
             this.HealthDisease = 1f;
 
             // Drug addiction
@@ -679,7 +656,7 @@ namespace ColonistBarKF
                                 new IconEntryBar(
                                     Icon.MedicalAttention,
                                     ColVermillion,
-                                    "NeedsTendingNowUrgent".Translate()));
+                                    "NeedsTendingNow".Translate()));
                         }
 
                         if (psiSettings.ShowMedicalAttention)
@@ -760,7 +737,6 @@ namespace ColonistBarKF
                             this.severity = Mathf.Max(this.severity, hediff.Severity);
                             this.immunity = compImmunizable.Immunity;
                             float basehealth = this.HealthDisease - (this.severity - this.immunity / 4) - 0.25f;
-                            this.HasLifeThreateningDisease = true;
                             this.HealthDisease = basehealth;
                         }
                         else
@@ -1263,10 +1239,14 @@ namespace ColonistBarKF
                         }
                     }
                 }
-
-                this.BarIcons = barIconList.OrderBy(x => x.icon).ToList();
-                this.PSIIcons = psiIconList.OrderBy(x => x.icon).ToList();
             }
+            // Log.Message(this.PSIPawn.LabelShort + " icons to be displayed: ");
+            // foreach (IconEntryBar entry in barIconList)
+            // {
+            //     Log.Message(entry.icon + " - " + entry.tooltip);
+            // }
+            this._barIconList = barIconList.OrderBy(x => x.icon).ToList();
+            this._psiIconList = psiIconList.OrderBy(x => x.icon).ToList();
         }
 
         private void CheckTraits(Pawn pawn)
@@ -1400,7 +1380,7 @@ namespace ColonistBarKF
 
             PawnStats pawnstats = this.PSIPawn.GetPawnStats();
             Vector3 bodyPos = this.PSIPawn.DrawPos;
-            if (this.PSIIcons.NullOrEmpty())
+            if (this.PSIIconList.NullOrEmpty())
             {
                 return;
             }
@@ -1410,9 +1390,9 @@ namespace ColonistBarKF
                 PSI.PSI.Reinit(false, true, false);
             }
 
-            for (int index = 0; index < this.PSIIcons.Count; index++)
+            for (int index = 0; index < this.PSIIconList.Count; index++)
             {
-                var entry = this.PSIIcons[index];
+                var entry = this.PSIIconList[index];
                 Vector3 posOffset = PSI.PSI.IconPosVectorsPSI[index];
                 Material material = PSI.PSI.PSIMaterials[entry.icon];
 
