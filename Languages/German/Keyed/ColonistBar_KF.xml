@@ -146,10 +146,8 @@
 	<PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
 	<PSI.DiseaseProgress>Krankheit</PSI.DiseaseProgress>
 	<PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
-	<PSI.MedicalTendQuality>Medizinische Behandlungsqualität</PSI.MedicalTendQuality>
-	<PSI.MedicalSurgerySuccessChance>OP-Erfolgsquote</PSI.MedicalSurgerySuccessChance>
 
-	<PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Zeige Pawn Health Icon™ on Fremden mit Verwandschaft</PSI.Settings.ShowRelationsOnStrangers>
 
 </LanguageData>

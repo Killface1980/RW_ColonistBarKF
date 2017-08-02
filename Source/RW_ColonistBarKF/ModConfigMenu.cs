@@ -745,53 +745,45 @@ namespace ColonistBarKF
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("PSI.Settings.IconSet".Translate() + PsiSettings.IconSet))
             {
+                FloatMenuOption fmoDefault = new FloatMenuOption(
+                    "PSI.Settings.Preset.0".Translate(),
+                    () =>
+                        {
+                            try
+                            {
+                                PsiSettings.IconSet = "default";
+                                PsiSettings.UseColoredTarget = true;
+                                SavePsiSettings();
+                                Reinit(false, true, false);
+                            }
+                            catch (IOException)
+                            {
+                                Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
+                            }
+                        });
+
+                FloatMenuOption fmoPreset1 = new FloatMenuOption(
+                    "PSI.Settings.Preset.1".Translate(),
+                    () =>
+                        {
+                            try
+                            {
+                                PsiSettings.IconSet = "original";
+                                PsiSettings.UseColoredTarget = false;
+                                SavePsiSettings();
+                                Reinit(false, true, false);
+
+                            }
+                            catch (IOException)
+                            {
+                                Log.Error("PSI.Settings.LoadPreset.UnableToLoad".Translate() + "default");
+                            }
+                        });
+
                 List<FloatMenuOption> options = new List<FloatMenuOption>
                                                     {
-                                                        new FloatMenuOption(
-                                                            "PSI.Settings.Preset.0".Translate(),
-                                                            () =>
-                                                                {
-                                                                    try
-                                                                    {
-                                                                        PsiSettings.IconSet =
-                                                                            "default";
-                                                                        PsiSettings
-                                                                                .UseColoredTarget =
-                                                                            true;
-                                                                        SavePsiSettings();
-                                                                        PSI.GameComponentPSI.Reinit(false,true);
-                                                                    }
-                                                                    catch (IOException)
-                                                                    {
-                                                                        Log.Error(
-                                                                            "PSI.Settings.LoadPreset.UnableToLoad"
-                                                                                .Translate()
-                                                                            + "default");
-                                                                    }
-                                                                }),
-                                                        new FloatMenuOption(
-                                                            "PSI.Settings.Preset.1".Translate(),
-                                                            () =>
-                                                                {
-                                                                    try
-                                                                    {
-                                                                        PsiSettings.IconSet =
-                                                                            "original";
-                                                                        PsiSettings
-                                                                                .UseColoredTarget =
-                                                                            false;
-                                                                        SavePsiSettings();
-                                                                        PSI.GameComponentPSI.Reinit(false,true);
-
-                                                                    }
-                                                                    catch (IOException)
-                                                                    {
-                                                                        Log.Error(
-                                                                            "PSI.Settings.LoadPreset.UnableToLoad"
-                                                                                .Translate()
-                                                                            + "default");
-                                                                    }
-                                                                })
+                                                        fmoDefault,
+                                                        fmoPreset1
                                                     };
 
                 Find.WindowStack.Add(new FloatMenu(options));

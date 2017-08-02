@@ -237,6 +237,11 @@
                     Settings.SaveBarSettings();
                     break;
 
+                case SettingsColonistBar.SortByWhat.tradePrice:
+                    tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
+                    Settings.SaveBarSettings();
+                    break;
+
                 default:
                     tmpColonists.SortBy(x => x.thingIDNumber);
                     Settings.SaveBarSettings();

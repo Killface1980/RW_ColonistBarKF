@@ -12,11 +12,6 @@ namespace ColonistBarKF.PSI
 
     public static class PSIDrawer
     {
-        public static Gradient gradient4 = new Gradient();
-
-        public static Gradient gradient4Mood = new Gradient();
-
-        public static Gradient gradientRedAlertToNeutral = new Gradient();
 
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,
@@ -151,14 +146,13 @@ namespace ColonistBarKF.PSI
             num++;
         }
 
-        public static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryBar, int entryCount, float opacity)
+        public static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryPSI, int entryCount)
         {
             if (WorldRendererUtility.WorldRenderedNow)
             {
                 return;
             }
-
-            Material material = PSIMaterials[entryBar.icon];
+            Material material = PSIMaterials[entryPSI.icon];
             if (material == null)
             {
                 Debug.LogError("Material = null.");
@@ -167,10 +161,10 @@ namespace ColonistBarKF.PSI
 
             Vector3 posOffset = IconPosVectorsPSI[entryCount];
 
-            entryBar.color.a = opacity;
-            material.color = entryBar.color;
+            entryPSI.color.a = entryPSI.opacity;
+            material.color = entryPSI.color;
             Color guiColor = GUI.color;
-            GUI.color = entryBar.color;
+            GUI.color = entryPSI.color;
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;

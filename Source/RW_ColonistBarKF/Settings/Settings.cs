@@ -2,6 +2,8 @@
 {
     using System.IO;
 
+    using UnityEngine;
+
     using Verse;
 
     public static class Settings
@@ -9,6 +11,10 @@
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
 
         public static SettingsPSI PsiSettings = new SettingsPSI();
+
+        public static float ViewOpacityCrit => Mathf.Max(
+            Settings.PsiSettings.IconOpacityCritical,
+            Settings.PsiSettings.IconOpacity);
 
         internal static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {

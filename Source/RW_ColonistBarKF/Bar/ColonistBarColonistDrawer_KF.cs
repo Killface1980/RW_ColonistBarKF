@@ -301,104 +301,115 @@
                                                     delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
                                         }
                                     }
+                                    FloatMenuOption sortby_vanilla = new FloatMenuOption(
+                                        "CBKF.Settings.Vanilla".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+                                    var sortby_weapons = new FloatMenuOption(
+                                        "CBKF.Settings.Weapons".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+                                    var sortbyName = new FloatMenuOption(
+                                        "CBKF.Settings.ByName".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+
+                                    FloatMenuOption sortbySexAge = new FloatMenuOption(
+                                        "CBKF.Settings.SexAge".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+                                    FloatMenuOption mood = new FloatMenuOption(
+                                        "CBKF.Settings.Mood".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+                                    FloatMenuOption health = new FloatMenuOption(
+                                        "CBKF.Settings.Health".Translate(),
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                                // CheckRecacheEntries();
+                                            });
+
+                                    FloatMenuOption medic = new FloatMenuOption(
+                                        StatDefOf.MedicalTendQuality.LabelCap,
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy =
+                                                    SettingsColonistBar.SortByWhat.medicTendQuality;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+                                            });
+                                    FloatMenuOption medic2 = new FloatMenuOption(
+                                        StatDefOf.MedicalSurgerySuccessChance.LabelCap,
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy =
+                                                    SettingsColonistBar.SortByWhat.medicSurgerySuccess;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                            });
+
+
+                                    FloatMenuOption trade = new FloatMenuOption(
+                                        StatDefOf.TradePriceImprovement.LabelCap,
+                                        delegate
+                                            {
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.tradePrice;
+                                                HarmonyPatches.MarkColonistsDirty_Postfix();
+                                            });
 
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.Vanilla".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                    // CheckRecacheEntries();
-                                                }));
+                                        sortby_vanilla);
 
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.Weapons".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                    // CheckRecacheEntries();
-                                                }));
+                                        sortby_weapons);
 
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.ByName".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                    // CheckRecacheEntries();
-                                                }));
+                                        sortbyName);
 
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.SexAge".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                    // CheckRecacheEntries();
-                                                }));
+                                        sortbySexAge);
 
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.Mood".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                        mood);
 
-                                                    // CheckRecacheEntries();
-                                                }));
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.Health".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                        health);
 
-                                                    // CheckRecacheEntries();
-                                                }));
-
-                                    // skill not relevant
-                                    // floatOptionList.Add(
-                                    // new FloatMenuOption(
-                                    // "CBKF.Settings.Medic".Translate(),
-                                    // delegate
-                                    // {
-                                    // ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medic;
-                                    // HarmonyPatches.MarkColonistsDirty_Postfix();
-                                    // // CheckRecacheEntries();
-                                    // }));
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "PSI.MedicalTendQuality".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy =
-                                                        SettingsColonistBar.SortByWhat.medicTendQuality;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                        medic);
 
-                                                    // CheckRecacheEntries();
-                                                }));
                                     floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "PSI.MedicalSurgerySuccessChance".Translate(),
-                                            delegate
-                                                {
-                                                    ColBarSettings.SortBy =
-                                                        SettingsColonistBar.SortByWhat.medicSurgerySuccess;
-                                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                        medic2);
 
-                                                    // CheckRecacheEntries();
-                                                }));
+                                    floatOptionList.Add(
+                                        trade);
 
                                     floatOptionList.Add(
                                         new FloatMenuOption(
