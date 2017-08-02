@@ -644,6 +644,15 @@ namespace ColonistBarKF
                                 gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
                                 tooltip));
                     }
+                    if (psiSettings.ShowBloodloss)
+                    {
+
+                        psiIconList.Add(
+                            new IconEntryPSI(
+                                Icon.Bloodloss,
+                                gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
+                                viewOpacityCrit));
+                    }
                 }
 
                 if (pawn.Map != null)
