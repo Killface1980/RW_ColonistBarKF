@@ -30,17 +30,21 @@
 
         static HarmonyPatches()
         {
-            Log.Message("Start injecting PSI to pawns ...");
+            bool injected = false;
+            string patchLog = "Start injecting PSI to pawns ...";
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(
                 x => x.race != null && x.race.Humanlike && x.race.IsFlesh))
             {
-                Log.Message("PSI check: " + def);
+                patchLog += "\nPSI check: " + def;
                 if (def?.comps != null)
                 {
                     def.comps.Add(new CompProperties(typeof(CompPSI)));
-                    Log.Message("PSI injected " + def);
+                    patchLog += " - PSI injected.";
+                    injected = true;
                 }
             }
+            patchLog += injected ? "" : "\nNo pawns found for PSI :(";
+            Log.Message(patchLog);
 
             HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
 
@@ -130,19 +134,19 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
 
-         // try
-         // {
-         //     ((Action)(() =>
-         //         {
-         //             harmony.Patch(
-         //                 AccessTools.Method(
-         //                     typeof(Psychology.PsychologyPawn),
-         //                     nameof(Psychology.PsychologyPawn.SpawnSetup)),
-         //                 null,
-         //                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
-         //         }))();
-         // }
-         // catch (TypeLoadException) { }
+            // try
+            // {
+            //     ((Action)(() =>
+            //         {
+            //             harmony.Patch(
+            //                 AccessTools.Method(
+            //                     typeof(Psychology.PsychologyPawn),
+            //                     nameof(Psychology.PsychologyPawn.SpawnSetup)),
+            //                 null,
+            //                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
+            //         }))();
+            // }
+            // catch (TypeLoadException) { }
 
 
             harmony.Patch(

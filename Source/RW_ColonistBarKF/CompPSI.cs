@@ -5,11 +5,14 @@ using System.Text;
 
 namespace ColonistBarKF
 {
+    using System.Runtime.CompilerServices;
+
     using static ColonistBarKF.Bar.ColonistBarTextures;
     using ColonistBarKF.PSI;
     using static ColonistBarKF.PSI.PSIDrawer;
 
     using RimWorld;
+    using RimWorld.Planet;
 
     using UnityEngine;
 
@@ -157,6 +160,130 @@ namespace ColonistBarKF
                 }
                 this.CheckStats();
             }
+
+
+        }
+
+        public override void PostDraw()
+        {
+            // TODO: make this one draw the icons on colonists
+            // deactivated for now
+            base.PostDraw();
+            return;
+
+            if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
+            {
+                return;
+            }
+
+            SettingsPSI psiSettings = PsiSettings;
+            float viewOpacity = psiSettings.IconOpacity;
+
+            int iconNum = 0;
+
+            Vector3 bodyLoc = pawn.DrawPos;
+
+            // // Target Point
+            // if (psiSettings.ShowTargetPoint && TargetPos != Vector3.zero)
+            // {
+            //     if (psiSettings.UseColoredTarget)
+            //     {
+            //         Color skinColor = pawn.story.SkinColor;
+            //         Color hairColor = pawn.story.hairColor;
+            //
+            //         if (skinMat == null)
+            //         {
+            //             return;
+            //         }
+            //
+            //         if (hairMat == null)
+            //         {
+            //             return;
+            //         }
+            //
+            //         DrawIcon_posOffset(TargetPos, Vector3.zero, skinMat, skinColor, 1f);
+            //         DrawIcon_posOffset(TargetPos, Vector3.zero, hairMat, hairColor, 1f);
+            //     }
+            //     else
+            //     {
+            //         if (targetMat == null)
+            //         {
+            //             return;
+            //         }
+            //
+            //         DrawIcon_posOffset(TargetPos, Vector3.zero, targetMat, ColorNeutralStatus, viewOpacity);
+            //     }
+            // }
+
+            // Drafted
+            if (psiSettings.ShowDraft && pawn.Drafted)
+            {
+                if (isPacifist)
+                {
+                    DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Pacific, ColYellow, ViewOpacityCrit), iconNum);
+                }
+                else
+                {
+                    DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Draft, ColVermillion, ViewOpacityCrit), iconNum);
+                }
+                iconNum++;
+            }
+
+            List<IconEntryPSI> drawIconEntries = PSIIconList;
+            if (!drawIconEntries.NullOrEmpty())
+            {
+                for (int index = 0; index < drawIconEntries.Count; index++)
+                {
+                    IconEntryPSI iconEntryBar = drawIconEntries[index];
+                    DrawIconOnColonist(bodyLoc, iconEntryBar, index + iconNum);
+                }
+            }
+
+        }
+
+        private static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryPSI, int entryCount)
+        {
+            Material material = GameComponentPSI.PSIMaterials[entryPSI.icon];
+            if (material == null)
+            {
+                Debug.LogError("Material = null.");
+                return;
+            }
+
+            Vector3 posOffset = GameComponentPSI.IconPosVectorsPSI[entryCount];
+
+            entryPSI.color.a = entryPSI.opacity;
+            material.color = entryPSI.color;
+            Color guiColor = GUI.color;
+            GUI.color = entryPSI.color;
+            Vector2 vectorAtBody;
+
+            float worldScale = GameComponentPSI.WorldScale;
+            if (Settings.PsiSettings.IconsScreenScale)
+            {
+                worldScale = 45f;
+                vectorAtBody = bodyPos.MapToUIPosition();
+                vectorAtBody.x += posOffset.x * 45f;
+                vectorAtBody.y -= posOffset.z * 45f;
+            }
+            else
+            {
+                vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
+            }
+
+            float num2 = worldScale * (Settings.PsiSettings.IconSizeMult * 0.5f);
+
+            // On Colonist
+            Rect position = new Rect(
+                vectorAtBody.x,
+                vectorAtBody.y,
+                num2 * Settings.PsiSettings.IconSize,
+                num2 * Settings.PsiSettings.IconSize);
+            position.x -= position.width * 0.5f;
+            position.y -= position.height * 0.5f;
+
+            GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
+            GUI.color = guiColor;
 
 
         }

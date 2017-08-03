@@ -61,9 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="Icon.cs" />
     <Compile Include="OLD_Class2.cs" />
     <Compile Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="PSI\PSIDrawer.cs" />
     <Compile Include="Statics.cs" />
     <None Include="PawnstatsChecker.cs" />
     <Compile Include="PSI\IconEntryPSI.cs" />
@@ -78,7 +80,6 @@
     <Compile Include="ColBarHelper_KF.cs" />
     <None Include="Coloniistbar_KF_ModBase.cs" />
     <None Include="Mod.cs" />
-    <Compile Include="PSI\PsiDrawer.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSIMaterials.cs" />
     <Compile Include="PSI\GameComponentPSI.cs" />

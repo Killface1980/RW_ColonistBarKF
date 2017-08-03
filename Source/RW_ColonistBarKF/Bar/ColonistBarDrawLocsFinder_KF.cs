@@ -155,11 +155,11 @@
             for (int j = 0; j < entries.Count; j++)
             {
                 List<int> list;
-                List<int> expr_49 = list = this.entriesInGroup;
+                List<int> entryList = list = this.entriesInGroup;
                 int num2;
-                int expr_5C = num2 = entries[j].group;
+                int entryGroup = num2 = entries[j].group;
                 num2 = list[num2];
-                expr_49[expr_5C] = num2 + 1;
+                entryList[entryGroup] = num2 + 1;
             }
         }
 

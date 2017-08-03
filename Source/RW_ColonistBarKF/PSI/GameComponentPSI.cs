@@ -163,7 +163,6 @@ namespace ColonistBarKF.PSI
 
         public static void DrawColonistIconsPSI(Pawn pawn)
         {
-            // TODO: Make list item like ...OnBar
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
                 return;

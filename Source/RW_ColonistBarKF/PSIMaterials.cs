@@ -7,49 +7,8 @@
 
     using Verse;
 
-    public enum Icon
-    {
-        None,
-        Idle,
-        Aggressive,
-        Leave,
-        Dazed,
-        Panic,
-        Bloodloss,
-        Health,
-        Toxicity,
-        Unarmed,
-        Pacific,
-        Pyromaniac,
-        Drunk,
-        Sad,
-        Hungry,
-        Tired,
-        TooCold,
-        TooHot,
-        Pain,
-        ApparelHealth,
-        Effectiveness,
-        Naked,
-        NightOwl,
-        Greedy,
-        Jealous,
-        Prosthophile,
-        Prosthophobe,
-        CabinFever,
-        MedicalAttention,
-        LeftUnburied,
-        Bedroom,
-        Draft,
-        Target,
-        TargetHair,
-        TargetSkin,
-        Length
-    }
-
     public class Materials
     {
-
 
         private readonly Material[] _data = new Material[40];
         private readonly string _matLibName;
