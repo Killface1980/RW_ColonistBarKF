@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 // TODO: Old class, will be removed in next alpha
 namespace ColonistBarKF.PSI
 {

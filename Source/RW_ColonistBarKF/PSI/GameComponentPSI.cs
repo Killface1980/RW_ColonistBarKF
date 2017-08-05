@@ -3,13 +3,9 @@ using static ColonistBarKF.PSI.PSIDrawer;
 
 namespace ColonistBarKF.PSI
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using FacialStuff.Detouring;
-
-    using Harmony;
 
     using RimWorld;
     using RimWorld.Planet;
@@ -17,7 +13,6 @@ namespace ColonistBarKF.PSI
     using UnityEngine;
 
     using Verse;
-    using Verse.AI;
 
     using static Settings;
 

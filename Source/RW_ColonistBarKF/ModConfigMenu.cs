@@ -7,7 +7,6 @@ namespace ColonistBarKF
     using System.IO;
 
     using ColonistBarKF.Bar;
-    using ColonistBarKF.PSI;
 
     using FacialStuff.Detouring;
 
