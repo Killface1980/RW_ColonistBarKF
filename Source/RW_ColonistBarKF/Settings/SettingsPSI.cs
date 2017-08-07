@@ -29,6 +29,7 @@
 
         public bool IconsScreenScale = true;
 
+        // TODO: A18 remove
         public float LimitApparelHealthLess = 0.5f;
 
         public float LimitBleedMult = 3f;

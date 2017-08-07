@@ -18,7 +18,7 @@ namespace ColonistBarKF
 
     public class ColonistBarKF_Settings : Window
     {
-        private static readonly string cbkfversion = "Colonist Bar KF 0.17.2";
+        private static readonly string cbkfversion = "Colonist Bar KF 0.17.2.0";
 
         public static int lastupdate = -5000;
 
@@ -1071,9 +1071,6 @@ namespace ColonistBarKF
                                                                         PsiSettings.LimitRestLess
                                                                             = 0.2f;
                                                                         PsiSettings
-                                                                                .LimitApparelHealthLess
-                                                                            = 0.5f;
-                                                                        PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = 3f;
                                                                     }
@@ -1106,9 +1103,6 @@ namespace ColonistBarKF
                                                                         PsiSettings.LimitRestLess
                                                                             = 0.25f;
                                                                         PsiSettings
-                                                                                .LimitApparelHealthLess
-                                                                            = 0.5f;
-                                                                        PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = 0f;
                                                                     }
@@ -1140,9 +1134,6 @@ namespace ColonistBarKF
                                                                         // PsiSettings.LimitMoodLess = 0.3f;
                                                                         PsiSettings.LimitRestLess
                                                                             = 0.3f;
-                                                                        PsiSettings
-                                                                                .LimitApparelHealthLess
-                                                                            = 0.5f;
                                                                         PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = -3f;
@@ -1190,13 +1181,14 @@ namespace ColonistBarKF
             PsiSettings.LimitRestLess = GUILayout.HorizontalSlider(PsiSettings.LimitRestLess, 0.01f, 0.99f);
             GUILayout.EndVertical();
 
-            GUILayout.BeginVertical(this._fondBoxes);
-            GUILayout.Label(
-                "PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(PsiSettings.LimitApparelHealthLess * 100.0)
-                + " %");
-            PsiSettings.LimitApparelHealthLess =
-                GUILayout.HorizontalSlider(PsiSettings.LimitApparelHealthLess, 0.01f, 0.99f);
-            GUILayout.EndVertical();
+            // Replaced with thought check => human leather, dead man's apparel
+            // GUILayout.BeginVertical(this._fondBoxes);
+            // GUILayout.Label(
+            //     "PSI.Settings.Sensitivity.ApparelHealth".Translate() + (int)(PsiSettings.LimitApparelHealthLess * 100.0)
+            //     + " %");
+            // PsiSettings.LimitApparelHealthLess =
+            //     GUILayout.HorizontalSlider(PsiSettings.LimitApparelHealthLess, 0.01f, 0.99f);
+            // GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this._fondBoxes);
             GUILayout.Label(

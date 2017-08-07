@@ -33,8 +33,6 @@ namespace ColonistBarKF
 
         private float DiseaseDisappearance = 1f;
 
-        private float ApparelHealth = 1f;
-
         // public float Drunkness = 0f;
         private int BedStatus = -1;
 
@@ -557,18 +555,7 @@ namespace ColonistBarKF
                     targetInfo = null;
                 }
 
-                bool flag;
                 if (targetInfo != null)
-                {
-                    flag = false;
-                }
-                else
-                {
-                    // this.TargetPos = pawn.Position.ToVector3Shifted();
-                    flag = true;
-                }
-
-                if (!flag)
                 {
                     Vector3 a = targetInfo.Cell.ToVector3Shifted();
                     this.TargetPos = a + new Vector3(0f, 3f, 0f);
@@ -641,17 +628,14 @@ namespace ColonistBarKF
                     }
 
                     // Give Up Exit
-                    if (barSettings.ShowLeave)
+                    if (this.MentalSanity == MentalStateDefOf.PanicFlee)
                     {
-                        if (this.MentalSanity == MentalStateDefOf.PanicFlee)
+                        if (barSettings.ShowLeave)
                         {
                             barIconList.Add(new IconEntryBar(Icon.Leave, ColVermillion, null));
                         }
-                    }
 
-                    if (psiSettings.ShowLeave)
-                    {
-                        if (this.MentalSanity == MentalStateDefOf.PanicFlee)
+                        if (psiSettings.ShowLeave)
                         {
                             psiIconList.Add(new IconEntryPSI(Icon.Leave, ColVermillion, viewOpacityCrit));
                         }
@@ -706,8 +690,6 @@ namespace ColonistBarKF
 
                 if (psiSettings.ShowHungry)
                 {
-                    string tooltip = this.pawn.needs.food.GetTipString();
-
                     psiIconList.Add(
                         new IconEntryPSI(
                             Icon.Hungry,
@@ -796,51 +778,47 @@ namespace ColonistBarKF
                                 viewOpacityCrit));
                     }
                 }
-
-                if (this.pawn.Map != null)
+                if (HealthAIUtility.ShouldBeTendedNowUrgent(this.pawn))
                 {
-                    if (HealthAIUtility.ShouldBeTendedNowUrgent(this.pawn))
+                    if (barSettings.ShowMedicalAttention)
                     {
-                        if (barSettings.ShowMedicalAttention)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(Icon.MedicalAttention, ColVermillion, "NeedsTendingNow".Translate()));
-                        }
-
-                        if (psiSettings.ShowMedicalAttention)
-                        {
-                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColVermillion, viewOpacityCrit));
-                        }
-                    }
-                    else if (HealthAIUtility.ShouldBeTendedNow(this.pawn))
-                    {
-                        if (barSettings.ShowMedicalAttention)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(Icon.MedicalAttention, ColYellow, "NeedsTendingNow".Translate()));
-                        }
-
-                        if (psiSettings.ShowMedicalAttention)
-                        {
-                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColYellow, viewOpacityCrit));
-                        }
+                        barIconList.Add(
+                            new IconEntryBar(Icon.MedicalAttention, ColVermillion, "NeedsTendingNow".Translate()));
                     }
 
-                    if (HealthAIUtility.ShouldHaveSurgeryDoneNow(this.pawn))
+                    if (psiSettings.ShowMedicalAttention)
                     {
-                        if (barSettings.ShowMedicalAttention)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.MedicalAttention,
-                                    ColBlueishGreen,
-                                    "ShouldHaveSurgeryDoneNow".Translate()));
-                        }
+                        psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColVermillion, viewOpacityCrit));
+                    }
+                }
+                else if (HealthAIUtility.ShouldBeTendedNow(this.pawn))
+                {
+                    if (barSettings.ShowMedicalAttention)
+                    {
+                        barIconList.Add(
+                            new IconEntryBar(Icon.MedicalAttention, ColYellow, "NeedsTendingNow".Translate()));
+                    }
 
-                        if (psiSettings.ShowMedicalAttention)
-                        {
-                            psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColBlueishGreen, viewOpacityCrit));
-                        }
+                    if (psiSettings.ShowMedicalAttention)
+                    {
+                        psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColYellow, viewOpacityCrit));
+                    }
+                }
+
+                if (HealthAIUtility.ShouldHaveSurgeryDoneNow(this.pawn))
+                {
+                    if (barSettings.ShowMedicalAttention)
+                    {
+                        barIconList.Add(
+                            new IconEntryBar(
+                                Icon.MedicalAttention,
+                                ColBlueishGreen,
+                                "ShouldHaveSurgeryDoneNow".Translate()));
+                    }
+
+                    if (psiSettings.ShowMedicalAttention)
+                    {
+                        psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColBlueishGreen, viewOpacityCrit));
                     }
                 }
             }
@@ -994,275 +972,290 @@ namespace ColonistBarKF
                         new IconEntryPSI(Icon.Toxicity, gradient4.Evaluate(this.ToxicBuildUpVisible), viewOpacityCrit));
                 }
             }
+            string appareltip = null;
+            bool barAp = false;
+            bool psiAp = false;
 
             // Apparel Calc
-            float worstApparel = 999f;
-            List<Apparel> apparelListForReading = this.pawn.apparel.WornApparel;
-            foreach (Apparel t in apparelListForReading)
-            {
-                float curApparel = t.HitPoints / (float)t.MaxHitPoints;
-                if (curApparel >= 0f && curApparel < worstApparel)
-                {
-                    worstApparel = curApparel;
-                }
-            }
 
-            this.ApparelHealth = worstApparel;
-
-            // Apparel
-            if (this.ApparelHealth < (double)PsiSettings.LimitApparelHealthLess)
+            // Naked
+            if (GetThought(
+                thoughts,
+                ThoughtDefOf.Naked,
+                out this.feelsNaked,
+                out this.nakedTip,
+                out this.nakedMoodOffset))
             {
-                if (barSettings.ShowApparelHealth)
+                if (barSettings.ShowNaked)
                 {
-                    double pawnApparelHealth = this.ApparelHealth / (double)psiSettings.LimitApparelHealthLess;
                     barIconList.Add(
-                        new IconEntryBar(
-                            Icon.ApparelHealth,
-                            gradientRedAlertToNeutral.Evaluate((float)pawnApparelHealth),
-                            null));
+                        new IconEntryBar(Icon.Naked, EvaluateMoodOffset(this.nakedMoodOffset), this.nakedTip));
                 }
 
-                if (psiSettings.ShowApparelHealth)
+                if (psiSettings.ShowNaked)
                 {
-                    double pawnApparelHealth = this.ApparelHealth / (double)psiSettings.LimitApparelHealthLess;
                     psiIconList.Add(
-                        new IconEntryPSI(
-                            Icon.ApparelHealth,
-                            gradientRedAlertToNeutral.Evaluate((float)pawnApparelHealth),
-                            viewOpacity));
+                        new IconEntryPSI(Icon.Naked, EvaluateMoodOffset(this.nakedMoodOffset), viewOpacity));
                 }
             }
-
-            if (!thoughts.NullOrEmpty())
+            else
             {
-                if (this.prostho != 0)
-                {
-                    switch (this.prostho)
-                    {
-                        case -1:
-                            GetThought(
-                                thoughts,
-                                ThoughtDef.Named("ProsthophobeUnhappy"),
-                                out this.prosthoUnhappy,
-                                out this.prosthoTooltip,
-                                out this.prosthoMoodOffset);
-                            break;
 
-                        case 1:
-                            GetThought(
-                                thoughts,
-                                ThoughtDef.Named("ProsthophileNoProsthetic"),
-                                out this.prosthoUnhappy,
-                                out this.prosthoTooltip,
-                                out this.prosthoMoodOffset);
-                            break;
-
-                        default: break;
-                    }
-                }
-
-                // Bed status
-                if (this.pawn.ownership.OwnedBed != null)
-                {
-                    GetThought(
-                        thoughts,
-                        ThoughtDef.Named("SharedBed"),
-                        out this.BedStatus,
-                        out this.BedStatusTip,
-                        out this.BedStatusMoodOffset);
-                }
-                else
-                {
-                    this.BedStatus = 1;
-                    this.BedStatusTip = "NeedColonistBeds".Translate();
-                }
-
-                // Humping
-                GetThought(
-                    thoughts,
-                    ThoughtDef.Named("WantToSleepWithSpouseOrLover"),
-                    out this.wantsToHump,
-                    out this.humpTip,
-                    out this.humpMoodOffset);
-
-                // Cabin Fever
                 if (GetThought(
                     thoughts,
-                    ThoughtDef.Named("CabinFever"),
-                    out this.CabinFeverMoodLevel,
-                    out this.cabinFeverTip,
-                    out this.CabinFeverMoodOffset))
+                    ThoughtDefOf.ApparelDamaged,
+                    out int apparelStage,
+                    out string apparelTooltip,
+                    out float moodOffset))
                 {
-                    if (barSettings.ShowCabinFever)
+                    barAp = true;
+                    psiAp = true;
+                    appareltip = appareltip == null ? apparelTooltip : appareltip + "\n" + apparelTooltip;
+                }
+
+                if (GetThought(
+                    thoughts,
+                    ThoughtDefOf.HumanLeatherApparelSad,
+                    out apparelStage,
+                    out apparelTooltip,
+                    out moodOffset))
+                {
+                    barAp = true;
+                    psiAp = true;
+                    appareltip = appareltip == null ? apparelTooltip : appareltip + "\n" + apparelTooltip;
+
+                }
+
+                if (GetThought(
+                    thoughts,
+                    ThoughtDefOf.DeadMansApparel,
+                    out apparelStage,
+                    out apparelTooltip,
+                    out moodOffset))
+                {
+                    barAp = true;
+                    psiAp = true;
+                    appareltip = appareltip == null ? apparelTooltip : appareltip + "\n" + apparelTooltip;
+                }
+
+
+                if (barAp)
+                {
+                    if (barSettings.ShowApparelHealth)
                     {
-                        string tooltip = this.cabinFeverTip;
                         barIconList.Add(
-                            new IconEntryBar(Icon.CabinFever, EvaluateMoodOffset(this.CabinFeverMoodOffset), tooltip));
+                            new IconEntryBar(Icon.ApparelHealth, ColVermillion, appareltip));
+                    }
+                }
+
+                if (psiAp)
+                {
+                    if (psiSettings.ShowApparelHealth)
+                    {
+                        psiIconList.Add(new IconEntryPSI(Icon.ApparelHealth, ColVermillion, viewOpacity));
+                    }
+                }
+            }
+
+            if (this.prostho != 0)
+            {
+                switch (this.prostho)
+                {
+                    case -1:
+                        GetThought(
+                            thoughts,
+                            ThoughtDef.Named("ProsthophobeUnhappy"),
+                            out this.prosthoUnhappy,
+                            out this.prosthoTooltip,
+                            out this.prosthoMoodOffset);
+                        break;
+
+                    case 1:
+                        GetThought(
+                            thoughts,
+                            ThoughtDef.Named("ProsthophileNoProsthetic"),
+                            out this.prosthoUnhappy,
+                            out this.prosthoTooltip,
+                            out this.prosthoMoodOffset);
+                        break;
+
+                    default: break;
+                }
+            }
+
+            // Bed status
+            if (this.pawn.ownership.OwnedBed != null)
+            {
+                GetThought(
+                    thoughts,
+                    ThoughtDef.Named("SharedBed"),
+                    out this.BedStatus,
+                    out this.BedStatusTip,
+                    out this.BedStatusMoodOffset);
+            }
+            else
+            {
+                this.BedStatus = 1;
+                this.BedStatusTip = "NeedColonistBeds".Translate();
+            }
+
+            // Humping
+            GetThought(
+                thoughts,
+                ThoughtDef.Named("WantToSleepWithSpouseOrLover"),
+                out this.wantsToHump,
+                out this.humpTip,
+                out this.humpMoodOffset);
+
+            // Cabin Fever
+            if (GetThought(
+                thoughts,
+                ThoughtDef.Named("CabinFever"),
+                out this.CabinFeverMoodLevel,
+                out this.cabinFeverTip,
+                out this.CabinFeverMoodOffset))
+            {
+                if (barSettings.ShowCabinFever)
+                {
+                    string tooltip = this.cabinFeverTip;
+                    barIconList.Add(
+                        new IconEntryBar(Icon.CabinFever, EvaluateMoodOffset(this.CabinFeverMoodOffset), tooltip));
+                }
+
+                if (psiSettings.ShowCabinFever)
+                {
+                    psiIconList.Add(
+                        new IconEntryPSI(
+                            Icon.CabinFever,
+                            EvaluateMoodOffset(this.CabinFeverMoodOffset),
+                            viewOpacityCrit));
+                }
+            }
+
+            // Pain
+            if (GetThought(
+                thoughts,
+                this.painThought,
+                out this.PainMoodLevel,
+                out this.painTip,
+                out this.PainMoodOffset))
+            {
+                if (barSettings.ShowPain)
+                {
+                    barIconList.Add(new IconEntryBar(Icon.Pain, EvaluateMoodOffset(this.PainMoodOffset), this.painTip));
+                }
+
+                if (psiSettings.ShowPain)
+                {
+                    psiIconList.Add(
+                        new IconEntryPSI(Icon.Pain, EvaluateMoodOffset(this.PainMoodOffset), viewOpacityCrit));
+                }
+            }
+
+            // Night Owl
+            if (this.isNightOwl)
+            {
+                if (GetThought(
+                    thoughts,
+                    ThoughtDef.Named("NightOwlDuringTheDay"),
+                    out this.nightOwlUnhappy,
+                    out this.nightOwlTip,
+                    out this.nightOwlMoodOffset))
+                {
+                    if (barSettings.ShowNightOwl)
+                    {
+                        barIconList.Add(
+                            new IconEntryBar(
+                                Icon.NightOwl,
+                                EvaluateMoodOffset(this.nightOwlMoodOffset),
+                                this.nightOwlTip));
                     }
 
-                    if (psiSettings.ShowCabinFever)
+                    if (psiSettings.ShowNightOwl)
                     {
                         psiIconList.Add(
                             new IconEntryPSI(
-                                Icon.CabinFever,
-                                EvaluateMoodOffset(this.CabinFeverMoodOffset),
+                                Icon.NightOwl,
+                                EvaluateMoodOffset(this.nightOwlMoodOffset),
                                 viewOpacityCrit));
                     }
                 }
+            }
 
-                // Pain
+            // Greedy
+            if (this.hasGreedyTrait)
+            {
                 if (GetThought(
                     thoughts,
-                    this.painThought,
-                    out this.PainMoodLevel,
-                    out this.painTip,
-                    out this.PainMoodOffset))
+                    ThoughtDef.Named("Greedy"),
+                    out this.greedyThought,
+                    out this.greedyTooltip,
+                    out this.greedyMoodOffset))
                 {
-                    if (barSettings.ShowPain)
+                    if (barSettings.ShowGreedy)
                     {
                         barIconList.Add(
-                            new IconEntryBar(Icon.Pain, EvaluateMoodOffset(this.PainMoodOffset), this.painTip));
+                            new IconEntryBar(
+                                Icon.Greedy,
+                                EvaluateMoodOffset(this.greedyMoodOffset),
+                                this.greedyTooltip));
                     }
 
-                    if (psiSettings.ShowPain)
+                    if (psiSettings.ShowGreedy)
                     {
                         psiIconList.Add(
-                            new IconEntryPSI(Icon.Pain, EvaluateMoodOffset(this.PainMoodOffset), viewOpacityCrit));
+                            new IconEntryPSI(Icon.Greedy, EvaluateMoodOffset(this.greedyMoodOffset), viewOpacity));
                     }
                 }
+            }
 
-                // Naked
+            // Jealous
+            if (this.hasJealousTrait)
+            {
                 if (GetThought(
                     thoughts,
-                    ThoughtDefOf.Naked,
-                    out this.feelsNaked,
-                    out this.nakedTip,
-                    out this.nakedMoodOffset))
+                    ThoughtDef.Named("Jealous"),
+                    out this.jealousThought,
+                    out this.jealousTooltip,
+                    out this.jealousMoodOffset))
                 {
-                    if (barSettings.ShowNaked)
+                    if (barSettings.ShowJealous)
                     {
                         barIconList.Add(
-                            new IconEntryBar(Icon.Naked, EvaluateMoodOffset(this.nakedMoodOffset), this.nakedTip));
+                            new IconEntryBar(
+                                Icon.Jealous,
+                                EvaluateMoodOffset(this.jealousMoodOffset),
+                                this.jealousTooltip));
                     }
 
-                    if (psiSettings.ShowNaked)
+                    if (psiSettings.ShowJealous)
                     {
                         psiIconList.Add(
-                            new IconEntryPSI(Icon.Naked, EvaluateMoodOffset(this.nakedMoodOffset), viewOpacity));
+                            new IconEntryPSI(Icon.Jealous, EvaluateMoodOffset(this.jealousMoodOffset), viewOpacity));
                     }
                 }
+            }
 
-                // Night Owl
-                if (this.isNightOwl)
+            // Unburied
+            if (GetThought(
+                thoughts,
+                ThoughtDef.Named("ColonistLeftUnburied"),
+                out this.unburied,
+                out this.unburiedTip,
+                out this.unburiedMoodOffset))
+            {
+                if (barSettings.ShowLeftUnburied)
                 {
-                    if (GetThought(
-                        thoughts,
-                        ThoughtDef.Named("NightOwlDuringTheDay"),
-                        out this.nightOwlUnhappy,
-                        out this.nightOwlTip,
-                        out this.nightOwlMoodOffset))
-                    {
-                        if (barSettings.ShowNightOwl)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.NightOwl,
-                                    EvaluateMoodOffset(this.nightOwlMoodOffset),
-                                    this.nightOwlTip));
-                        }
-
-                        if (psiSettings.ShowNightOwl)
-                        {
-                            psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.NightOwl,
-                                    EvaluateMoodOffset(this.nightOwlMoodOffset),
-                                    viewOpacityCrit));
-                        }
-                    }
+                    string tooltip = this.unburiedTip;
+                    barIconList.Add(
+                        new IconEntryBar(Icon.LeftUnburied, EvaluateMoodOffset(this.unburiedMoodOffset), tooltip));
                 }
 
-                // Greedy
-                if (this.hasGreedyTrait)
+                if (psiSettings.ShowLeftUnburied)
                 {
-                    if (GetThought(
-                        thoughts,
-                        ThoughtDef.Named("Greedy"),
-                        out this.greedyThought,
-                        out this.greedyTooltip,
-                        out this.greedyMoodOffset))
-                    {
-                        if (barSettings.ShowGreedy)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.Greedy,
-                                    EvaluateMoodOffset(this.greedyMoodOffset),
-                                    this.greedyTooltip));
-                        }
-
-                        if (psiSettings.ShowGreedy)
-                        {
-                            psiIconList.Add(
-                                new IconEntryPSI(Icon.Greedy, EvaluateMoodOffset(this.greedyMoodOffset), viewOpacity));
-                        }
-                    }
-                }
-
-                // Jealous
-                if (this.hasJealousTrait)
-                {
-                    if (GetThought(
-                        thoughts,
-                        ThoughtDef.Named("Jealous"),
-                        out this.jealousThought,
-                        out this.jealousTooltip,
-                        out this.jealousMoodOffset))
-                    {
-                        if (barSettings.ShowJealous)
-                        {
-                            barIconList.Add(
-                                new IconEntryBar(
-                                    Icon.Jealous,
-                                    EvaluateMoodOffset(this.jealousMoodOffset),
-                                    this.jealousTooltip));
-                        }
-
-                        if (psiSettings.ShowJealous)
-                        {
-                            psiIconList.Add(
-                                new IconEntryPSI(
-                                    Icon.Jealous,
-                                    EvaluateMoodOffset(this.jealousMoodOffset),
-                                    viewOpacity));
-                        }
-                    }
-                }
-
-                // Unburied
-                if (GetThought(
-                    thoughts,
-                    ThoughtDef.Named("ColonistLeftUnburied"),
-                    out this.unburied,
-                    out this.unburiedTip,
-                    out this.unburiedMoodOffset))
-                {
-                    if (barSettings.ShowLeftUnburied)
-                    {
-                        string tooltip = this.unburiedTip;
-                        barIconList.Add(
-                            new IconEntryBar(Icon.LeftUnburied, EvaluateMoodOffset(this.unburiedMoodOffset), tooltip));
-                    }
-
-                    if (psiSettings.ShowLeftUnburied)
-                    {
-                        string tooltip = this.unburiedTip;
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.LeftUnburied,
-                                EvaluateMoodOffset(this.unburiedMoodOffset),
-                                viewOpacity));
-                    }
+                    string tooltip = this.unburiedTip;
+                    psiIconList.Add(
+                        new IconEntryPSI(Icon.LeftUnburied, EvaluateMoodOffset(this.unburiedMoodOffset), viewOpacity));
                 }
             }
 
@@ -1601,6 +1594,7 @@ namespace ColonistBarKF
         
                 }
                 */
+
         private static bool GetThought(
             List<Thought> thoughts,
             ThoughtDef tdef,
