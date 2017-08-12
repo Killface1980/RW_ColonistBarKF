@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="ThoughtDefOf.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="OLD_Class2.cs" />
     <Compile Include="MapComponent_PSI.cs" />

@@ -21,7 +21,8 @@
     [StaticConstructorOnStartup]
     public class ColonistBarColonistDrawer_KF
     {
-        #region Fields
+
+        #region Private Fields
 
         private static readonly Vector2[] bracketLocs = new Vector2[4];
         private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
@@ -29,9 +30,9 @@
 
         private readonly Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
 
-        #endregion Fields
+        #endregion Private Fields
 
-        #region Properties
+        #region Private Properties
 
         private static Vector3 PawnTextureCameraOffset
         {
@@ -51,9 +52,9 @@
 
         private static Pawn SelPawn => Find.Selector.SingleSelectedThing as Pawn;
 
-        #endregion Properties
+        #endregion Private Properties
 
-        #region Methods
+        #region Public Methods
 
         public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
@@ -509,6 +510,10 @@
             this.pawnLabelsCache.Clear();
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private static void BuildRects(int thisColCount, ref Rect outerRect, ref Rect pawnRect, out Rect moodRect, out Rect psiRect)
         {
             float widthMoodFloat = pawnRect.width;
@@ -544,26 +549,7 @@
                 // If lesser rows, move the rect
                 if (thisColCount < ColonistBar_KF.PsiRowsOnBar)
                 {
-                    switch (thisColCount)
-                    {
-                        case 0:
-                            modifier = 0f;
-                            break;
-                        case 1:
-                            modifier = 0.5f;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (psiHorizontal)
-                    {
-                        widthPsiFloat *= modifier;
-                    }
-                    else
-                    {
-                        heightPsiFloat *= modifier;
-                    }
+                    CalculateSizePSI(thisColCount, modifier, psiHorizontal, ref widthPsiFloat, ref heightPsiFloat);
                 }
             }
 
@@ -669,6 +655,34 @@
                 || ColBarSettings.MoodBarPos == Position.Alignment.Bottom
                     ? height
                     : height + ColonistBar_KF.SpacingLabel;
+        }
+
+        private static void CalculateSizePSI(
+            int thisColCount,
+            float modifier,
+            bool psiHorizontal,
+            ref float widthPsiFloat,
+            ref float heightPsiFloat)
+        {
+            switch (thisColCount)
+            {
+                case 0:
+                    modifier = 0f;
+                    break;
+                case 1:
+                    modifier = 0.5f;
+                    break;
+                default: break;
+            }
+
+            if (psiHorizontal)
+            {
+                widthPsiFloat *= modifier;
+            }
+            else
+            {
+                heightPsiFloat *= modifier;
+            }
         }
 
         private static void DrawCurrentJobTooltip(Pawn colonist, Rect pawnRect)
@@ -1109,6 +1123,7 @@
             return new Rect(posX, posY, num2 - posX, height).ContractedBy(-12f * ColonistBar_KF.Scale);
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
     }
 }

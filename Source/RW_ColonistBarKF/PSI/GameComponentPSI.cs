@@ -134,15 +134,15 @@ namespace ColonistBarKF.PSI
             List<IconEntryBar> drawIconEntries = pawnStats.BarIconList;
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
-                int maxRowCount = Mathf.Min(ColBarSettings.IconsInColumn * 2, drawIconEntries.Count);
-                for (int index = 0; index < maxRowCount; index++)
+                int maxIconCount = Mathf.Min(ColBarSettings.IconsInColumn * 2, drawIconEntries.Count) - barIconNum;
+                for (int index = 0; index < maxIconCount; index++)
                 {
                     IconEntryBar iconEntryBar = drawIconEntries[index];
                     iconEntryBar.color.a *= rectAlpha;
                     DrawIconOnBar(psiRect, iconEntryBar, index + barIconNum, rowCount);
                 }
 
-                barIconNum += maxRowCount;
+                barIconNum += maxIconCount;
             }
 
             // Idle - bar icon already included - vanilla
