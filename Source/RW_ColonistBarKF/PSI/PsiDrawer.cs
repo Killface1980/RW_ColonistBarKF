@@ -12,7 +12,6 @@ namespace ColonistBarKF.PSI
 
     public static class PSIDrawer
     {
-
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,
             Vector3 posOffset,
@@ -56,7 +55,6 @@ namespace ColonistBarKF.PSI
 
         public static void DrawIconOnBar(Rect psiRect, IconEntryBar iconEntryBar, int entry, int rowCount)
         {
-
             Material material = PSIMaterials[iconEntryBar.icon];
 
             if (material == null)
@@ -64,7 +62,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            var posOffset = IconPosRectsBar[entry];
+            Vector3 posOffset = IconPosRectsBar[entry];
 
             Color GuiColor = GUI.color;
             GuiColor.a = iconEntryBar.color.a;
@@ -77,7 +75,6 @@ namespace ColonistBarKF.PSI
             float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
 
             iconRect.height = iconRect.width = size;
-
 
             switch (Settings.ColBarSettings.ColBarPsiIconPos)
             {
@@ -125,8 +122,14 @@ namespace ColonistBarKF.PSI
             }
         }
 
-
-        public static void DrawIconOnBar(Rect psiRect, ref int num, Icon icon, Color color, float rectAlpha, int rowCount, string tooltip = null)
+        public static void DrawIconOnBar(
+            Rect psiRect,
+            ref int num,
+            Icon icon,
+            Color color,
+            float rectAlpha,
+            int rowCount,
+            string tooltip = null)
         {
             // only two columns visible
             if (num == Settings.ColBarSettings.IconsInColumn * 2)
@@ -152,6 +155,7 @@ namespace ColonistBarKF.PSI
             {
                 return;
             }
+
             Material material = PSIMaterials[entryPSI.icon];
             if (material == null)
             {
@@ -193,7 +197,6 @@ namespace ColonistBarKF.PSI
 
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = guiColor;
-
         }
 
         public static void DrawIconOnColonist(Vector3 bodyPos, ref int num, Icon icon, Color color, float opacity)
@@ -214,7 +217,14 @@ namespace ColonistBarKF.PSI
             num++;
         }
 
-        private static void DrawIcon_onBar(Rect rect, Vector3 posOffset, Material material, Color color, float rectAlpha, int rowCount, string tooltip = null)
+        private static void DrawIcon_onBar(
+            Rect rect,
+            Vector3 posOffset,
+            Material material,
+            Color color,
+            float rectAlpha,
+            int rowCount,
+            string tooltip = null)
         {
             // Widgets.DrawBoxSolid(rect, Color.cyan);
             color.a *= rectAlpha;
@@ -229,7 +239,6 @@ namespace ColonistBarKF.PSI
             float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
 
             iconRect.height = iconRect.width = size;
-
 
             switch (Settings.ColBarSettings.ColBarPsiIconPos)
             {

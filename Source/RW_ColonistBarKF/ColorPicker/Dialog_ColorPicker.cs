@@ -406,8 +406,6 @@ namespace ColonistBarKF.ColorPicker
             Widgets.DrawBox(alphaHandleRect);
             GUI.color = Color.white;
 
-            
-
             // reset active control on mouseup
             if (Input.GetMouseButtonUp(0))
             {
@@ -520,8 +518,6 @@ namespace ColonistBarKF.ColorPicker
             }
 
             GUI.color = Color.white;
-
-            
         }
 
         public void HueAction(float pos)
@@ -805,7 +801,7 @@ namespace ColonistBarKF.ColorPicker
             // draw presets and interactivity.
             public void DrawPresetBoxes()
             {
-                // TODO: 
+                // TODO:
             }
 
             #endregion Methods

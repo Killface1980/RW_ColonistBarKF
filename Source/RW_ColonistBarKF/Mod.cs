@@ -1,6 +1,5 @@
 ﻿using System.IO;
 
-
 using RimWorld;
 
 using UnityEngine;
@@ -30,7 +29,6 @@ namespace ColonistBarKF
     // }
     public class CBKF : ModBase
     {
-
         private int _lastStatUpdate;
 
         private GameObject _psiObject;
@@ -62,7 +60,6 @@ namespace ColonistBarKF
                     Log.Message("PSI injected " + def);
                 }
             }
-
         }
 
         public override string ModIdentifier
@@ -70,10 +67,7 @@ namespace ColonistBarKF
             get
             {
                 return "ColonistBarKF";
-
             }
         }
-
-
     }
 }

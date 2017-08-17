@@ -12,9 +12,7 @@
 
         public static SettingsPSI PsiSettings = new SettingsPSI();
 
-        public static float ViewOpacityCrit => Mathf.Max(
-            Settings.PsiSettings.IconOpacityCritical,
-            Settings.PsiSettings.IconOpacity);
+        public static float ViewOpacityCrit => Mathf.Max(PsiSettings.IconOpacityCritical, PsiSettings.IconOpacity);
 
         internal static SettingsColonistBar LoadBarSettings(string path = "ColonistBar_KF.xml")
         {

@@ -1,18 +1,21 @@
 ﻿namespace ColonistBarKF.Bar
 {
+    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
-
-    using RimWorld;
+    using UnityEngine;
+    using Verse;
 
     using static Settings;
 
-    using UnityEngine;
-
-    using Verse;
-
     public class ColonistBarDrawLocsFinder_KF
     {
+        #region Properties
+
+        private static float MaxColonistBarWidth => UI.screenWidth - ColBarSettings.MarginHorizontal;
+
+        #endregion Properties
+
         #region Fields
 
         private readonly List<int> entriesInGroup = new List<int>();
@@ -20,12 +23,6 @@
         private readonly List<int> horizontalSlotsPerGroup = new List<int>();
 
         #endregion Fields
-
-        #region Properties
-
-        private static float MaxColonistBarWidth => UI.screenWidth - ColBarSettings.MarginHorizontal;
-
-        #endregion Properties
 
         #region Methods
 
@@ -247,21 +244,21 @@
                 {
                     int allowedRowsCountForScale = GetAllowedRowsCountForScale(bestScale);
                     bool flag = true;
-                    int num5 = -1;
+                    int mapNum = -1;
                     for (int i = 0; i < entries.Count; i++)
                     {
-                        if (num5 != entries[i].group)
+                        if (mapNum != entries[i].group)
                         {
-                            num5 = entries[i].group;
-                            int num6 = Mathf.CeilToInt(
+                            mapNum = entries[i].group;
+                            int rows = Mathf.CeilToInt(
                                 this.entriesInGroup[entries[i].group]
                                 / (float)this.horizontalSlotsPerGroup[entries[i].group]);
-                            if (num6 > 1)
+                            if (rows > 1)
                             {
                                 onlyOneRow = false;
                             }
 
-                            if (num6 > allowedRowsCountForScale)
+                            if (rows > allowedRowsCountForScale)
                             {
                                 flag = false;
                                 break;

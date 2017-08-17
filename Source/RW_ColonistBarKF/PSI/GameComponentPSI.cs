@@ -3,15 +3,11 @@ using static ColonistBarKF.PSI.PSIDrawer;
 
 namespace ColonistBarKF.PSI
 {
-    using System.Collections.Generic;
-
     using FacialStuff.Detouring;
-
     using RimWorld;
     using RimWorld.Planet;
-
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
 
     using static Settings;
@@ -28,13 +24,9 @@ namespace ColonistBarKF.PSI
 
         public static Materials PSIMaterials = new Materials();
 
-
-
-        private CellRect _viewRect;
-
         public static PawnCapacityDef[] _pawnCapacities;
 
-
+        private CellRect _viewRect;
 
         public GameComponentPSI()
         {
@@ -60,7 +52,6 @@ namespace ColonistBarKF.PSI
             {
                 if (animal.health.HasHediffsNeedingTend())
                 {
-
                     if (animal.health?.hediffSet != null)
                     {
                         float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
@@ -75,6 +66,7 @@ namespace ColonistBarKF.PSI
                                 ViewOpacityCrit);
                         }
                     }
+
                     if (animal.health?.summaryHealth != null)
                     {
                         float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
@@ -90,6 +82,7 @@ namespace ColonistBarKF.PSI
                     }
                 }
             }
+
             if (!animal.InAggroMentalState)
             {
                 return;
@@ -130,7 +123,6 @@ namespace ColonistBarKF.PSI
                 }
             }
 
-
             List<IconEntryBar> drawIconEntries = pawnStats.BarIconList;
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
@@ -146,15 +138,10 @@ namespace ColonistBarKF.PSI
             }
 
             // Idle - bar icon already included - vanilla
-
             int colCount = Mathf.CeilToInt((float)barIconNum / ColBarSettings.IconsInColumn);
 
             pawnStats.thisColCount = colCount;
-
         }
-
-
-
 
         public static void DrawColonistIconsPSI(Pawn pawn)
         {
@@ -289,7 +276,6 @@ namespace ColonistBarKF.PSI
                     Icon.Health,
                     gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
                     ViewOpacityCrit);
-
             }
         }
 
@@ -336,11 +322,9 @@ namespace ColonistBarKF.PSI
                             // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
                         });
 
-                Statics.BuildGradients();
+                BuildGradients();
             }
         }
-
-
 
         public override void GameComponentOnGUI()
         {
@@ -354,8 +338,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner
-                && !PsiSettings.ShowRelationsOnStrangers)
+            if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner && !PsiSettings.ShowRelationsOnStrangers)
             {
                 return;
             }
@@ -375,7 +358,6 @@ namespace ColonistBarKF.PSI
                 {
                     continue;
                 }
-
 
                 // if (useGUILayout)
                 if (pawn.RaceProps.Animal)
@@ -445,7 +427,6 @@ namespace ColonistBarKF.PSI
         {
             base.FinalizeInit();
             Reinit();
-
         }
 
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)

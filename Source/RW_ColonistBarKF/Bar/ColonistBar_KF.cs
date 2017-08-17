@@ -17,8 +17,11 @@
         public const float SpacingLabel = 15f;
 
         public static ColBarHelper_KF BarHelperKf = new ColBarHelper_KF();
+
         public static ColonistBarColonistDrawer_KF drawer = new ColonistBarColonistDrawer_KF();
+
         public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
+
         private const float PawnTextureHorizontalPadding = 1f;
 
         #endregion Fields
@@ -71,7 +74,7 @@
                                                       + WidthMoodBarHorizontal + WidthPSIHorizontal;
 
         public static Vector2 BaseSize => new Vector2(
-                                                                                                    Settings.ColBarSettings.BaseSizeFloat,
+            Settings.ColBarSettings.BaseSizeFloat,
             Settings.ColBarSettings.BaseSizeFloat);
 
         private static bool ShowGroupFrames
@@ -90,7 +93,6 @@
         }
 
         #endregion Properties
-
 
         #region Methods
 

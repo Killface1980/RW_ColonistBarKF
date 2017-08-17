@@ -4,6 +4,32 @@ namespace ColonistBarKF
 {
     public class SettingsColonistBar
     {
+        #region SortByWhat enum
+
+        public enum SortByWhat
+        {
+            vanilla = -1,
+
+            sexage,
+
+            health,
+
+            mood,
+
+            weapons,
+
+            medicTendQuality,
+
+            // medic,
+            medicSurgerySuccess,
+
+            byName,
+
+            tradePrice
+        }
+
+        #endregion SortByWhat enum
+
         // to do 0.18: rename to BaseIconSize
         public float BaseSizeFloat = 48f;
 
@@ -11,10 +37,8 @@ namespace ColonistBarKF
 
         public float BaseSpacingVertical = 32f;
 
-      // public Position.Alignment ColBarPos = Position.Alignment.Top;
+        // public Position.Alignment ColBarPos = Position.Alignment.Top;
         public Alignment ColBarPsiIconPos = Alignment.Left;
-
-
 
         public float IconOffsetX = 1f;
 
@@ -127,9 +151,11 @@ namespace ColonistBarKF
 
         public bool UseCustomRowCount = false;
 
+        public bool UseExternalMoodBar = true;
+
         public bool UseGender = true;
 
-        public bool UseExternalMoodBar = true;
+        public bool UseNewMood = true;
 
         public bool UsePsi = true;
 
@@ -138,30 +164,5 @@ namespace ColonistBarKF
         public bool useZoomToMouse = false;
 
         public float VerticalOffset = 0f;
-
-        public enum SortByWhat
-        {
-            vanilla = -1,
-
-            sexage,
-
-            health,
-
-            mood,
-
-            weapons,
-
-            medicTendQuality,
-
-            // medic,
-            medicSurgerySuccess,
-
-            byName,
-
-            tradePrice
-        }
-
-        public bool UseNewMood = true;
-    
     }
 }

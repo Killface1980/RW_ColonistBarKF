@@ -12,7 +12,6 @@
 
     public class PawnStats : IExposable
     {
-
         public Pawn pawn;
 
         public float TotalEfficiency = 1f;

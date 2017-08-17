@@ -17,5 +17,4 @@
             this.tooltip = tooltip;
         }
     }
-
 }

@@ -9,7 +9,7 @@ namespace ColonistBarKF
     {
         public Color Color { get; set; }
 
-        public ColorWrapper( Color color )
+        public ColorWrapper(Color color)
         {
             Color = color;
         }

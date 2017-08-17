@@ -1,31 +1,27 @@
 ﻿namespace ColonistBarKF.Bar
 {
-    using System;
-    using System.Collections.Generic;
-
     using ColonistBarKF.PSI;
-
     using FacialStuff.Detouring;
-
     using RimWorld;
     using RimWorld.Planet;
-
-    using static Settings;
-
+    using System;
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
     using Verse.AI.Group;
     using Verse.Sound;
 
+    using static Settings;
+
     [StaticConstructorOnStartup]
     public class ColonistBarColonistDrawer_KF
     {
-
         #region Private Fields
 
         private static readonly Vector2[] bracketLocs = new Vector2[4];
+
         private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+
         private static Vector3 pawnTextureCameraOffset;
 
         private readonly Dictionary<string, string> pawnLabelsCache = new Dictionary<string, string>();
@@ -131,6 +127,7 @@
                     pawnRect,
                     ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
             }
+
             GUI.color = color;
 
             // Rect rect2 = outerRect.ContractedBy(-2f * ColonistBar_KF.Scale);
@@ -162,6 +159,7 @@
             {
                 this.DrawCaravanSelectionOverlayOnGUI(colonist.GetCaravan(), rect2);
             }
+
             GUI.color = color;
 
             GUI.DrawTexture(
@@ -194,8 +192,6 @@
             GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha, pawnRect.width, this.pawnLabelsCache);
 
             GUI.color = Color.white;
-
-
         }
 
         public void DrawGroupFrame(int group)
@@ -269,7 +265,7 @@
                                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
                                     if (colonist != null && SelPawn != null && SelPawn != colonist
-                                        && colonist.Map != null)
+                                        && colonist.Map != null && SelPawn.IsColonistPlayerControlled)
                                     {
                                         foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(
                                             colonist.TrueCenter(),
@@ -285,7 +281,7 @@
                                         }
                                     }
 
-                                    if (colonist.Map != null)
+                                    if (colonist?.Map != null)
                                     {
                                         if (!FollowMe.CurrentlyFollowing)
                                         {
@@ -302,6 +298,7 @@
                                                     delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
                                         }
                                     }
+
                                     FloatMenuOption sortby_vanilla = new FloatMenuOption(
                                         "CBKF.Settings.Vanilla".Translate(),
                                         delegate
@@ -311,7 +308,7 @@
 
                                                 // CheckRecacheEntries();
                                             });
-                                    var sortby_weapons = new FloatMenuOption(
+                                    FloatMenuOption sortby_weapons = new FloatMenuOption(
                                         "CBKF.Settings.Weapons".Translate(),
                                         delegate
                                             {
@@ -320,7 +317,7 @@
 
                                                 // CheckRecacheEntries();
                                             });
-                                    var sortbyName = new FloatMenuOption(
+                                    FloatMenuOption sortbyName = new FloatMenuOption(
                                         "CBKF.Settings.ByName".Translate(),
                                         delegate
                                             {
@@ -362,8 +359,7 @@
                                         StatDefOf.MedicalTendQuality.LabelCap,
                                         delegate
                                             {
-                                                ColBarSettings.SortBy =
-                                                    SettingsColonistBar.SortByWhat.medicTendQuality;
+                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medicTendQuality;
                                                 HarmonyPatches.MarkColonistsDirty_Postfix();
                                             });
                                     FloatMenuOption medic2 = new FloatMenuOption(
@@ -373,9 +369,7 @@
                                                 ColBarSettings.SortBy =
                                                     SettingsColonistBar.SortByWhat.medicSurgerySuccess;
                                                 HarmonyPatches.MarkColonistsDirty_Postfix();
-
                                             });
-
 
                                     FloatMenuOption trade = new FloatMenuOption(
                                         StatDefOf.TradePriceImprovement.LabelCap,
@@ -385,32 +379,23 @@
                                                 HarmonyPatches.MarkColonistsDirty_Postfix();
                                             });
 
-                                    floatOptionList.Add(
-                                        sortby_vanilla);
+                                    floatOptionList.Add(sortby_vanilla);
 
-                                    floatOptionList.Add(
-                                        sortby_weapons);
+                                    floatOptionList.Add(sortby_weapons);
 
-                                    floatOptionList.Add(
-                                        sortbyName);
+                                    floatOptionList.Add(sortbyName);
 
-                                    floatOptionList.Add(
-                                        sortbySexAge);
+                                    floatOptionList.Add(sortbySexAge);
 
-                                    floatOptionList.Add(
-                                        mood);
+                                    floatOptionList.Add(mood);
 
-                                    floatOptionList.Add(
-                                        health);
+                                    floatOptionList.Add(health);
 
-                                    floatOptionList.Add(
-                                        medic);
+                                    floatOptionList.Add(medic);
 
-                                    floatOptionList.Add(
-                                        medic2);
+                                    floatOptionList.Add(medic2);
 
-                                    floatOptionList.Add(
-                                        trade);
+                                    floatOptionList.Add(trade);
 
                                     floatOptionList.Add(
                                         new FloatMenuOption(
@@ -514,7 +499,12 @@
 
         #region Private Methods
 
-        private static void BuildRects(int thisColCount, ref Rect outerRect, ref Rect pawnRect, out Rect moodRect, out Rect psiRect)
+        private static void BuildRects(
+            int thisColCount,
+            ref Rect outerRect,
+            ref Rect pawnRect,
+            out Rect moodRect,
+            out Rect psiRect)
         {
             float widthMoodFloat = pawnRect.width;
             float heightMoodFloat = pawnRect.height;
@@ -522,10 +512,10 @@
             float modifier = 1;
 
             bool psiHorizontal = ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left
-                                || ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right;
+                                 || ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right;
 
             bool moodHorizontal = ColBarSettings.MoodBarPos == Position.Alignment.Left
-                                || ColBarSettings.MoodBarPos == Position.Alignment.Right;
+                                  || ColBarSettings.MoodBarPos == Position.Alignment.Right;
 
             float widthPsiFloat;
             float heightPsiFloat;
@@ -565,11 +555,7 @@
                 }
             }
 
-            psiRect = new Rect(
-                outerRect.x,
-                outerRect.y,
-                widthPsiFloat,
-                heightPsiFloat);
+            psiRect = new Rect(outerRect.x, outerRect.y, widthPsiFloat, heightPsiFloat);
 
             // Widgets.DrawBoxSolid(psiRect, new Color(0.5f, 0.5f, 0.5f, 0.5f));
             switch (ColBarSettings.ColBarPsiIconPos)
@@ -577,18 +563,21 @@
                 case Position.Alignment.Left:
                     pawnRect.x += widthPsiFloat;
                     break;
+
                 case Position.Alignment.Right:
                     psiRect.x = pawnRect.xMax;
                     break;
+
                 case Position.Alignment.Top:
                     pawnRect.y += heightFullPsiFloat;
                     psiRect.y += heightFullPsiFloat - heightPsiFloat;
                     break;
+
                 case Position.Alignment.Bottom:
                     psiRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+
+                default: throw new ArgumentOutOfRangeException();
             }
 
             moodRect = new Rect(pawnRect.x, pawnRect.y, widthMoodFloat, heightMoodFloat);
@@ -610,18 +599,19 @@
                         }
 
                         break;
+
                     case Position.Alignment.Right:
                         moodRect.x = pawnRect.xMax;
-                        psiRect.x += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right
-                                         ? widthMoodFloat
-                                         : 0f;
+                        psiRect.x += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right ? widthMoodFloat : 0f;
                         break;
+
                     case Position.Alignment.Top:
                         pawnRect.y += heightMoodFloat;
                         psiRect.y += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
                                          ? heightMoodFloat
                                          : 0f;
                         break;
+
                     case Position.Alignment.Bottom:
                         moodRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
                         psiRect.y += ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
@@ -633,8 +623,8 @@
                         }
 
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+
+                    default: throw new ArgumentOutOfRangeException();
                 }
             }
 
@@ -669,9 +659,11 @@
                 case 0:
                     modifier = 0f;
                     break;
+
                 case 1:
                     modifier = 0.5f;
                     break;
+
                 default: break;
             }
 
@@ -1124,6 +1116,5 @@
         }
 
         #endregion Private Methods
-
     }
 }

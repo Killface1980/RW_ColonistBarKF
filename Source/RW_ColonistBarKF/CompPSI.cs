@@ -1,22 +1,22 @@
 ﻿namespace ColonistBarKF
 {
+    using ColonistBarKF.PSI;
+    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using static ColonistBarKF.Bar.ColonistBarTextures;
-    using ColonistBarKF.PSI;
+    using ColonistBarKF.Bar;
 
-    using RimWorld;
+    using UnityEngine;
+    using Verse;
+    using Verse.AI;
+
+    using static ColonistBarKF.Bar.ColonistBarTextures;
 
     using static Settings;
 
     using static Statics;
-
-    using UnityEngine;
-
-    using Verse;
-    using Verse.AI;
 
     [StaticConstructorOnStartup]
     public class CompPSI : ThingComp
@@ -24,15 +24,25 @@
         #region Public Fields
 
         public Color BGColor = Color.gray;
-        public bool hasRelationWithColonist = false;
-        public bool isPacifist = false;
-        public MentalBreaker Mb = null;
-        public Need_Mood Mood = null;
+
+        public bool hasRelationWithColonist;
+
+        public bool isPacifist;
+
+        public MentalBreaker Mb;
+
+        public Need_Mood Mood;
+
         public int prosthoStage;
-        public bool relationChecked = false;
+
+        public bool relationChecked;
+
         public int SpawnedAt;
+
         public Vector3 TargetPos = Vector3.zero;
+
         public int thisColCount = 2;
+
         public float TotalEfficiency = 1f;
 
         #endregion Public Fields
@@ -41,15 +51,11 @@
 
         private static PawnCapacityDef[] array;
 
-        private static List<Thought> thoughts = new List<Thought>();
-
-        private List<IconEntryBar> _barIconList = new List<IconEntryBar>();
-
-        private List<IconEntryPSI> _psiIconList = new List<IconEntryPSI>();
+        private static readonly List<Thought> thoughts = new List<Thought>();
 
         private Pawn _psiPawn;
 
-        private string addictionLabel = null;
+        private string addictionLabel;
 
         // public float Drunkness = 0f;
         private int BedStatus = -1;
@@ -57,9 +63,10 @@
         private float BedStatusMoodOffset;
 
         private string BedStatusTip;
+
         private float BleedRate = -1f;
 
-        private int CabinFeverMoodLevel = 0;
+        private int CabinFeverMoodLevel;
 
         private float CabinFeverMoodOffset;
 
@@ -67,9 +74,9 @@
 
         private float DiseaseDisappearance = 1f;
 
-        private int drugDesire = 0;
+        private int drugDesire;
 
-        private string drugUserLabel = null;
+        private string drugUserLabel;
 
         private bool entriesDirty = true;
 
@@ -81,9 +88,10 @@
 
         private string greedyTooltip;
 
-        private bool hasGreedyTrait = false;
+        private bool hasGreedyTrait;
 
-        private bool hasJealousTrait = false;
+        private bool hasJealousTrait;
+
         private float HealthDisease = 1f;
 
         private string healthTip;
@@ -94,12 +102,13 @@
 
         private float immunity;
 
-        private bool isAddict = false;
+        private bool isAddict;
 
-        private bool isMasochist = false;
+        private bool isMasochist;
 
-        private bool isNightOwl = false;
-        private bool isPyromaniac = false;
+        private bool isNightOwl;
+
+        private bool isPyromaniac;
 
         private float jealousMoodOffset;
 
@@ -107,8 +116,10 @@
 
         private string jealousTooltip;
 
-        private int LastStatUpdate = 0;
-        private MentalStateDef MentalSanity = null;
+        private int LastStatUpdate;
+
+        private MentalStateDef MentalSanity;
+
         private float nakedMoodOffset;
 
         private string nakedTip;
@@ -121,7 +132,7 @@
 
         private int nightOwlUnhappy = -1;
 
-        private int PainMoodLevel = 0;
+        private int PainMoodLevel;
 
         private float PainMoodOffset;
 
@@ -131,25 +142,29 @@
 
         private float pawnHealth = 1f;
 
-        private int prostho = 0;
+        private int prostho;
 
         private float prosthoMoodOffset;
+
         private string prosthoTooltip;
 
-        private int prosthoUnhappy = 0;
+        private int prosthoUnhappy;
+
         private float severity;
 
         private float sickMoodOffset;
 
         private string sickTip;
+
         private float TooCold = -1f;
 
         private float TooHot = -1f;
-        private float ToxicBuildUpVisible = 0;
+
+        private float ToxicBuildUpVisible;
 
         private string toxicTip;
 
-        private bool traitsCheck = false;
+        private bool traitsCheck;
 
         private int unburied = -1;
 
@@ -159,15 +174,15 @@
 
         private int wantsToHump = -1;
 
-        private bool withDrawal = false;
+        private bool withDrawal;
 
-        private float withDrawalPercent = 0f;
+        private float withDrawalPercent;
 
         #endregion Private Fields
 
         #region Public Properties
 
-        public List<IconEntryBar> BarIconList => this._barIconList;
+        public List<IconEntryBar> BarIconList { get; private set; } = new List<IconEntryBar>();
 
         public Pawn pawn
         {
@@ -182,7 +197,7 @@
             }
         }
 
-        public List<IconEntryPSI> PSIIconList => this._psiIconList;
+        public List<IconEntryPSI> PSIIconList { get; private set; } = new List<IconEntryPSI>();
 
         #endregion Public Properties
 
@@ -215,7 +230,7 @@
             // {
             // return;
             // }
-            int nextUpdate = (int)(this.LastStatUpdate + (this.NextStatUpdate * Find.TickManager.TickRateMultiplier));
+            int nextUpdate = (int)(this.LastStatUpdate + this.NextStatUpdate * Find.TickManager.TickRateMultiplier);
 
             if (Find.TickManager.TicksGame > nextUpdate)
             {
@@ -299,10 +314,8 @@
                 {
                     DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Pacific, ColYellow, ViewOpacityCrit), iconNum);
                 }
-                else
-                {
-                    DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Draft, ColVermillion, ViewOpacityCrit), iconNum);
-                }
+
+                DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Draft, ColVermillion, ViewOpacityCrit), iconNum);
 
                 iconNum++;
             }
@@ -376,6 +389,7 @@
             GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
             GUI.color = guiColor;
         }
+
         private static bool GetThought(ThoughtDef tdef, out int stage, out string tooltip, out float moodOffset)
         {
             tooltip = null;
@@ -582,15 +596,14 @@
 
             if (this.pawn.equipment.Primary == null && !this.pawn.IsPrisoner && !this.isPacifist)
             {
-                //AddIconsToList(
-                //    barSettings.ShowUnarmed,
-                //    ref barIconList,
-                //    psiSettings.ShowUnarmed,
-                //    ref psiIconList,
-                //    Icon.Unarmed,
-                //    ColorNeutralStatusOpaque,
-                //    "PSI.Settings.Visibility.Unarmed".Translate());
-
+                // AddIconsToList(
+                // barSettings.ShowUnarmed,
+                // ref barIconList,
+                // psiSettings.ShowUnarmed,
+                // ref psiIconList,
+                // Icon.Unarmed,
+                // ColorNeutralStatusOpaque,
+                // "PSI.Settings.Visibility.Unarmed".Translate());
                 if (barSettings.ShowUnarmed)
                 {
                     barIconList.Add(
@@ -1496,8 +1509,8 @@
             // {
             // Log.Message(entry.icon + " - " + entry.tooltip);
             // }
-            this._barIconList = barIconList.OrderBy(x => x.icon).ToList();
-            this._psiIconList = psiIconList.OrderBy(x => x.icon).ToList();
+            this.BarIconList = barIconList.OrderBy(x => x.icon).ToList();
+            this.PSIIconList = psiIconList.OrderBy(x => x.icon).ToList();
         }
 
         private void CheckJobs()
@@ -1565,12 +1578,11 @@
             bool addBarEntry,
             ref List<IconEntryBar> barList,
             bool addPSIEntry,
-            ref List<IconEntryPSI>psiList,
+            ref List<IconEntryPSI> psiList,
             Icon icon,
             Color color,
             string tooltip)
         {
-            
         }
 
         #endregion Private Methods

@@ -20,7 +20,8 @@
         public static readonly Texture2D BGTexIconPSI =
             SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.8f));
 
-        public static readonly Texture2D BGTexVanilla = ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_vanilla");
+        public static readonly Texture2D BGTexVanilla =
+            ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_vanilla");
 
         public static readonly Color ColBlue = new Color32(0, 114, 178, 255);
 
@@ -57,11 +58,13 @@
 
         public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.07f));
 
-        public static readonly Texture2D GrayLines = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.25f));
+        public static readonly Texture2D GrayLines =
+            SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.25f));
 
         public static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
-        public static readonly Texture2D Icon_Attacking = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Attacking");
+        public static readonly Texture2D Icon_Attacking =
+            ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Attacking");
 
         public static readonly Texture2D Icon_Burning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning");
 
@@ -94,7 +97,6 @@
 
         public static readonly Texture2D MoodNeutralBGTex = SolidColorMaterials.NewSolidColorTexture(ColorNeutralSoft);
 
-
         public static readonly Texture2D MoodTargetTex =
             SolidColorMaterials.NewSolidColorTexture(new Color(0.7f, 0.9f, 0.95f, 0.7f));
 
@@ -119,12 +121,11 @@
 
         public static Color Color05AndLess = new Color(0.8f, 0.75f, 0.59f);
 
-
         // public static Color Color25To21 = new Color(0.95f, 0f, 0f);
-
 
         // public static Color ColorMoodBoost = new Color(0f, 0.8f, 0f);
         public static Color ColorNeutralStatus = new Color(0.8f, 0.8f, 0.8f);
+
         public static Color ColorNeutralStatusOpaque = new Color(0.8f, 0.8f, 0.8f, 0.8f);
 
         // public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f);

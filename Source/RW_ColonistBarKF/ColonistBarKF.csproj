@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="WorkGiver_ImprisonDowned.cs" />
+    <Compile Include="Building_MedicalBeacon.cs" />
     <Compile Include="ThoughtDefOf.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="OLD_Class2.cs" />
@@ -98,6 +100,9 @@
     <Content Include="..\..\About\About.xml">
       <Link>About.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs_Buildings\Buildings_Misc.xml">
+      <Link>Buildings_Misc.xml</Link>
     </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>

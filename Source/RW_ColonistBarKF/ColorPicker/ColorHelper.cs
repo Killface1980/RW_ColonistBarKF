@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace ColonistBarKF.ColorPicker
 {
-
     public class ColorHelper
     {
-
         /// <summary>
         /// From http://answers.unity3d.com/questions/701956/hsv-to-rgb-without-editorguiutilityhsvtorgb.html
         /// </summary>
@@ -35,36 +33,43 @@ namespace ColonistBarKF.ColorPicker
                     col.g = v1;
                     col.b = v2;
                     break;
+
                 case 1:
                     col.r = V;
                     col.g = v3;
                     col.b = v1;
                     break;
+
                 case 2:
                     col.r = v2;
                     col.g = V;
                     col.b = v1;
                     break;
+
                 case 3:
                     col.r = v1;
                     col.g = V;
                     col.b = v3;
                     break;
+
                 case 4:
                     col.r = v1;
                     col.g = v2;
                     col.b = V;
                     break;
+
                 case 5:
                     col.r = v3;
                     col.g = v1;
                     col.b = V;
                     break;
+
                 case 6:
                     col.r = V;
                     col.g = v1;
                     col.b = v2;
                     break;
+
                 case 7:
                     col.r = V;
                     col.g = v3;
@@ -158,7 +163,6 @@ namespace ColonistBarKF.ColorPicker
             return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2") + a.ToString("X2");
         }
 
-
         /// <summary>
         /// Attempt to get a numerical representation of an RGB(A) hexademical color string.
         /// </summary>
@@ -197,7 +201,5 @@ namespace ColonistBarKF.ColorPicker
 
             return false;
         }
-
     }
-
 }

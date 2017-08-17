@@ -1,5 +1,5 @@
-﻿
-// TODO: Old class, will be removed in next alpha
+﻿// TODO: Old class, will be removed in next alpha
+
 namespace ColonistBarKF.PSI
 {
     using Verse;
@@ -8,12 +8,10 @@ namespace ColonistBarKF.PSI
     {
         public PSI(Game game)
         {
-            
         }
 
         public PSI()
         {
-            
         }
     }
 }

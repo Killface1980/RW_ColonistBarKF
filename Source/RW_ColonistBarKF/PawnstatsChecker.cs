@@ -7,15 +7,13 @@
 
     using Verse;
 
-   public static class PawnstatsChecker
+    public static class PawnstatsChecker
     {
-
         #region Fields
 
         private static List<PawnStats> _pawnCache = new List<PawnStats>();
 
         #endregion Fields
-
 
         #region Methods
 
@@ -47,16 +45,15 @@
             // return PawnApparelStatCaches[pawn];
         }
 
-
-     // public override void ExposeData()
-     // {
-     // base.ExposeData();
-     // // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
-     // if (_pawnCache == null)
-     // {
-     // _pawnCache = new List<PawnStats>();
-     // }
-     // }
+        // public override void ExposeData()
+        // {
+        // base.ExposeData();
+        // // Scribe_Collections.Look(ref _pawnCache, "Pawns", LookMode.Deep);
+        // if (_pawnCache == null)
+        // {
+        // _pawnCache = new List<PawnStats>();
+        // }
+        // }
         public static void ResetList()
         {
             _pawnCache = new List<PawnStats>();

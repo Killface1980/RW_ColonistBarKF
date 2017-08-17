@@ -1,21 +1,17 @@
 ﻿namespace FacialStuff.Detouring
 {
+    using ColonistBarKF;
+    using ColonistBarKF.Bar;
+    using Harmony;
+    using RimWorld;
+    using RimWorld.Planet;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using ColonistBarKF;
-    using ColonistBarKF.Bar;
-    using static ColonistBarKF.Bar.ColonistBar_KF;
-
-    using Harmony;
-
-    using RimWorld;
-    using RimWorld.Planet;
-
     using UnityEngine;
-
     using Verse;
+
+    using static ColonistBarKF.Bar.ColonistBar_KF;
 
     [StaticConstructorOnStartup]
     internal class HarmonyPatches
@@ -43,7 +39,8 @@
                     injected = true;
                 }
             }
-            patchLog += injected ? "" : "\nNo pawns found for PSI :(";
+
+            patchLog += injected ? string.Empty : "\nNo pawns found for PSI :(";
             Log.Message(patchLog);
 
             HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
@@ -83,11 +80,6 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(MarkColonistsDirty_Postfix)));
 
-
-            #region Caravan
-
-
-
             harmony.Patch(
                 AccessTools.Method(typeof(Caravan), nameof(Caravan.Notify_PawnAdded)),
                 null,
@@ -107,7 +99,6 @@
                 AccessTools.Method(typeof(Caravan), nameof(Caravan.PostRemove)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(EntriesDirty_Postfix)));
-            #endregion
 
             harmony.Patch(
                 AccessTools.Method(typeof(Game), nameof(Game.AddMap)),
@@ -136,19 +127,17 @@
 
             // try
             // {
-            //     ((Action)(() =>
-            //         {
-            //             harmony.Patch(
-            //                 AccessTools.Method(
-            //                     typeof(Psychology.PsychologyPawn),
-            //                     nameof(Psychology.PsychologyPawn.SpawnSetup)),
-            //                 null,
-            //                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
-            //         }))();
+            // ((Action)(() =>
+            // {
+            // harmony.Patch(
+            // AccessTools.Method(
+            // typeof(Psychology.PsychologyPawn),
+            // nameof(Psychology.PsychologyPawn.SpawnSetup)),
+            // null,
+            // new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
+            // }))();
             // }
             // catch (TypeLoadException) { }
-
-
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
@@ -192,8 +181,6 @@
         #endregion Constructors
 
         #region Methods
-
-
 
         private static bool CaravanMemberCaravanAt_Prefix(ref Caravan __result, Vector2 at)
         {
@@ -355,7 +342,6 @@
 
         private static void Pawn_Kill_Postfix(Pawn __instance)
         {
-
             if (__instance.Faction != null && __instance.Faction.IsPlayer
                 && Current.ProgramState == ProgramState.Playing)
             {
@@ -457,7 +443,6 @@
             }
 
             __instance.GetComp<CompPSI>().SpawnedAt = Find.TickManager.TicksGame;
-
         }
 
         #endregion Methods

@@ -9,8 +9,8 @@
 
     public class Materials
     {
-
         private readonly Material[] _data = new Material[40];
+
         private readonly string _matLibName;
 
         public Materials(string matLib = "default")
@@ -63,8 +63,7 @@
                 switch (icons)
                 {
                     case Icon.None:
-                    case Icon.Length:
-                        continue;
+                    case Icon.Length: continue;
                     default:
                         string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
                         this._data[(int)icons] = this.LoadIconMat(path, smooth);
@@ -73,6 +72,4 @@
             }
         }
     }
-
-
 }

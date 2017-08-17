@@ -9,7 +9,6 @@
 
     public class CB_SpecialInjector : SpecialInjector
     {
-
         private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(CB_SpecialInjector)); } }
 
         private static readonly BindingFlags[] bindingFlagCombos = {
@@ -19,8 +18,6 @@
 
         public override bool Inject()
         {
-
-            
             // Loop through all detour attributes and try to hook them up
             foreach (Type targetType in Assembly.GetTypes())
             {
@@ -46,10 +43,8 @@
                     }
                 }
             }
-            
 
             return true;
-        
         }
     }
 }

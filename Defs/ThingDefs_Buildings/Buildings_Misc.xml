@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Buildings>
+
+  <ThingDef Name="OF_BuildingBase" Abstract="True">
+    <category>Building</category>
+    <thingClass>Building</thingClass>
+    <soundImpactDefault>BulletImpactMetal</soundImpactDefault>
+    <selectable>true</selectable>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <repairEffect>Repair</repairEffect>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <filthLeaving>BuildingRubble</filthLeaving>
+    <statBases>
+      <SellPriceFactor>0.70</SellPriceFactor>
+    </statBases>
+  </ThingDef>
+
+  <!--============================ Spots =============================-->
+
+  <ThingDef ParentName="OF_BuildingBase">
+    <defName>MedicalBeacon</defName>
+    <label>medical beacon</label>
+    <Description>Designates a spot where pawns can summoned in full battle gear. After activation, pawns will grab their best combat gear, grab a weapon if not already equipped and move to the spot. Despawns after usage and also after a certain amount of time.</Description>
+    <thingClass>Outfitter.Building_MedicalSpot</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/CaravanPackingSpot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <AltitudeLayer>FloorEmplacement</AltitudeLayer>
+    <statBases>
+      <WorkToBuild>0</WorkToBuild>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>False</useHitPoints>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <Size>(1,1)</Size>
+    <DesignationCategory>Misc</DesignationCategory>
+    <specialDisplayRadius>15</specialDisplayRadius>
+    <Passability>Standable</Passability>
+    <building>
+      <sowTag>SupportPlantsOnly</sowTag>
+      <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <!--  <designationHotkey>Misc10</designationHotkey> -->
+  </ThingDef>
+</Buildings>
