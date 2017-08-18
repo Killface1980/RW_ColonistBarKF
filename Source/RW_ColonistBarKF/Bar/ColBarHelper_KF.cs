@@ -57,7 +57,7 @@
 
         public bool AnyColonistOrCorpseAt(Vector2 pos)
         {
-            return this.TryGetEntryAt(pos, out EntryKF entry) && entry.pawn != null;
+            return this.TryGetEntryAt(pos, out EntryKF entry); //&& entry.pawn != null;
         }
 
         public void CheckRecacheEntries()
@@ -113,7 +113,7 @@
 
                         if (num != this.displayGroupForBar)
                         {
-                            if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 2)
+                            if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 1)
                             {
                                 this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], num, this.tmpPawns.Count));
                                 break;
@@ -152,9 +152,9 @@
                                         num,
                                         this.tmpPawns.FindAll(x => x.IsColonist).Count));
 
-                                if (this.displayGroupForBar != null)
+                                if (num != this.displayGroupForBar)
                                 {
-                                    if (this.cachedEntries.FindAll(x => x.map == null && x.group == num).Count > 1)
+                                    if (this.cachedEntries.FindAll(x => x.group == num).Count > 0)
                                     {
                                         this.cachedEntries.Add(
                                             new EntryKF(

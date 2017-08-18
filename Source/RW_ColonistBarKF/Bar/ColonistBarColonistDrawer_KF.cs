@@ -196,6 +196,7 @@
         public void DrawEmptyFrame(ref Rect outerRect, Map pawnMap, int groupCount)
         {
             Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
+            pawnRect.x += (outerRect.width - pawnRect.width) / 2;
 
             // if (pawnStats.IconCount == 0)
             // outerRect.width

@@ -2,8 +2,11 @@
 
 namespace ColonistBarKF
 {
+    using JetBrains.Annotations;
+
     public struct EntryKF
     {
+        [CanBeNull]
         public Pawn pawn;
 
         public Map map;

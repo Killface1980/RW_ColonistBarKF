@@ -149,7 +149,7 @@
                 null);
 
             harmony.Patch(
-                AccessTools.Method(typeof(CameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
                 null);
 
