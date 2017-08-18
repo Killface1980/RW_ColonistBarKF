@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Buildings>
 
-  <ThingDef Name="OF_BuildingBase" Abstract="True">
+  <ThingDef Name="CB_BuildingBase" Abstract="True">
     <category>Building</category>
     <thingClass>Building</thingClass>
     <soundImpactDefault>BulletImpactMetal</soundImpactDefault>
@@ -18,11 +18,11 @@
 
   <!--============================ Spots =============================-->
 
-  <ThingDef ParentName="OF_BuildingBase">
+  <ThingDef ParentName="CB_BuildingBase">
     <defName>MedicalBeacon</defName>
     <label>medical beacon</label>
     <Description>Designates a spot where pawns can summoned in full battle gear. After activation, pawns will grab their best combat gear, grab a weapon if not already equipped and move to the spot. Despawns after usage and also after a certain amount of time.</Description>
-    <thingClass>Outfitter.Building_MedicalSpot</thingClass>
+    <thingClass>ColonistBarKF.Building_MedicalBeacon</thingClass>
     <graphicData>
       <texPath>Things/Building/Misc/CaravanPackingSpot</texPath>
       <graphicClass>Graphic_Single</graphicClass>

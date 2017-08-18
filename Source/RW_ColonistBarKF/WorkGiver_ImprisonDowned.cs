@@ -4,7 +4,6 @@ using Verse.AI;
 
 namespace ColonistBarKF
 {
-    using Outfitter;
     using RimWorld;
 
     public class WorkGiver_ImprisonDowned : WorkGiver_TakeToBed
@@ -36,7 +35,7 @@ namespace ColonistBarKF
             }
 
             bool flag = false;
-            foreach (var building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(ThingDef.Named("MedicalSpot")))
+            foreach (var building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(ThingDef.Named("MedicalBeacon")))
             {
                 if (victim.Position.InHorDistOf(building.Position, building.def.specialDisplayRadius))
                 {

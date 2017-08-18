@@ -104,6 +104,9 @@
     <Content Include="..\..\Defs\ThingDefs_Buildings\Buildings_Misc.xml">
       <Link>Buildings_Misc.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\WorkGiverDefs\WorkGivers.xml">
+      <Link>WorkGivers.xml</Link>
+    </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>
     </Content>

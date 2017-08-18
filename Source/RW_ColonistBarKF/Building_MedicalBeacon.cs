@@ -1,9 +1,10 @@
-﻿namespace Outfitter
+﻿namespace ColonistBarKF
 {
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
+    using RimWorld;
 
     using Verse;
     using Verse.AI;
@@ -12,10 +13,21 @@
     public class Building_MedicalBeacon : Building
     {
 
+        #region Private Fields
+
+        int guestCount = 0;
+        int prisonerCount = 0;
         private int ticksToDespawn;
 
-        int prisonerCount = 0;
-        int guestCount = 0;
+        #endregion Private Fields
+
+        #region Public Methods
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref this.ticksToDespawn, "ticksToDespawn");
+        }
 
         public override string GetInspectString()
         {
@@ -92,10 +104,6 @@
             }
         }
 
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Values.Look(ref this.ticksToDespawn, "ticksToDespawn");
-        }
+        #endregion Public Methods
     }
 }
