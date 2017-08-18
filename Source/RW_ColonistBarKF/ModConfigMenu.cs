@@ -60,53 +60,56 @@ namespace ColonistBarKF
 
         private readonly GUIStyle fondBoxes =
             new GUIStyle
-                {
-                    normal = {
-                                background = ColonistBarTextures.DarkGrayFond 
+            {
+                normal = {
+                                background = ColonistBarTextures.DarkGrayFond
                              },
-                    hover = {
-                               background = ColonistBarTextures.GrayFond 
+                hover = {
+                               background = ColonistBarTextures.GrayFond
                             },
-                    padding = new RectOffset(15, 15, 6, 10),
-                    margin = new RectOffset(0, 0, 10, 10)
-                };
+                padding = new RectOffset(15, 15, 6, 10),
+                margin = new RectOffset(0, 0, 10, 10)
+            };
 
         private readonly GUIStyle fondImages =
             new GUIStyle
-                {
-                    normal = {
-                                background = ColonistBarTextures.DarkGrayFond 
+            {
+                normal = {
+                                background = ColonistBarTextures.DarkGrayFond
                              },
-                    hover = {
-                               background = ColonistBarTextures.RedHover 
+                hover = {
+                               background = ColonistBarTextures.RedHover
                             }
-                };
+            };
 
         private readonly GUIStyle fontBold =
             new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    normal = {
-                                textColor = Color.white 
+            {
+                fontStyle = FontStyle.Bold,
+                normal = {
+                                textColor = Color.white
                              },
-                    padding = new RectOffset(0, 0, 5, 0)
-                };
+                padding = new RectOffset(0, 0, 5, 0)
+            };
 
         private readonly GUIStyle grayLines = new GUIStyle { normal = { background = ColonistBarTextures.GrayLines } };
 
         private readonly GUIStyle headline =
             new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 16,
-                    normal = {
-                                textColor = Color.white 
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 16,
+                normal = {
+                                textColor = Color.white
                              },
-                    padding = new RectOffset(0, 0, 12, 6)
-                };
+                padding = new RectOffset(0, 0, 12, 6)
+            };
 
         private readonly string[] mainToolbarStrings =
-            { "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate() };
+            {
+                "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate(),
+                "CBKF.Settings.Caravan".Translate()
+            };
 
         private readonly string[] positionStrings =
             {
@@ -402,7 +405,7 @@ namespace ColonistBarKF
             {
                 case 0:
                     {
-                        GUILayout.Space(Text.LineHeight);
+                        GUILayout.Space(Text.LineHeight / 2);
 
                         this.scrollPositionBase = GUILayout.BeginScrollView(this.scrollPositionBase);
 
@@ -427,7 +430,7 @@ namespace ColonistBarKF
 
                 case 1:
                     {
-                        // LabelHeadline("PSI.Settings".Translate());
+                       // LabelHeadline("PSI.Settings".Translate());
                         GUILayout.Space(Text.LineHeight);
 
                         int toolbarInt = Mathf.FloorToInt(viewRect.width / 150f);
@@ -485,6 +488,18 @@ namespace ColonistBarKF
                     }
 
                     break;
+                case 2:
+                    {
+                      //  LabelHeadline("CBKF.Settings.Caravan".Translate());
+
+                        GUILayout.Space(Text.LineHeight / 2);
+
+                        {
+                            this.FillPageCaravanSettings();
+                        }
+                    }
+
+                    break;
             }
 
             GUILayout.FlexibleSpace();
@@ -514,6 +529,35 @@ namespace ColonistBarKF
                 HarmonyPatches.MarkColonistsDirty_Postfix();
                 Reinit(false, false, true);
             }
+        }
+
+        private void FillPageCaravanSettings()
+        {
+            GUILayout.BeginVertical(this.fondBoxes);
+            ColBarSettings.UseCaravanSettings = GUILayout.Toggle(
+                ColBarSettings.UseCaravanSettings,
+                "CBKF.Settings.UseCaravanSettings".Translate());
+
+            // if (ColBarSettings.UseCustomPawnTextureCameraOffsets)
+            // {
+            //     GUILayout.Space(Text.LineHeight / 2);
+            //     ColBarSettings.PawnTextureCameraHorizontalOffset = GUILayout.HorizontalSlider(
+            //         ColBarSettings.PawnTextureCameraHorizontalOffset,
+            //         0.7f,
+            //         -0.7f);
+            //     ColBarSettings.PawnTextureCameraVerticalOffset =
+            //         GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f);
+            //     ColBarSettings.PawnTextureCameraZoom =
+            //         GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f);
+            // }
+            // else
+            // {
+            //     ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
+            //     ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
+            //     ColBarSettings.PawnTextureCameraZoom = 1.28205f;
+            // }
+
+            GUILayout.EndVertical();
         }
 
         public override void PreClose()

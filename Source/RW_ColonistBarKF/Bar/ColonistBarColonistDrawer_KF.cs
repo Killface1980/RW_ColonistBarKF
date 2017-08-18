@@ -52,7 +52,7 @@
 
         #region Public Methods
 
-        public void DrawColonist(ref Rect outerRect, Pawn colonist, Map pawnMap)
+        public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
         {
             CompPSI psiComp = colonist.GetComp<CompPSI>();
             Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
@@ -193,7 +193,7 @@
             GUI.color = Color.white;
         }
 
-        public void DrawEmptyFrame(ref Rect outerRect, Map pawnMap, int groupCount)
+        public void DrawEmptyFrame(Rect outerRect, Map pawnMap, int groupCount)
         {
             Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
             pawnRect.x += (outerRect.width - pawnRect.width) / 2;
@@ -215,7 +215,7 @@
             GUI.color = color;
 
             GUI.color = color;
-            GUI.Label(pawnRect, groupCount.ToString());
+            GUI.Label(pawnRect, groupCount.ToString() + " colonists in group");
             outerRect = pawnRect;
 
             GUI.color = Color.white;
@@ -240,7 +240,10 @@
                 {
                     num = 0.75f;
                 }
-                color = new Color(0.2f, 0.5f, 0.47f, 0.4f);
+                if (Settings.ColBarSettings.UseCaravanSettings)
+                {
+                    color = new Color(0.2f, 0.5f, 0.47f, 0.4f);
+                }
             }
             else
             {
@@ -253,7 +256,7 @@
                 {
                     num = 1f;
                 }
-                if (!map.IsPlayerHome)
+                if (Settings.ColBarSettings.UseCaravanSettings && !map.IsPlayerHome)
                 {
                     color = new Color(0.2f, 0.25f, 0.5f, 0.4f);
                 }
@@ -264,222 +267,211 @@
 
         public void HandleClicks(Rect rect, Pawn colonist, int showThisMap)
         {
-            if (Mouse.IsOver(rect))
+            if (Mouse.IsOver(rect) && Event.current.type == EventType.MouseDown)
             {
-                switch (Event.current.type)
+                switch (Event.current.button)
                 {
-                    case EventType.MouseDown:
+                    // Left Mouse Button
+                    case 0:
+                        if (Event.current.clickCount == 1)
                         {
-                            switch (Event.current.button)
+                            // Single click on "more colonists"
+                            if (colonist == null)
                             {
-                                // Left Mouse Button
-                                case 0:
-                                    // Double click
-                                    if (Event.current.clickCount == 2)
-                                    {
-                                        // use event so it doesn't bubble through
-                                        Event.current.Use();
-                                        bool flag = false;
-                                        if (colonist == null)
-                                        {
-
-                                        }
-                                        else
-                                        {
-                                            if (FollowMe.CurrentlyFollowing)
-                                            {
-                                                FollowMe.StopFollow("Selected another colonist on bar");
-                                                if (colonist?.Map != null)
-                                                {
-                                                    FollowMe.TryStartFollow(colonist);
-                                                }
-                                                else
-                                                {
-                                                    flag = true;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                flag = true;
-                                            }
-                                            if (flag)
-                                            {
-                                                CameraJumper.TryJump(colonist);
-                                            }
-                                        }
-
-                                        // clickedColonist = null;
-                                    }
-                                    if (Event.current.clickCount == 1)
-                                    {
-                                        if (colonist == null)
-                                        {
-                                            Event.current.Use();
-                                            ColonistBar_KF.BarHelperKf.displayGroupForBar = showThisMap;
-                                            HarmonyPatches.MarkColonistsDirty_Postfix();
-                                        }
-
-                                    }
-                                    // if (Event.current.clickCount == 1)
-                                    // {
-                                    // clickedColonist = colonist;
-                                    // }
-                                    break;
-
-                                // Right Mouse Button
-                                case 1:
-                                    List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
-
-                                    if (colonist != null && SelPawn != null && SelPawn != colonist
-                                        && colonist.Map != null && SelPawn.IsColonistPlayerControlled)
-                                    {
-                                        foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(
-                                            colonist.TrueCenter(),
-                                            SelPawn))
-                                        {
-                                            floatOptionList.Add(choice);
-                                        }
-
-                                        if (floatOptionList.Any())
-                                        {
-                                            floatOptionList.Add(
-                                                new FloatMenuOption("--------------------", delegate { }));
-                                        }
-                                    }
-
+                                // use event so it doesn't bubble through
+                                Event.current.Use();
+                                ColonistBar_KF.BarHelperKf.displayGroupForBar = showThisMap;
+                                HarmonyPatches.MarkColonistsDirty_Postfix();
+                            }
+                        }
+                        if (Event.current.clickCount == 2)
+                        {
+                            // Double click
+                            // use event so it doesn't bubble through
+                            Event.current.Use();
+                            bool flag = false;
+                            if (colonist == null)
+                            {
+                            }
+                            else
+                            {
+                                if (FollowMe.CurrentlyFollowing)
+                                {
+                                    FollowMe.StopFollow("Selected another colonist on bar");
                                     if (colonist?.Map != null)
                                     {
-                                        if (!FollowMe.CurrentlyFollowing)
-                                        {
-                                            floatOptionList.Add(
-                                                new FloatMenuOption(
-                                                    "FollowMe.StartFollow".Translate() + " - " + colonist.LabelShort,
-                                                    delegate { FollowMe.TryStartFollow(colonist); }));
-                                        }
-                                        else
-                                        {
-                                            floatOptionList.Add(
-                                                new FloatMenuOption(
-                                                    "FollowMe.StopFollow".Translate(),
-                                                    delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
-                                        }
+                                        FollowMe.TryStartFollow(colonist);
                                     }
-
-                                    FloatMenuOption sortby_vanilla = new FloatMenuOption(
-                                        "CBKF.Settings.Vanilla".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-                                    FloatMenuOption sortby_weapons = new FloatMenuOption(
-                                        "CBKF.Settings.Weapons".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-                                    FloatMenuOption sortbyName = new FloatMenuOption(
-                                        "CBKF.Settings.ByName".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-
-                                    FloatMenuOption sortbySexAge = new FloatMenuOption(
-                                        "CBKF.Settings.SexAge".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-                                    FloatMenuOption mood = new FloatMenuOption(
-                                        "CBKF.Settings.Mood".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-                                    FloatMenuOption health = new FloatMenuOption(
-                                        "CBKF.Settings.Health".Translate(),
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                                                // CheckRecacheEntries();
-                                            });
-
-                                    FloatMenuOption medic = new FloatMenuOption(
-                                        StatDefOf.MedicalTendQuality.LabelCap,
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medicTendQuality;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-                                            });
-                                    FloatMenuOption medic2 = new FloatMenuOption(
-                                        StatDefOf.MedicalSurgerySuccessChance.LabelCap,
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy =
-                                                    SettingsColonistBar.SortByWhat.medicSurgerySuccess;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-                                            });
-
-                                    FloatMenuOption trade = new FloatMenuOption(
-                                        StatDefOf.TradePriceImprovement.LabelCap,
-                                        delegate
-                                            {
-                                                ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.tradePrice;
-                                                HarmonyPatches.MarkColonistsDirty_Postfix();
-                                            });
-
-                                    floatOptionList.Add(sortby_vanilla);
-
-                                    floatOptionList.Add(sortby_weapons);
-
-                                    floatOptionList.Add(sortbyName);
-
-                                    floatOptionList.Add(sortbySexAge);
-
-                                    floatOptionList.Add(mood);
-
-                                    floatOptionList.Add(health);
-
-                                    floatOptionList.Add(medic);
-
-                                    floatOptionList.Add(medic2);
-
-                                    floatOptionList.Add(trade);
-
-                                    // Options menu
-                                    floatOptionList.Add(
-                                        new FloatMenuOption(
-                                            "CBKF.Settings.SettingsColonistBar".Translate(),
-                                            delegate { Find.WindowStack.Add(new ColonistBarKfSettings()); }));
-                                    FloatMenu window = new FloatMenu(
-                                        floatOptionList,
-                                        "CBKF.Settings.SortingOptions".Translate());
-                                    Find.WindowStack.Add(window);
-
-                                    // use event so it doesn't bubble through
-                                    Event.current.Use();
-                                    break;
+                                    else
+                                    {
+                                        flag = true;
+                                    }
+                                }
+                                else
+                                {
+                                    flag = true;
+                                }
+                                if (flag)
+                                {
+                                    CameraJumper.TryJump(colonist);
+                                }
                             }
 
-                            break;
+                            // clickedColonist = null;
                         }
+
+                        // if (Event.current.clickCount == 1)
+                        // {
+                        // clickedColonist = colonist;
+                        // }
+                        break;
+
+                    // Right Mouse Button
+                    case 1:
+                        List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
+
+                        if (colonist != null && SelPawn != null && SelPawn != colonist && colonist.Map != null
+                            && SelPawn.IsColonistPlayerControlled)
+                        {
+                            foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(
+                                colonist.TrueCenter(),
+                                SelPawn))
+                            {
+                                floatOptionList.Add(choice);
+                            }
+
+                            if (floatOptionList.Any())
+                            {
+                                floatOptionList.Add(new FloatMenuOption("--------------------", delegate { }));
+                            }
+                        }
+
+                        if (colonist?.Map != null)
+                        {
+                            if (!FollowMe.CurrentlyFollowing)
+                            {
+                                floatOptionList.Add(
+                                    new FloatMenuOption(
+                                        "FollowMe.StartFollow".Translate() + " - " + colonist.LabelShort,
+                                        delegate { FollowMe.TryStartFollow(colonist); }));
+                            }
+                            else
+                            {
+                                floatOptionList.Add(
+                                    new FloatMenuOption(
+                                        "FollowMe.StopFollow".Translate(),
+                                        delegate { FollowMe.StopFollow("Canceled in dropdown"); }));
+                            }
+                        }
+
+                        FloatMenuOption sortby_vanilla = new FloatMenuOption(
+                            "CBKF.Settings.Vanilla".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.vanilla;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+                        FloatMenuOption sortby_weapons = new FloatMenuOption(
+                            "CBKF.Settings.Weapons".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.weapons;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+                        FloatMenuOption sortbyName = new FloatMenuOption(
+                            "CBKF.Settings.ByName".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.byName;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+
+                        FloatMenuOption sortbySexAge = new FloatMenuOption(
+                            "CBKF.Settings.SexAge".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.sexage;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+                        FloatMenuOption mood = new FloatMenuOption(
+                            "CBKF.Settings.Mood".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.mood;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+                        FloatMenuOption health = new FloatMenuOption(
+                            "CBKF.Settings.Health".Translate(),
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.health;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                                    // CheckRecacheEntries();
+                                });
+
+                        FloatMenuOption medic = new FloatMenuOption(
+                            StatDefOf.MedicalTendQuality.LabelCap,
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medicTendQuality;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                });
+                        FloatMenuOption medic2 = new FloatMenuOption(
+                            StatDefOf.MedicalSurgerySuccessChance.LabelCap,
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.medicSurgerySuccess;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                });
+
+                        FloatMenuOption trade = new FloatMenuOption(
+                            StatDefOf.TradePriceImprovement.LabelCap,
+                            delegate
+                                {
+                                    ColBarSettings.SortBy = SettingsColonistBar.SortByWhat.tradePrice;
+                                    HarmonyPatches.MarkColonistsDirty_Postfix();
+                                });
+
+                        floatOptionList.Add(sortby_vanilla);
+
+                        floatOptionList.Add(sortby_weapons);
+
+                        floatOptionList.Add(sortbyName);
+
+                        floatOptionList.Add(sortbySexAge);
+
+                        floatOptionList.Add(mood);
+
+                        floatOptionList.Add(health);
+
+                        floatOptionList.Add(medic);
+
+                        floatOptionList.Add(medic2);
+
+                        floatOptionList.Add(trade);
+
+                        // Options menu
+                        floatOptionList.Add(
+                            new FloatMenuOption(
+                                "CBKF.Settings.SettingsColonistBar".Translate(),
+                                delegate { Find.WindowStack.Add(new ColonistBarKfSettings()); }));
+                        FloatMenu window = new FloatMenu(floatOptionList, "CBKF.Settings.SortingOptions".Translate());
+                        Find.WindowStack.Add(window);
+
+                        // use event so it doesn't bubble through
+                        Event.current.Use();
+                        break;
                 }
 
                 // Middle Mouse Button
@@ -505,13 +497,15 @@
         public void HandleGroupFrameClicks(int group)
         {
             Rect rect = this.GroupFrameRect(group);
-            if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect))
+
+            // Using Mouse Down instead of Up to not interfere with HandleClicks
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && Mouse.IsOver(rect) && Event.current.clickCount == 1)
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
                 EntryKF entry = ColonistBar_KF.BarHelperKf.Entries.Find(x => x.group == group);
                 Map map = entry.map;
 
-                if (!ColonistBar_KF.BarHelperKf.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
+                if (!ColonistBar_KF.BarHelperKf.AnyBarEntryAt(UI.MousePositionOnUIInverted))
                 {
                     if (!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive
                         || worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive)
@@ -836,9 +830,9 @@
             }
 
             /*if (currentMood <= threshold)
-			{
-				GUI.DrawTexture(new Rect(moodRect.xMax-4, moodRect.yMax - moodRect.height * threshold, 8, 2), MoodBreakCrossedTex);
-			}*/
+            {
+                GUI.DrawTexture(new Rect(moodRect.xMax-4, moodRect.yMax - moodRect.height * threshold, 8, 2), MoodBreakCrossedTex);
+            }*/
         }
 
         private static void DrawNewMoodRect(Rect moodBorderRect, Need mood, MentalBreaker mb, string tooltip = null)

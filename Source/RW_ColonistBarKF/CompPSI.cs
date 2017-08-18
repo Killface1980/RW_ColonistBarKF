@@ -462,8 +462,6 @@
                         case Gender.Female:
                             this.bgColor = FemaleColor;
                             break;
-
-                        default: break;
                     }
                 }
 
@@ -542,6 +540,10 @@
                 GameComponentPSI.Reinit(true, false, false);
                 return;
             }
+            if (!this.traitsCheck)
+            {
+                this.CheckTraits(this.pawn);
+            }
 
             if (!this.pawn.Spawned || this.pawn.Map == null)
             {
@@ -589,10 +591,7 @@
                 }
             }
 
-            if (!this.traitsCheck)
-            {
-                this.CheckTraits(this.pawn);
-            }
+
 
             if (this.isPacifist)
             {

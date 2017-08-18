@@ -55,9 +55,13 @@
 
         #region Methods
 
-        public bool AnyColonistOrCorpseAt(Vector2 pos)
+        public bool AnyBarEntryAt(Vector2 pos)
         {
-            return this.TryGetEntryAt(pos, out EntryKF entry); //&& entry.pawn != null;
+            if (!this.TryGetEntryAt(pos, out EntryKF entry))
+            {
+                return false;
+            }
+            return entry.groupCount > 0;
         }
 
         public void CheckRecacheEntries()
@@ -111,7 +115,7 @@
                     {
                         this.cachedEntries.Add(new EntryKF(this.tmpPawns[l], this.tmpMaps[i], num, this.tmpPawns.Count));
 
-                        if (num != this.displayGroupForBar)
+                        if (Settings.ColBarSettings.UseCaravanSettings && num != this.displayGroupForBar)
                         {
                             if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 1)
                             {
@@ -152,7 +156,7 @@
                                         num,
                                         this.tmpPawns.FindAll(x => x.IsColonist).Count));
 
-                                if (num != this.displayGroupForBar)
+                                if (Settings.ColBarSettings.UseCaravanSettings&&num != this.displayGroupForBar)
                                 {
                                     if (this.cachedEntries.FindAll(x => x.group == num).Count > 0)
                                     {

@@ -140,8 +140,9 @@
                     EntryKF entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
-                   // if (entry.pawn != null)
+                    if (entry.groupCount > 0)
                     {
+                        drawer.HandleClicks(rect, entry.pawn, entry.group);
                     }
 
                     if (Event.current.type == EventType.Repaint)
@@ -153,17 +154,15 @@
 
                         if (entry.pawn != null)
                         {
-                            drawer.DrawColonist(ref rect, entry.pawn, entry.map);
+                            drawer.DrawColonist(rect, entry.pawn, entry.map);
                         }
                         else
                         {
-                            drawer.DrawEmptyFrame(ref rect, entry.map, entry.groupCount);
+                            drawer.DrawEmptyFrame(rect, entry.map, entry.groupCount);
                         }
                     }
-                    drawer.HandleClicks(rect, entry.pawn, entry.group);
 
                 }
-
                 num = -1;
                 if (showGroupFrames)
                 {
