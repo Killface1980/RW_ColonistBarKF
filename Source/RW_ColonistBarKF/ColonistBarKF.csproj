@@ -61,8 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="EntryKF.cs" />
     <Compile Include="WorkGiver_ImprisonDowned.cs" />
-    <Compile Include="Building_MedicalBeacon.cs" />
+    <Compile Include="MedicalBeacon\Building_MedicalBeacon.cs" />
     <Compile Include="ThoughtDefOf.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="OLD_Class2.cs" />
@@ -80,7 +81,7 @@
     <None Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="Bar\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="Bar\ColonistBarDrawLocsFinder_KF.cs" />
-    <Compile Include="ColBarHelper_KF.cs" />
+    <Compile Include="Bar\ColBarHelper_KF.cs" />
     <None Include="Coloniistbar_KF_ModBase.cs" />
     <None Include="Mod.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
@@ -102,10 +103,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs_Buildings\Buildings_Misc.xml">
-      <Link>Buildings_Misc.xml</Link>
+      <Link>MedicalBeacon\Buildings_Misc.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WorkGiverDefs\WorkGivers.xml">
-      <Link>WorkGivers.xml</Link>
+      <Link>MedicalBeacon\WorkGivers.xml</Link>
     </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>

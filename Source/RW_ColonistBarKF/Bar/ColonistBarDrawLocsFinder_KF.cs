@@ -142,7 +142,7 @@
         private void CalculateColonistsInGroup()
         {
             this.entriesInGroup.Clear();
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             int num = this.CalculateGroupsCount();
             for (int i = 0; i < num; i++)
             {
@@ -178,7 +178,7 @@
             int groupsCount = this.CalculateGroupsCount();
             float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * scale;
             float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             int index = -1;
             int numInGroup = -1;
             float groupStartX = (UI.screenWidth - groupWidth) / 2f;
@@ -213,7 +213,7 @@
 
         private int CalculateGroupsCount()
         {
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             int num = -1;
             int num2 = 0;
             for (int i = 0; i < entries.Count; i++)
@@ -231,7 +231,7 @@
         private float FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow)
         {
             float bestScale = 1f;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             int groupsCount = this.CalculateGroupsCount();
             while (true)
             {

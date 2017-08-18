@@ -77,11 +77,12 @@
             Settings.ColBarSettings.BaseSizeFloat,
             Settings.ColBarSettings.BaseSizeFloat);
 
+
         private static bool ShowGroupFrames
         {
             get
             {
-                List<ColonistBar.Entry> entries = BarHelperKf.Entries;
+                List<EntryKF> entries = BarHelperKf.Entries;
                 int num = -1;
                 for (int i = 0; i < entries.Count; i++)
                 {
@@ -126,7 +127,7 @@
 
             if (Event.current.type != EventType.Layout)
             {
-                List<ColonistBar.Entry> entries = BarHelperKf.Entries;
+                List<EntryKF> entries = BarHelperKf.Entries;
                 int num = -1;
                 bool showGroupFrames = ShowGroupFrames;
                 for (int i = 0; i < BarHelperKf.cachedDrawLocs.Count; i++)
@@ -136,12 +137,11 @@
                         BarHelperKf.cachedDrawLocs[i].y,
                         FullSize.x,
                         FullSize.y + SpacingLabel);
-                    ColonistBar.Entry entry = entries[i];
+                    EntryKF entry = entries[i];
                     bool flag = num != entry.group;
                     num = entry.group;
-                    if (entry.pawn != null)
+                   // if (entry.pawn != null)
                     {
-                        drawer.HandleClicks(rect, entry.pawn);
                     }
 
                     if (Event.current.type == EventType.Repaint)
@@ -153,9 +153,15 @@
 
                         if (entry.pawn != null)
                         {
-                            drawer.DrawColonist(rect, entry.pawn, entry.map);
+                            drawer.DrawColonist(ref rect, entry.pawn, entry.map);
+                        }
+                        else
+                        {
+                            drawer.DrawEmptyFrame(ref rect, entry.map, entry.groupCount);
                         }
                     }
+                    drawer.HandleClicks(rect, entry.pawn, entry.group);
+
                 }
 
                 num = -1;
@@ -163,7 +169,7 @@
                 {
                     for (int j = 0; j < BarHelperKf.cachedDrawLocs.Count; j++)
                     {
-                        ColonistBar.Entry entry2 = entries[j];
+                        EntryKF entry2 = entries[j];
                         bool flag2 = num != entry2.group;
                         num = entry2.group;
                         if (flag2)
@@ -180,7 +186,7 @@
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
             List<Vector2> drawLocs = BarHelperKf.DrawLocs;
-            List<ColonistBar.Entry> entries = BarHelperKf.Entries;
+            List<EntryKF> entries = BarHelperKf.Entries;
             Vector2 size = FullSize;
             BarHelperKf.tmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)

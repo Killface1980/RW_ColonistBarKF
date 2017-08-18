@@ -1,4 +1,4 @@
-﻿namespace ColonistBarKF
+namespace ColonistBarKF
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -23,7 +23,7 @@
     {
         #region Public Fields
 
-        public Color BGColor = Color.gray;
+        public Color bgColor = Color.gray;
 
         public bool hasRelationWithColonist;
 
@@ -35,7 +35,7 @@
 
         public int prosthoStage;
 
-        public bool relationChecked;
+        public bool relationChecked = false;
 
         public int SpawnedAt;
 
@@ -199,6 +199,20 @@
 
         public List<IconEntryPSI> PSIIconList { get; private set; } = new List<IconEntryPSI>();
 
+
+
+        public Color BGColor
+        {
+            get
+            {
+                return bgColor;
+            }
+            set
+            {
+                bgColor = value;
+            }
+        }
+
         #endregion Public Properties
 
         #region Public Methods
@@ -334,6 +348,8 @@
         public override void PostExposeData()
         {
             Scribe_Values.Look(ref this.relationChecked, "relationChecked");
+            Scribe_Values.Look(ref this.hasRelationWithColonist, "hasRelationWithColonist");
+            Scribe_Values.Look(ref this.bgColor, "bgColor");
         }
 
         public void SetEntriesDirty()
@@ -435,24 +451,25 @@
         private void CheckTraits(Pawn pawn)
         {
             {
+                if (pawn.RaceProps.hasGenders)
+                {
+                    switch (pawn.gender)
+                    {
+                        case Gender.Male:
+                            this.bgColor = MaleColor;
+                            break;
+
+                        case Gender.Female:
+                            this.bgColor = FemaleColor;
+                            break;
+
+                        default: break;
+                    }
+                }
+
                 // One time traits check
                 if (pawn.story?.traits != null)
                 {
-                    if (pawn.RaceProps.hasGenders)
-                    {
-                        switch (pawn.gender)
-                        {
-                            case Gender.Male:
-                                this.BGColor = MaleColor;
-                                break;
-
-                            case Gender.Female:
-                                this.BGColor = FemaleColor;
-                                break;
-
-                            default: break;
-                        }
-                    }
 
                     // Masochist
                     this.isMasochist = pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));

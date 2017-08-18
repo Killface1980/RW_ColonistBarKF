@@ -144,6 +144,16 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Kill_Postfix)));
 
             harmony.Patch(
+                AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(CameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                null);
+
+            harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.PostApplyDamage)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_PostApplyDamage_Postfix)));
@@ -231,7 +241,7 @@
                 return false;
             }
 
-            if (!BarHelperKf.TryGetEntryAt(pos, out ColonistBar.Entry entry))
+            if (!BarHelperKf.TryGetEntryAt(pos, out EntryKF entry))
             {
                 __result = null;
                 return false;
@@ -259,7 +269,7 @@
 
         private static bool GetColonistsInOrder_Prefix(ref List<Pawn> __result)
         {
-            List<ColonistBar.Entry> entries = BarHelperKf.Entries;
+            List<EntryKF> entries = BarHelperKf.Entries;
             BarHelperKf.tmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {
@@ -352,6 +362,14 @@
                     compPSI.BGColor = Color.gray;
                     compPSI.thisColCount = 0;
                 }
+            }
+        }
+
+        private static void StopFollow_Prefix(Pawn __instance)
+        {
+            if (FollowMe.CurrentlyFollowing)
+            {
+                FollowMe.StopFollow("Harmony");
             }
         }
 

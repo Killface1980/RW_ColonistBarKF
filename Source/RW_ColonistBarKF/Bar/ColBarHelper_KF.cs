@@ -8,13 +8,13 @@
     using UnityEngine;
     using Verse;
 
-    public class ColBarHelper_KF
+    public class ColBarHelper_KF : IExposable
     {
         #region Fields
 
         public List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        public List<ColonistBar.Entry> cachedEntries = new List<ColonistBar.Entry>();
+        public List<EntryKF> cachedEntries = new List<EntryKF>();
 
         public float cachedScale;
 
@@ -42,7 +42,7 @@
 
         public List<Vector2> DrawLocs => this.cachedDrawLocs;
 
-        public List<ColonistBar.Entry> Entries
+        public List<EntryKF> Entries
         {
             get
             {
@@ -57,7 +57,7 @@
 
         public bool AnyColonistOrCorpseAt(Vector2 pos)
         {
-            return this.TryGetEntryAt(pos, out ColonistBar.Entry entry) && entry.pawn != null;
+            return this.TryGetEntryAt(pos, out EntryKF entry) && entry.pawn != null;
         }
 
         public void CheckRecacheEntries()
@@ -109,12 +109,21 @@
                     SortCachedColonists(ref this.tmpPawns);
                     for (int l = 0; l < this.tmpPawns.Count; l++)
                     {
-                        this.cachedEntries.Add(new ColonistBar.Entry(this.tmpPawns[l], this.tmpMaps[i], num));
+                        this.cachedEntries.Add(new EntryKF(this.tmpPawns[l], this.tmpMaps[i], num, this.tmpPawns.Count));
+
+                        if (num != this.displayGroupForBar)
+                        {
+                            if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 2)
+                            {
+                                this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], num, this.tmpPawns.Count));
+                                break;
+                            }
+                        }
                     }
 
                     if (!this.tmpPawns.Any())
                     {
-                        this.cachedEntries.Add(new ColonistBar.Entry(null, this.tmpMaps[i], num));
+                        this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], num, 0));
                     }
 
                     num++;
@@ -136,7 +145,26 @@
                         {
                             if (this.tmpPawns[n].IsColonist)
                             {
-                                this.cachedEntries.Add(new ColonistBar.Entry(this.tmpPawns[n], null, num));
+                                this.cachedEntries.Add(
+                                    new EntryKF(
+                                        this.tmpPawns[n],
+                                        null,
+                                        num,
+                                        this.tmpPawns.FindAll(x => x.IsColonist).Count));
+
+                                if (this.displayGroupForBar != null)
+                                {
+                                    if (this.cachedEntries.FindAll(x => x.map == null && x.group == num).Count > 1)
+                                    {
+                                        this.cachedEntries.Add(
+                                            new EntryKF(
+                                                null,
+                                                null,
+                                                num,
+                                                this.tmpPawns.FindAll(x => x.IsColonist).Count));
+                                        break;
+                                    }
+                                }
                             }
                         }
 
@@ -153,10 +181,10 @@
             ColonistBar_KF.drawLocsFinder.CalculateDrawLocs(this.cachedDrawLocs, out this.cachedScale);
         }
 
-        public bool TryGetEntryAt(Vector2 pos, out ColonistBar.Entry entry)
+        public bool TryGetEntryAt(Vector2 pos, out EntryKF entry)
         {
             List<Vector2> drawLocs = this.cachedDrawLocs;
-            List<ColonistBar.Entry> entries = this.Entries;
+            List<EntryKF> entries = this.Entries;
             Vector2 size = ColonistBar_KF.FullSize;
             for (int i = 0; i < drawLocs.Count; i++)
             {
@@ -168,7 +196,7 @@
                 }
             }
 
-            entry = default(ColonistBar.Entry);
+            entry = default(EntryKF);
             return false;
         }
 
@@ -245,6 +273,13 @@
             }
         }
 
+        public int displayGroupForBar = 0;
+
         #endregion Methods
+
+        public void ExposeData()
+        {
+            Scribe_Values.Look(ref this.displayGroupForBar, "displayGroupForBar");
+        }
     }
 }

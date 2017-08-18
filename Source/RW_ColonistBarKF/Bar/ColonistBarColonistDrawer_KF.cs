@@ -52,9 +52,9 @@
 
         #region Public Methods
 
-        public void DrawColonist(Rect outerRect, Pawn colonist, Map pawnMap)
+        public void DrawColonist(ref Rect outerRect, Pawn colonist, Map pawnMap)
         {
-            CompPSI pawnStats = colonist.GetComp<CompPSI>();
+            CompPSI psiComp = colonist.GetComp<CompPSI>();
             Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
 
             // if (pawnStats.IconCount == 0)
@@ -71,10 +71,10 @@
 
             // testing
             // Widgets.DrawBox(outerRect);
-            if (pawnStats != null)
+            if (psiComp != null)
             {
                 BuildRects(
-                    pawnStats.thisColCount,
+                    psiComp.thisColCount,
                     ref outerRect,
                     ref pawnRect,
                     out Rect moodBorderRect,
@@ -82,27 +82,27 @@
 
                 // Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
                 Color background = color;
+                Texture2D tex2 = ColonistBarTextures.BGTexVanilla;
                 if (ColBarSettings.UseGender)
                 {
-                    background = pawnStats.BGColor;
-
+                    background = psiComp.BGColor;
+                    tex2 = ColonistBarTextures.BGTexGrey;
                     background.a = entryRectAlpha;
                     GUI.color = background;
                 }
 
-                GUI.DrawTexture(
-                    pawnRect,
-                    ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+                GUI.DrawTexture(pawnRect, tex2);
+
                 GUI.color = color;
 
                 if (colonist.needs?.mood != null)
                 {
                     if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                     {
-                        if (pawnStats.Mood != null && pawnStats.Mb != null)
+                        if (psiComp.Mood != null && psiComp.Mb != null)
                         {
                             // string tooltip = colonist.needs.mood.GetTipString();
-                            DrawNewMoodRect(moodBorderRect, pawnStats.Mood, pawnStats.Mb);
+                            DrawNewMoodRect(moodBorderRect, psiComp.Mood, psiComp.Mb);
                         }
                     }
                     else
@@ -123,9 +123,8 @@
             }
             else
             {
-                GUI.DrawTexture(
-                    pawnRect,
-                    ColBarSettings.UseGender ? ColonistBarTextures.BGTexGrey : ColonistBarTextures.BGTexVanilla);
+                GUI.color = color;
+                GUI.DrawTexture(pawnRect, ColonistBarTextures.BGTexVanilla);
             }
 
             GUI.color = color;
@@ -194,12 +193,42 @@
             GUI.color = Color.white;
         }
 
+        public void DrawEmptyFrame(ref Rect outerRect, Map pawnMap, int groupCount)
+        {
+            Rect pawnRect = new Rect(outerRect.x, outerRect.y, ColonistBar_KF.PawnSize.x, ColonistBar_KF.PawnSize.y);
+
+            // if (pawnStats.IconCount == 0)
+            // outerRect.width
+            float entryRectAlpha = ColonistBar_KF.GetEntryRectAlpha(outerRect);
+            this.ApplyEntryInAnotherMapAlphaFactor(pawnMap, ref entryRectAlpha);
+
+            Color color = new Color(1f, 1f, 1f, entryRectAlpha);
+            GUI.color = color;
+
+            // testing
+            // Widgets.DrawBox(outerRect);
+
+            // Widgets.DrawBoxSolid(outerRect, new Color(0.5f, 1f, 0.5f, 0.5f));
+
+            GUI.DrawTexture(pawnRect, ColonistBarTextures.BGTexGrey);
+            GUI.color = color;
+
+            GUI.color = color;
+            GUI.Label(pawnRect, groupCount.ToString());
+            outerRect = pawnRect;
+
+            GUI.color = Color.white;
+        }
+
         public void DrawGroupFrame(int group)
         {
             Rect position = this.GroupFrameRect(group);
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             Map map = entries.Find(x => x.group == group).map;
             float num;
+            Color color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
+
+            // Caravan on world map
             if (map == null)
             {
                 if (WorldRendererUtility.WorldRenderedNow)
@@ -210,20 +239,29 @@
                 {
                     num = 0.75f;
                 }
-            }
-            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
-            {
-                num = 0.75f;
+                color = new Color(0.2f, 0.5f, 0.47f, 0.4f);
             }
             else
             {
-                num = 1f;
+                // other pawns, on map
+                if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+                {
+                    num = 0.75f;
+                }
+                else
+                {
+                    num = 1f;
+                }
+                if (!map.IsPlayerHome)
+                {
+                    color = new Color(0.2f, 0.25f, 0.5f, 0.4f);
+                }
             }
-
-            Widgets.DrawRectFast(position, new Color(0.5f, 0.5f, 0.5f, 0.4f * num));
+            color.a *= num;
+            Widgets.DrawRectFast(position, color);
         }
 
-        public void HandleClicks(Rect rect, Pawn colonist)
+        public void HandleClicks(Rect rect, Pawn colonist, int showThisMap)
         {
             if (Mouse.IsOver(rect))
             {
@@ -233,34 +271,61 @@
                         {
                             switch (Event.current.button)
                             {
-                                // LMB
-                                // Double click
+                                // Left Mouse Button
                                 case 0:
+                                    // Double click
                                     if (Event.current.clickCount == 2)
                                     {
                                         // use event so it doesn't bubble through
                                         Event.current.Use();
-
-                                        if (FollowMe.CurrentlyFollowing)
+                                        bool flag = false;
+                                        if (colonist == null)
                                         {
-                                            FollowMe.StopFollow("Selected another colonist on bar");
-                                            FollowMe.TryStartFollow(colonist);
+
                                         }
                                         else
                                         {
-                                            CameraJumper.TryJump(colonist);
+                                            if (FollowMe.CurrentlyFollowing)
+                                            {
+                                                FollowMe.StopFollow("Selected another colonist on bar");
+                                                if (colonist?.Map != null)
+                                                {
+                                                    FollowMe.TryStartFollow(colonist);
+                                                }
+                                                else
+                                                {
+                                                    flag = true;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                flag = true;
+                                            }
+                                            if (flag)
+                                            {
+                                                CameraJumper.TryJump(colonist);
+                                            }
                                         }
 
                                         // clickedColonist = null;
                                     }
+                                    if (Event.current.clickCount == 1)
+                                    {
+                                        if (colonist == null)
+                                        {
+                                            Event.current.Use();
+                                            ColonistBar_KF.BarHelperKf.displayGroupForBar = showThisMap;
+                                            HarmonyPatches.MarkColonistsDirty_Postfix();
+                                        }
 
+                                    }
                                     // if (Event.current.clickCount == 1)
                                     // {
                                     // clickedColonist = colonist;
                                     // }
                                     break;
 
-                                // RMB
+                                // Right Mouse Button
                                 case 1:
                                     List<FloatMenuOption> floatOptionList = new List<FloatMenuOption>();
 
@@ -397,10 +462,11 @@
 
                                     floatOptionList.Add(trade);
 
+                                    // Options menu
                                     floatOptionList.Add(
                                         new FloatMenuOption(
                                             "CBKF.Settings.SettingsColonistBar".Translate(),
-                                            delegate { Find.WindowStack.Add(new ColonistBarKF_Settings()); }));
+                                            delegate { Find.WindowStack.Add(new ColonistBarKfSettings()); }));
                                     FloatMenu window = new FloatMenu(
                                         floatOptionList,
                                         "CBKF.Settings.SortingOptions".Translate());
@@ -415,7 +481,7 @@
                         }
                 }
 
-                // MMB
+                // Middle Mouse Button
                 if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
                 {
                     // start following
@@ -441,7 +507,7 @@
             if (Event.current.type == EventType.MouseUp && Event.current.button == 0 && Mouse.IsOver(rect))
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                ColonistBar.Entry entry = ColonistBar_KF.BarHelperKf.Entries.Find(x => x.group == group);
+                EntryKF entry = ColonistBar_KF.BarHelperKf.Entries.Find(x => x.group == group);
                 Map map = entry.map;
 
                 if (!ColonistBar_KF.BarHelperKf.AnyColonistOrCorpseAt(UI.MousePositionOnUIInverted))
@@ -1092,7 +1158,7 @@
             float posY = 21f;
             float num2 = 0f;
             float height = 0f;
-            List<ColonistBar.Entry> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             List<Vector2> drawLocs = ColonistBar_KF.BarHelperKf.DrawLocs;
             for (int i = 0; i < entries.Count; i++)
             {
