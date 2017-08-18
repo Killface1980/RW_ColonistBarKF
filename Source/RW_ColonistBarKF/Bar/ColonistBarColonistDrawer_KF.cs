@@ -240,7 +240,7 @@
                 {
                     num = 0.75f;
                 }
-                if (Settings.ColBarSettings.UseCaravanSettings)
+                if (Settings.ColBarSettings.UseCaravanColors)
                 {
                     color = new Color(0.2f, 0.5f, 0.47f, 0.4f);
                 }
@@ -256,7 +256,7 @@
                 {
                     num = 1f;
                 }
-                if (Settings.ColBarSettings.UseCaravanSettings && !map.IsPlayerHome)
+                if (Settings.ColBarSettings.UseCaravanColors && !map.IsPlayerHome)
                 {
                     color = new Color(0.2f, 0.25f, 0.5f, 0.4f);
                 }

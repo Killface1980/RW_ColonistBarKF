@@ -51,7 +51,7 @@ namespace ColonistBarKF
 
         #region Private Fields
 
-        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.2.0";
+        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.0";
 
         private static int iconLimit;
 
@@ -490,13 +490,10 @@ namespace ColonistBarKF
                     break;
                 case 2:
                     {
-                      //  LabelHeadline("CBKF.Settings.Caravan".Translate());
+                        //  LabelHeadline("CBKF.Settings.Caravan".Translate());
 
                         GUILayout.Space(Text.LineHeight / 2);
-
-                        {
-                            this.FillPageCaravanSettings();
-                        }
+                        this.FillPageCaravanSettings();
                     }
 
                     break;
@@ -538,24 +535,12 @@ namespace ColonistBarKF
                 ColBarSettings.UseCaravanSettings,
                 "CBKF.Settings.UseCaravanSettings".Translate());
 
-            // if (ColBarSettings.UseCustomPawnTextureCameraOffsets)
-            // {
-            //     GUILayout.Space(Text.LineHeight / 2);
-            //     ColBarSettings.PawnTextureCameraHorizontalOffset = GUILayout.HorizontalSlider(
-            //         ColBarSettings.PawnTextureCameraHorizontalOffset,
-            //         0.7f,
-            //         -0.7f);
-            //     ColBarSettings.PawnTextureCameraVerticalOffset =
-            //         GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f);
-            //     ColBarSettings.PawnTextureCameraZoom =
-            //         GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f);
-            // }
-            // else
-            // {
-            //     ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
-            //     ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
-            //     ColBarSettings.PawnTextureCameraZoom = 1.28205f;
-            // }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical(this.fondBoxes);
+            ColBarSettings.UseCaravanColors = GUILayout.Toggle(
+                ColBarSettings.UseCaravanColors,
+                "CBKF.Settings.UseCaravanColors".Translate());
 
             GUILayout.EndVertical();
         }

@@ -166,5 +166,7 @@ namespace ColonistBarKF
         public float VerticalOffset = 0f;
 
         public bool UseCaravanSettings = true;
+
+        public bool UseCaravanColors = true;
     }
 }
