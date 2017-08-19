@@ -62,6 +62,9 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="EntryKF.cs" />
+    <Compile Include="Menus\FloatMenuLabels.cs" />
+    <Compile Include="Menus\Tools.cs" />
+    <Compile Include="Menus\FloatMenuColonists.cs" />
     <Compile Include="WorkGiver_ImprisonDowned.cs" />
     <Compile Include="MedicalBeacon\Building_MedicalBeacon.cs" />
     <Compile Include="ThoughtDefOf.cs" />
@@ -113,6 +116,7 @@
     </Content>
     <Content Include="..\..\Languages\ChineseTraditional\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseTraditional\ColonistBar_KF.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\English\Keyed\ColonistBar_KF.xml">
       <Link>Languages\English\ColonistBar_KF.xml</Link>
@@ -120,6 +124,7 @@
     </Content>
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\Russian\Keyed\ColonistBar_KF.xml">
       <Link>Languages\Russian\ColonistBar_KF.xml</Link>

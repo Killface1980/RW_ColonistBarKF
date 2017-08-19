@@ -2,6 +2,8 @@
 
 namespace ColonistBarKF
 {
+    using RimWorld;
+
     public class SettingsColonistBar
     {
         #region SortByWhat enum
@@ -141,6 +143,7 @@ namespace ColonistBarKF
         public bool ShowUnarmed = true;
 
         public SortByWhat SortBy;
+        public StatDef SortByStat;
 
         public bool UseCustomIconSize = false;
 
@@ -168,5 +171,7 @@ namespace ColonistBarKF
         public bool UseCaravanSettings = true;
 
         public bool UseCaravanColors = true;
+
+        public bool UseStatSorting = false;
     }
 }

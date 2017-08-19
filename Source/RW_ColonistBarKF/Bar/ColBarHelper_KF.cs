@@ -156,7 +156,7 @@
                                         num,
                                         this.tmpPawns.FindAll(x => x.IsColonist).Count));
 
-                                if (Settings.ColBarSettings.UseCaravanSettings&&num != this.displayGroupForBar)
+                                if (Settings.ColBarSettings.UseCaravanSettings && num != this.displayGroupForBar)
                                 {
                                     if (this.cachedEntries.FindAll(x => x.group == num).Count > 0)
                                     {
@@ -207,73 +207,81 @@
         private static void SortCachedColonists(ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
-            switch (Settings.ColBarSettings.SortBy)
+            if (Settings.ColBarSettings.UseStatSorting && Settings.ColBarSettings.SortByStat != null)
             {
-                case SettingsColonistBar.SortByWhat.vanilla:
-                    tmpColonists.SortBy(x => x.thingIDNumber);
-                    Settings.SaveBarSettings();
-                    break;
+                tmpColonists.SortBy(pawn => pawn.GetStatValue(Settings.ColBarSettings.SortByStat));
+                Settings.SaveBarSettings();
+            }
+            else
+            {
+                switch (Settings.ColBarSettings.SortBy)
+                {
+                    case SettingsColonistBar.SortByWhat.vanilla:
+                        tmpColonists.SortBy(x => x.thingIDNumber);
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.byName:
-                    tmpColonists.SortBy(x => x.LabelCap);
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.byName:
+                        tmpColonists.SortBy(x => x.LabelCap);
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.sexage:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null)
-                        .ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
-                    tmpColonists = orderedEnumerable.ToList();
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.sexage:
+                        orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null)
+                            .ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
+                        tmpColonists = orderedEnumerable.ToList();
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.health:
-                    tmpColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.health:
+                        tmpColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.mood:
-                    orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurInstantLevelPercentage);
-                    tmpColonists = orderedEnumerable.ToList();
+                    case SettingsColonistBar.SortByWhat.mood:
+                        orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurInstantLevelPercentage);
+                        tmpColonists = orderedEnumerable.ToList();
 
-                    // tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
-                    Settings.SaveBarSettings();
-                    break;
+                        // tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.weapons:
-                    orderedEnumerable = tmpColonists
-                        .OrderByDescending(
-                            a => a?.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
-                        .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
-                            b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-                    tmpColonists = orderedEnumerable.ToList();
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.weapons:
+                        orderedEnumerable = tmpColonists
+                            .OrderByDescending(
+                                a => a?.equipment?.Primary?.def != null && a.equipment.Primary.def.IsMeleeWeapon)
+                            .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
+                                b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
+                        tmpColonists = orderedEnumerable.ToList();
+                        Settings.SaveBarSettings();
+                        break;
 
-                // skill not really relevant
-                // case SettingsColonistBar.SortByWhat.medic:
-                // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                // tmpColonists = orderedEnumerable.ToList();
-                // SaveBarSettings();
-                // break;
-                case SettingsColonistBar.SortByWhat.medicTendQuality:
-                    tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
-                    Settings.SaveBarSettings();
-                    break;
+                    // skill not really relevant
+                    // case SettingsColonistBar.SortByWhat.medic:
+                    // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                    // tmpColonists = orderedEnumerable.ToList();
+                    // SaveBarSettings();
+                    // break;
+                    case SettingsColonistBar.SortByWhat.medicTendQuality:
+                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
-                    tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
+                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
+                        Settings.SaveBarSettings();
+                        break;
 
-                case SettingsColonistBar.SortByWhat.tradePrice:
-                    tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
-                    Settings.SaveBarSettings();
-                    break;
+                    case SettingsColonistBar.SortByWhat.tradePrice:
+                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
+                        Settings.SaveBarSettings();
+                        break;
 
-                default:
-                    tmpColonists.SortBy(x => x.thingIDNumber);
-                    Settings.SaveBarSettings();
-                    break;
+                    default:
+                        tmpColonists.SortBy(x => x.thingIDNumber);
+                        Settings.SaveBarSettings();
+                        break;
+                }
             }
         }
 
