@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-	<CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
+  <CBKF.Settings.MaxColonistBarWidth>Maximale Leistenbreite</CBKF.Settings.MaxColonistBarWidth>
+  <PSI.Settings.ShowRelationsOnStrangers>Zeige Pawn Health Icon™ on Fremden mit Verwandschaft</PSI.Settings.ShowRelationsOnStrangers>
+  <PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
 	<CBKF.Settings.Advanced>Erweiterte Einstellungen</CBKF.Settings.Advanced>
 	<CBKF.Settings.BarPosition>Colonist Bar Einstellungen</CBKF.Settings.BarPosition>
 	<CBKF.Settings.BaseSpacingHorizontal>Horizontaler Abstand: </CBKF.Settings.BaseSpacingHorizontal>
@@ -8,6 +10,7 @@
 	<CBKF.Settings.BasicSize>Icon-Größe und Abstand: </CBKF.Settings.BasicSize>
 	<CBKF.Settings.ByName>Nach Name</CBKF.Settings.ByName>
 	<CBKF.Settings.ColBarIconVisibility>In Leiste</CBKF.Settings.ColBarIconVisibility>
+	<CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
 	<CBKF.Settings.ColonistBarOffset>Abstände zu den Rändern: </CBKF.Settings.ColonistBarOffset>
 	<CBKF.Settings.DoubleClickTime>Doppelklick-Intervall</CBKF.Settings.DoubleClickTime>
 	<CBKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</CBKF.Settings.FemaleColor>
@@ -18,10 +21,11 @@
 	<CBKF.Settings.MarginHorizontal>Maximale Leistenbreite: </CBKF.Settings.MarginHorizontal>
 	<CBKF.Settings.MarginRight>Rechter Abstand</CBKF.Settings.MarginRight>
 	<CBKF.Settings.MarginTop>Oberer Abstand</CBKF.Settings.MarginTop>
-  <CBKF.Settings.MaxColonistBarWidth>Maximale Leistenbreite</CBKF.Settings.MaxColonistBarWidth>
 	<CBKF.Settings.MaxColonistBarHeight>Maximale Leistenhöhe</CBKF.Settings.MaxColonistBarHeight>
 	<CBKF.Settings.Medic>Medizin</CBKF.Settings.Medic>
 	<CBKF.Settings.Mood>Stimmung</CBKF.Settings.Mood>
+	<CBKF.Settings.OrderBy>Sortieren nach</CBKF.Settings.OrderBy>
+	<CBKF.Settings.OrderingOptions>Sortieren ►</CBKF.Settings.OrderingOptions>
 	<CBKF.Settings.PawnTextureCameraOffsets>Kamera-Versatz und Zoom: </CBKF.Settings.PawnTextureCameraOffsets>
 	<CBKF.Settings.PSI>Pawn State Icons</CBKF.Settings.PSI>
 	<CBKF.Settings.PSIIconVisibility>Auf Kolonist</CBKF.Settings.PSIIconVisibility>
@@ -29,13 +33,11 @@
 	<CBKF.Settings.RevertSettings>Setze Einstellungen Kolonistenleiste zurücks</CBKF.Settings.RevertSettings>
 	<CBKF.Settings.SettingsColonistBar>Colonist Bar KF Einstellungen</CBKF.Settings.SettingsColonistBar>
 	<CBKF.Settings.SexAge>Geschlecht dann Alter</CBKF.Settings.SexAge>
-	<CBKF.Settings.SortBy>Sortieren nach</CBKF.Settings.SortBy>
-	<CBKF.Settings.SortingOptions>Sortieren ►</CBKF.Settings.SortingOptions>
 	<CBKF.Settings.useBottom>Unten</CBKF.Settings.useBottom>
+	<CBKF.Settings.UseExternalMoodBar>Zeige externe Launeleiste™: </CBKF.Settings.UseExternalMoodBar>
 	<CBKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</CBKF.Settings.useGender>
 	<CBKF.Settings.useLeft>Links</CBKF.Settings.useLeft>
 	<CBKF.Settings.UseNewMood>Benutze neue Launeleiste™</CBKF.Settings.UseNewMood>
-	<CBKF.Settings.UseExternalMoodBar>Zeige externe Launeleiste™: </CBKF.Settings.UseExternalMoodBar>
 	<CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Leiste</CBKF.Settings.UsePsiOnBar>
 	<CBKF.Settings.useRight>Rechts</CBKF.Settings.useRight>
 	<CBKF.Settings.useTop>Oben</CBKF.Settings.useTop>
@@ -43,24 +45,26 @@
 	<CBKF.Settings.useZoomToMouse>Benutze ZoomToMouse™</CBKF.Settings.useZoomToMouse>
 	<CBKF.Settings.Vanilla>Vanilla</CBKF.Settings.Vanilla>
 	<CBKF.Settings.Weapons>Waffen</CBKF.Settings.Weapons>
-	<FollowMe.StartFollow>FolgeMir™</FollowMe.StartFollow>
-	<FollowMe.StopFollow>Stoppe FolgeMir™</FollowMe.StopFollow>
-	<FollowMe.MiddleClick>Mittlerer Mausklick auf Kolonisten für FolgeMir™</FollowMe.MiddleClick>
 	<FollowMe.Cancel> {0} wird nicht mehr Verfolgt.</FollowMe.Cancel>
 	<FollowMe.Follow> Verfolge jetzt {0}.</FollowMe.Follow>
+	<FollowMe.MiddleClick>Mittlerer Mausklick auf Kolonisten für FolgeMir™</FollowMe.MiddleClick>
 	<FollowMe.RejectMultiple>Können nicht verfolgt werden, zu viele Ziele.</FollowMe.RejectMultiple>
 	<FollowMe.RejectNoSelection>Kann nicht folgen, kein Ziel.</FollowMe.RejectNoSelection>
 	<FollowMe.RejectNotAThing>Kann nicht folgen, Markierung ist kein Individuum.</FollowMe.RejectNotAThing>
+	<FollowMe.StartFollow>FolgeMir™</FollowMe.StartFollow>
+	<FollowMe.StopFollow>Stoppe FolgeMir™</FollowMe.StopFollow>
 	<PSI.Disabled>Pawn State Icons™ deaktiviert. Drücke F11 zum Reaktivieren</PSI.Disabled>
+	<PSI.DiseaseProgress>Krankheit</PSI.DiseaseProgress>
+	<PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
 	<PSI.Enabled>Pawn State Icons™ aktiviert</PSI.Enabled>
 	<PSI.Settings.Advanced>Erweitert</PSI.Settings.Advanced>
+	<PSI.Settings.Arrangement.ColonistsPerColumn>Max. Reihen/Spalten für Kolonisten: </PSI.Settings.Arrangement.ColonistsPerColumn>
 	<PSI.Settings.Arrangement.Header>Größe &amp; Anordnung</PSI.Settings.Arrangement.Header>
 	<PSI.Settings.Arrangement.Horizontal>Horizontale Anordnung</PSI.Settings.Arrangement.Horizontal>
 	<PSI.Settings.Arrangement.IconOffset>Abstand dazwischen: </PSI.Settings.Arrangement.IconOffset>
 	<PSI.Settings.Arrangement.IconPosition>Alignment: </PSI.Settings.Arrangement.IconPosition>
 	<PSI.Settings.Arrangement.IconSize>Icon Größe: </PSI.Settings.Arrangement.IconSize>
 	<PSI.Settings.Arrangement.IconsPerColumn>Icons pro Reihe/Spalte: </PSI.Settings.Arrangement.IconsPerColumn>
-	<PSI.Settings.Arrangement.ColonistsPerColumn>Max. Reihen/Spalten für Kolonisten: </PSI.Settings.Arrangement.ColonistsPerColumn>
 	<PSI.Settings.Arrangement.ScreenScale>Bildschirm-skalierte Icons</PSI.Settings.Arrangement.ScreenScale>
 	<PSI.Settings.ArrangementButton>Größe &amp; Anordnung</PSI.Settings.ArrangementButton>
 	<PSI.Settings.IconButton>Pawn State Icons™</PSI.Settings.IconButton>
@@ -101,13 +105,14 @@
 	<PSI.Settings.SizeLabel.6>groß</PSI.Settings.SizeLabel.6>
 	<PSI.Settings.SizeLabel.7>sehr groß</PSI.Settings.SizeLabel.7>
 	<PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
+	<PSI.Settings.Title>Pawn State Icons™ Einstellungen</PSI.Settings.Title>
 	<PSI.Settings.UsePSI>Zeige Pawn State Icons™ auf Kolonist</PSI.Settings.UsePSI>
 	<PSI.Settings.UsePSIOnPrisoner>Zeige Pawn State Icons™ auf Gefangenen</PSI.Settings.UsePSIOnPrisoner>
 	<PSI.Settings.Visibility.Aggressive>Aggressiv</PSI.Settings.Visibility.Aggressive>
 	<PSI.Settings.Visibility.ApparelHealth>Ausgefranste Kleidung</PSI.Settings.Visibility.ApparelHealth>
 	<PSI.Settings.Visibility.Bedroom>Schlafzimmer</PSI.Settings.Visibility.Bedroom>
 	<PSI.Settings.Visibility.Bloodloss>Blutverlust</PSI.Settings.Visibility.Bloodloss>
-	<PSI.Settings.Visibility.TooCold>Kalt</PSI.Settings.Visibility.TooCold>
+	<PSI.Settings.Visibility.CabinFever>Lagerkoller</PSI.Settings.Visibility.CabinFever>
 	<PSI.Settings.Visibility.Dazed>Verwirrt</PSI.Settings.Visibility.Dazed>
 	<PSI.Settings.Visibility.DeadColonists>Tote Kolonisten</PSI.Settings.Visibility.DeadColonists>
 	<PSI.Settings.Visibility.Disease>Krankheit</PSI.Settings.Visibility.Disease>
@@ -116,37 +121,32 @@
 	<PSI.Settings.Visibility.Greedy>Greedy</PSI.Settings.Visibility.Greedy>
 	<PSI.Settings.Visibility.Header>Sichbarkeit</PSI.Settings.Visibility.Header>
 	<PSI.Settings.Visibility.Health>Health</PSI.Settings.Visibility.Health>
-	<PSI.Settings.Visibility.TooHot>Heiß</PSI.Settings.Visibility.TooHot>
 	<PSI.Settings.Visibility.Hungry>Hungrig</PSI.Settings.Visibility.Hungry>
 	<PSI.Settings.Visibility.Idle>Untätig</PSI.Settings.Visibility.Idle>
 	<PSI.Settings.Visibility.Injury>Verletzung</PSI.Settings.Visibility.Injury>
 	<PSI.Settings.Visibility.Jealous>Jealous</PSI.Settings.Visibility.Jealous>
 	<PSI.Settings.Visibility.Leave>Geht</PSI.Settings.Visibility.Leave>
+	<PSI.Settings.Visibility.LeftUnburied>Kolonist nicht begraben</PSI.Settings.Visibility.LeftUnburied>
 	<PSI.Settings.Visibility.Lovers>Liebschaften</PSI.Settings.Visibility.Lovers>
+	<PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
+	<PSI.Settings.Visibility.MedicalAttention>Medizinische Aufmerksamkeit</PSI.Settings.Visibility.MedicalAttention>
 	<PSI.Settings.Visibility.Naked>Nackt</PSI.Settings.Visibility.Naked>
 	<PSI.Settings.Visibility.NightOwl>Nachteule bei Tag</PSI.Settings.Visibility.NightOwl>
 	<PSI.Settings.Visibility.Pacific>Pazifist</PSI.Settings.Visibility.Pacific>
 	<PSI.Settings.Visibility.Pain>Schmerz</PSI.Settings.Visibility.Pain>
+	<PSI.Settings.Visibility.Panic>Panik</PSI.Settings.Visibility.Panic>
 	<PSI.Settings.Visibility.Prosthophile>Prosthophil</PSI.Settings.Visibility.Prosthophile>
 	<PSI.Settings.Visibility.Prosthophobe>Prosthophob</PSI.Settings.Visibility.Prosthophobe>
 	<PSI.Settings.Visibility.Pyromaniac>Pyromane</PSI.Settings.Visibility.Pyromaniac>
-	<PSI.Settings.Visibility.CabinFever>Lagerkoller</PSI.Settings.Visibility.CabinFever>
 	<PSI.Settings.Visibility.Sad>Traurig</PSI.Settings.Visibility.Sad>
 	<PSI.Settings.Visibility.Sickness>Krankheit</PSI.Settings.Visibility.Sickness>
 	<PSI.Settings.Visibility.TargetPoint>Zeige Zielort auf Boden</PSI.Settings.Visibility.TargetPoint>
 	<PSI.Settings.Visibility.Tired>Müde</PSI.Settings.Visibility.Tired>
+	<PSI.Settings.Visibility.TooCold>Kalt</PSI.Settings.Visibility.TooCold>
+	<PSI.Settings.Visibility.TooHot>Heiß</PSI.Settings.Visibility.TooHot>
+	<PSI.Settings.Visibility.Toxicity>Vergiftung</PSI.Settings.Visibility.Toxicity>
 	<PSI.Settings.Visibility.Unarmed>Unbewaffnet</PSI.Settings.Visibility.Unarmed>
 	<PSI.Settings.VisibilityButton>Sichtbarkeit</PSI.Settings.VisibilityButton>
-	<PSI.Settings>Pawn State Icons™ Einstellungen</PSI.Settings>
-
-	<PSI.Settings.Visibility.Panic>Panik</PSI.Settings.Visibility.Panic>
-	<PSI.Settings.Visibility.MedicalAttention>Medizinische Aufmerksamkeit</PSI.Settings.Visibility.MedicalAttention>
-	<PSI.Settings.Visibility.Toxicity>Vergiftung</PSI.Settings.Visibility.Toxicity>
-	<PSI.Settings.Visibility.LeftUnburied>Kolonist nicht begraben</PSI.Settings.Visibility.LeftUnburied>
-	<PSI.Settings.Visibility.Marriage>Hochzeit</PSI.Settings.Visibility.Marriage>
-	<PSI.DiseaseProgress>Krankheit</PSI.DiseaseProgress>
-	<PSI.Efficiency>Leistungsfähigkeit</PSI.Efficiency>
-
-  <PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
-  <PSI.Settings.ShowRelationsOnStrangers>Zeige Pawn Health Icon™ on Fremden mit Verwandschaft</PSI.Settings.ShowRelationsOnStrangers>
+  <!-- + only August update-->
+  
 </LanguageData>

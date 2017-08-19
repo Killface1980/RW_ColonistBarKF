@@ -1,22 +1,22 @@
 ﻿namespace ColonistBarKF
 {
-    using ColonistBarKF.PSI;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using ColonistBarKF.Bar;
-
-    using UnityEngine;
-    using Verse;
-    using Verse.AI;
-
     using static ColonistBarKF.Bar.ColonistBarTextures;
+    using ColonistBarKF.PSI;
+
+    using RimWorld;
 
     using static Settings;
 
     using static Statics;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.AI;
 
     [StaticConstructorOnStartup]
     public class CompPSI : ThingComp
@@ -34,10 +34,6 @@
         public Need_Mood Mood;
 
         public int prosthoStage;
-
-        public bool relationChecked = false;
-
-        public int SpawnedAt;
 
         public Vector3 TargetPos = Vector3.zero;
 
@@ -207,6 +203,7 @@
             {
                 return bgColor;
             }
+
             set
             {
                 bgColor = value;
@@ -221,7 +218,8 @@
         {
             bool skip = false;
 
-            if (pawn.relations.RelatedPawns.Any(x => x.IsColonist))
+
+            if (pawn.relations.FamilyByBlood.Any(x => x.Faction == Faction.OfPlayer))
             {
                 this.hasRelationWithColonist = true;
                 skip = true;
@@ -229,13 +227,11 @@
 
             if (!skip)
             {
-                if (pawn.relations.DirectRelations.Any(x => x.otherPawn.IsColonist))
+                if (pawn.relations.DirectRelations.Any(x => x.otherPawn.Faction == Faction.OfPlayer))
                 {
                     this.hasRelationWithColonist = true;
                 }
             }
-
-            this.relationChecked = true;
         }
 
         public void CheckStats()
@@ -347,8 +343,6 @@
 
         public override void PostExposeData()
         {
-            Scribe_Values.Look(ref this.relationChecked, "relationChecked");
-            Scribe_Values.Look(ref this.hasRelationWithColonist, "hasRelationWithColonist");
             Scribe_Values.Look(ref this.bgColor, "bgColor");
         }
 
@@ -453,15 +447,22 @@
             {
                 if (pawn.RaceProps.hasGenders)
                 {
-                    switch (pawn.gender)
+                    if (pawn.Dead)
                     {
-                        case Gender.Male:
-                            this.bgColor = MaleColor;
-                            break;
+                        this.bgColor = Color.gray;
+                    }
+                    else
+                    {
+                        switch (pawn.gender)
+                        {
+                            case Gender.Male:
+                                this.bgColor = MaleColor;
+                                break;
 
-                        case Gender.Female:
-                            this.bgColor = FemaleColor;
-                            break;
+                            case Gender.Female:
+                                this.bgColor = FemaleColor;
+                                break;
+                        }
                     }
                 }
 
@@ -523,6 +524,15 @@
             }
         }
 
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (this.pawn.Faction != Faction.OfPlayer)
+            {
+                CheckRelationWithColonists(this.pawn);
+            }
+        }
+
         private void GetWithdrawalColor(out Color color)
         {
             color = Color.Lerp(ColBlueishGreen, ColVermillion, this.withDrawalPercent);
@@ -540,6 +550,7 @@
                 GameComponentPSI.Reinit(true, false, false);
                 return;
             }
+
             if (!this.traitsCheck)
             {
                 this.CheckTraits(this.pawn);
@@ -593,7 +604,7 @@
 
 
 
-            if (this.isPacifist)
+            if (this.isPacifist && !this.pawn.Drafted)
             {
                 if (barSettings.ShowPacific)
                 {

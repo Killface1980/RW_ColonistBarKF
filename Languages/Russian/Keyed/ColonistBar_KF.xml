@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <CBKF.Settings.ColonistBar>Панель колонистов™</CBKF.Settings.ColonistBar>
   <CBKF.Settings.Advanced>Дополнительные настройки</CBKF.Settings.Advanced>
   <CBKF.Settings.BarPosition>Основные настройки</CBKF.Settings.BarPosition>
   <CBKF.Settings.BaseSpacingHorizontal>По горизонтали: </CBKF.Settings.BaseSpacingHorizontal>
@@ -9,6 +8,7 @@
   <CBKF.Settings.BasicSize>Размер и расстояние между иконок: </CBKF.Settings.BasicSize>
   <CBKF.Settings.ByName>Сортировка: по имени</CBKF.Settings.ByName>
   <CBKF.Settings.ColBarIconVisibility>На панели</CBKF.Settings.ColBarIconVisibility>
+  <CBKF.Settings.ColonistBar>Панель колонистов™</CBKF.Settings.ColonistBar>
   <CBKF.Settings.ColonistBarOffset>Смешение панели колонистов: </CBKF.Settings.ColonistBarOffset>
   <CBKF.Settings.DoubleClickTime>Скорость двойного клика</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Цвет для колонистов женского пола</CBKF.Settings.FemaleColor>
@@ -22,6 +22,8 @@
   <CBKF.Settings.MaxColonistBarWidth>Максимальная ширина панели</CBKF.Settings.MaxColonistBarWidth>
   <CBKF.Settings.Medic>Сортировка: по навыку медицины</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Сортировка: по настроению</CBKF.Settings.Mood>
+  <CBKF.Settings.OrderBy>Сортировать по</CBKF.Settings.OrderBy>
+  <CBKF.Settings.OrderingOptions>Параметры сортировки  ►</CBKF.Settings.OrderingOptions>
   <CBKF.Settings.PawnTextureCameraOffsets>Сдвиг и масштабирование камеры: </CBKF.Settings.PawnTextureCameraOffsets>
   <CBKF.Settings.PSI>Иконки состояния колонистов™</CBKF.Settings.PSI>
   <CBKF.Settings.PSIIconVisibility>На колонисте</CBKF.Settings.PSIIconVisibility>
@@ -29,13 +31,11 @@
   <CBKF.Settings.RevertSettings>Сброс настроек панели колонистов</CBKF.Settings.RevertSettings>
   <CBKF.Settings.SettingsColonistBar>Настройка панели колонистов</CBKF.Settings.SettingsColonistBar>
   <CBKF.Settings.SexAge>Сортировка: по полу и возрасту</CBKF.Settings.SexAge>
-  <CBKF.Settings.SortBy>Сортировать по</CBKF.Settings.SortBy>
-  <CBKF.Settings.SortingOptions>Параметры сортировки  ►</CBKF.Settings.SortingOptions>
   <CBKF.Settings.useBottom>Снизу</CBKF.Settings.useBottom>
+  <CBKF.Settings.UseExternalMoodBar>Использовать панель настроения рядом с колонистом™: </CBKF.Settings.UseExternalMoodBar>
   <CBKF.Settings.useGender>Использовать цвет фона по полу колониста</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Слева</CBKF.Settings.useLeft>
   <CBKF.Settings.UseNewMood>Использовать панель настроения за колонистом™</CBKF.Settings.UseNewMood>
-  <CBKF.Settings.UseExternalMoodBar>Использовать панель настроения рядом с колонистом™: </CBKF.Settings.UseExternalMoodBar>
   <CBKF.Settings.UsePsiOnBar>Показывать иконки состояния на панели колонистов</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Справа</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Сверху</CBKF.Settings.useTop>
@@ -43,22 +43,22 @@
   <CBKF.Settings.useZoomToMouse>Использовать приближение по курсору мыши™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Сортировка: как в оригинале</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>Сортировка: по навыку стрельбы</CBKF.Settings.Weapons>
-  <FollowMe.MiddleClick>Нажатие средней кнопки мыши по иконке колониста активирует движение камеры за колонистом</FollowMe.MiddleClick>
   <FollowMe.Cancel>Камера больше не следует за {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Камера следует за {0}.</FollowMe.Follow>
+  <FollowMe.MiddleClick>Нажатие средней кнопки мыши по иконке колониста активирует движение камеры за колонистом</FollowMe.MiddleClick>
   <FollowMe.RejectMultiple>Не может следовать, выбрано несколько целей.</FollowMe.RejectMultiple>
   <FollowMe.RejectNoSelection>Не может следовать, не выбрана цель.</FollowMe.RejectNoSelection>
   <FollowMe.RejectNotAThing>Не может следовать, не подходящая цель.</FollowMe.RejectNotAThing>
   <PSI.Disabled>Иконки состояния колонистов отключены. Нажмите F11, чтобы включить</PSI.Disabled>
   <PSI.Enabled>Иконки состояния колонистов включены</PSI.Enabled>
   <PSI.Settings.Advanced>Дополнительно</PSI.Settings.Advanced>
+  <PSI.Settings.Arrangement.ColonistsPerColumn>Максимум столбцов/строк для колонистов: </PSI.Settings.Arrangement.ColonistsPerColumn>
   <PSI.Settings.Arrangement.Header>Размер и расположение</PSI.Settings.Arrangement.Header>
   <PSI.Settings.Arrangement.Horizontal>Расположить по горизонтали</PSI.Settings.Arrangement.Horizontal>
   <PSI.Settings.Arrangement.IconOffset>Расстояние между: </PSI.Settings.Arrangement.IconOffset>
   <PSI.Settings.Arrangement.IconPosition>Выравнивание: </PSI.Settings.Arrangement.IconPosition>
   <PSI.Settings.Arrangement.IconSize>Размер иконок: </PSI.Settings.Arrangement.IconSize>
   <PSI.Settings.Arrangement.IconsPerColumn>Иконок в столбце/строке: </PSI.Settings.Arrangement.IconsPerColumn>
-  <PSI.Settings.Arrangement.ColonistsPerColumn>Максимум столбцов/строк для колонистов: </PSI.Settings.Arrangement.ColonistsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Масштабировать иконки при приближении/отдалении камеры</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Размер и расположение</PSI.Settings.ArrangementButton>
   <PSI.Settings.IconButton>Иконки состояния колонистов™</PSI.Settings.IconButton>
@@ -99,53 +99,53 @@
   <PSI.Settings.SizeLabel.6>большие</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>очень большие</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>огромные</PSI.Settings.SizeLabel.8>
+  <PSI.Settings.Title>Настройки иконок состояния колонистов™</PSI.Settings.Title>
   <PSI.Settings.UsePSI>Показывать иконки состояния™ на колонистах</PSI.Settings.UsePSI>
   <PSI.Settings.UsePSIOnPrisoner>Показывать иконки состояния™ на заключенных</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Агрессивный</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>В лохмотьях</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Спальня</PSI.Settings.Visibility.Bedroom>
   <PSI.Settings.Visibility.Bloodloss>Кровотечение</PSI.Settings.Visibility.Bloodloss>
-  <PSI.Settings.Visibility.TooCold>Холодно</PSI.Settings.Visibility.TooCold>
+  <PSI.Settings.Visibility.CabinFever>Отшельник</PSI.Settings.Visibility.CabinFever>
   <PSI.Settings.Visibility.Dazed>Ошарашен</PSI.Settings.Visibility.Dazed>
   <PSI.Settings.Visibility.DeadColonists>Мертвые колонисты</PSI.Settings.Visibility.DeadColonists>
   <PSI.Settings.Visibility.Disease>Болезнь</PSI.Settings.Visibility.Disease>
   <PSI.Settings.Visibility.Draft>Боевой режим</PSI.Settings.Visibility.Draft>
-  <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
   <PSI.Settings.Visibility.Greedy>Жадность</PSI.Settings.Visibility.Greedy>
   <PSI.Settings.Visibility.Header>Видимость</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>Здоровье</PSI.Settings.Visibility.Health>
-  <PSI.Settings.Visibility.TooHot>Горячо</PSI.Settings.Visibility.TooHot>
   <PSI.Settings.Visibility.Hungry>Голод</PSI.Settings.Visibility.Hungry>
   <PSI.Settings.Visibility.Idle>Бездельник</PSI.Settings.Visibility.Idle>
   <PSI.Settings.Visibility.Injury>Травмы</PSI.Settings.Visibility.Injury>
   <PSI.Settings.Visibility.Jealous>Зависть</PSI.Settings.Visibility.Jealous>
   <PSI.Settings.Visibility.Leave>Убегает</PSI.Settings.Visibility.Leave>
+  <PSI.Settings.Visibility.LeftUnburied>Не похороненный колонист</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Lovers>Любовь</PSI.Settings.Visibility.Lovers>
+  <PSI.Settings.Visibility.Marriage>Свадьба</PSI.Settings.Visibility.Marriage>
+  <PSI.Settings.Visibility.MedicalAttention>Медицинская помощь</PSI.Settings.Visibility.MedicalAttention>
   <PSI.Settings.Visibility.Naked>Голый</PSI.Settings.Visibility.Naked>
   <PSI.Settings.Visibility.NightOwl>Ночная сова</PSI.Settings.Visibility.NightOwl>
   <PSI.Settings.Visibility.Pacific>Мирный</PSI.Settings.Visibility.Pacific>
   <PSI.Settings.Visibility.Pain>Боль</PSI.Settings.Visibility.Pain>
+  <PSI.Settings.Visibility.Panic>Паника</PSI.Settings.Visibility.Panic>
   <PSI.Settings.Visibility.Prosthophile>Протезофил</PSI.Settings.Visibility.Prosthophile>
   <PSI.Settings.Visibility.Prosthophobe>Протезофоб</PSI.Settings.Visibility.Prosthophobe>
   <PSI.Settings.Visibility.Pyromaniac>Пироманьяк</PSI.Settings.Visibility.Pyromaniac>
-  <PSI.Settings.Visibility.CabinFever>Отшельник</PSI.Settings.Visibility.CabinFever>
   <PSI.Settings.Visibility.Sad>Печальный</PSI.Settings.Visibility.Sad>
   <PSI.Settings.Visibility.Sickness>Заболевание</PSI.Settings.Visibility.Sickness>
   <PSI.Settings.Visibility.TargetPoint>Показывать указанную точку на земле</PSI.Settings.Visibility.TargetPoint>
   <PSI.Settings.Visibility.Tired>Усталость</PSI.Settings.Visibility.Tired>
+  <PSI.Settings.Visibility.TooCold>Холодно</PSI.Settings.Visibility.TooCold>
+  <PSI.Settings.Visibility.TooHot>Горячо</PSI.Settings.Visibility.TooHot>
+  <PSI.Settings.Visibility.Toxicity>Токсичность</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.Unarmed>Безоружный</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Видимый</PSI.Settings.VisibilityButton>
-  <PSI.Settings>Настройки иконок состояния колонистов™</PSI.Settings>
 
-  <PSI.Settings.Visibility.Panic>Паника</PSI.Settings.Visibility.Panic>
-  <PSI.Settings.Visibility.MedicalAttention>Медицинская помощь</PSI.Settings.Visibility.MedicalAttention>
-  <PSI.Settings.Visibility.Toxicity>Токсичность</PSI.Settings.Visibility.Toxicity>
-  <PSI.Settings.Visibility.LeftUnburied>Не похороненный колонист</PSI.Settings.Visibility.LeftUnburied>
-  <PSI.Settings.Visibility.Marriage>Свадьба</PSI.Settings.Visibility.Marriage>
-
+  <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
   <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
-
 	<PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
+
+  <!-- + August updates-->
 </LanguageData>

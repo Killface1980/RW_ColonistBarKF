@@ -10,20 +10,29 @@
 
     public class FloatMenuColonists : FloatMenu
     {
-        public FloatMenuColonists(List<FloatMenuOption> options, string label) : base(options, label, false)
+        #region Public Constructors
+
+        public FloatMenuColonists(List<FloatMenuOption> options, string label)
+            : base(options, label, false)
         {
             this.givesColonistOrders = true;
             this.vanishIfMouseDistant = true;
             this.closeOnClickedOutside = true;
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public override void DoWindowContents(Rect rect)
         {
-            this.options.Do(o => {
-               //     FloatMenuOptionSorting option = o as FloatMenuOptionSorting;
-               //     option.Label = PathInfo.GetJobReport(option.sortBy);
-                    o.SetSizeMode(FloatMenuSizeMode.Normal);
-                });
+            this.options.Do(
+                o =>
+                    {
+                        // FloatMenuOptionSorting option = o as FloatMenuOptionSorting;
+                        // option.Label = PathInfo.GetJobReport(option.sortBy);
+                        o.SetSizeMode(FloatMenuSizeMode.Normal);
+                    });
             this.windowRect = new Rect(this.windowRect.x, this.windowRect.y, this.InitialSize.x, this.InitialSize.y);
             base.DoWindowContents(this.windowRect);
         }
@@ -34,5 +43,7 @@
 
             Tools.CloseLabelMenu(false);
         }
+
+        #endregion Public Methods
     }
 }

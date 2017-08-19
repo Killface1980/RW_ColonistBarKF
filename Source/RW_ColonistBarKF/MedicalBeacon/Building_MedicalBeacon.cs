@@ -37,6 +37,7 @@ namespace ColonistBarKF
             {
                 stringBuilder.AppendLine(inspectString);
             }
+
             if (base.Spawned)
             {
 
@@ -77,6 +78,7 @@ namespace ColonistBarKF
                     {
                         continue;
                     }
+
                     if (pawn.Downed && !pawn.InBed())
                     {
                         if (pawn.Faction.HostileTo(Faction.OfPlayer))

@@ -3,16 +3,20 @@ using static ColonistBarKF.PSI.PSIDrawer;
 
 namespace ColonistBarKF.PSI
 {
+    using System.Collections.Generic;
+
     using FacialStuff.Detouring;
+
     using RimWorld;
     using RimWorld.Planet;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using Verse;
 
     using static Settings;
 
     using static Statics;
+
+    using UnityEngine;
+
+    using Verse;
 
     public class GameComponentPSI : GameComponent
     {
@@ -232,17 +236,6 @@ namespace ColonistBarKF.PSI
 
             if (pawnStats == null)
             {
-                return;
-            }
-
-            if (!pawnStats.relationChecked)
-            {
-                // wait till the pawn is properly spawned. Else FS won't find a relation.
-                if (pawnStats.SpawnedAt + 120 > Find.TickManager.TicksGame)
-                {
-                    pawnStats.CheckRelationWithColonists(pawn);
-                }
-
                 return;
             }
 

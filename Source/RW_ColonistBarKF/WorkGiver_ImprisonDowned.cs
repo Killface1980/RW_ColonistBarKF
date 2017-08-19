@@ -35,7 +35,7 @@ namespace ColonistBarKF
             }
 
             bool flag = false;
-            foreach (var building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(ThingDef.Named("MedicalBeacon")))
+            foreach (Building building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(ThingDef.Named("MedicalBeacon")))
             {
                 if (victim.Position.InHorDistOf(building.Position, building.def.specialDisplayRadius))
                 {
@@ -43,6 +43,7 @@ namespace ColonistBarKF
                     break;
                 }
             }
+
             if (flag == false)
             {
                 return false;
@@ -78,11 +79,13 @@ namespace ColonistBarKF
                 {
                     building_Bed = RestUtility.FindBedFor(victim, pawn, true, false, true);
                 }
+
                 if (building_Bed == null)
                 {
                     Messages.Message("CannotCapture".Translate() + ": " + "NoPrisonerBed".Translate(), victim, MessageSound.RejectInput);
                     return null;
                 }
+
                 Job job = new Job(JobDefOf.Capture, victim, building_Bed) { count = 1 };
 
                 return job;
@@ -95,6 +98,7 @@ namespace ColonistBarKF
                     Messages.Message("CannotTreat".Translate() + ": " + "NoGuestBed".Translate(), victim, MessageSound.RejectInput);
                     return null;
                 }
+
                 Job job = new Job(JobDefOf.Rescue, victim, building_Bed) { count = 1 };
 
                 return job;

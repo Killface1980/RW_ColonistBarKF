@@ -1,11 +1,15 @@
 ﻿namespace ColonistBarKF
 {
-    using ColonistBarKF.Bar;
-    using RimWorld;
-    using RimWorld.Planet;
     using System.Collections.Generic;
     using System.Linq;
+
+    using ColonistBarKF.Bar;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
     using UnityEngine;
+
     using Verse;
 
     public class ColBarHelper_KF : IExposable
@@ -61,6 +65,7 @@
             {
                 return false;
             }
+
             return entry.groupCount > 0;
         }
 
@@ -115,7 +120,7 @@
                     {
                         this.cachedEntries.Add(new EntryKF(this.tmpPawns[l], this.tmpMaps[i], num, this.tmpPawns.Count));
 
-                        if (Settings.ColBarSettings.UseCaravanSettings && num != this.displayGroupForBar)
+                        if (Settings.ColBarSettings.UseGrouping && num != this.displayGroupForBar)
                         {
                             if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 1)
                             {
@@ -156,7 +161,7 @@
                                         num,
                                         this.tmpPawns.FindAll(x => x.IsColonist).Count));
 
-                                if (Settings.ColBarSettings.UseCaravanSettings && num != this.displayGroupForBar)
+                                if (Settings.ColBarSettings.UseGrouping && num != this.displayGroupForBar)
                                 {
                                     if (this.cachedEntries.FindAll(x => x.group == num).Count > 0)
                                     {

@@ -163,6 +163,7 @@
                     }
 
                 }
+
                 num = -1;
                 if (showGroupFrames)
                 {

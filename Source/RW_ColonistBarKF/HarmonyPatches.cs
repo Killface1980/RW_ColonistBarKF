@@ -1,17 +1,21 @@
 ﻿namespace FacialStuff.Detouring
 {
-    using ColonistBarKF;
-    using ColonistBarKF.Bar;
-    using Harmony;
-    using RimWorld;
-    using RimWorld.Planet;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using UnityEngine;
-    using Verse;
 
+    using ColonistBarKF;
+    using ColonistBarKF.Bar;
     using static ColonistBarKF.Bar.ColonistBar_KF;
+
+    using Harmony;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
+    using UnityEngine;
+
+    using Verse;
 
     [StaticConstructorOnStartup]
     internal class HarmonyPatches
@@ -125,33 +129,20 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
 
-            // try
-            // {
-            // ((Action)(() =>
-            // {
-            // harmony.Patch(
-            // AccessTools.Method(
-            // typeof(Psychology.PsychologyPawn),
-            // nameof(Psychology.PsychologyPawn.SpawnSetup)),
-            // null,
-            // new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
-            // }))();
-            // }
-            // catch (TypeLoadException) { }
+
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Kill_Postfix)));
 
-            harmony.Patch(
-                AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
-                null);
-
-            harmony.Patch(
-                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
-                null);
+            // harmony.Patch(
+            // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
+            // new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+            // null);
+             harmony.Patch(
+                 AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                 new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                 null);
 
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.PostApplyDamage)),
@@ -449,19 +440,6 @@
             }
         }
 
-        public static void CheckAndAddComps(Pawn __instance)
-        {
-            bool flag = __instance.AllComps.OfType<CompPSI>().Any();
-
-            if (!flag)
-            {
-                ThingComp thingComp = (ThingComp)Activator.CreateInstance(typeof(CompPSI));
-                thingComp.parent = __instance;
-                __instance.AllComps.Add(thingComp);
-            }
-
-            __instance.GetComp<CompPSI>().SpawnedAt = Find.TickManager.TicksGame;
-        }
 
         #endregion Methods
     }

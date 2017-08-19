@@ -28,8 +28,8 @@
   <CBKF.Settings.RevertSettings>還原殖民者頭像設置</CBKF.Settings.RevertSettings>
   <CBKF.Settings.SettingsColonistBar>殖民者頭像設置</CBKF.Settings.SettingsColonistBar>
   <CBKF.Settings.SexAge>性別和年齡</CBKF.Settings.SexAge>
-  <CBKF.Settings.SortBy>排序方式</CBKF.Settings.SortBy>
-  <CBKF.Settings.SortingOptions>排序設置  ►</CBKF.Settings.SortingOptions>
+  <CBKF.Settings.OrderBy>排序方式</CBKF.Settings.OrderBy>
+  <CBKF.Settings.OrderingOptions>排序設置  ►</CBKF.Settings.OrderingOptions>
   <CBKF.Settings.useBottom>底端</CBKF.Settings.useBottom>
   <CBKF.Settings.useGender>按性別使用背景顏色</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>左側</CBKF.Settings.useLeft>
@@ -42,8 +42,6 @@
   <CBKF.Settings.Vanilla>默認</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>武器</CBKF.Settings.Weapons>
   <FollowMe.MiddleClick>中鍵點擊殖民者開始跟隨™</FollowMe.MiddleClick>
-  <FollowMe.StartFollow>FollowMe™</FollowMe.StartFollow>
-  <FollowMe.StopFollow>Stop FollowMe™</FollowMe.StopFollow>
   <FollowMe.Cancel>不再跟隨 {0}.</FollowMe.Cancel>
   <FollowMe.Follow>跟隨 {0}.</FollowMe.Follow>
   <FollowMe.RejectMultiple>無法跟隨, 多重選擇.</FollowMe.RejectMultiple>
@@ -99,6 +97,7 @@
   <PSI.Settings.SizeLabel.6>大</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>很大</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>巨大</PSI.Settings.SizeLabel.8>
+  <PSI.Settings.Title>人物狀態圖標™ 設置</PSI.Settings.Title>
   <PSI.Settings.UsePSI>展示人物狀態圖標™在殖民者上</PSI.Settings.UsePSI>
   <PSI.Settings.UsePSIOnPrisoner>展示人物狀態圖標™在囚犯上</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>狂暴</PSI.Settings.Visibility.Aggressive>
@@ -110,7 +109,6 @@
   <PSI.Settings.Visibility.DeadColonists>目睹死亡</PSI.Settings.Visibility.DeadColonists>
   <PSI.Settings.Visibility.Disease>疾病</PSI.Settings.Visibility.Disease>
   <PSI.Settings.Visibility.Draft>徵召</PSI.Settings.Visibility.Draft>
-  <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
   <PSI.Settings.Visibility.Greedy>貪心</PSI.Settings.Visibility.Greedy>
   <PSI.Settings.Visibility.Header>能見度</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>健康</PSI.Settings.Visibility.Health>
@@ -135,17 +133,17 @@
   <PSI.Settings.Visibility.Tired>疲倦</PSI.Settings.Visibility.Tired>
   <PSI.Settings.Visibility.Unarmed>徒手</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>能見度</PSI.Settings.VisibilityButton>
-  <PSI.Settings>人物狀態圖標™ 設置</PSI.Settings>
-
   <PSI.Settings.Visibility.Panic>恐慌</PSI.Settings.Visibility.Panic>
   <PSI.Settings.Visibility.MedicalAttention>醫療提醒</PSI.Settings.Visibility.MedicalAttention>
   <PSI.Settings.Visibility.Toxicity>毒性積累</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.LeftUnburied>殖民者離開了</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Marriage>婚姻</PSI.Settings.Visibility.Marriage>
 
+  <FollowMe.StartFollow>FollowMe™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Stop FollowMe™</FollowMe.StopFollow>
+  <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
   <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
-
   <PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
 </LanguageData>

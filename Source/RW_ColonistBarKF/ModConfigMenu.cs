@@ -107,8 +107,8 @@ namespace ColonistBarKF
 
         private readonly string[] mainToolbarStrings =
             {
-                "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate(),
-                "CBKF.Settings.Caravan".Translate()
+                "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate()
+                
             };
 
         private readonly string[] positionStrings =
@@ -410,18 +410,20 @@ namespace ColonistBarKF
                         this.scrollPositionBase = GUILayout.BeginScrollView(this.scrollPositionBase);
 
                         this.LabelHeadline("CBKF.Settings.BarPosition".Translate());
-
                         GUILayout.BeginVertical();
-
                         this.FillPageMain();
-
                         GUILayout.EndVertical();
 
                         this.LabelHeadline("CBKF.Settings.Advanced".Translate());
-
                         GUILayout.BeginVertical();
                         this.FillPageAdvanced();
                         GUILayout.EndVertical();
+
+                        LabelHeadline("CBKF.Settings.Grouping".Translate());
+                        GUILayout.BeginVertical();
+                        this.FillPageCaravanSettings();
+                        GUILayout.EndVertical();
+
 
                         GUILayout.EndScrollView();
                     }
@@ -430,7 +432,7 @@ namespace ColonistBarKF
 
                 case 1:
                     {
-                       // LabelHeadline("PSI.Settings".Translate());
+                       // LabelHeadline("PSI.Settings.Title".Translate());
                         GUILayout.Space(Text.LineHeight);
 
                         int toolbarInt = Mathf.FloorToInt(viewRect.width / 150f);
@@ -488,13 +490,7 @@ namespace ColonistBarKF
                     }
 
                     break;
-                case 2:
-                    {
-                        //  LabelHeadline("CBKF.Settings.Caravan".Translate());
 
-                        GUILayout.Space(Text.LineHeight / 2);
-                        this.FillPageCaravanSettings();
-                    }
 
                     break;
             }
@@ -531,16 +527,16 @@ namespace ColonistBarKF
         private void FillPageCaravanSettings()
         {
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseCaravanSettings = GUILayout.Toggle(
-                ColBarSettings.UseCaravanSettings,
-                "CBKF.Settings.UseCaravanSettings".Translate());
+            ColBarSettings.UseGrouping = GUILayout.Toggle(
+                ColBarSettings.UseGrouping,
+                "CBKF.Settings.UseGrouping".Translate());
 
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseCaravanColors = GUILayout.Toggle(
-                ColBarSettings.UseCaravanColors,
-                "CBKF.Settings.UseCaravanColors".Translate());
+            ColBarSettings.UseGroupColors = GUILayout.Toggle(
+                ColBarSettings.UseGroupColors,
+                "CBKF.Settings.UseGroupColors".Translate());
 
             GUILayout.EndVertical();
         }
