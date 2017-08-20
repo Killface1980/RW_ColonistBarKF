@@ -130,8 +130,8 @@ namespace ColonistBarKF.PSI
             List<IconEntryBar> drawIconEntries = pawnStats.BarIconList;
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
-                int maxIconCount = Mathf.Min(ColBarSettings.IconsInColumn * 2, drawIconEntries.Count) - barIconNum;
-                for (int index = 0; index < maxIconCount; index++)
+                int maxIconCount = Mathf.Min(ColBarSettings.IconsInColumn * 2, drawIconEntries.Count + barIconNum);
+                for (int index = 0; index < maxIconCount - barIconNum; index++)
                 {
                     IconEntryBar iconEntryBar = drawIconEntries[index];
                     iconEntryBar.color.a *= rectAlpha;

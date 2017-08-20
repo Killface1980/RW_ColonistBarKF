@@ -604,7 +604,7 @@
 
 
 
-            if (this.isPacifist && !this.pawn.Drafted)
+            if (this.isPacifist)
             {
                 if (barSettings.ShowPacific)
                 {

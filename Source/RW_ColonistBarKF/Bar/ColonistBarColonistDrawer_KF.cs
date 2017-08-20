@@ -225,7 +225,7 @@
             GUI.color = color;
 
             GUI.color = color;
-            GUI.Label(pawnRect, groupCount.ToString() + " colonists in group");
+            GUI.Label(pawnRect, groupCount.ToString() + " in group");
             outerRect = pawnRect;
 
             GUI.color = Color.white;
