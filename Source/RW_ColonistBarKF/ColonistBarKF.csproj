@@ -122,12 +122,16 @@
       <Link>Languages\English\ColonistBar_KF.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Languages\French\Keyed\ColonistBar_KF.xml">
+      <Link>Languages\French\ColonistBar_KF.xml</Link>
+    </Content>
     <Content Include="..\..\Languages\German\Keyed\ColonistBar_KF.xml">
       <Link>Languages\German\ColonistBar_KF.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\Russian\Keyed\ColonistBar_KF.xml">
       <Link>Languages\Russian\ColonistBar_KF.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\Spanish\Keyed\ColonistBar_KF.xml">
       <Link>Languages\Spanish\ColonistBar_KF.xml</Link>

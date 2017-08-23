@@ -750,7 +750,7 @@
                 {
                     barIconList.Add(
                         new IconEntryBar(
-                            Icon.TooCold,
+                            Icon.TooHot,
                             gradient4.Evaluate(this.TooHot / 2),
                             "PSI.Settings.Visibility.TooHot".Translate()));
                 }
@@ -758,7 +758,7 @@
                 if (psiSettings.ShowTooHot)
                 {
                     psiIconList.Add(
-                        new IconEntryPSI(Icon.TooCold, gradient4.Evaluate(this.TooHot / 2), viewOpacityCrit));
+                        new IconEntryPSI(Icon.TooHot, gradient4.Evaluate(this.TooHot / 2), viewOpacityCrit));
                 }
             }
 

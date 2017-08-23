@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 0.17.3.0</name>
+  <name>Colonist Bar KF 0.17.3.1</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
   <targetVersion>0.17.1557</targetVersion>
@@ -16,6 +16,7 @@
     Includes 'ZoomToMouse™' functionality by Fluffy
 
     Chinese translation by duduluu
+    French translation by Gorgious
     Spanish translation by Ninnetyer
   </description>
 </ModMetaData>

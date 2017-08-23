@@ -18,27 +18,6 @@ namespace ColonistBarKF
 
     public class ColonistBarKfSettings : Window
     {
-        #region Public Constructors
-
-        public ColonistBarKfSettings()
-        {
-            this.forcePause = false;
-            this.doCloseX = true;
-            this.draggable = true;
-            this.drawShadow = true;
-            this.preventCameraMotion = false;
-            this.resizeable = true;
-            this.onlyOneOfTypeAllowed = true;
-            Reinit(false, true);
-        }
-
-        #endregion Public Constructors
-
-        #region Public Properties
-
-        public override Vector2 InitialSize => new Vector2(540f, 650f);
-
-        #endregion Public Properties
 
         #region Public Fields
 
@@ -51,7 +30,7 @@ namespace ColonistBarKF
 
         #region Private Fields
 
-        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.0";
+        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.1";
 
         private static int iconLimit;
 
@@ -108,7 +87,7 @@ namespace ColonistBarKF
         private readonly string[] mainToolbarStrings =
             {
                 "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate()
-                
+
             };
 
         private readonly string[] positionStrings =
@@ -123,6 +102,12 @@ namespace ColonistBarKF
                 "PSI.Settings.IconButton".Translate(), "PSI.Settings.SensitivityButton".Translate()
             };
 
+        private int moodBarPositionInt;
+
+        private int psiBarPositionInt;
+
+        private int psiPositionInt;
+
         private Vector2 scrollPositionBase;
 
         private Vector2 scrollPositionPSI;
@@ -133,13 +118,29 @@ namespace ColonistBarKF
 
         private Vector2 scrollPositionPSISize;
 
-        private int moodBarPositionInt;
-
-        private int psiBarPositionInt;
-
-        private int psiPositionInt;
-
         #endregion Private Fields
+
+        #region Public Constructors
+
+        public ColonistBarKfSettings()
+        {
+            this.forcePause = false;
+            this.doCloseX = true;
+            this.draggable = true;
+            this.drawShadow = true;
+            this.preventCameraMotion = false;
+            this.resizeable = true;
+            this.onlyOneOfTypeAllowed = true;
+            Reinit(false, true);
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public override Vector2 InitialSize => new Vector2(540f, 650f);
+
+        #endregion Public Properties
 
         #region Private Properties
 
@@ -524,23 +525,6 @@ namespace ColonistBarKF
             }
         }
 
-        private void FillPageCaravanSettings()
-        {
-            GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseGrouping = GUILayout.Toggle(
-                ColBarSettings.UseGrouping,
-                "CBKF.Settings.UseGrouping".Translate());
-
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseGroupColors = GUILayout.Toggle(
-                ColBarSettings.UseGroupColors,
-                "CBKF.Settings.UseGroupColors".Translate());
-
-            GUILayout.EndVertical();
-        }
-
         public override void PreClose()
         {
             SaveBarSettings();
@@ -836,6 +820,22 @@ namespace ColonistBarKF
             // }
         }
 
+        private void FillPageCaravanSettings()
+        {
+            GUILayout.BeginVertical(this.fondBoxes);
+            ColBarSettings.UseGrouping = GUILayout.Toggle(
+                ColBarSettings.UseGrouping,
+                "CBKF.Settings.UseGrouping".Translate());
+
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical(this.fondBoxes);
+            ColBarSettings.UseGroupColors = GUILayout.Toggle(
+                ColBarSettings.UseGroupColors,
+                "CBKF.Settings.UseGroupColors".Translate());
+
+            GUILayout.EndVertical();
+        }
         private void FillPageMain()
         {
             GUILayout.BeginVertical(this.fondBoxes);
@@ -1523,5 +1523,6 @@ namespace ColonistBarKF
         }
 
         #endregion Private Methods
+
     }
 }
