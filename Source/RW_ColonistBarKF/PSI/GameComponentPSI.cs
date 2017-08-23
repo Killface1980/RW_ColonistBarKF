@@ -20,17 +20,29 @@ namespace ColonistBarKF.PSI
 
     public class GameComponentPSI : GameComponent
     {
-        public static Vector3[] IconPosRectsBar;
+        #region Public Fields
 
-        public static Vector3[] IconPosVectorsPSI;
-
-        public static string[] IconSets = { "default" };
-
-        public static Materials PSIMaterials = new Materials();
-
+        [NotNull]
         public static PawnCapacityDef[] _pawnCapacities;
 
+        [NotNull]
+        public static Vector3[] IconPosRectsBar;
+
+        [NotNull]
+        public static Vector3[] IconPosVectorsPSI;
+
+        [NotNull]
+        public static Materials PSIMaterials = new Materials();
+
+        #endregion Public Fields
+
+        #region Private Fields
+
         private CellRect _viewRect;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public GameComponentPSI()
         {
@@ -40,67 +52,17 @@ namespace ColonistBarKF.PSI
         {
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public static float WorldScale { get; private set; } = 1f;
 
-        private static void DrawAnimalIcons(Pawn animal)
-        {
-            if (!animal.Spawned || animal.Dead)
-            {
-                return;
-            }
+        #endregion Public Properties
 
-            int iconNum = 0;
-            Vector3 bodyLoc = animal.DrawPos;
+        #region Public Methods
 
-            if (animal.Faction != null && animal.Faction.IsPlayer)
-            {
-                if (animal.health.HasHediffsNeedingTend())
-                {
-                    if (animal.health?.hediffSet != null)
-                    {
-                        float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
-
-                        if (hediffSetBleedRateTotal > 0.01f)
-                        {
-                            DrawIconOnColonist(
-                                bodyLoc,
-                                ref iconNum,
-                                Icon.Bloodloss,
-                                gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
-                                ViewOpacityCrit);
-                        }
-                    }
-
-                    if (animal.health?.summaryHealth != null)
-                    {
-                        float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
-                        if (summaryHealthSummaryHealthPercent > 0.01f)
-                        {
-                            DrawIconOnColonist(
-                                bodyLoc,
-                                ref iconNum,
-                                Icon.Health,
-                                gradient4.Evaluate(summaryHealthSummaryHealthPercent),
-                                ViewOpacityCrit);
-                        }
-                    }
-                }
-            }
-
-            if (!animal.InAggroMentalState)
-            {
-                return;
-            }
-
-            if (!PsiSettings.ShowAggressive)
-            {
-                return;
-            }
-
-            DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
-        }
-
-        public static void DrawColonistIconsBar(Pawn pawn, Rect psiRect, float rectAlpha)
+        public static void DrawColonistIconsBar([NotNull] Pawn pawn, Rect psiRect, float rectAlpha)
         {
             CompPSI pawnStats = pawn.GetComp<CompPSI>();
 
@@ -147,7 +109,7 @@ namespace ColonistBarKF.PSI
             pawnStats.thisColCount = colCount;
         }
 
-        public static void DrawColonistIconsPSI(Pawn pawn)
+        public static void DrawColonistIconsPSI([NotNull] Pawn pawn)
         {
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
@@ -176,27 +138,27 @@ namespace ColonistBarKF.PSI
                     Color skinColor = pawn.story.SkinColor;
                     Color hairColor = pawn.story.hairColor;
 
-                    if (skinMat == null)
+                    if (SkinMat == null)
                     {
                         return;
                     }
 
-                    if (hairMat == null)
+                    if (HairMat == null)
                     {
                         return;
                     }
 
-                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, skinMat, skinColor, 1f);
-                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, hairMat, hairColor, 1f);
+                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, SkinMat, skinColor, 1f);
+                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, HairMat, hairColor, 1f);
                 }
                 else
                 {
-                    if (targetMat == null)
+                    if (TargetMat == null)
                     {
                         return;
                     }
 
-                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, targetMat, ColorNeutralStatus, viewOpacity);
+                    DrawIcon_posOffset(pawnStats.TargetPos, Vector3.zero, TargetMat, ColorNeutralStatus, viewOpacity);
                 }
             }
 
@@ -224,7 +186,7 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        public static void DrawColonistRelationIconsPSI(Pawn pawn)
+        public static void DrawColonistRelationIconsPSI([NotNull] Pawn pawn)
         {
             // Log.Message("Begin Drawing");
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
@@ -308,15 +270,19 @@ namespace ColonistBarKF.PSI
                             // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
                             PSIMaterials.ReloadTextures(true);
 
-                            skinMat = PSIMaterials[Icon.TargetSkin];
-                            hairMat = PSIMaterials[Icon.TargetHair];
-                            targetMat = PSIMaterials[Icon.Target];
+                            SkinMat = PSIMaterials[Icon.TargetSkin];
+                            HairMat = PSIMaterials[Icon.TargetHair];
+                            TargetMat = PSIMaterials[Icon.Target];
 
                             // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
                         });
-
-                BuildGradients();
             }
+        }
+
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            Reinit();
         }
 
         public override void GameComponentOnGUI()
@@ -416,12 +382,67 @@ namespace ColonistBarKF.PSI
             WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);
         }
 
-        public override void FinalizeInit()
-        {
-            base.FinalizeInit();
-            Reinit();
-        }
+        #endregion Public Methods
 
+        #region Private Methods
+
+        private static void DrawAnimalIcons([NotNull] Pawn animal)
+        {
+            if (!animal.Spawned || animal.Dead)
+            {
+                return;
+            }
+
+            int iconNum = 0;
+            Vector3 bodyLoc = animal.DrawPos;
+
+            if (animal.Faction != null && animal.Faction.IsPlayer)
+            {
+                if (animal.health.HasHediffsNeedingTend())
+                {
+                    if (animal.health?.hediffSet != null)
+                    {
+                        float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
+
+                        if (hediffSetBleedRateTotal > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Bloodloss,
+                                gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                                ViewOpacityCrit);
+                        }
+                    }
+
+                    if (animal.health?.summaryHealth != null)
+                    {
+                        float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
+                        if (summaryHealthSummaryHealthPercent > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Health,
+                                gradient4.Evaluate(summaryHealthSummaryHealthPercent),
+                                ViewOpacityCrit);
+                        }
+                    }
+                }
+            }
+
+            if (!animal.InAggroMentalState)
+            {
+                return;
+            }
+
+            if (!PsiSettings.ShowAggressive)
+            {
+                return;
+            }
+
+            DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
+        }
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)
         // {
         // return thoughts.Any(thought => thought.def == tdef);
@@ -477,5 +498,7 @@ namespace ColonistBarKF.PSI
                             * psiSettings.IconOffsetY * num2));
             }
         }
+
+        #endregion Private Methods
     }
 }

@@ -3,14 +3,18 @@
     using System;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
 
     public class Materials
     {
+        [NotNull]
         private readonly Material[] _data = new Material[40];
 
+        [NotNull]
         private readonly string _matLibName;
 
         public Materials(string matLib = "default")
@@ -18,8 +22,10 @@
             this._matLibName = matLib;
         }
 
+        [CanBeNull]
         public Material this[Icon icon] => this._data[(int)icon];
 
+        [CanBeNull]
         private Material LoadIconMat(string path, bool smooth = false)
         {
             Texture2D tex = ContentFinder<Texture2D>.Get("UI/Overlays/PawnStateIcons/" + path, false);

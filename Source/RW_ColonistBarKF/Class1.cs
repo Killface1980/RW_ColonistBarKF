@@ -1,783 +1,973 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/* MIT License
 
+Copyright (c) 2016 JetBrains http://www.jetbrains.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. */
+
+
+
+#pragma warning disable 1591
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable IntroduceOptionalParameters.Global
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable InconsistentNaming
 namespace ColonistBarKF
 {
-    using CBKF_Menu;
+    using System;
 
-    using ColonistBarKF.Bar;
+    /// <summary>
+    /// Indicates that the value of the marked element could be <c>null</c> sometimes,
+    /// so the check for <c>null</c> is necessary before its usage.
+    /// </summary>
+    /// <example><code>
+    /// [CanBeNull] object Test() => null;
+    ///
+    /// void UseTest() {
+    ///   var p = Test();
+    ///   var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
+    /// }
+    /// </code></example>
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+        AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
+        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
+    internal sealed class CanBeNullAttribute : Attribute { }
 
-    using PawnStats;
+    /// <summary>
+    /// Indicates that the value of the marked element could never be <c>null</c>.
+    /// </summary>
+    /// <example><code>
+    /// [NotNull] object Foo() {
+    ///   return null; // Warning: Possible 'null' assignment
+    /// }
+    /// </code></example>
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+        AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
+        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
+    internal sealed class NotNullAttribute : Attribute { }
 
-    using RimWorld;
+    /// <summary>
+    /// Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+    /// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
+    /// or of the Lazy.Value property can never be null.
+    /// </summary>
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+        AttributeTargets.Delegate | AttributeTargets.Field)]
+    internal sealed class ItemNotNullAttribute : Attribute { }
 
-    using UnityEngine;
+    /// <summary>
+    /// Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+    /// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
+    /// or of the Lazy.Value property can be null.
+    /// </summary>
+    [AttributeUsage(
+        AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+        AttributeTargets.Delegate | AttributeTargets.Field)]
+    internal sealed class ItemCanBeNullAttribute : Attribute { }
 
-    using Verse;
-    using Verse.AI;
-
-    using static CBKF_Menu.ColonistBarTextures;
-
-    public static class Class1
+    /// <summary>
+    /// Indicates that the marked method builds string by format pattern and (optional) arguments.
+    /// Parameter, which contains format string, should be given in constructor. The format string
+    /// should be in <see cref="string.Format(IFormatProvider,string,object[])"/>-like form.
+    /// </summary>
+    /// <example><code>
+    /// [StringFormatMethod("message")]
+    /// void ShowError(string message, params object[] args) { /* do something */ }
+    ///
+    /// void Foo() {
+    ///   ShowError("Failed: {0}"); // Warning: Non-existing argument in format string
+    /// }
+    /// </code></example>
+    [AttributeUsage(
+        AttributeTargets.Constructor | AttributeTargets.Method |
+        AttributeTargets.Property | AttributeTargets.Delegate)]
+    internal sealed class StringFormatMethodAttribute : Attribute
     {
-
-            public static PawnCapacityDef[] _pawnCapacities;
-            private static PawnCapacityDef[] array;
-
-        public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
+        /// <param name="formatParameterName">
+        /// Specifies which parameter of an annotated method should be treated as format-string
+        /// </param>
+        public StringFormatMethodAttribute([NotNull] string formatParameterName)
         {
-            _pawnCapacities = new[]
-                                                   {
-                                                       PawnCapacityDefOf.BloodFiltration, PawnCapacityDefOf.BloodPumping,
-                                                       PawnCapacityDefOf.Breathing, PawnCapacityDefOf.Consciousness,
-                                                       PawnCapacityDefOf.Eating, PawnCapacityDefOf.Hearing,
-                                                       PawnCapacityDefOf.Manipulation, PawnCapacityDefOf.Metabolism,
-                                                       PawnCapacityDefOf.Moving, PawnCapacityDefOf.Sight, PawnCapacityDefOf.Talking
-                                                   };
-
-            if (reloadSettings)
-            {
-                Settings.ColBarSettings = Settings.LoadBarSettings();
-                Settings.PsiSettings = Settings.LoadPsiSettings();
-                ColonistBar_KF.MarkColonistsDirty();
-            }
-
-            if (recalcIconPos)
-            {
-                RecalcBarPositionAndSize();
-                RecalcIconPositionsPSI();
-            }
-
-            if (reloadIconSet)
-            {
-                LongEventHandler.ExecuteWhenFinished(
-                    () =>
-                        {
-                            PSIMaterials = new Materials(Settings.PsiSettings.IconSet);
-
-                            // PSISettings SettingsPSI =
-                            // XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
-                            // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
-                            PSIMaterials.ReloadTextures(true);
-
-                            skinMat = PSIMaterials[Icons.TargetSkin];
-                            hairMat = PSIMaterials[Icons.TargetHair];
-                            targetMat = PSIMaterials[Icons.Target];
-
-                            // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
-                        });
-
-                BuildGradients();
-            }
+            this.FormatParameterName = formatParameterName;
         }
 
-        private static void BuildGradients()
-        {
-            // Build gradients
-            GradientColorKey[] gck = new GradientColorKey[4];
-            gck[0].color = ColorNeutralStatus;
-            gck[0].time = 0.0f;
-            gck[1].color = ColYellow;
-            gck[1].time = 0.33f;
-            gck[2].color = ColOrange;
-            gck[2].time = 0.66f;
-            gck[3].color = ColVermillion;
-            gck[3].time = 1f;
-            GradientAlphaKey[] gak = new GradientAlphaKey[3];
-            gak[0].alpha = 0.8f;
-            gak[0].time = 0.0f;
-            gak[1].alpha = 1f;
-            gak[1].time = 0.1625f;
-            gak[2].alpha = 1.0f;
-            gak[2].time = 1.0f;
-            gradient4.SetKeys(gck, gak);
-
-            gck = new GradientColorKey[5];
-            gck[0].color = ColVermillion;
-            gck[0].time = 0f;
-            gck[1].color = ColOrange;
-            gck[1].time = 0.375f;
-            gck[2].color = ColYellow;
-            gck[2].time = 0.5f;
-            gck[3].color = ColorNeutralStatus;
-            gck[3].time = 0.625f;
-            gck[4].color = ColBlueishGreen;
-            gck[4].time = 1f;
-            gak = new GradientAlphaKey[4];
-            gak[0].alpha = 1.0f;
-            gak[0].time = 0.0f;
-            gak[1].alpha = 1.0f;
-            gak[1].time = 0.5f;
-            gak[2].alpha = 0.8f;
-            gak[2].time = 0.625f;
-            gak[3].alpha = 1.0f;
-            gak[3].time = 0.75f;
-            gradient4Mood.SetKeys(gck, gak);
-
-            gck = new GradientColorKey[2];
-            gck[0].color = ColVermillion;
-            gck[0].time = 0.0f;
-            gck[1].color = ColorNeutralStatus;
-            gck[1].time = 1f;
-            gak = new GradientAlphaKey[3];
-            gak[0].alpha = 1.0f;
-            gak[0].time = 0.0f;
-            gak[1].alpha = 1.0f;
-            gak[1].time = 0.75f;
-            gak[2].alpha = 0.8f;
-            gak[2].time = 1.0f;
-            gradientRedAlertToNeutral.SetKeys(gck, gak);
-        }
-
-        public static void UpdateColonistStats(PawnStats pawnStats)
-        {
-            Pawn pawn = pawnStats.pawn;
-
-            if (!pawn.Spawned || pawn?.mindState == null || pawn.Map == null || !pawn.RaceProps.Humanlike)
-            {
-                return;
-            }
-
-            if (Current.ProgramState != ProgramState.Playing)
-            {
-                return;
-            }
-
-            List<Thought> thoughts = new List<Thought>();
-
-            pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
-            pawnStats.pawnHealth = pawn.health.summaryHealth.SummaryHealthPercent;
-
-            // One time traits check
-            if (!pawnStats.traitsCheck)
-            {
-                if (pawn.story?.traits != null)
-                {
-                    if (pawn.RaceProps.hasGenders)
-                    {
-                        switch (pawn.gender)
-                        {
-                            case Gender.Male:
-                                pawnStats.BGColor = ColonistBarTextures.MaleColor;
-                                break;
-                            case Gender.Female:
-                                pawnStats.BGColor = ColonistBarTextures.FemaleColor;
-                                break;
-                            default: break;
-                        }
-                    }
-
-                    // Masochist 
-                    pawnStats.isMasochist = pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
-
-                    // Masochist trait check
-                    pawnStats.painThought =
-                        ThoughtDef.Named(
-                            pawn.story.traits.HasTrait(TraitDef.Named("Masochist")) ? "MasochistPain" : "Pain");
-
-                    // Pacifist 
-                    pawnStats.isPacifist = pawn.story.WorkTagIsDisabled(WorkTags.Violent);
-
-                    // Pyromaniac
-                    pawnStats.isPyromaniac = pawn.story.traits.HasTrait(TraitDefOf.Pyromaniac);
-
-                    // Prostho
-                    if (pawn.story.traits.HasTrait(TraitDefOf.Prosthophobe))
-                    {
-                        pawnStats.prostho = -1;
-                    }
-
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("Prosthophile")))
-                    {
-                        pawnStats.prostho = 1;
-                    }
-
-                    // Night Owl
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("NightOwl")))
-                    {
-                        pawnStats.isNightOwl = true;
-                    }
-
-                    // Jealous
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("Jealous")))
-                    {
-                        pawnStats.isJealous = true;
-                    }
-
-                    // Drug desire
-                    if (pawn.story.traits.HasTrait(TraitDefOf.DrugDesire))
-                    {
-                        pawnStats.drugDesire = pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire);
-                        pawnStats.drugUserLabel = pawn.story.traits.GetTrait(TraitDefOf.DrugDesire).LabelCap;
-                    }
-
-                    // Greedy
-                    if (pawn.story.traits.HasTrait(TraitDefOf.Greedy))
-                    {
-                        pawnStats.isGreedy = true;
-                    }
-
-                    pawnStats.traitsCheck = true;
-
-
-                }
-            }
-
-            if (pawn.Dead)
-            {
-                pawnStats.BGColor = Color.gray;
-            }
-
-            // efficiency
-            float efficiency = 10f;
-
-            array = _pawnCapacities;
-            foreach (PawnCapacityDef pawnCapacityDef in array)
-            {
-                if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
-                {
-                    float level = pawn.health.capacities.GetLevel(pawnCapacityDef);
-
-                    if (efficiency > level)
-                    {
-                        efficiency = level;
-                        pawnStats.efficiencyTip = pawnCapacityDef.LabelCap;
-                    }
-                }
-
-                if (efficiency < 0f)
-                {
-                    efficiency = 0f;
-                }
-            }
-
-            pawnStats.TotalEfficiency = efficiency;
-
-            // target
-            pawnStats.TargetPos = Vector3.zero;
-
-            if (pawn.jobs.curJob != null)
-            {
-                JobDriver curDriver = pawn.jobs.curDriver;
-                Job curJob = pawn.jobs.curJob;
-                LocalTargetInfo targetInfo = curJob.targetA;
-                if (curDriver is JobDriver_HaulToContainer || curDriver is JobDriver_HaulToCell
-                    || curDriver is JobDriver_FoodDeliver || curDriver is JobDriver_FoodFeedPatient
-                    || curDriver is JobDriver_TakeToBed || curDriver is JobDriver_TakeBeerOutOfFermentingBarrel)
-                {
-                    targetInfo = curJob.targetB;
-                }
-
-                if (curDriver is JobDriver_DoBill bill)
-                {
-                    JobDriver_DoBill jobDriverDoBill = bill;
-                    if (jobDriverDoBill.workLeft >= 0.0)
-                    {
-                        targetInfo = curJob.targetA;
-                    }
-                    else if (jobDriverDoBill.workLeft <= 0.01f)
-                    {
-                        targetInfo = curJob.targetB;
-                    }
-                }
-
-                if (curDriver is JobDriver_Hunt && (pawn.carryTracker?.CarriedThing != null))
-                {
-                    targetInfo = curJob.targetB;
-                }
-
-                if (curJob.def == JobDefOf.Wait)
-                {
-                    targetInfo = null;
-                }
-
-                if (curDriver is JobDriver_Ingest)
-                {
-                    targetInfo = null;
-                }
-
-                if ((curJob.def == JobDefOf.LayDown) && pawn.InBed())
-                {
-                    targetInfo = null;
-                }
-
-                if (!curJob.playerForced && (curJob.def == JobDefOf.Goto))
-                {
-                    targetInfo = null;
-                }
-
-                bool flag;
-                if (targetInfo != null)
-                {
-                    IntVec3 arg2420 = targetInfo.Cell;
-                    flag = false;
-                }
-                else
-                {
-                    flag = true;
-                }
-
-                if (!flag)
-                {
-                    Vector3 a = targetInfo.Cell.ToVector3Shifted();
-                    pawnStats.TargetPos = a + new Vector3(0f, 3f, 0f);
-                }
-            }
-
-            // temperature
-            float temperatureForCell = GenTemperature.GetTemperatureForCell(pawn.Position, pawn.Map);
-
-            pawnStats.TooCold =
-                (float)
-                ((pawn.ComfortableTemperatureRange().min - (double)Settings.PsiSettings.LimitTempComfortOffset
-                  - temperatureForCell) / 10f);
-
-            pawnStats.TooHot =
-                (float)
-                ((temperatureForCell - (double)pawn.ComfortableTemperatureRange().max
-                  - Settings.PsiSettings.LimitTempComfortOffset) / 10f);
-
-            pawnStats.TooCold = Mathf.Clamp(pawnStats.TooCold, 0f, 2f);
-
-            pawnStats.TooHot = Mathf.Clamp(pawnStats.TooHot, 0f, 2f);
-
-            /*
-                        // Drunkness - DEACTIVATED FOR NOW
-                        pawnStats.Drunkness =  DrugUtility.DrunknessPercent(pawn);
-                    */
-            // Mental Sanity
-            pawnStats.MentalSanity = null;
-            if ((pawn.mindState != null) && pawn.InMentalState)
-            {
-                pawnStats.MentalSanity = pawn.MentalStateDef;
-            }
-
-            // Mental Breaker for MoodBars
-            if (pawn.needs?.mood != null)
-            {
-                pawnStats.Mb = pawn.mindState.mentalBreaker;
-                pawnStats.Mood = pawn.needs.mood;
-            }
-            else
-            {
-                pawnStats.Mood = null;
-                pawnStats.Mb = null;
-            }
-
-            // Health Calc
-            pawnStats.DiseaseDisappearance = 1f;
-            pawnStats.HasLifeThreateningDisease = false;
-            pawnStats.HealthDisease = 1f;
-
-            // Drug addiction
-            List<Hediff> hediffs = null;
-
-            // Sick thoughts
-            if (pawn.health?.hediffSet != null)
-            {
-                hediffs = pawn.health.hediffSet.hediffs;
-
-                pawnStats.IsSick = pawn.health.hediffSet.AnyHediffMakesSickThought;
-
-                // Bleed rate
-                pawnStats.BleedRate =
-                    Mathf.Clamp01(pawn.health.hediffSet.BleedRateTotal * Settings.PsiSettings.LimitBleedMult);
-
-                if (pawn.Map != null)
-                {
-                    pawnStats.ShouldBeTendedNowUrgent = HealthAIUtility.ShouldBeTendedNowUrgent(pawn);
-                    pawnStats.ShouldBeTendedNow = HealthAIUtility.ShouldBeTendedNow(pawn);
-                    pawnStats.ShouldHaveSurgeryDoneNow = HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn);
-                }
-            }
-
-            if (pawnStats.IsSick && !pawn.Destroyed && (pawn.playerSettings.medCare >= 0))
-            {
-                if (hediffs != null)
-                {
-                    pawnStats.severity = 0f;
-                    pawnStats.immunity = 0f;
-                    foreach (Hediff hediff in hediffs)
-                    {
-                        if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought || hediff.LabelCap.NullOrEmpty() || hediff.SeverityLabel.NullOrEmpty())
-                        {
-                            continue;
-                        }
-
-                        pawnStats.ToxicBuildUpVisible = 0;
-                        pawnStats.healthTip = hediff.LabelCap;
-                        if (!thoughts.NullOrEmpty())
-                            GetThought(thoughts, ThoughtDef.Named("Sick"), out int dummy, out pawnStats.sickTip, out pawnStats.sickMoodOffset);
-
-                        // pawnStats.ToxicBuildUpVisible
-                        if (hediff.def == HediffDefOf.ToxicBuildup)
-                        {
-                            pawnStats.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
-                            pawnStats.ToxicBuildUpVisible = Mathf.InverseLerp(0.049f, 1f, hediff.Severity);
-                        }
-
-                        HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
-                        if (compImmunizable != null)
-                        {
-                            pawnStats.severity = Mathf.Max(pawnStats.severity, hediff.Severity);
-                            pawnStats.immunity = compImmunizable.Immunity;
-                            float basehealth = pawnStats.HealthDisease - (pawnStats.severity - pawnStats.immunity / 4)
-                                               - 0.25f;
-                            pawnStats.HasLifeThreateningDisease = true;
-                            pawnStats.HealthDisease = basehealth;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.def.PossibleToDevelopImmunityNaturally())
-                        {
-                            continue;
-                        }
-
-                        if (hediff.CurStage?.capMods == null)
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.CurStage.everVisible)
-                        {
-                            continue;
-                        }
-
-                        if (hediff.FullyImmune())
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.def.tendable)
-                        {
-                            continue;
-                        }
-
-                        if (Math.Abs(pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05)
-                        {
-                            continue;
-                        }
-
-                        if (pawnStats.DiseaseDisappearance > compImmunizable.Immunity)
-                        {
-                            pawnStats.DiseaseDisappearance = compImmunizable.Immunity;
-                        }
-                        //     break;
-                    }
-                }
-            }
-
-            // Apparel Calc
-            float worstApparel = 999f;
-            List<Apparel> apparelListForReading = pawn.apparel.WornApparel;
-            foreach (Apparel t in apparelListForReading)
-            {
-                float curApparel = t.HitPoints / (float)t.MaxHitPoints;
-                if ((curApparel >= 0f) && (curApparel < worstApparel))
-                {
-                    worstApparel = curApparel;
-                }
-            }
-
-            pawnStats.ApparelHealth = worstApparel;
-
-            if (!thoughts.NullOrEmpty())
-            {
-                if (pawnStats.prostho != 0)
-                {
-                    switch (pawnStats.prostho)
-                    {
-                        case -1:
-                            GetThought(thoughts, ThoughtDef.Named("ProsthophobeUnhappy"), out pawnStats.prosthoUnhappy, out pawnStats.prosthoTooltip, out pawnStats.prosthoMoodOffset);
-                            break;
-                        case 1:
-                            GetThought(thoughts, ThoughtDef.Named("ProsthophileNoProsthetic"), out pawnStats.prosthoUnhappy, out pawnStats.prosthoTooltip, out pawnStats.prosthoMoodOffset);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                // Bed status
-                if (pawn.ownership.OwnedBed != null)
-                {
-                    GetThought(
-                        thoughts,
-                        ThoughtDef.Named("SharedBed"),
-                        out pawnStats.BedStatus,
-                        out pawnStats.BedStatusTip,
-                        out pawnStats.BedStatusMoodOffset);
-                }
-                else
-                {
-                    pawnStats.BedStatus = 1;
-                    pawnStats.BedStatusTip = "NeedColonistBeds".Translate();
-                }
-
-                // Humping
-                GetThought(
-                    thoughts,
-                    ThoughtDef.Named("WantToSleepWithSpouseOrLover"),
-                    out pawnStats.wantsToHump,
-                    out pawnStats.humpTip,
-                    out pawnStats.humpMoodOffset);
-
-                // Cabin Fever
-                GetThought(
-                    thoughts,
-                    ThoughtDef.Named("CabinFever"),
-                    out pawnStats.CabinFeverMoodLevel,
-                    out pawnStats.cabinFeverTip,
-                    out pawnStats.CabinFeverMoodOffset);
-
-                // Pain
-                GetThought(thoughts, pawnStats.painThought, out pawnStats.PainMoodLevel, out pawnStats.painTip, out pawnStats.PainMoodOffset);
-
-
-                // Naked
-                GetThought(
-                    thoughts,
-                    ThoughtDefOf.Naked,
-                    out pawnStats.feelsNaked,
-                    out pawnStats.nakedTip,
-                    out pawnStats.nakedMoodOffset);
-
-                // Night Owl
-                if (pawnStats.isNightOwl)
-                {
-                    GetThought(
-                        thoughts,
-                        ThoughtDef.Named("NightOwlDuringTheDay"),
-                        out pawnStats.nightOwlUnhappy,
-                        out pawnStats.nightOwlTip,
-                        out pawnStats.nightOwlMoodOffset);
-                }
-
-                // Greedy
-                if (pawnStats.isGreedy)
-                {
-                    GetThought(thoughts, ThoughtDef.Named("Greedy"), out pawnStats.greedyThought, out pawnStats.greedyTooltip, out pawnStats.greedyMoodOffset);
-                }
-
-                // Jealous
-                if (pawnStats.isJealous)
-                {
-                    GetThought(thoughts, ThoughtDef.Named("Jealous"), out pawnStats.jealousThought, out pawnStats.jealousTooltip, out pawnStats.jealousMoodOffset);
-                }
-
-                // Unburied
-                GetThought(
-                    thoughts,
-                    ThoughtDef.Named("ColonistLeftUnburied"),
-                    out pawnStats.unburied,
-                    out pawnStats.unburiedTip,
-                    out pawnStats.unburiedMoodOffset);
-            }
-
-            pawnStats.isAddict = false;
-            pawnStats.withDrawal = false;
-            pawnStats.withDrawalPercent = 0f;
-            pawnStats.addictionLabel = null;
-
-            if (hediffs != null)
-            {
-                foreach (Hediff hediff in hediffs)
-                {
-                    if (hediff is Hediff_Addiction)
-                    {
-                        pawnStats.isAddict = true;
-                        pawnStats.withDrawalPercent = hediff.Severity;
-                        pawnStats.withDrawal = hediff.CurStageIndex > 0;
-                        if (pawnStats.addictionLabel.NullOrEmpty())
-                        {
-                            pawnStats.addictionLabel = hediff.LabelCap;
-                        }
-                        else
-                        {
-                            pawnStats.addictionLabel += "\n" + hediff.LabelCap;
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void GetThought(List<Thought> thoughts, ThoughtDef tdef, out int stage, out string tooltip, out float moodOffset)
-        {
-            tooltip = null;
-            stage = -1;
-            moodOffset = 0;
-
-            if (thoughts == null || !thoughts.Any())
-            {
-                return;
-            }
-
-            foreach (Thought thought in thoughts)
-            {
-                if (thought.def != tdef)
-                {
-                    continue;
-                }
-
-                if (!thought.VisibleInNeedsTab)
-                    continue;
-
-                stage = thought.CurStageIndex;
-                moodOffset = thought.MoodOffset();
-                tooltip = thought.CurStage.description + "\n" + thought.LabelCap + "\n" + moodOffset;
-                break;
-            }
-        }
-
-        public static void CheckStats(this Pawn pawn)
-        {
-            PawnStats pawnStats = GetCache(pawn);
-            if (pawnStats != null)
-            {
-                CheckStats(pawnStats);
-            }
-        }
-
-        public static void CheckStats(this PawnStats pawnStats)
-        {
-            if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
-            {
-                return;
-            }
-
-            float nextUpdate = pawnStats.LastStatUpdate
-                               + pawnStats.NextStatUpdate * Find.TickManager.TickRateMultiplier;
-
-            if (Find.TickManager.TicksGame > nextUpdate)
-            {
-                Class1.UpdateColonistStats(pawnStats);
-                pawnStats.NextStatUpdate = Rand.Range(150f, 450f);
-                pawnStats.LastStatUpdate = Find.TickManager.TicksGame;
-
-
-
-                //   Log.Message(
-                //       "CBKF updated stat " + pawnStats.pawn.Name + ", next update in " + pawnStats.NextStatUpdate*Find.TickManager.TickRateMultiplier
-                //       + " ticks.");
-            }
-
-        }
-
-        public static void CheckRelationWithColonists(PawnStats pawnStats)
-        {
-            if (pawnStats.pawn.relations.RelatedToAnyoneOrAnyoneRelatedToMe)
-            {
-                foreach (Pawn related in pawnStats.pawn.relations.RelatedPawns)
-                {
-                    if (related.Faction == Faction.OfPlayer)
-                    {
-                        pawnStats.hasRelationWithColonist = true;
-                    }
-                    break;
-                }
-
-            }
-            pawnStats.relationChecked = true;
-
-        }
-        public static List<PawnStats> _pawnCache = new List<PawnStats>();
-
-        private static void RecalcBarPositionAndSize()
-        {
-            SettingsColonistBar settings = Settings.ColBarSettings;
-            IconPosRectsBar = new Vector3[40];
-            for (int index = 0; index < IconPosRectsBar.Length; ++index)
-            {
-                int num1;
-                int num2;
-                num1 = index / settings.IconsInColumn;
-                num2 = index % settings.IconsInColumn;
-                if (settings.IconsHorizontal)
-                {
-                    int num3 = num1;
-                    num1 = num2;
-                    num2 = num3;
-
-                    // num2 = index / ColBarSettings.IconsInColumn;
-                    // num1 = index % ColBarSettings.IconsInColumn;
-                }
-
-                IconPosRectsBar[index] = new Vector3(-num1, 3f, num2);
-            }
-        }
-
-        private static void RecalcIconPositionsPSI()
-        {
-            SettingsPSI psiSettings = Settings.PsiSettings;
-
-            // _iconPosVectors = new Vector3[18];
-            IconPosVectorsPsi = new Vector3[40];
-            for (int index = 0; index < IconPosVectorsPsi.Length; ++index)
-            {
-                int num1 = index / psiSettings.IconsInColumn;
-                int num2 = index % psiSettings.IconsInColumn;
-                if (psiSettings.IconsHorizontal)
-                {
-                    int num3 = num1;
-                    num1 = num2;
-                    num2 = num3;
-                }
-
-                IconPosVectorsPsi[index] =
-                    new Vector3(
-                        (float)
-                        (-0.600000023841858 * psiSettings.IconMarginX
-                         - 0.550000011920929 * psiSettings.IconSize * psiSettings.IconOffsetX * num1),
-                        3f,
-                        (float)
-                        (-0.600000023841858 * psiSettings.IconMarginY
-                         + 0.550000011920929 * psiSettings.IconSize * psiSettings.IconOffsetY * num2));
-            }
-        }
-
-        public static void GetWithdrawalColor(PawnStats pawnStats, out Color color)
-        {
-            color = Color.Lerp(ColBlueishGreen, ColVermillion, pawnStats.withDrawalPercent);
-        }
-
-        public static Color Evaluate(float moodOffset)
-        {
-            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
-        }
-
-        public static PawnStats GetCache(this Pawn pawn)
-        {
-            foreach (PawnStats c in _pawnCache)
-            {
-                if (c.pawn == pawn)
-                {
-                    return c;
-                }
-            }
-            PawnStats n = new PawnStats { pawn = pawn };
-            _pawnCache.Add(n);
-
-            if (pawn.Faction == Faction.OfPlayer)
-            {
-                Class1.UpdateColonistStats(n);
-            }
-            else
-            {
-                Class1.CheckRelationWithColonists(n);
-            }
-            return n;
-
-            // if (!PawnApparelStatCaches.ContainsKey(pawn))
-            // {
-            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
-            // }
-            // return PawnApparelStatCaches[pawn];
-        }
-
+        [NotNull]
+        public string FormatParameterName { get; private set; }
     }
+
+    /// <summary>
+    /// For a parameter that is expected to be one of the limited set of values.
+    /// Specify fields of which type should be used as values for this parameter.
+    /// </summary>
+    [AttributeUsage(
+        AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field,
+        AllowMultiple = true)]
+    internal sealed class ValueProviderAttribute : Attribute
+    {
+        public ValueProviderAttribute([NotNull] string name)
+        {
+            this.Name = name;
+        }
+
+        [NotNull]
+        public string Name { get; private set; }
+    }
+
+    /// <summary>
+    /// Indicates that the function argument should be string literal and match one
+    /// of the parameters of the caller function. For example, ReSharper annotates
+    /// the parameter of <see cref="System.ArgumentNullException"/>.
+    /// </summary>
+    /// <example><code>
+    /// void Foo(string param) {
+    ///   if (param == null)
+    ///     throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
+    /// }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class InvokerParameterNameAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that the method is contained in a type that implements
+    /// <c>System.ComponentModel.INotifyPropertyChanged</c> interface and this method
+    /// is used to notify that some property value changed.
+    /// </summary>
+    /// <remarks>
+    /// The method should be non-static and conform to one of the supported signatures:
+    /// <list>
+    /// <item><c>NotifyChanged(string)</c></item>
+    /// <item><c>NotifyChanged(params string[])</c></item>
+    /// <item><c>NotifyChanged{T}(Expression{Func{T}})</c></item>
+    /// <item><c>NotifyChanged{T,U}(Expression{Func{T,U}})</c></item>
+    /// <item><c>SetProperty{T}(ref T, T, string)</c></item>
+    /// </list>
+    /// </remarks>
+    /// <example><code>
+    /// public class Foo : INotifyPropertyChanged {
+    ///   public event PropertyChangedEventHandler PropertyChanged;
+    ///
+    ///   [NotifyPropertyChangedInvocator]
+    ///   protected virtual void NotifyChanged(string propertyName) { ... }
+    ///
+    ///   string _name;
+    ///
+    ///   public string Name {
+    ///     get { return _name; }
+    ///     set { _name = value; NotifyChanged("LastName"); /* Warning */ }
+    ///   }
+    /// }
+    /// </code>
+    /// Examples of generated notifications:
+    /// <list>
+    /// <item><c>NotifyChanged("Property")</c></item>
+    /// <item><c>NotifyChanged(() =&gt; Property)</c></item>
+    /// <item><c>NotifyChanged((VM x) =&gt; x.Property)</c></item>
+    /// <item><c>SetProperty(ref myField, value, "Property")</c></item>
+    /// </list>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
+    {
+        public NotifyPropertyChangedInvocatorAttribute() { }
+        public NotifyPropertyChangedInvocatorAttribute([NotNull] string parameterName)
+        {
+            this.ParameterName = parameterName;
+        }
+
+        [CanBeNull]
+        public string ParameterName { get; private set; }
+    }
+
+    /// <summary>
+    /// Describes dependency between method input and output.
+    /// </summary>
+    /// <syntax>
+    /// <p>Function Definition Table syntax:</p>
+    /// <list>
+    /// <item>FDT      ::= FDTRow [;FDTRow]*</item>
+    /// <item>FDTRow   ::= Input =&gt; Output | Output &lt;= Input</item>
+    /// <item>Input    ::= ParameterName: Value [, Input]*</item>
+    /// <item>Output   ::= [ParameterName: Value]* {halt|stop|void|nothing|Value}</item>
+    /// <item>Value    ::= true | false | null | notnull | canbenull</item>
+    /// </list>
+    /// If method has single input parameter, it's name could be omitted.<br/>
+    /// Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same) for method output
+    /// means that the methos doesn't return normally (throws or terminates the process).<br/>
+    /// Value <c>canbenull</c> is only applicable for output parameters.<br/>
+    /// You can use multiple <c>[ContractAnnotation]</c> for each FDT row, or use single attribute
+    /// with rows separated by semicolon. There is no notion of order rows, all rows are checked
+    /// for applicability and applied per each program state tracked by R# analysis.<br/>
+    /// </syntax>
+    /// <examples><list>
+    /// <item><code>
+    /// [ContractAnnotation("=&gt; halt")]
+    /// public void TerminationMethod()
+    /// </code></item>
+    /// <item><code>
+    /// [ContractAnnotation("halt &lt;= condition: false")]
+    /// public void Assert(bool condition, string text) // regular assertion method
+    /// </code></item>
+    /// <item><code>
+    /// [ContractAnnotation("s:null =&gt; true")]
+    /// public bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
+    /// </code></item>
+    /// <item><code>
+    /// // A method that returns null if the parameter is null,
+    /// // and not null if the parameter is not null
+    /// [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
+    /// public object Transform(object data)
+    /// </code></item>
+    /// <item><code>
+    /// [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
+    /// public bool TryParse(string s, out Person result)
+    /// </code></item>
+    /// </list></examples>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    internal sealed class ContractAnnotationAttribute : Attribute
+    {
+        public ContractAnnotationAttribute([NotNull] string contract)
+            : this(contract, false) { }
+
+        public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
+        {
+            this.Contract = contract;
+            this.ForceFullStates = forceFullStates;
+        }
+
+        [NotNull]
+        public string Contract { get; private set; }
+
+        public bool ForceFullStates { get; private set; }
+    }
+
+    /// <summary>
+    /// Indicates that marked element should be localized or not.
+    /// </summary>
+    /// <example><code>
+    /// [LocalizationRequiredAttribute(true)]
+    /// class Foo {
+    ///   string str = "my string"; // Warning: Localizable string
+    /// }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.All)]
+    internal sealed class LocalizationRequiredAttribute : Attribute
+    {
+        public LocalizationRequiredAttribute()
+            : this(true)
+        {
+        }
+
+        public LocalizationRequiredAttribute(bool required)
+        {
+            this.Required = required;
+        }
+
+        public bool Required { get; private set; }
+    }
+
+    /// <summary>
+    /// Indicates that the value of the marked type (or its derivatives)
+    /// cannot be compared using '==' or '!=' operators and <c>Equals()</c>
+    /// should be used instead. However, using '==' or '!=' for comparison
+    /// with <c>null</c> is always permitted.
+    /// </summary>
+    /// <example><code>
+    /// [CannotApplyEqualityOperator]
+    /// class NoEquality { }
+    ///
+    /// class UsesNoEquality {
+    ///   void Test() {
+    ///     var ca1 = new NoEquality();
+    ///     var ca2 = new NoEquality();
+    ///     if (ca1 != null) { // OK
+    ///       bool condition = ca1 == ca2; // Warning
+    ///     }
+    ///   }
+    /// }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+    internal sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
+
+    /// <summary>
+    /// When applied to a target attribute, specifies a requirement for any type marked
+    /// with the target attribute to implement or inherit specific type or types.
+    /// </summary>
+    /// <example><code>
+    /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
+    /// class ComponentAttribute : Attribute { }
+    ///
+    /// [Component] // ComponentAttribute requires implementing IComponent interface
+    /// class MyComponent : IComponent { }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    [BaseTypeRequired(typeof(Attribute))]
+    internal sealed class BaseTypeRequiredAttribute : Attribute
+    {
+        public BaseTypeRequiredAttribute([NotNull] Type baseType)
+        {
+            this.BaseType = baseType;
+        }
+
+        [NotNull]
+        public Type BaseType { get; private set; }
+    }
+
+    /// <summary>
+    /// Indicates that the marked symbol is used implicitly (e.g. via reflection, in external library),
+    /// so this symbol will not be marked as unused (as well as by other usage inspections).
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All)]
+    internal sealed class UsedImplicitlyAttribute : Attribute
+    {
+        public UsedImplicitlyAttribute()
+            : this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+
+        public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags)
+            : this(useKindFlags, ImplicitUseTargetFlags.Default) { }
+
+        public UsedImplicitlyAttribute(ImplicitUseTargetFlags targetFlags)
+            : this(ImplicitUseKindFlags.Default, targetFlags) { }
+
+        public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+        {
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
+        }
+
+        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+
+        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+    }
+
+    /// <summary>
+    /// Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes
+    /// as unused (as well as by other usage inspections)
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.GenericParameter)]
+    internal sealed class MeansImplicitUseAttribute : Attribute
+    {
+        public MeansImplicitUseAttribute()
+            : this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default) { }
+
+        public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags)
+            : this(useKindFlags, ImplicitUseTargetFlags.Default) { }
+
+        public MeansImplicitUseAttribute(ImplicitUseTargetFlags targetFlags)
+            : this(ImplicitUseKindFlags.Default, targetFlags) { }
+
+        public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
+        {
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
+        }
+
+        [UsedImplicitly]
+        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+
+        [UsedImplicitly]
+        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+    }
+
+    [Flags]
+    internal enum ImplicitUseKindFlags
+    {
+        Default = Access | Assign | InstantiatedWithFixedConstructorSignature,
+
+        /// <summary>Only entity marked with attribute considered used.</summary>
+        Access = 1,
+
+        /// <summary>Indicates implicit assignment to a member.</summary>
+        Assign = 2,
+
+        /// <summary>
+        /// Indicates implicit instantiation of a type with fixed constructor signature.
+        /// That means any unused constructor parameters won't be reported as such.
+        /// </summary>
+        InstantiatedWithFixedConstructorSignature = 4,
+
+        /// <summary>Indicates implicit instantiation of a type.</summary>
+        InstantiatedNoFixedConstructorSignature = 8,
+    }
+
+    /// <summary>
+    /// Specify what is considered used implicitly when marked
+    /// with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>.
+    /// </summary>
+    [Flags]
+    internal enum ImplicitUseTargetFlags
+    {
+        Default = Itself,
+        Itself = 1,
+
+        /// <summary>Members of entity marked with attribute are considered used.</summary>
+        Members = 2,
+
+        /// <summary>Entity marked with attribute and all its members considered used.</summary>
+        WithMembers = Itself | Members
+    }
+
+    /// <summary>
+    /// This attribute is intended to mark publicly available API
+    /// which should not be removed and so is treated as used.
+    /// </summary>
+    [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
+    internal sealed class PublicAPIAttribute : Attribute
+    {
+        public PublicAPIAttribute() { }
+
+        public PublicAPIAttribute([NotNull] string comment)
+        {
+            this.Comment = comment;
+        }
+
+        [CanBeNull]
+        public string Comment { get; private set; }
+    }
+
+    /// <summary>
+    /// Tells code analysis engine if the parameter is completely handled when the invoked method is on stack.
+    /// If the parameter is a delegate, indicates that delegate is executed while the method is executed.
+    /// If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class InstantHandleAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that a method does not make any observable state changes.
+    /// The same as <c>System.Diagnostics.Contracts.PureAttribute</c>.
+    /// </summary>
+    /// <example><code>
+    /// [Pure] int Multiply(int x, int y) => x * y;
+    ///
+    /// void M() {
+    ///   Multiply(123, 42); // Waring: Return value of pure method is not used
+    /// }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class PureAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that the return value of method invocation must be used.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class MustUseReturnValueAttribute : Attribute
+    {
+        public MustUseReturnValueAttribute() { }
+
+        public MustUseReturnValueAttribute([NotNull] string justification)
+        {
+            this.Justification = justification;
+        }
+
+        [CanBeNull]
+        public string Justification { get; private set; }
+    }
+
+    /// <summary>
+    /// Indicates the type member or parameter of some type, that should be used instead of all other ways
+    /// to get the value that type. This annotation is useful when you have some "context" value evaluated
+    /// and stored somewhere, meaning that all other ways to get this value must be consolidated with existing one.
+    /// </summary>
+    /// <example><code>
+    /// class Foo {
+    ///   [ProvidesContext] IBarService _barService = ...;
+    ///
+    ///   void ProcessNode(INode node) {
+    ///     DoSomething(node, node.GetGlobalServices().Bar);
+    ///     //              ^ Warning: use value of '_barService' field
+    ///   }
+    /// }
+    /// </code></example>
+    [AttributeUsage(
+        AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Method |
+        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.GenericParameter)]
+    internal sealed class ProvidesContextAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that a parameter is a path to a file or a folder within a web project.
+    /// Path can be relative or absolute, starting from web root (~).
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class PathReferenceAttribute : Attribute
+    {
+        public PathReferenceAttribute() { }
+
+        public PathReferenceAttribute([NotNull, PathReference] string basePath)
+        {
+            this.BasePath = basePath;
+        }
+
+        [CanBeNull]
+        public string BasePath { get; private set; }
+    }
+
+    /// <summary>
+    /// An extension method marked with this attribute is processed by ReSharper code completion
+    /// as a 'Source Template'. When extension method is completed over some expression, it's source code
+    /// is automatically expanded like a template at call site.
+    /// </summary>
+    /// <remarks>
+    /// Template method body can contain valid source code and/or special comments starting with '$'.
+    /// Text inside these comments is added as source code when the template is applied. Template parameters
+    /// can be used either as additional method parameters or as identifiers wrapped in two '$' signs.
+    /// Use the <see cref="MacroAttribute"/> attribute to specify macros for parameters.
+    /// </remarks>
+    /// <example>
+    /// In this example, the 'forEach' method is a source template available over all values
+    /// of enumerable types, producing ordinary C# 'foreach' statement and placing caret inside block:
+    /// <code>
+    /// [SourceTemplate]
+    /// public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; xs) {
+    ///   foreach (var x in xs) {
+    ///      //$ $END$
+    ///   }
+    /// }
+    /// </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class SourceTemplateAttribute : Attribute { }
+
+    /// <summary>
+    /// Allows specifying a macro for a parameter of a <see cref="SourceTemplateAttribute">source template</see>.
+    /// </summary>
+    /// <remarks>
+    /// You can apply the attribute on the whole method or on any of its additional parameters. The macro expression
+    /// is defined in the <see cref="MacroAttribute.Expression"/> property. When applied on a method, the target
+    /// template parameter is defined in the <see cref="MacroAttribute.Target"/> property. To apply the macro silently
+    /// for the parameter, set the <see cref="MacroAttribute.Editable"/> property value = -1.
+    /// </remarks>
+    /// <example>
+    /// Applying the attribute on a source template method:
+    /// <code>
+    /// [SourceTemplate, Macro(Target = "item", Expression = "suggestVariableName()")]
+    /// public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; collection) {
+    ///   foreach (var item in collection) {
+    ///     //$ $END$
+    ///   }
+    /// }
+    /// </code>
+    /// Applying the attribute on a template method parameter:
+    /// <code>
+    /// [SourceTemplate]
+    /// public static void something(this Entity x, [Macro(Expression = "guid()", Editable = -1)] string newguid) {
+    ///   /*$ var $x$Id = "$newguid$" + x.ToString();
+    ///   x.DoSomething($x$Id); */
+    /// }
+    /// </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method, AllowMultiple = true)]
+    internal sealed class MacroAttribute : Attribute
+    {
+        /// <summary>
+        /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
+        /// parameter when the template is expanded.
+        /// </summary>
+        [CanBeNull]
+        public string Expression { get; set; }
+
+        /// <summary>
+        /// Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
+        /// </summary>
+        /// <remarks>
+        /// If the target parameter is used several times in the template, only one occurrence becomes editable;
+        /// other occurrences are changed synchronously. To specify the zero-based index of the editable occurrence,
+        /// use values >= 0. To make the parameter non-editable when the template is expanded, use -1.
+        /// </remarks>>
+        public int Editable { get; set; }
+
+        /// <summary>
+        /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
+        /// <see cref="MacroAttribute"/> is applied on a template method.
+        /// </summary>
+        [CanBeNull]
+        public string Target { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcAreaMasterLocationFormatAttribute : Attribute
+    {
+        public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcAreaPartialViewLocationFormatAttribute : Attribute
+    {
+        public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcAreaViewLocationFormatAttribute : Attribute
+    {
+        public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcMasterLocationFormatAttribute : Attribute
+    {
+        public AspMvcMasterLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcPartialViewLocationFormatAttribute : Attribute
+    {
+        public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+    internal sealed class AspMvcViewLocationFormatAttribute : Attribute
+    {
+        public AspMvcViewLocationFormatAttribute([NotNull] string format)
+        {
+            this.Format = format;
+        }
+
+        [NotNull]
+        public string Format { get; private set; }
+    }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+    /// is an MVC action. If applied to a method, the MVC action name is calculated
+    /// implicitly from the context. Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class AspMvcActionAttribute : Attribute
+    {
+        public AspMvcActionAttribute() { }
+
+        public AspMvcActionAttribute([NotNull] string anonymousProperty)
+        {
+            this.AnonymousProperty = anonymousProperty;
+        }
+
+        [CanBeNull]
+        public string AnonymousProperty { get; private set; }
+    }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC area.
+    /// Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcAreaAttribute : Attribute
+    {
+        public AspMvcAreaAttribute() { }
+
+        public AspMvcAreaAttribute([NotNull] string anonymousProperty)
+        {
+            this.AnonymousProperty = anonymousProperty;
+        }
+
+        [CanBeNull]
+        public string AnonymousProperty { get; private set; }
+    }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is
+    /// an MVC controller. If applied to a method, the MVC controller name is calculated
+    /// implicitly from the context. Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class AspMvcControllerAttribute : Attribute
+    {
+        public AspMvcControllerAttribute() { }
+
+        public AspMvcControllerAttribute([NotNull] string anonymousProperty)
+        {
+            this.AnonymousProperty = anonymousProperty;
+        }
+
+        [CanBeNull]
+        public string AnonymousProperty { get; private set; }
+    }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC Master. Use this attribute
+    /// for custom wrappers similar to <c>System.Web.Mvc.Controller.View(String, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcMasterAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC model type. Use this attribute
+    /// for custom wrappers similar to <c>System.Web.Mvc.Controller.View(String, Object)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcModelTypeAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC
+    /// partial view. If applied to a method, the MVC partial view name is calculated implicitly
+    /// from the context. Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class AspMvcPartialViewAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Allows disabling inspections for MVC views within a class or a method.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    internal sealed class AspMvcSuppressViewErrorAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC display template.
+    /// Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcDisplayTemplateAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC editor template.
+    /// Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Html.EditorExtensions.EditorForModel(HtmlHelper, String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcEditorTemplateAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. Indicates that a parameter is an MVC template.
+    /// Use this attribute for custom wrappers similar to
+    /// <c>System.ComponentModel.DataAnnotations.UIHintAttribute(System.String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcTemplateAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+    /// is an MVC view component. If applied to a method, the MVC view name is calculated implicitly
+    /// from the context. Use this attribute for custom wrappers similar to
+    /// <c>System.Web.Mvc.Controller.View(Object)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class AspMvcViewAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+    /// is an MVC view component name.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AspMvcViewComponentAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+    /// is an MVC view component view. If applied to a method, the MVC view component view name is default.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class AspMvcViewComponentViewAttribute : Attribute { }
+
+    /// <summary>
+    /// ASP.NET MVC attribute. When applied to a parameter of an attribute,
+    /// indicates that this parameter is an MVC action name.
+    /// </summary>
+    /// <example><code>
+    /// [ActionName("Foo")]
+    /// public ActionResult Login(string returnUrl) {
+    ///   ViewBag.ReturnUrl = Url.Action("Foo"); // OK
+    ///   return RedirectToAction("Bar"); // Error: Cannot resolve action
+    /// }
+    /// </code></example>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
+    internal sealed class AspMvcActionSelectorAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field)]
+    internal sealed class HtmlElementAttributesAttribute : Attribute
+    {
+        public HtmlElementAttributesAttribute() { }
+
+        public HtmlElementAttributesAttribute([NotNull] string name)
+        {
+            this.Name = name;
+        }
+
+        [CanBeNull]
+        public string Name { get; private set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
+    internal sealed class HtmlAttributeValueAttribute : Attribute
+    {
+        public HtmlAttributeValueAttribute([NotNull] string name)
+        {
+            this.Name = name;
+        }
+
+        [NotNull]
+        public string Name { get; private set; }
+    }
+
+    /// <summary>
+    /// Razor attribute. Indicates that a parameter or a method is a Razor section.
+    /// Use this attribute for custom wrappers similar to
+    /// <c>System.Web.WebPages.WebPageBase.RenderSection(String)</c>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+    internal sealed class RazorSectionAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates how method, constructor invocation or property access
+    /// over collection type affects content of the collection.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
+    internal sealed class CollectionAccessAttribute : Attribute
+    {
+        public CollectionAccessAttribute(CollectionAccessType collectionAccessType)
+        {
+            this.CollectionAccessType = collectionAccessType;
+        }
+
+        public CollectionAccessType CollectionAccessType { get; private set; }
+    }
+
+    [Flags]
+    internal enum CollectionAccessType
+    {
+        /// <summary>Method does not use or modify content of the collection.</summary>
+        None = 0,
+
+        /// <summary>Method only reads content of the collection but does not modify it.</summary>
+        Read = 1,
+
+        /// <summary>Method can change content of the collection but does not add new elements.</summary>
+        ModifyExistingContent = 2,
+
+        /// <summary>Method can add new elements to the collection.</summary>
+        UpdatedContent = ModifyExistingContent | 4
+    }
+
+    /// <summary>
+    /// Indicates that the marked method is assertion method, i.e. it halts control flow if
+    /// one of the conditions is satisfied. To set the condition, mark one of the parameters with
+    /// <see cref="AssertionConditionAttribute"/> attribute.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class AssertionMethodAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates the condition parameter of the assertion method. The method itself should be
+    /// marked by <see cref="AssertionMethodAttribute"/> attribute. The mandatory argument of
+    /// the attribute is the assertion type.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class AssertionConditionAttribute : Attribute
+    {
+        public AssertionConditionAttribute(AssertionConditionType conditionType)
+        {
+            this.ConditionType = conditionType;
+        }
+
+        public AssertionConditionType ConditionType { get; private set; }
+    }
+
+    /// <summary>
+    /// Specifies assertion type. If the assertion method argument satisfies the condition,
+    /// then the execution continues. Otherwise, execution is assumed to be halted.
+    /// </summary>
+    internal enum AssertionConditionType
+    {
+        /// <summary>Marked parameter should be evaluated to true.</summary>
+        IS_TRUE = 0,
+
+        /// <summary>Marked parameter should be evaluated to false.</summary>
+        IS_FALSE = 1,
+
+        /// <summary>Marked parameter should be evaluated to null value.</summary>
+        IS_NULL = 2,
+
+        /// <summary>Marked parameter should be evaluated to not null value.</summary>
+        IS_NOT_NULL = 3,
+    }
+
+    /// <summary>
+    /// Indicates that the marked method unconditionally terminates control flow execution.
+    /// For example, it could unconditionally throw exception.
+    /// </summary>
+    [Obsolete("Use [ContractAnnotation('=> halt')] instead")]
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class TerminatesProgramAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that method is pure LINQ method, with postponed enumeration (like Enumerable.Select,
+    /// .Where). This annotation allows inference of [InstantHandle] annotation for parameters
+    /// of delegate type by analyzing LINQ method chains.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class LinqTunnelAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that IEnumerable, passed as parameter, is not enumerated.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class NoEnumerationAttribute : Attribute { }
+
+    /// <summary>
+    /// Indicates that parameter is regular expression pattern.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class RegexPatternAttribute : Attribute { }
+
+    /// <summary>
+    /// Prevents the Member Reordering feature from tossing members of the marked class.
+    /// </summary>
+    /// <remarks>
+    /// The attribute must be mentioned in your member reordering patterns
+    /// </remarks>
+    [AttributeUsage(
+        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Enum)]
+    internal sealed class NoReorderAttribute : Attribute { }
+
 }

@@ -6,6 +6,8 @@
 
     using Harmony;
 
+    using JetBrains.Annotations;
+
     using Verse;
 
     public static class Tools
@@ -28,7 +30,7 @@
             }
         }
 
-        public static FloatMenuOption MakeMenuItemForLabel(string label, List<FloatMenuOption> fmo)
+        public static FloatMenuOption MakeMenuItemForLabel([NotNull] string label, [NotNull] List<FloatMenuOption> fmo)
         {
             // List<SortByWhat> sortByWhats = fmo.Keys.ToList();
             List<FloatMenuOption> options = fmo.ToList();

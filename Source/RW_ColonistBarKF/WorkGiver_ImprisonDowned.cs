@@ -4,29 +4,19 @@ using Verse.AI;
 
 namespace ColonistBarKF
 {
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     public class WorkGiver_ImprisonDowned : WorkGiver_TakeToBed
     {
         private const float MinDistFromEnemy = 40f;
 
-        public override PathEndMode PathEndMode
-        {
-            get
-            {
-                return PathEndMode.OnCell;
-            }
-        }
+        public override PathEndMode PathEndMode => PathEndMode.OnCell;
 
-        public override ThingRequest PotentialWorkThingRequest
-        {
-            get
-            {
-                return ThingRequest.ForGroup(ThingRequestGroup.Pawn);
-            }
-        }
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+        public override bool HasJobOnThing([NotNull] Pawn pawn, [NotNull] Thing t, bool forced = false)
         {
             Pawn victim = t as Pawn;
             if (victim == null || !victim.Downed || victim.InBed() || !pawn.CanReserve(victim, 1, -1, null, forced) || GenAI.EnemyIsNear(victim, 10f))

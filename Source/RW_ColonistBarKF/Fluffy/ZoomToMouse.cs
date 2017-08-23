@@ -11,11 +11,14 @@
         // backing private fields / properties
         private const BindingFlags AllFlags = (BindingFlags)60;
 
+        [NotNull]
         private readonly MethodInfo _curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", AllFlags)
             .GetGetMethod(true);
 
+        [NotNull]
         private readonly FieldInfo _curSizeFi = typeof(CameraDriver).GetField("rootSize", AllFlags);
 
+        [NotNull]
         private readonly FieldInfo _desSizeFi = typeof(CameraDriver).GetField("desiredSize", AllFlags);
 
         // helpers
@@ -24,7 +27,7 @@
         // tolerance for zoom
         private readonly float tolerance = .1f;
 
-        public ZoomToMouse(Game game)
+        public ZoomToMouse([NotNull] Game game)
         {
             // nothing
         }

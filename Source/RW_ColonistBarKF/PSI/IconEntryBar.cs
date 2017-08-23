@@ -8,9 +8,10 @@
 
         public Color color;
 
+        [CanBeNull]
         public string tooltip;
 
-        public IconEntryBar(Icon icon, Color color, string tooltip)
+        public IconEntryBar(Icon icon, Color color, [CanBeNull] string tooltip)
         {
             this.icon = icon;
             this.color = color;

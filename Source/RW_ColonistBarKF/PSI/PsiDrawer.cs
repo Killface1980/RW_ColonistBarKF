@@ -4,6 +4,8 @@ namespace ColonistBarKF.PSI
 {
     using ColonistBarKF.Bar;
 
+    using JetBrains.Annotations;
+
     using RimWorld.Planet;
 
     using UnityEngine;
@@ -15,7 +17,7 @@ namespace ColonistBarKF.PSI
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,
             Vector3 posOffset,
-            Material material,
+            [NotNull] Material material,
             Color color,
             float opacity)
         {
@@ -105,7 +107,7 @@ namespace ColonistBarKF.PSI
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
+            GUI.DrawTexture(iconRect, ColonistBarTextures.BgTexIconPSI);
             GUI.color = iconEntryBar.color;
 
             iconRect.x += size * 0.1f;
@@ -129,7 +131,7 @@ namespace ColonistBarKF.PSI
             Color color,
             float rectAlpha,
             int rowCount,
-            string tooltip = null)
+            [CanBeNull] string tooltip = null)
         {
             // only two columns visible
             if (num == Settings.ColBarSettings.IconsInColumn * 2)
@@ -209,7 +211,7 @@ namespace ColonistBarKF.PSI
             Material material = PSIMaterials[icon];
             if (material == null)
             {
-                Debug.LogError("Material = null.");
+               // Debug.LogError("Material = null.");
                 return;
             }
 
@@ -220,11 +222,11 @@ namespace ColonistBarKF.PSI
         private static void DrawIcon_onBar(
             Rect rect,
             Vector3 posOffset,
-            Material material,
+            [NotNull] Material material,
             Color color,
             float rectAlpha,
             int rowCount,
-            string tooltip = null)
+            [CanBeNull] string tooltip = null)
         {
             // Widgets.DrawBoxSolid(rect, Color.cyan);
             color.a *= rectAlpha;
@@ -269,7 +271,7 @@ namespace ColonistBarKF.PSI
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, ColonistBarTextures.BGTexIconPSI);
+            GUI.DrawTexture(iconRect, ColonistBarTextures.BgTexIconPSI);
             GUI.color = color;
 
             iconRect.x += size * 0.1f;

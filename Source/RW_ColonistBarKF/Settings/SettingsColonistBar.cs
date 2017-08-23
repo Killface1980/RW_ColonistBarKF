@@ -1,8 +1,6 @@
-﻿using static ColonistBarKF.Position;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
-    using RimWorld;
+    using static ColonistBarKF.Position;
 
     public class SettingsColonistBar
     {
@@ -46,6 +44,7 @@ namespace ColonistBarKF
 
         public float IconOffsetY = 1f;
 
+        [NotNull]
         public string IconSet = "default";
 
         public bool IconsHorizontal;
@@ -143,7 +142,6 @@ namespace ColonistBarKF
         public bool ShowUnarmed = true;
 
         public SortByWhat SortBy;
-        public StatDef SortByStat;
 
         public bool UseCustomIconSize = false;
 
@@ -172,6 +170,5 @@ namespace ColonistBarKF
 
         public bool UseGroupColors = true;
 
-        public bool UseStatSorting = false;
     }
 }

@@ -6,10 +6,13 @@
 
     public static class Statics
     {
+        [NotNull]
         public static Gradient gradient4 = new Gradient();
 
+        [NotNull]
         public static Gradient gradient4Mood = new Gradient();
 
+        [NotNull]
         public static Gradient gradientRedAlertToNeutral = new Gradient();
 
         public static Color EvaluateMoodOffset(float moodOffset)
@@ -17,7 +20,7 @@
             return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
 
-        public static void BuildGradients()
+        static Statics()
         {
             // Build gradients
             GradientColorKey[] gck = new GradientColorKey[4];

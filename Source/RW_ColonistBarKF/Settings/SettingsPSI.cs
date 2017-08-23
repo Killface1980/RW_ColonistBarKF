@@ -17,6 +17,7 @@
 
         public float IconOpacityCritical = 0.6f;
 
+        [NotNull]
         public string IconSet = "default";
 
         public bool IconsHorizontal;

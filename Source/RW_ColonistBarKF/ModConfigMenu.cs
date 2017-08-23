@@ -10,6 +10,8 @@ namespace ColonistBarKF
 
     using FacialStuff.Detouring;
 
+    using JetBrains.Annotations;
+
     using static Settings;
 
     using UnityEngine;
@@ -34,9 +36,11 @@ namespace ColonistBarKF
 
         private static int iconLimit;
 
+        [NotNull]
         private readonly GUIStyle darkGrayBgImage =
             new GUIStyle { normal = { background = ColonistBarTextures.GrayFond } };
 
+        [NotNull]
         private readonly GUIStyle fondBoxes =
             new GUIStyle
             {
@@ -50,6 +54,7 @@ namespace ColonistBarKF
                 margin = new RectOffset(0, 0, 10, 10)
             };
 
+        [NotNull]
         private readonly GUIStyle fondImages =
             new GUIStyle
             {
@@ -61,6 +66,7 @@ namespace ColonistBarKF
                             }
             };
 
+        [NotNull]
         private readonly GUIStyle fontBold =
             new GUIStyle
             {
@@ -71,8 +77,10 @@ namespace ColonistBarKF
                 padding = new RectOffset(0, 0, 5, 0)
             };
 
+        [NotNull]
         private readonly GUIStyle grayLines = new GUIStyle { normal = { background = ColonistBarTextures.GrayLines } };
 
+        [NotNull]
         private readonly GUIStyle headline =
             new GUIStyle
             {
@@ -84,18 +92,21 @@ namespace ColonistBarKF
                 padding = new RectOffset(0, 0, 12, 6)
             };
 
+        [NotNull]
         private readonly string[] mainToolbarStrings =
             {
                 "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate()
 
             };
 
+        [NotNull]
         private readonly string[] positionStrings =
             {
                 "CBKF.Settings.useLeft".Translate(), "CBKF.Settings.useRight".Translate(),
                 "CBKF.Settings.useTop".Translate(), "CBKF.Settings.useBottom".Translate()
             };
 
+        [NotNull]
         private readonly string[] psiToolbarStrings =
             {
                 "PSI.Settings.ArrangementButton".Translate(), "PSI.Settings.OpacityButton".Translate(),
@@ -420,7 +431,7 @@ namespace ColonistBarKF
                         this.FillPageAdvanced();
                         GUILayout.EndVertical();
 
-                        LabelHeadline("CBKF.Settings.Grouping".Translate());
+                        this.LabelHeadline("CBKF.Settings.Grouping".Translate());
                         GUILayout.BeginVertical();
                         this.FillPageCaravanSettings();
                         GUILayout.EndVertical();
@@ -491,9 +502,6 @@ namespace ColonistBarKF
                     }
 
                     break;
-
-
-                    break;
             }
 
             GUILayout.FlexibleSpace();
@@ -536,8 +544,8 @@ namespace ColonistBarKF
         #region Private Methods
 
         private void DrawCheckboxArea(
-            string iconName,
-            Material iconMaterial,
+            [NotNull] string iconName,
+            [NotNull] Material iconMaterial,
             ref bool colBarBool,
             ref bool psiBarBool,
             ref int iconInRow)
@@ -616,10 +624,10 @@ namespace ColonistBarKF
         }
 
         private void DrawCheckboxAreaTarget(
-            string iconName,
-            Material targetSingle,
-            Material targetHair,
-            Material targetSkin,
+            [NotNull] string iconName,
+            [NotNull] Material targetSingle,
+            [NotNull] Material targetHair,
+            [NotNull] Material targetSkin,
             ref int iconInRow)
         {
             GUILayout.BeginVertical(this.fondImages);
@@ -836,6 +844,7 @@ namespace ColonistBarKF
 
             GUILayout.EndVertical();
         }
+
         private void FillPageMain()
         {
             GUILayout.BeginVertical(this.fondBoxes);

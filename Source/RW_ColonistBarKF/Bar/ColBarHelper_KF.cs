@@ -5,47 +5,67 @@
 
     using ColonistBarKF.Bar;
 
+
     using RimWorld;
     using RimWorld.Planet;
 
     using UnityEngine;
 
+
     using Verse;
+
+    using Debug = System.Diagnostics.Debug;
 
     public class ColBarHelper_KF : IExposable
     {
         #region Fields
 
-        public List<Vector2> cachedDrawLocs = new List<Vector2>();
+        [NotNull]
+        public readonly List<Vector2> cachedDrawLocs = new List<Vector2>();
 
-        public List<EntryKF> cachedEntries = new List<EntryKF>();
+        [NotNull]
+        public readonly List<EntryKF> cachedEntries = new List<EntryKF>();
 
         public float cachedScale;
 
         public bool EntriesDirty = true;
 
+        [NotNull]
         public List<Pawn> tmpCaravanPawns = new List<Pawn>();
 
+        [NotNull]
         public List<Caravan> tmpCaravans = new List<Caravan>();
 
+        [NotNull]
+        [ItemCanBeNull]
         public List<Thing> tmpColonists = new List<Thing>();
 
+        [NotNull]
+        [ItemCanBeNull]
         public List<Pawn> tmpColonistsInOrder = new List<Pawn>();
 
+        [NotNull]
         public List<Pair<Thing, Map>> tmpColonistsWithMap = new List<Pair<Thing, Map>>();
 
+        [NotNull]
+        [ItemCanBeNull]
         public List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
+        [NotNull]
+        [ItemCanBeNull]
         public List<Map> tmpMaps = new List<Map>();
 
+        [NotNull]
         public List<Pawn> tmpPawns = new List<Pawn>();
 
         #endregion Fields
 
         #region Properties
 
+        [NotNull]
         public List<Vector2> DrawLocs => this.cachedDrawLocs;
 
+        [NotNull]
         public List<EntryKF> Entries
         {
             get
@@ -209,15 +229,9 @@
             return false;
         }
 
-        private static void SortCachedColonists(ref List<Pawn> tmpColonists)
+        private static void SortCachedColonists([NotNull][ItemCanBeNull] ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
-            if (Settings.ColBarSettings.UseStatSorting && Settings.ColBarSettings.SortByStat != null)
-            {
-                tmpColonists.SortBy(pawn => pawn.GetStatValue(Settings.ColBarSettings.SortByStat));
-                Settings.SaveBarSettings();
-            }
-            else
             {
                 switch (Settings.ColBarSettings.SortBy)
                 {

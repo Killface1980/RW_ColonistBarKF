@@ -38,13 +38,13 @@ namespace ColonistBarKF
                 stringBuilder.AppendLine(inspectString);
             }
 
-            if (base.Spawned)
+            if (this.Spawned)
             {
 
                 if (this.prisonerCount + this.guestCount > 0)
                 {
-                    stringBuilder.AppendLine("PotentialPrisoners".Translate() + ": " + prisonerCount);
-                    stringBuilder.AppendLine("PotentialGuests".Translate() + ": " + guestCount);
+                    stringBuilder.AppendLine("PotentialPrisoners".Translate() + ": " + this.prisonerCount);
+                    stringBuilder.AppendLine("PotentialGuests".Translate() + ": " + this.guestCount);
 
                 }
                 else if (this.ticksToDespawn > 0)
@@ -83,11 +83,11 @@ namespace ColonistBarKF
                     {
                         if (pawn.Faction.HostileTo(Faction.OfPlayer))
                         {
-                            prisonerCount++;
+                            this.prisonerCount++;
                         }
-                        else if (pawn.Faction!= Faction.OfPlayer)
+                        else if (pawn.Faction != Faction.OfPlayer)
                         {
-                            guestCount++;
+                            this.guestCount++;
                         }
                     }
                 }

@@ -7,6 +7,8 @@
     using static ColonistBarKF.Bar.ColonistBarTextures;
     using ColonistBarKF.PSI;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using static Settings;
@@ -29,8 +31,10 @@
 
         public bool isPacifist;
 
+        [CanBeNull]
         public MentalBreaker Mb;
 
+        [CanBeNull]
         public Need_Mood Mood;
 
         public int prosthoStage;
@@ -49,8 +53,7 @@
 
         private static readonly List<Thought> thoughts = new List<Thought>();
 
-        private Pawn _psiPawn;
-
+        [CanBeNull]
         private string addictionLabel;
 
         // public float Drunkness = 0f;
@@ -58,6 +61,7 @@
 
         private float BedStatusMoodOffset;
 
+        [CanBeNull]
         private string BedStatusTip;
 
         private float BleedRate = -1f;
@@ -66,12 +70,14 @@
 
         private float CabinFeverMoodOffset;
 
+        [CanBeNull]
         private string cabinFeverTip;
 
         private float DiseaseDisappearance = 1f;
 
         private int drugDesire;
 
+        [CanBeNull]
         private string drugUserLabel;
 
         private bool entriesDirty = true;
@@ -82,6 +88,7 @@
 
         private int greedyThought = -1;
 
+        [CanBeNull]
         private string greedyTooltip;
 
         private bool hasGreedyTrait;
@@ -90,10 +97,12 @@
 
         private float HealthDisease = 1f;
 
+        [CanBeNull]
         private string healthTip;
 
         private float humpMoodOffset;
 
+        [CanBeNull]
         private string humpTip;
 
         private float immunity;
@@ -110,20 +119,24 @@
 
         private int jealousThought = -1;
 
+        [CanBeNull]
         private string jealousTooltip;
 
         private int LastStatUpdate;
 
+        [CanBeNull]
         private MentalStateDef MentalSanity;
 
         private float nakedMoodOffset;
 
+        [CanBeNull]
         private string nakedTip;
 
         private int NextStatUpdate = 1;
 
         private float nightOwlMoodOffset;
 
+        [CanBeNull]
         private string nightOwlTip;
 
         private int nightOwlUnhappy = -1;
@@ -132,8 +145,10 @@
 
         private float PainMoodOffset;
 
+        [CanBeNull]
         private ThoughtDef painThought;
 
+        [CanBeNull]
         private string painTip;
 
         private float pawnHealth = 1f;
@@ -142,6 +157,7 @@
 
         private float prosthoMoodOffset;
 
+        [CanBeNull]
         private string prosthoTooltip;
 
         private int prosthoUnhappy;
@@ -150,6 +166,7 @@
 
         private float sickMoodOffset;
 
+        [CanBeNull]
         private string sickTip;
 
         private float TooCold = -1f;
@@ -158,6 +175,7 @@
 
         private float ToxicBuildUpVisible;
 
+        [CanBeNull]
         private string toxicTip;
 
         private bool traitsCheck;
@@ -166,6 +184,7 @@
 
         private float unburiedMoodOffset;
 
+        [CanBeNull]
         private string unburiedTip;
 
         private int wantsToHump = -1;
@@ -178,36 +197,21 @@
 
         #region Public Properties
 
+        [NotNull]
         public List<IconEntryBar> BarIconList { get; private set; } = new List<IconEntryBar>();
 
-        public Pawn pawn
-        {
-            get
-            {
-                if (this._psiPawn == null)
-                {
-                    this._psiPawn = this.parent as Pawn;
-                }
 
-                return this._psiPawn;
-            }
-        }
 
+        [NotNull]
         public List<IconEntryPSI> PSIIconList { get; private set; } = new List<IconEntryPSI>();
 
 
 
         public Color BGColor
         {
-            get
-            {
-                return bgColor;
-            }
+            get => this.bgColor;
 
-            set
-            {
-                bgColor = value;
-            }
+            set => this.bgColor = value;
         }
 
         #endregion Public Properties
@@ -258,7 +262,13 @@
         public override void CompTick()
         {
             base.CompTick();
-            if (this.pawn.IsColonist || this.pawn.IsPrisoner)
+            Pawn pawn = this.parent as Pawn;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            if (pawn.IsColonist || pawn.IsPrisoner)
             {
                 if (this.entriesDirty)
                 {
@@ -267,77 +277,6 @@
                 }
 
                 this.CheckStats();
-            }
-        }
-
-        public override void PostDraw()
-        {
-            // TODO: make this one draw the icons on colonists
-            // deactivated for now
-            base.PostDraw();
-            return;
-
-            if (this.pawn.Dead || !this.pawn.Spawned || this.pawn.holdingOwner == null || this.pawn.Map == null)
-            {
-                return;
-            }
-
-            SettingsPSI psiSettings = PsiSettings;
-            float viewOpacity = psiSettings.IconOpacity;
-
-            int iconNum = 0;
-
-            Vector3 bodyLoc = this.pawn.DrawPos;
-
-            // // Target Point
-            // if (psiSettings.ShowTargetPoint && TargetPos != Vector3.zero)
-            // {
-            // if (psiSettings.UseColoredTarget)
-            // {
-            // Color skinColor = pawn.story.SkinColor;
-            // Color hairColor = pawn.story.hairColor;
-            // if (skinMat == null)
-            // {
-            // return;
-            // }
-            // if (hairMat == null)
-            // {
-            // return;
-            // }
-            // DrawIcon_posOffset(TargetPos, Vector3.zero, skinMat, skinColor, 1f);
-            // DrawIcon_posOffset(TargetPos, Vector3.zero, hairMat, hairColor, 1f);
-            // }
-            // else
-            // {
-            // if (targetMat == null)
-            // {
-            // return;
-            // }
-            // DrawIcon_posOffset(TargetPos, Vector3.zero, targetMat, ColorNeutralStatus, viewOpacity);
-            // }
-            // }
-
-            // Drafted
-            if (psiSettings.ShowDraft && this.pawn.Drafted)
-            {
-                if (this.isPacifist)
-                {
-                    DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Pacific, ColYellow, ViewOpacityCrit), iconNum);
-                }
-
-                DrawIconOnColonist(bodyLoc, new IconEntryPSI(Icon.Draft, ColVermillion, ViewOpacityCrit), iconNum);
-
-                iconNum++;
-            }
-
-            List<IconEntryPSI> drawIconEntries = this.PSIIconList;
-            if (!drawIconEntries.NullOrEmpty())
-            {
-                for (int index = 0; index < drawIconEntries.Count; index++)
-                {
-                    IconEntryPSI iconEntryBar = drawIconEntries[index];
-                    DrawIconOnColonist(bodyLoc, iconEntryBar, index + iconNum);
-                }
             }
         }
 
@@ -355,50 +294,6 @@
 
         #region Private Methods
 
-        private static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryPSI, int entryCount)
-        {
-            Material material = GameComponentPSI.PSIMaterials[entryPSI.icon];
-            if (material == null)
-            {
-                Debug.LogError("Material = null.");
-                return;
-            }
-
-            Vector3 posOffset = GameComponentPSI.IconPosVectorsPSI[entryCount];
-
-            entryPSI.color.a = entryPSI.opacity;
-            material.color = entryPSI.color;
-            Color guiColor = GUI.color;
-            GUI.color = entryPSI.color;
-            Vector2 vectorAtBody;
-
-            float worldScale = GameComponentPSI.WorldScale;
-            if (PsiSettings.IconsScreenScale)
-            {
-                worldScale = 45f;
-                vectorAtBody = bodyPos.MapToUIPosition();
-                vectorAtBody.x += posOffset.x * 45f;
-                vectorAtBody.y -= posOffset.z * 45f;
-            }
-            else
-            {
-                vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
-            }
-
-            float num2 = worldScale * (PsiSettings.IconSizeMult * 0.5f);
-
-            // On Colonist
-            Rect position = new Rect(
-                vectorAtBody.x,
-                vectorAtBody.y,
-                num2 * PsiSettings.IconSize,
-                num2 * PsiSettings.IconSize);
-            position.x -= position.width * 0.5f;
-            position.y -= position.height * 0.5f;
-
-            GUI.DrawTexture(position, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = guiColor;
-        }
 
         private static bool GetThought(ThoughtDef tdef, out int stage, out string tooltip, out float moodOffset)
         {
@@ -527,9 +422,16 @@
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            if (this.pawn.Faction != Faction.OfPlayer)
+            Pawn pawn = this.parent as Pawn;
+            if (pawn == null)
             {
-                CheckRelationWithColonists(this.pawn);
+                return;
+
+            }
+
+            if (pawn.Faction != Faction.OfPlayer)
+            {
+                this.CheckRelationWithColonists(pawn);
             }
         }
 
@@ -551,12 +453,18 @@
                 return;
             }
 
-            if (!this.traitsCheck)
+            Pawn pawn = this.parent as Pawn;
+            if (pawn == null)
             {
-                this.CheckTraits(this.pawn);
+                return;
             }
 
-            if (!this.pawn.Spawned || this.pawn.Map == null)
+            if (!this.traitsCheck)
+            {
+                this.CheckTraits(pawn);
+            }
+
+            if (!pawn.Spawned || pawn.Map == null)
             {
                 return;
             }
@@ -567,13 +475,13 @@
             }
 
             // target
-            this.CheckJobs();
+            this.CheckJobs(pawn);
 
             // Mental Breaker for MoodBars
-            if (this.pawn.needs?.mood != null)
+            if (pawn.needs?.mood != null)
             {
-                this.Mb = this.pawn.mindState.mentalBreaker;
-                this.Mood = this.pawn.needs.mood;
+                this.Mb = pawn.mindState.mentalBreaker;
+                this.Mood = pawn.needs.mood;
             }
             else
             {
@@ -589,12 +497,12 @@
             float viewOpacity = psiSettings.IconOpacity;
             float viewOpacityCrit = ViewOpacityCrit;
 
-            this.pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
-            this.pawnHealth = 1f - this.pawn.health.summaryHealth.SummaryHealthPercent;
+            pawn.needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
+            this.pawnHealth = 1f - pawn.health.summaryHealth.SummaryHealthPercent;
 
             // Log.Message(pawn + " health: " + this.pawnHealth);
             // Idle - Colonist icon only
-            if (this.pawn.mindState.IsIdle)
+            if (pawn.mindState.IsIdle)
             {
                 if (psiSettings.ShowIdle && GenDate.DaysPassed >= 0.1)
                 {
@@ -612,7 +520,7 @@
                         new IconEntryBar(
                             Icon.Pacific,
                             ColBlueishGreen,
-                            "IsIncapableOfViolence".Translate(this.pawn.NameStringShort)));
+                            "IsIncapableOfViolence".Translate(pawn.NameStringShort)));
                 }
 
                 if (psiSettings.ShowPacific)
@@ -621,7 +529,7 @@
                 }
             }
 
-            if (this.pawn.equipment.Primary == null && !this.pawn.IsPrisoner && !this.isPacifist)
+            if (pawn.equipment.Primary == null && !pawn.IsPrisoner && !this.isPacifist)
             {
                 // AddIconsToList(
                 // barSettings.ShowUnarmed,
@@ -671,7 +579,7 @@
             {
                 {
                     // if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
-                    float level = this.pawn.health.capacities.GetLevel(pawnCapacityDef);
+                    float level = pawn.health.capacities.GetLevel(pawnCapacityDef);
                     if (level < efficiency)
                     {
                         if (efficiencyTip.NullOrEmpty())
@@ -713,12 +621,12 @@
             }
 
             // temperature
-            float temperatureForCell = GenTemperature.GetTemperatureForCell(this.pawn.Position, this.pawn.Map);
+            float temperatureForCell = GenTemperature.GetTemperatureForCell(pawn.Position, pawn.Map);
 
-            this.TooCold = (float)((this.pawn.ComfortableTemperatureRange().min
+            this.TooCold = (float)((pawn.ComfortableTemperatureRange().min
                                     - (double)PsiSettings.LimitTempComfortOffset - temperatureForCell) / 10f);
 
-            this.TooHot = (float)((temperatureForCell - (double)this.pawn.ComfortableTemperatureRange().max
+            this.TooHot = (float)((temperatureForCell - (double)pawn.ComfortableTemperatureRange().max
                                    - PsiSettings.LimitTempComfortOffset) / 10f);
 
             this.TooCold = Mathf.Clamp(this.TooCold, 0f, 2f);
@@ -764,14 +672,14 @@
 
             // Mental Sanity
             this.MentalSanity = null;
-            if (this.pawn.mindState != null && this.pawn.InMentalState)
+            if (pawn.mindState != null && pawn.InMentalState)
             {
-                this.MentalSanity = this.pawn.MentalStateDef;
+                this.MentalSanity = pawn.MentalStateDef;
             }
 
             if (this.MentalSanity != null)
             {
-                if (this.pawn.InAggroMentalState)
+                if (pawn.InAggroMentalState)
                 {
                     if (barSettings.ShowAggressive)
                     {
@@ -830,17 +738,17 @@
             }
 
             // Hungry
-            if (this.pawn.needs.food.CurLevel < (double)PsiSettings.LimitFoodLess)
+            if (pawn.needs.food.CurLevel < (double)PsiSettings.LimitFoodLess)
             {
                 if (barSettings.ShowHungry)
                 {
-                    string tooltip = this.pawn.needs.food.GetTipString();
+                    string tooltip = pawn.needs.food.GetTipString();
 
                     barIconList.Add(
                         new IconEntryBar(
                             Icon.Hungry,
                             gradientRedAlertToNeutral.Evaluate(
-                                this.pawn.needs.food.CurLevel / PsiSettings.LimitFoodLess),
+                                pawn.needs.food.CurLevel / PsiSettings.LimitFoodLess),
                             tooltip));
                 }
 
@@ -850,33 +758,33 @@
                         new IconEntryPSI(
                             Icon.Hungry,
                             gradientRedAlertToNeutral.Evaluate(
-                                this.pawn.needs.food.CurLevel / PsiSettings.LimitFoodLess),
+                                pawn.needs.food.CurLevel / PsiSettings.LimitFoodLess),
                             viewOpacityCrit));
                 }
             }
 
             // Tired
-            if (this.pawn.needs.rest.CurLevel < (double)PsiSettings.LimitRestLess)
+            if (pawn.needs.rest.CurLevel < (double)PsiSettings.LimitRestLess)
             {
                 if (barSettings.ShowTired)
                 {
-                    string tooltip = this.pawn.needs.rest.CurCategory.GetLabel();
+                    string tooltip = pawn.needs.rest.CurCategory.GetLabel();
                     barIconList.Add(
                         new IconEntryBar(
                             Icon.Tired,
                             gradientRedAlertToNeutral.Evaluate(
-                                this.pawn.needs.rest.CurLevel / PsiSettings.LimitRestLess),
+                                pawn.needs.rest.CurLevel / PsiSettings.LimitRestLess),
                             tooltip));
                 }
 
                 if (psiSettings.ShowTired)
                 {
-                    string tooltip = this.pawn.needs.rest.CurCategory.GetLabel();
+                    string tooltip = pawn.needs.rest.CurCategory.GetLabel();
                     psiIconList.Add(
                         new IconEntryPSI(
                             Icon.Tired,
                             gradientRedAlertToNeutral.Evaluate(
-                                this.pawn.needs.rest.CurLevel / PsiSettings.LimitRestLess),
+                                pawn.needs.rest.CurLevel / PsiSettings.LimitRestLess),
                             viewOpacityCrit));
                 }
             }
@@ -889,22 +797,22 @@
             List<Hediff> hediffs = null;
 
             // Sick thoughts
-            if (this.pawn.health?.hediffSet != null)
+            if (pawn.health?.hediffSet != null)
             {
-                hediffs = this.pawn.health.hediffSet.hediffs;
+                hediffs = pawn.health.hediffSet.hediffs;
 
                 // Health
                 // Infection
 
                 // Bleed rate
-                this.BleedRate = Mathf.Clamp01(this.pawn.health.hediffSet.BleedRateTotal * PsiSettings.LimitBleedMult);
+                this.BleedRate = Mathf.Clamp01(pawn.health.hediffSet.BleedRateTotal * PsiSettings.LimitBleedMult);
 
                 if (this.BleedRate > 0.0f)
                 {
                     if (barSettings.ShowBloodloss)
                     {
                         string tooltip = "BleedingRate".Translate() + ": "
-                                         + this.pawn.health.hediffSet.BleedRateTotal.ToStringPercent() + "/d";
+                                         + pawn.health.hediffSet.BleedRateTotal.ToStringPercent() + "/d";
 
                         barIconList.Add(
                             new IconEntryBar(
@@ -923,7 +831,7 @@
                     }
                 }
 
-                if (HealthAIUtility.ShouldBeTendedNowUrgent(this.pawn))
+                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
                 {
                     if (barSettings.ShowMedicalAttention)
                     {
@@ -936,7 +844,7 @@
                         psiIconList.Add(new IconEntryPSI(Icon.MedicalAttention, ColVermillion, viewOpacityCrit));
                     }
                 }
-                else if (HealthAIUtility.ShouldBeTendedNow(this.pawn))
+                else if (HealthAIUtility.ShouldBeTendedNow(pawn))
                 {
                     if (barSettings.ShowMedicalAttention)
                     {
@@ -950,7 +858,7 @@
                     }
                 }
 
-                if (HealthAIUtility.ShouldHaveSurgeryDoneNow(this.pawn))
+                if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
                 {
                     if (barSettings.ShowMedicalAttention)
                     {
@@ -968,8 +876,8 @@
                 }
             }
 
-            if (this.pawn.health.hediffSet.AnyHediffMakesSickThought && !this.pawn.Destroyed
-                && this.pawn.playerSettings.medCare >= 0)
+            if (pawn.health.hediffSet.AnyHediffMakesSickThought && !pawn.Destroyed
+                && pawn.playerSettings.medCare >= 0)
             {
                 if (hediffs != null)
                 {
@@ -1036,7 +944,7 @@
                             continue;
                         }
 
-                        if (Math.Abs(this.pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05)
+                        if (Math.Abs(pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05)
                         {
                             continue;
                         }
@@ -1077,10 +985,10 @@
                     }
                 }
             }
-            else if (this.pawn.health.summaryHealth.SummaryHealthPercent < 1f)
+            else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
             {
                 string tooltip = "Health".Translate() + ": "
-                                 + this.pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
+                                 + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
                 if (barSettings.ShowHealth)
                 {
                     barIconList.Add(new IconEntryBar(Icon.Health, gradient4.Evaluate(this.pawnHealth), tooltip));
@@ -1207,7 +1115,7 @@
             }
 
             // Bed status
-            if (this.pawn.ownership.OwnedBed != null)
+            if (pawn.ownership.OwnedBed != null)
             {
                 GetThought(
                     ThoughtDefOf.SharedBed,
@@ -1540,13 +1448,13 @@
             this.PSIIconList = psiIconList.OrderBy(x => x.icon).ToList();
         }
 
-        private void CheckJobs()
+        private void CheckJobs(Pawn pawn)
         {
             this.TargetPos = Vector3.zero;
-            if (this.pawn.jobs.curJob != null)
+            if (pawn.jobs.curJob != null)
             {
-                JobDriver curDriver = this.pawn.jobs.curDriver;
-                Job curJob = this.pawn.jobs.curJob;
+                JobDriver curDriver = pawn.jobs.curDriver;
+                Job curJob = pawn.jobs.curJob;
                 LocalTargetInfo targetInfo = curJob.targetA;
                 if (curDriver is JobDriver_HaulToContainer || curDriver is JobDriver_HaulToCell
                     || curDriver is JobDriver_FoodDeliver || curDriver is JobDriver_FoodFeedPatient
@@ -1555,9 +1463,9 @@
                     targetInfo = curJob.targetB;
                 }
 
-                if (curDriver is JobDriver_DoBill bill)
+                if (curDriver != null && curDriver is JobDriver_DoBill)
                 {
-                    JobDriver_DoBill jobDriverDoBill = bill;
+                    JobDriver_DoBill jobDriverDoBill = curDriver as JobDriver_DoBill;
                     if (jobDriverDoBill.workLeft >= 0.0)
                     {
                         targetInfo = curJob.targetA;
@@ -1568,7 +1476,7 @@
                     }
                 }
 
-                if (curDriver is JobDriver_Hunt && this.pawn.carryTracker?.CarriedThing != null)
+                if (curDriver is JobDriver_Hunt && pawn.carryTracker?.CarriedThing != null)
                 {
                     targetInfo = curJob.targetB;
                 }
@@ -1583,7 +1491,7 @@
                     targetInfo = null;
                 }
 
-                if (curJob.def == JobDefOf.LayDown && this.pawn.InBed())
+                if (curJob.def == JobDefOf.LayDown && pawn.InBed())
                 {
                     targetInfo = null;
                 }

@@ -139,10 +139,10 @@
             // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
             // new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
             // null);
-             harmony.Patch(
-                 AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
-                 new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
-                 null);
+            harmony.Patch(
+                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                null);
 
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.PostApplyDamage)),
@@ -183,7 +183,7 @@
 
         #region Methods
 
-        private static bool CaravanMemberCaravanAt_Prefix(ref Caravan __result, Vector2 at)
+        private static bool CaravanMemberCaravanAt_Prefix([CanBeNull] ref Caravan __result, Vector2 at)
         {
             if (!Visible)
             {
@@ -193,8 +193,8 @@
 
             Thing thing = null;
             ColonistOrCorpseAt_Prefix(ref thing, at);
-            Pawn pawn = thing as Pawn;
 
+            Pawn pawn = thing as Pawn;
             if (pawn != null && pawn.IsCaravanMember())
             {
                 __result = pawn.GetCaravan();
@@ -205,7 +205,7 @@
             return false;
         }
 
-        private static bool CaravanMembersCaravansInScreenRect_Prefix(ref List<Caravan> __result, Rect rect)
+        private static bool CaravanMembersCaravansInScreenRect_Prefix([NotNull] ref List<Caravan> __result, Rect rect)
         {
             BarHelperKf.tmpCaravans.Clear();
             if (!Visible)
@@ -224,7 +224,7 @@
             return false;
         }
 
-        private static bool ColonistOrCorpseAt_Prefix(ref Thing __result, Vector2 pos)
+        private static bool ColonistOrCorpseAt_Prefix([CanBeNull] ref Thing __result, Vector2 pos)
         {
             if (!Visible)
             {
@@ -258,7 +258,7 @@
             BarHelperKf.EntriesDirty = true;
         }
 
-        private static bool GetColonistsInOrder_Prefix(ref List<Pawn> __result)
+        private static bool GetColonistsInOrder_Prefix([NotNull] ref List<Pawn> __result)
         {
             List<EntryKF> entries = BarHelperKf.Entries;
             BarHelperKf.tmpColonistsInOrder.Clear();
@@ -304,7 +304,7 @@
             // Log.Message("Colonists marked dirty.01");
         }
 
-        private static void DeSpawn_Postfix(Thing __instance)
+        private static void DeSpawn_Postfix([NotNull] Thing __instance)
         {
             Pawn pawn = __instance as Pawn;
             if (pawn == null)
@@ -341,7 +341,7 @@
             }
         }
 
-        private static void Pawn_Kill_Postfix(Pawn __instance)
+        private static void Pawn_Kill_Postfix([NotNull] Pawn __instance)
         {
             if (__instance.Faction != null && __instance.Faction.IsPlayer
                 && Current.ProgramState == ProgramState.Playing)
@@ -356,7 +356,7 @@
             }
         }
 
-        private static void StopFollow_Prefix(Pawn __instance)
+        private static void StopFollow_Prefix([NotNull] Pawn __instance)
         {
             if (FollowMe.CurrentlyFollowing)
             {
@@ -364,14 +364,14 @@
             }
         }
 
-        private static void Pawn_PostApplyDamage_Postfix(Pawn __instance)
+        private static void Pawn_PostApplyDamage_Postfix([NotNull] Pawn __instance)
         {
             CompPSI compPSI = __instance.GetComp<CompPSI>();
 
             compPSI?.SetEntriesDirty();
         }
 
-        private static void NotifyColonistBar_Postfix(Corpse __instance)
+        private static void NotifyColonistBar_Postfix([NotNull] Corpse __instance)
         {
             Pawn InnerPawn = __instance.InnerPawn;
 
@@ -388,7 +388,7 @@
             }
         }
 
-        private static void NotifyColonistBarIfColonistCorpse_Postfix(Thing __instance)
+        private static void NotifyColonistBarIfColonistCorpse_Postfix([NotNull] Thing __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
             {

@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="EntryKF.cs" />
     <Compile Include="Menus\FloatMenuLabels.cs" />
     <Compile Include="Menus\Tools.cs" />
@@ -137,7 +138,6 @@
       <Link>Languages\Spanish\ColonistBar_KF.xml</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

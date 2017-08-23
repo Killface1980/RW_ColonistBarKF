@@ -4,6 +4,8 @@
 
     using Harmony;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -12,7 +14,7 @@
     {
         #region Public Constructors
 
-        public FloatMenuColonists(List<FloatMenuOption> options, string label)
+        public FloatMenuColonists([NotNull] List<FloatMenuOption> options, [NotNull] string label)
             : base(options, label, false)
         {
             this.givesColonistOrders = true;

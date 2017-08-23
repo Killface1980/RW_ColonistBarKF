@@ -8,6 +8,7 @@ namespace ColonistBarKF
     using System.Linq;
     using System.Reflection;
 
+
     using RimWorld;
     using RimWorld.Planet;
 
@@ -18,7 +19,41 @@ namespace ColonistBarKF
 
     public class FollowMe : GameComponent
     {
-        public FollowMe(Game game)
+        #region Public Fields
+
+        public static Thing _followedThing;
+
+        public static bool CurrentlyFollowing;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static readonly FieldInfo _cameraDriverDesiredDollyField =
+            typeof(CameraDriver).GetField("desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static readonly FieldInfo _cameraDriverRootPosField =
+            typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static bool _cameraHasJumpedAtLeastOnce;
+
+        private static bool _enabled = true;
+
+        [NotNull]
+        private readonly KeyBindingDef[] _followBreakingKeyBindingDefs =
+            {
+                KeyBindingDefOf.MapDollyDown, KeyBindingDefOf.MapDollyUp, KeyBindingDefOf.MapDollyRight,
+                KeyBindingDefOf.MapDollyLeft
+            };
+
+        [NotNull]
+        private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public FollowMe([NotNull] Game game)
         {
             // noop
         }
@@ -27,8 +62,11 @@ namespace ColonistBarKF
         {
         }
 
-        #region Properties
+        #endregion Public Constructors
 
+        #region Public Properties
+
+        [NotNull]
         public static string FollowedLabel
         {
             get
@@ -38,7 +76,8 @@ namespace ColonistBarKF
                     return string.Empty;
                 }
 
-                if (_followedThing is Pawn pawn)
+                Pawn pawn = _followedThing as Pawn;
+                if (pawn != null)
                 {
                     return pawn.NameStringShort;
                 }
@@ -47,57 +86,80 @@ namespace ColonistBarKF
             }
         }
 
-        #endregion Properties
+        #endregion Public Properties
 
-        #region Fields
+        #region Private Properties
 
-        private static readonly FieldInfo _cameraDriverRootPosField =
-            typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
-
-        private static readonly FieldInfo _cameraDriverDesiredDollyField =
-            typeof(CameraDriver).GetField("desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic);
-
-        private static bool _cameraHasJumpedAtLeastOnce;
-
-        public static bool CurrentlyFollowing;
-
-        private static bool _enabled = true;
-
-        public static Thing _followedThing;
-
-        private readonly KeyBindingDef[] _followBreakingKeyBindingDefs =
-            {
-                KeyBindingDefOf.MapDollyDown, KeyBindingDefOf.MapDollyUp, KeyBindingDefOf.MapDollyRight,
-                KeyBindingDefOf.MapDollyLeft
-            };
-
-        private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
-
-        #endregion Fields
-
-        #region Methods
-
-        public override void LoadedGame()
+        private static Vector2 CameraDesiredDolly
         {
-            if (CurrentlyFollowing)
+            get
             {
-                StopFollow("Game loaded");
-            }
+                if (_cameraDriverDesiredDollyField == null)
+                {
+                    throw new NullReferenceException("CameraDriver.desiredDolly field info NULL");
+                }
 
-            base.LoadedGame();
+                return (Vector2)_cameraDriverDesiredDollyField.GetValue(Find.CameraDriver);
+            }
         }
 
-        public override void StartedNewGame()
+        private static Vector3 CameraRootPosition
         {
-            if (CurrentlyFollowing)
+            get
             {
-                StopFollow("New game started");
-            }
+                if (_cameraDriverRootPosField == null)
+                {
+                    throw new NullReferenceException("CameraDriver.rootPos field info NULL");
+                }
 
-            base.StartedNewGame();
+                return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
+            }
         }
 
-        public static void TryStartFollow(Thing thing)
+        private static bool MouseOverUI => Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
+
+        #endregion Private Properties
+
+        #region Public Methods
+
+        public static void StopFollow([NotNull] string reason)
+        {
+#if DEBUG
+            Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
+#endif
+
+            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
+            _followedThing = null;
+            CurrentlyFollowing = false;
+            _cameraHasJumpedAtLeastOnce = false;
+        }
+
+        public static void TryJumpSmooth(GlobalTargetInfo target)
+        {
+            target = CameraJumper.GetAdjustedTarget(target);
+            if (!target.IsValid)
+            {
+                StopFollow("invalid target");
+                return;
+            }
+
+            // we have to use our own logic for following spawned things, as CameraJumper
+            // uses integer positions - which would be jerky.
+            if (target.HasThing)
+            {
+                TryJumpSmoothInternal(target.Thing);
+            }
+
+            // However, if we don't have a thing to follow, integer positions will do just fine.
+            else
+            {
+                CameraJumper.TryJump(target);
+            }
+
+            _cameraHasJumpedAtLeastOnce = true;
+        }
+
+        public static void TryStartFollow([CanBeNull] Thing thing)
         {
             if (!CurrentlyFollowing && thing == null)
             {
@@ -114,43 +176,16 @@ namespace ColonistBarKF
                     Messages.Message("FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput);
                 }
             }
-
-            // cancel current follow (toggle or thing == null)
             else if (CurrentlyFollowing && thing == null || thing == _followedThing)
             {
+                // cancel current follow (toggle or thing == null)
                 StopFollow("toggled");
             }
-
-            // follow new thing
             else if (thing != null)
             {
+                // follow new thing
                 StartFollow(thing);
             }
-        }
-
-        private static void StartFollow(Thing thing)
-        {
-            if (thing == null)
-            {
-                throw new ArgumentNullException(nameof(thing));
-            }
-
-            _followedThing = thing;
-            CurrentlyFollowing = true;
-
-            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
-        }
-
-        public static void StopFollow(string reason)
-        {
-#if DEBUG
-            Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
-#endif
-
-            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
-            _followedThing = null;
-            CurrentlyFollowing = false;
-            _cameraHasJumpedAtLeastOnce = false;
         }
 
         // public override void GameComponentOnGUI()
@@ -208,6 +243,38 @@ namespace ColonistBarKF
             }
         }
 
+        public override void LoadedGame()
+        {
+            if (CurrentlyFollowing)
+            {
+                StopFollow("Game loaded");
+            }
+
+            base.LoadedGame();
+        }
+
+        public override void StartedNewGame()
+        {
+            if (CurrentlyFollowing)
+            {
+                StopFollow("New game started");
+            }
+
+            base.StartedNewGame();
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static void CheckDolly()
+        {
+            if (CameraDesiredDolly != Vector2.zero)
+            {
+                StopFollow("dolly");
+            }
+        }
+
         private static void Follow()
         {
             if (!CurrentlyFollowing || _followedThing?.Map == null)
@@ -218,32 +285,14 @@ namespace ColonistBarKF
             TryJumpSmooth(_followedThing);
         }
 
-        public static void TryJumpSmooth(GlobalTargetInfo target)
+        private static void StartFollow([NotNull] Thing thing)
         {
-            target = CameraJumper.GetAdjustedTarget(target);
-            if (!target.IsValid)
-            {
-                StopFollow("invalid target");
-                return;
-            }
+            _followedThing = thing;
+            CurrentlyFollowing = true;
 
-            // we have to use our own logic for following spawned things, as CameraJumper
-            // uses integer positions - which would be jerky.
-            if (target.HasThing)
-            {
-                TryJumpSmoothInternal(target.Thing);
-            }
-
-            // However, if we don't have a thing to follow, integer positions will do just fine.
-            else
-            {
-                CameraJumper.TryJump(target);
-            }
-
-            _cameraHasJumpedAtLeastOnce = true;
+            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
-
-        private static void TryJumpSmoothInternal(Thing thing)
+        private static void TryJumpSmoothInternal([NotNull] Thing thing)
         {
             // copypasta from Verse.CameraJumper.TryJumpInternal( Thing ),
             // but with drawPos instead of PositionHeld.
@@ -272,49 +321,6 @@ namespace ColonistBarKF
                 StopFollow("invalid thing position");
             }
         }
-
-        private static Vector3 CameraRootPosition
-        {
-            get
-            {
-                if (_cameraDriverRootPosField == null)
-                {
-                    throw new NullReferenceException("CameraDriver.rootPos field info NULL");
-                }
-
-                return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
-            }
-        }
-
-        private static Vector2 CameraDesiredDolly
-        {
-            get
-            {
-                if (_cameraDriverDesiredDollyField == null)
-                {
-                    throw new NullReferenceException("CameraDriver.desiredDolly field info NULL");
-                }
-
-                return (Vector2)_cameraDriverDesiredDollyField.GetValue(Find.CameraDriver);
-            }
-        }
-
-        private static void CheckDolly()
-        {
-            if (CameraDesiredDolly != Vector2.zero)
-            {
-                StopFollow("dolly");
-            }
-        }
-
-        private void CheckKeyScroll()
-        {
-            if (this._followBreakingKeyBindingDefs.Any(key => key.IsDown))
-            {
-                StopFollow("moved map (key)");
-            }
-        }
-
         private void CheckCameraJump()
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
@@ -337,8 +343,13 @@ namespace ColonistBarKF
             }
         }
 
-        private static bool MouseOverUI => Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
-
+        private void CheckKeyScroll()
+        {
+            if (this._followBreakingKeyBindingDefs.Any(key => key.IsDown))
+            {
+                StopFollow("moved map (key)");
+            }
+        }
         private void CheckScreenEdgeScroll()
         {
             if (!Prefs.EdgeScreenScroll || MouseOverUI)
@@ -365,6 +376,7 @@ namespace ColonistBarKF
             }
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
     }
 }

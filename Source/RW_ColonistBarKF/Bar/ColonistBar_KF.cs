@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
     using RimWorld.Planet;
 
@@ -18,8 +20,10 @@
 
         public static ColBarHelper_KF BarHelperKf = new ColBarHelper_KF();
 
+        [NotNull]
         public static ColonistBarColonistDrawer_KF drawer = new ColonistBarColonistDrawer_KF();
 
+        [NotNull]
         public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
 
         private const float PawnTextureHorizontalPadding = 1f;
@@ -97,6 +101,7 @@
 
         #region Methods
 
+        [NotNull]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
             BarHelperKf.tmpCaravanPawns.Clear();
@@ -183,6 +188,7 @@
             return false;
         }
 
+        [NotNull]
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
             List<Vector2> drawLocs = BarHelperKf.DrawLocs;
@@ -211,21 +217,25 @@
                 }
             }
 
+            bool flag = true;
+
             if (WorldRendererUtility.WorldRenderedNow)
             {
                 if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == null))
                 {
                     BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != null);
-                    goto IL_1A1;
+                    flag = false;
                 }
             }
 
-            if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+            if (flag)
             {
-                BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+                {
+                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                }
             }
 
-            IL_1A1:
             BarHelperKf.tmpColonists.Clear();
             for (int j = 0; j < BarHelperKf.tmpColonistsWithMap.Count; j++)
             {
