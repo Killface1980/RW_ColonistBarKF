@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using RimWorld;
-
     using static Settings;
 
     using UnityEngine;
@@ -13,21 +11,21 @@
 
     public class ColonistBarDrawLocsFinder_KF
     {
-        #region Properties
+
+        #region Private Fields
+
+        private readonly List<int> entriesInGroup = new List<int>();
+        private readonly List<int> horizontalSlotsPerGroup = new List<int>();
+
+        #endregion Private Fields
+
+        #region Private Properties
 
         private static float MaxColonistBarWidth => UI.screenWidth - ColBarSettings.MarginHorizontal;
 
-        #endregion Properties
+        #endregion Private Properties
 
-        #region Fields
-
-        private readonly List<int> entriesInGroup = new List<int>();
-
-        private readonly List<int> horizontalSlotsPerGroup = new List<int>();
-
-        #endregion Fields
-
-        #region Methods
+        #region Public Methods
 
         public void CalculateDrawLocs(List<Vector2> outDrawLocs, out float scale)
         {
@@ -44,6 +42,10 @@
 
             this.CalculateDrawLocs(outDrawLocs, scale, onlyOneRow, maxPerGlobalRow);
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         // modded
         private static int GetAllowedRowsCountForScale(float scale)
@@ -318,13 +320,13 @@
             {
                 if (this.horizontalSlotsPerGroup[j] == 0)
                 {
-                    int num2 = this.horizontalSlotsPerGroup.Max();
-                    if (num2 <= 1)
+                    int maxSlots = this.horizontalSlotsPerGroup.Max();
+                    if (maxSlots <= 1)
                     {
                         return false;
                     }
 
-                    int num3 = this.horizontalSlotsPerGroup.IndexOf(num2);
+                    int num3 = this.horizontalSlotsPerGroup.IndexOf(maxSlots);
                     List<int> list;
                     List<int> listInt = list = this.horizontalSlotsPerGroup;
                     int num4;
@@ -332,16 +334,17 @@
                     num4 = list[num4];
                     listInt[index] = num4 - 1;
                     List<int> list2;
-                    List<int> expr_AB = list2 = this.horizontalSlotsPerGroup;
+                    List<int> slots = list2 = this.horizontalSlotsPerGroup;
                     int integerK = num4 = j;
                     num4 = list2[num4];
-                    expr_AB[integerK] = num4 + 1;
+                    slots[integerK] = num4 + 1;
                 }
             }
 
             return true;
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
     }
 }

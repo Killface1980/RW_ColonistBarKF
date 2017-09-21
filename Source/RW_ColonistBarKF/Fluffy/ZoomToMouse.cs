@@ -1,4 +1,4 @@
-﻿namespace ColonistBarKF
+﻿namespace ColonistBarKF.Fluffy
 {
     using System.Reflection;
 
@@ -11,23 +11,24 @@
         // backing private fields / properties
         private const BindingFlags AllFlags = (BindingFlags)60;
 
-        [NotNull]
+        // ReSharper disable once InconsistentNaming
         private readonly MethodInfo _curPos = typeof(CameraDriver).GetProperty("CurrentRealPosition", AllFlags)
             .GetGetMethod(true);
 
-        [NotNull]
+        // ReSharper disable once InconsistentNaming
         private readonly FieldInfo _curSizeFi = typeof(CameraDriver).GetField("rootSize", AllFlags);
 
-        [NotNull]
+        // ReSharper disable once InconsistentNaming
         private readonly FieldInfo _desSizeFi = typeof(CameraDriver).GetField("desiredSize", AllFlags);
 
         // helpers
+        // ReSharper disable once InconsistentNaming
         private Vector3 _lastMouseMapPosition = Vector3.zero;
 
         // tolerance for zoom
-        private readonly float tolerance = .1f;
+        private readonly float tolerance = 0.1f;
 
-        public ZoomToMouse([NotNull] Game game)
+        public ZoomToMouse(Game game)
         {
             // nothing
         }

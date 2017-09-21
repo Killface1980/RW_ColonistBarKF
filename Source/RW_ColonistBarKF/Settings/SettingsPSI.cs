@@ -1,5 +1,6 @@
 ﻿namespace ColonistBarKF
 {
+    using JetBrains.Annotations;
     public class SettingsPSI
     {
         // PSI settings

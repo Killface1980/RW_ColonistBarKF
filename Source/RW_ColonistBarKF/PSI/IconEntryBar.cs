@@ -1,5 +1,7 @@
 ﻿namespace ColonistBarKF.PSI
 {
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     public struct IconEntryBar

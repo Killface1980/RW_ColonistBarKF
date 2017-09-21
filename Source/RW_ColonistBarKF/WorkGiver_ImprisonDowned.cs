@@ -41,18 +41,18 @@ namespace ColonistBarKF
 
             if (victim.Faction.HostileTo(Faction.OfPlayer))
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, true, false, false);
+                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, true, false);
                 if (building_Bed == null)
                 {
                     building_Bed = RestUtility.FindBedFor(victim, pawn, true, false, true);
                 }
 
-                return building_Bed != null && victim.CanReserve(building_Bed, 1, -1, null, false);
+                return building_Bed != null && victim.CanReserve(building_Bed);
             }
             else
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false, false);
-                return building_Bed != null && victim.CanReserve(building_Bed, 1, -1, null, false);
+                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
+                return building_Bed != null && victim.CanReserve(building_Bed);
             }
         }
 
@@ -64,7 +64,7 @@ namespace ColonistBarKF
 
             if (hostile)
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, true, false, false);
+                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, true, false);
                 if (building_Bed == null)
                 {
                     building_Bed = RestUtility.FindBedFor(victim, pawn, true, false, true);
@@ -82,7 +82,7 @@ namespace ColonistBarKF
             }
             else
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false, false);
+                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
                 if (building_Bed == null)
                 {
                     Messages.Message("CannotTreat".Translate() + ": " + "NoGuestBed".Translate(), victim, MessageSound.RejectInput);

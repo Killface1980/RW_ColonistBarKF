@@ -25,7 +25,7 @@
     {
         #region Public Fields
 
-        public Color bgColor = Color.gray;
+        private Color bgColor = Color.gray;
 
         public bool hasRelationWithColonist;
 
@@ -218,7 +218,7 @@
 
         #region Public Methods
 
-        public void CheckRelationWithColonists(Pawn pawn)
+        private void CheckRelationWithColonists(Pawn pawn)
         {
             bool skip = false;
 
@@ -238,7 +238,7 @@
             }
         }
 
-        public void CheckStats()
+        private void CheckStats()
         {
             // if (Find.TickManager.CurTimeSpeed == TimeSpeed.Paused)
             // {
@@ -574,7 +574,7 @@
             float efficiencyTotal = 1f;
             string efficiencyTip = null;
             bool flag2 = false;
-            array = GameComponentPSI._pawnCapacities;
+            array = GameComponentPSI.pawnCapacities;
             foreach (PawnCapacityDef pawnCapacityDef in array)
             {
                 {

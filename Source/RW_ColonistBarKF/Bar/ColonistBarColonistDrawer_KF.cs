@@ -7,9 +7,10 @@
 
     using ColonistBarKF.Menus;
     using ColonistBarKF.PSI;
-    using FacialStuff.Detouring;
 
     using Harmony;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
     using RimWorld.Planet;
@@ -107,7 +108,7 @@
 
                 GUI.color = color;
 
-                if (colonist.needs?.mood != null)
+                if (colonist.needs?.mood?.thoughts != null)
                 {
                     if (ColBarSettings.UseExternalMoodBar || ColBarSettings.UseNewMood)
                     {
@@ -450,8 +451,8 @@
                                     return Tools.MakeMenuItemForLabel(label, fmo);
                                 }).ToList();
 
-                        Tools.labelMenu = new FloatMenuLabels(items);
-                        Find.WindowStack.Add(Tools.labelMenu);
+                        Tools.LabelMenu = new FloatMenuLabels(items);
+                        Find.WindowStack.Add(Tools.LabelMenu);
 
                         // use event so it doesn't bubble through
                         Event.current.Use();
@@ -599,7 +600,7 @@
                         {
                             if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
                             {
-                                SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                                SoundDefOf.MapSelected.PlayOneShotOnCamera();
                             }
 
                             Current.Game.VisibleMap = map;
@@ -1044,7 +1045,7 @@
             pos.x += num;
         }
 
-        private void DrawIcons(Rect rect, [JetBrains.Annotations.NotNull] Pawn colonist)
+        private void DrawIcons(Rect rect, [NotNull] Pawn colonist)
         {
             if (colonist.Dead)
             {

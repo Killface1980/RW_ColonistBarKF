@@ -5,7 +5,7 @@ namespace ColonistBarKF.PSI
 {
     using System.Collections.Generic;
 
-    using FacialStuff.Detouring;
+    using JetBrains.Annotations;
 
     using RimWorld;
     using RimWorld.Planet;
@@ -23,7 +23,7 @@ namespace ColonistBarKF.PSI
         #region Public Fields
 
         [NotNull]
-        public static PawnCapacityDef[] _pawnCapacities;
+        public static PawnCapacityDef[] pawnCapacities;
 
         [NotNull]
         public static Vector3[] IconPosRectsBar;
@@ -109,7 +109,7 @@ namespace ColonistBarKF.PSI
             pawnStats.thisColCount = colCount;
         }
 
-        public static void DrawColonistIconsPSI([NotNull] Pawn pawn)
+        private static void DrawColonistIconsPSI([NotNull] Pawn pawn)
         {
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
@@ -186,7 +186,7 @@ namespace ColonistBarKF.PSI
             }
         }
 
-        public static void DrawColonistRelationIconsPSI([NotNull] Pawn pawn)
+        private static void DrawColonistRelationIconsPSI([NotNull] Pawn pawn)
         {
             // Log.Message("Begin Drawing");
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
@@ -236,14 +236,14 @@ namespace ColonistBarKF.PSI
 
         public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
         {
-            _pawnCapacities = new[]
-                                  {
-                                      PawnCapacityDefOf.BloodFiltration, PawnCapacityDefOf.BloodPumping,
-                                      PawnCapacityDefOf.Breathing, PawnCapacityDefOf.Consciousness,
-                                      PawnCapacityDefOf.Eating, PawnCapacityDefOf.Hearing,
-                                      PawnCapacityDefOf.Manipulation, PawnCapacityDefOf.Metabolism,
-                                      PawnCapacityDefOf.Moving, PawnCapacityDefOf.Sight, PawnCapacityDefOf.Talking
-                                  };
+            pawnCapacities = new[]
+                                 {
+                                     PawnCapacityDefOf.BloodFiltration, PawnCapacityDefOf.BloodPumping,
+                                     PawnCapacityDefOf.Breathing, PawnCapacityDefOf.Consciousness,
+                                     PawnCapacityDefOf.Eating, PawnCapacityDefOf.Hearing,
+                                     PawnCapacityDefOf.Manipulation, PawnCapacityDefOf.Metabolism,
+                                     PawnCapacityDefOf.Moving, PawnCapacityDefOf.Sight, PawnCapacityDefOf.Talking
+                                 };
 
             if (reloadSettings)
             {
@@ -443,6 +443,7 @@ namespace ColonistBarKF.PSI
 
             DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
         }
+
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)
         // {
         // return thoughts.Any(thought => thought.def == tdef);

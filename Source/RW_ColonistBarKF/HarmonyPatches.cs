@@ -1,14 +1,13 @@
-﻿namespace FacialStuff.Detouring
+﻿namespace ColonistBarKF
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using ColonistBarKF;
     using ColonistBarKF.Bar;
-    using static ColonistBarKF.Bar.ColonistBar_KF;
 
     using Harmony;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
     using RimWorld.Planet;
@@ -21,8 +20,6 @@
     internal class HarmonyPatches
     {
         #region Fields
-
-        private static bool flag;
 
         #endregion Fields
 
@@ -51,7 +48,7 @@
 
             harmony.Patch(
                 AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI)),
-                new HarmonyMethod(typeof(ColonistBar_KF), nameof(ColonistBarOnGUI_Prefix)),
+                new HarmonyMethod(typeof(ColonistBar_KF), nameof(ColonistBar_KF.ColonistBarOnGUI_Prefix)),
                 null);
 
             harmony.Patch(
@@ -185,7 +182,7 @@
 
         private static bool CaravanMemberCaravanAt_Prefix([CanBeNull] ref Caravan __result, Vector2 at)
         {
-            if (!Visible)
+            if (!ColonistBar_KF.Visible)
             {
                 __result = null;
                 return false;
@@ -207,32 +204,32 @@
 
         private static bool CaravanMembersCaravansInScreenRect_Prefix([NotNull] ref List<Caravan> __result, Rect rect)
         {
-            BarHelperKf.tmpCaravans.Clear();
-            if (!Visible)
+            ColonistBar_KF.BarHelperKf.tmpCaravans.Clear();
+            if (!ColonistBar_KF.Visible)
             {
-                __result = BarHelperKf.tmpCaravans;
+                __result = ColonistBar_KF.BarHelperKf.tmpCaravans;
                 return false;
             }
 
-            List<Pawn> list = CaravanMembersInScreenRect(rect);
+            List<Pawn> list = ColonistBar_KF.CaravanMembersInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
-                BarHelperKf.tmpCaravans.Add(list[i].GetCaravan());
+                ColonistBar_KF.BarHelperKf.tmpCaravans.Add(list[i].GetCaravan());
             }
 
-            __result = BarHelperKf.tmpCaravans;
+            __result = ColonistBar_KF.BarHelperKf.tmpCaravans;
             return false;
         }
 
         private static bool ColonistOrCorpseAt_Prefix([CanBeNull] ref Thing __result, Vector2 pos)
         {
-            if (!Visible)
+            if (!ColonistBar_KF.Visible)
             {
                 __result = null;
                 return false;
             }
 
-            if (!BarHelperKf.TryGetEntryAt(pos, out EntryKF entry))
+            if (!ColonistBar_KF.BarHelperKf.TryGetEntryAt(pos, out EntryKF entry))
             {
                 __result = null;
                 return false;
@@ -255,51 +252,51 @@
 
         private static void EntriesDirty_Postfix()
         {
-            BarHelperKf.EntriesDirty = true;
+            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
         }
 
         private static bool GetColonistsInOrder_Prefix([NotNull] ref List<Pawn> __result)
         {
-            List<EntryKF> entries = BarHelperKf.Entries;
-            BarHelperKf.tmpColonistsInOrder.Clear();
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
+            ColonistBar_KF.BarHelperKf.tmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].pawn != null)
                 {
-                    BarHelperKf.tmpColonistsInOrder.Add(entries[i].pawn);
+                    ColonistBar_KF.BarHelperKf.tmpColonistsInOrder.Add(entries[i].pawn);
                 }
             }
 
-            __result = BarHelperKf.tmpColonistsInOrder;
+            __result = ColonistBar_KF.BarHelperKf.tmpColonistsInOrder;
             return false;
         }
 
         private static bool MapColonistsOrCorpsesInScreenRect_Prefix(ref List<Thing> __result, Rect rect)
         {
-            BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Clear();
-            if (!Visible)
+            ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Clear();
+            if (!ColonistBar_KF.Visible)
             {
-                __result = BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
+                __result = ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
                 return false;
             }
 
-            List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
+            List<Thing> list = ColonistBar_KF.ColonistsOrCorpsesInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].Spawned)
                 {
-                    BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
+                    ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
                 }
             }
 
-            __result = BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
+            __result = ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
             return false;
         }
 
         public static void MarkColonistsDirty_Postfix()
         {
-            RecalcSizes();
-            BarHelperKf.EntriesDirty = true;
+            ColonistBar_KF.RecalcSizes();
+            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
 
             // Log.Message("Colonists marked dirty.01");
         }
@@ -409,17 +406,17 @@
             }
         }
 
-        private static void PlaySettingsDirty_Postfix()
+        private static void PlaySettingsDirty_Postfix(bool __state)
         {
-            if (flag != Find.PlaySettings.showColonistBar)
+            if (__state != Find.PlaySettings.showColonistBar)
             {
                 EntriesDirty_Postfix();
             }
         }
 
-        private static void PlaySettingsDirty_Prefix()
+        private static void PlaySettingsDirty_Prefix(bool __state)
         {
-            flag = Find.PlaySettings.showColonistBar;
+            __state = Find.PlaySettings.showColonistBar;
         }
 
         private static void Pawn_SpawnSetup_Postfix(Pawn __instance)

@@ -8,6 +8,7 @@ namespace ColonistBarKF
     using System.Linq;
     using System.Reflection;
 
+    using JetBrains.Annotations;
 
     using RimWorld;
     using RimWorld.Planet;
@@ -19,6 +20,7 @@ namespace ColonistBarKF
 
     public class FollowMe : GameComponent
     {
+
         #region Public Fields
 
         public static Thing _followedThing;
@@ -67,7 +69,7 @@ namespace ColonistBarKF
         #region Public Properties
 
         [NotNull]
-        public static string FollowedLabel
+        private static string FollowedLabel
         {
             get
             {
@@ -116,6 +118,7 @@ namespace ColonistBarKF
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         private static bool MouseOverUI => Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
 
         #endregion Private Properties
@@ -125,7 +128,7 @@ namespace ColonistBarKF
         public static void StopFollow([NotNull] string reason)
         {
 #if DEBUG
-            Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
+            Log.Message($"FollowMe :: Stopped following {FollowedLabel} :: {reason}");
 #endif
 
             Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
@@ -134,7 +137,7 @@ namespace ColonistBarKF
             _cameraHasJumpedAtLeastOnce = false;
         }
 
-        public static void TryJumpSmooth(GlobalTargetInfo target)
+        private static void TryJumpSmooth(GlobalTargetInfo target)
         {
             target = CameraJumper.GetAdjustedTarget(target);
             if (!target.IsValid)
@@ -149,10 +152,9 @@ namespace ColonistBarKF
             {
                 TryJumpSmoothInternal(target.Thing);
             }
-
-            // However, if we don't have a thing to follow, integer positions will do just fine.
             else
             {
+                // However, if we don't have a thing to follow, integer positions will do just fine.
                 CameraJumper.TryJump(target);
             }
 
@@ -234,10 +236,9 @@ namespace ColonistBarKF
                 // move camera
                 Follow();
             }
-
-            // catch exception to avoid error spam
             catch (Exception e)
             {
+                // catch exception to avoid error spam
                 _enabled = false;
                 Log.Error(e.ToString());
             }
@@ -292,6 +293,7 @@ namespace ColonistBarKF
 
             Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
+
         private static void TryJumpSmoothInternal([NotNull] Thing thing)
         {
             // copypasta from Verse.CameraJumper.TryJumpInternal( Thing ),
@@ -310,7 +312,7 @@ namespace ColonistBarKF
                     Current.Game.VisibleMap = mapHeld;
                     if (!flag)
                     {
-                        SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                        SoundDefOf.MapSelected.PlayOneShotOnCamera();
                     }
                 }
 
@@ -321,6 +323,7 @@ namespace ColonistBarKF
                 StopFollow("invalid thing position");
             }
         }
+
         private void CheckCameraJump()
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
@@ -350,6 +353,7 @@ namespace ColonistBarKF
                 StopFollow("moved map (key)");
             }
         }
+
         private void CheckScreenEdgeScroll()
         {
             if (!Prefs.EdgeScreenScroll || MouseOverUI)
@@ -377,6 +381,5 @@ namespace ColonistBarKF
         }
 
         #endregion Private Methods
-
     }
 }

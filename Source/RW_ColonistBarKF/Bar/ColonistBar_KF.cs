@@ -26,8 +26,6 @@
         [NotNull]
         public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
 
-        private const float PawnTextureHorizontalPadding = 1f;
-
         #endregion Fields
 
         #region Properties
@@ -38,7 +36,7 @@
                                               Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical
                                               + HeightPSIVertical) * Scale;
 
-        public static float HeightMoodBarVertical { get; private set; }
+        private static float HeightMoodBarVertical { get; set; }
 
         public static float HeightPSIVertical { get; private set; }
 
@@ -70,7 +68,7 @@
 
         public static bool Visible => UI.screenWidth >= 800 && UI.screenHeight >= 500;
 
-        public static float WidthMoodBarHorizontal { get; private set; }
+        private static float WidthMoodBarHorizontal { get; set; }
 
         public static float WidthPSIHorizontal { get; private set; }
 

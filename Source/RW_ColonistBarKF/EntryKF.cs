@@ -1,7 +1,7 @@
 ﻿namespace ColonistBarKF
 {
+    using JetBrains.Annotations;
     using Verse;
-
     public struct EntryKF
     {
         [CanBeNull]

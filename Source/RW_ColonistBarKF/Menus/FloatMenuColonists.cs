@@ -14,8 +14,8 @@
     {
         #region Public Constructors
 
-        public FloatMenuColonists([NotNull] List<FloatMenuOption> options, [NotNull] string label)
-            : base(options, label, false)
+        public FloatMenuColonists([NotNull] List<FloatMenuOption> options, [CanBeNull] string label)
+            : base(options, label)
         {
             this.givesColonistOrders = true;
             this.vanishIfMouseDistant = true;

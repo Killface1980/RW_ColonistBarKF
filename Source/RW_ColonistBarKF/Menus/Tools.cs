@@ -12,21 +12,27 @@
 
     public static class Tools
     {
+
         #region Public Fields
 
-        public static FloatMenuColonists actionMenu;
-        public static FloatMenuLabels labelMenu;
+        public static FloatMenuLabels LabelMenu;
 
         #endregion Public Fields
+
+        #region Private Fields
+
+        private static FloatMenuColonists actionMenu;
+
+        #endregion Private Fields
 
         #region Public Methods
 
         public static void CloseLabelMenu(bool sound)
         {
-            if (labelMenu != null)
+            if (LabelMenu != null)
             {
-                Find.WindowStack.TryRemove(labelMenu, sound);
-                labelMenu = null;
+                Find.WindowStack.TryRemove(LabelMenu, sound);
+                LabelMenu = null;
             }
         }
 
@@ -35,49 +41,54 @@
             // List<SortByWhat> sortByWhats = fmo.Keys.ToList();
             List<FloatMenuOption> options = fmo.ToList();
             string labelFixed = label;
-            FloatMenuOptionNoClose option = new FloatMenuOptionNoClose(labelFixed, () =>
-                             {
-                                 if (options.Count() == 1 && options[0].Disabled == false)
-                                 {
-                                     Action action = options[0].action;
-                                     if (action != null)
-                                     {
-                                         CloseLabelMenu(true);
-                                         action();
-                                     }
-                                 }
-                                 else
-                                 {
-                                     int i = 0;
-                                     List<FloatMenuOption> actions = new List<FloatMenuOption>();
-                                     fmo.Do(menuOption =>
-                                         {
-                                             actions.Add(
-                                                 new FloatMenuOption(
-                                                     menuOption.Label,
-                                                     () =>
-                                                         {
-                                                             FloatMenuOption pawnOption = menuOption;
-                                                             actionMenu.Close(true);
-                                                             CloseLabelMenu(true);
-                                                             pawnOption.action();
-                                                         },
-                                                     (MenuOptionPriority)i++,
-                                                     () =>
-                                                         {
-                                                             // PathInfo.current = pawn;
-                                                         }));
-                                         });
-                                     actionMenu = new FloatMenuColonists(actions, null);
-                                     Find.WindowStack.Add(actionMenu);
-                                 }
-                             })
-            {
-                Disabled = options.All(o => o.Disabled)
-            };
+            FloatMenuOptionNoClose option = new FloatMenuOptionNoClose(
+                                                labelFixed,
+                                                () =>
+                                                    {
+                                                        if (options.Count() == 1 && options[0].Disabled == false)
+                                                        {
+                                                            Action action = options[0].action;
+                                                            if (action != null)
+                                                            {
+                                                                CloseLabelMenu(true);
+                                                                action();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            int i = 0;
+                                                            List<FloatMenuOption> actions = new List<FloatMenuOption>();
+                                                            fmo.Do(
+                                                                menuOption =>
+                                                                    {
+                                                                        FloatMenuOption floatMenuOption = new FloatMenuOption(
+                                                                            menuOption.Label,
+                                                                            () =>
+                                                                                {
+                                                                                    FloatMenuOption pawnOption =
+                                                                                        menuOption;
+                                                                                    actionMenu.Close();
+                                                                                    CloseLabelMenu(true);
+                                                                                    pawnOption.action();
+                                                                                },
+                                                                            (MenuOptionPriority)i++,
+                                                                            () =>
+                                                                                {
+                                                                                    // PathInfo.current = pawn;
+                                                                                });
+                                                                        actions.Add(
+                                                                            floatMenuOption);
+                                                                    });
+                                                            actionMenu = new FloatMenuColonists(actions, null);
+                                                            Find.WindowStack.Add(actionMenu);
+                                                        }
+                                                    }) {
+                                                          Disabled = options.All(o => o.Disabled) 
+                                                       };
             return option;
         }
 
         #endregion Public Methods
+
     }
 }

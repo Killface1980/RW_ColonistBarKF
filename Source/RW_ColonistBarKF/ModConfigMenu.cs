@@ -8,8 +8,6 @@ namespace ColonistBarKF
 
     using ColonistBarKF.Bar;
 
-    using FacialStuff.Detouring;
-
     using JetBrains.Annotations;
 
     using static Settings;
@@ -21,18 +19,9 @@ namespace ColonistBarKF
     public class ColonistBarKfSettings : Window
     {
 
-        #region Public Fields
-
-        public static int Lastupdate = -5000;
-
-        // private static ColorWrapper colourWrapper;
-        public Window OptionsDialog;
-
-        #endregion Public Fields
-
         #region Private Fields
 
-        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.1";
+        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.2";
 
         private static int iconLimit;
 
@@ -59,11 +48,11 @@ namespace ColonistBarKF
             new GUIStyle
             {
                 normal = {
-                                background = ColonistBarTextures.DarkGrayFond
-                             },
+                            background = ColonistBarTextures.DarkGrayFond 
+                         },
                 hover = {
-                               background = ColonistBarTextures.RedHover
-                            }
+                           background = ColonistBarTextures.RedHover 
+                        }
             };
 
         [NotNull]
@@ -72,8 +61,8 @@ namespace ColonistBarKF
             {
                 fontStyle = FontStyle.Bold,
                 normal = {
-                                textColor = Color.white
-                             },
+                            textColor = Color.white 
+                         },
                 padding = new RectOffset(0, 0, 5, 0)
             };
 
@@ -83,14 +72,14 @@ namespace ColonistBarKF
         [NotNull]
         private readonly GUIStyle headline =
             new GUIStyle
-            {
-                fontStyle = FontStyle.Bold,
-                fontSize = 16,
-                normal = {
-                                textColor = Color.white
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 16,
+                    normal = {
+                                textColor = Color.white 
                              },
-                padding = new RectOffset(0, 0, 12, 6)
-            };
+                    padding = new RectOffset(0, 0, 12, 6)
+                };
 
         [NotNull]
         private readonly string[] mainToolbarStrings =
@@ -142,7 +131,7 @@ namespace ColonistBarKF
             this.preventCameraMotion = false;
             this.resizeable = true;
             this.onlyOneOfTypeAllowed = true;
-            Reinit(false, true);
+            Reinit(false);
         }
 
         #endregion Public Constructors
@@ -444,7 +433,7 @@ namespace ColonistBarKF
 
                 case 1:
                     {
-                       // LabelHeadline("PSI.Settings.Title".Translate());
+                        // LabelHeadline("PSI.Settings.Title".Translate());
                         GUILayout.Space(Text.LineHeight);
 
                         int toolbarInt = Mathf.FloorToInt(viewRect.width / 150f);
@@ -529,7 +518,7 @@ namespace ColonistBarKF
             if (GUI.changed)
             {
                 HarmonyPatches.MarkColonistsDirty_Postfix();
-                Reinit(false, false, true);
+                Reinit(false, false);
             }
         }
 

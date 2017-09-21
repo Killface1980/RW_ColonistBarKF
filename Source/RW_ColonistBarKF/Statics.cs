@@ -1,6 +1,7 @@
 ﻿namespace ColonistBarKF
 {
     using ColonistBarKF.Bar;
+    using JetBrains.Annotations;
 
     using UnityEngine;
 
@@ -10,7 +11,7 @@
         public static Gradient gradient4 = new Gradient();
 
         [NotNull]
-        public static Gradient gradient4Mood = new Gradient();
+        private static Gradient gradient4Mood = new Gradient();
 
         [NotNull]
         public static Gradient gradientRedAlertToNeutral = new Gradient();

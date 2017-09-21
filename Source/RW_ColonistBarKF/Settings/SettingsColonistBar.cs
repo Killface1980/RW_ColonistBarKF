@@ -1,6 +1,7 @@
 ﻿namespace ColonistBarKF
 {
     using static ColonistBarKF.Position;
+    using JetBrains.Annotations;
 
     public class SettingsColonistBar
     {

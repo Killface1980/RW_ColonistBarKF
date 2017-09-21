@@ -12,7 +12,7 @@
         #region Public Constructors
 
         public FloatMenuLabels(List<FloatMenuOption> options)
-            : base(options, null, false)
+            : base(options, null)
         {
             this.givesColonistOrders = false;
             this.vanishIfMouseDistant = true;
@@ -27,7 +27,7 @@
         #region Public Constructors
 
         public FloatMenuOptionNoClose(string label, Action action)
-            : base(label, action, MenuOptionPriority.Default, null, null, 0, null, null)
+            : base(label, action)
         {
         }
 

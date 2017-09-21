@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 0.17.3.1</name>
+  <name>Colonist Bar KF 0.17.3.2</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
   <targetVersion>0.17.1557</targetVersion>
   <description>
-    More options for the Colonist Bar, including new status icons and a mood bar.
+    <![CDATA[More options for the Colonist Bar, including new status icons and a mood bar.
 
     Allows custom placement of the bar, as well as advanced scaling and sorting functionality.
     All options available with Right Mouse Button click on any icon.
@@ -15,8 +15,9 @@
     Includes 'FollowMe™' functionality by Fluffy with updated code by alexschrod
     Includes 'ZoomToMouse™' functionality by Fluffy
 
-    Chinese translation by duduluu
+    Chinese (simplified & traditional) translation by duduluu
     French translation by Gorgious
-    Spanish translation by Ninnetyer
+    Russian translation by skyarkhangel (taken from HardCore SK)
+    Spanish translation by Ninnetyer]]>
   </description>
 </ModMetaData>

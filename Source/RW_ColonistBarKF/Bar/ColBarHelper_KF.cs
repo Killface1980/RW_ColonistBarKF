@@ -1,21 +1,18 @@
-﻿namespace ColonistBarKF
+﻿namespace ColonistBarKF.Bar
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using ColonistBarKF.Bar;
-
+    using JetBrains.Annotations;
 
     using RimWorld;
     using RimWorld.Planet;
 
     using UnityEngine;
 
-
     using Verse;
 
-    using Debug = System.Diagnostics.Debug;
-
+    // ReSharper disable once InconsistentNaming
     public class ColBarHelper_KF : IExposable
     {
         #region Fields
@@ -24,7 +21,7 @@
         public readonly List<Vector2> cachedDrawLocs = new List<Vector2>();
 
         [NotNull]
-        public readonly List<EntryKF> cachedEntries = new List<EntryKF>();
+        private readonly List<EntryKF> cachedEntries = new List<EntryKF>();
 
         public float cachedScale;
 
@@ -37,26 +34,22 @@
         public List<Caravan> tmpCaravans = new List<Caravan>();
 
         [NotNull]
-        [ItemCanBeNull]
         public List<Thing> tmpColonists = new List<Thing>();
 
         [NotNull]
-        [ItemCanBeNull]
         public List<Pawn> tmpColonistsInOrder = new List<Pawn>();
 
         [NotNull]
         public List<Pair<Thing, Map>> tmpColonistsWithMap = new List<Pair<Thing, Map>>();
 
         [NotNull]
-        [ItemCanBeNull]
         public List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
         [NotNull]
-        [ItemCanBeNull]
-        public List<Map> tmpMaps = new List<Map>();
+        private List<Map> tmpMaps = new List<Map>();
 
         [NotNull]
-        public List<Pawn> tmpPawns = new List<Pawn>();
+        private List<Pawn> tmpPawns = new List<Pawn>();
 
         #endregion Fields
 
@@ -89,7 +82,7 @@
             return entry.groupCount > 0;
         }
 
-        public void CheckRecacheEntries()
+        private void CheckRecacheEntries()
         {
             if (!this.EntriesDirty)
             {
@@ -103,7 +96,7 @@
                 this.tmpMaps.Clear();
                 this.tmpMaps.AddRange(Find.Maps);
                 this.tmpMaps.SortBy(x => !x.IsPlayerHome, x => x.uniqueID);
-                int num = 0;
+                int groupInt = 0;
                 for (int i = 0; i < this.tmpMaps.Count; i++)
                 {
                     this.tmpPawns.Clear();
@@ -138,13 +131,13 @@
                     SortCachedColonists(ref this.tmpPawns);
                     for (int l = 0; l < this.tmpPawns.Count; l++)
                     {
-                        this.cachedEntries.Add(new EntryKF(this.tmpPawns[l], this.tmpMaps[i], num, this.tmpPawns.Count));
+                        this.cachedEntries.Add(new EntryKF(this.tmpPawns[l], this.tmpMaps[i], groupInt, this.tmpPawns.Count));
 
-                        if (Settings.ColBarSettings.UseGrouping && num != this.displayGroupForBar)
+                        if (Settings.ColBarSettings.UseGrouping && groupInt != this.displayGroupForBar)
                         {
-                            if (this.cachedEntries.FindAll(x => x.map == this.tmpMaps[i]).Count > 1)
+                            if (this.cachedEntries.FindAll(x => x.@group == groupInt).Count > 2)
                             {
-                                this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], num, this.tmpPawns.Count));
+                                this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], groupInt, this.tmpPawns.Count));
                                 break;
                             }
                         }
@@ -152,10 +145,10 @@
 
                     if (!this.tmpPawns.Any())
                     {
-                        this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], num, 0));
+                        this.cachedEntries.Add(new EntryKF(null, this.tmpMaps[i], groupInt, 0));
                     }
 
-                    num++;
+                    groupInt++;
                 }
 
                 this.tmpCaravans.Clear();
@@ -178,18 +171,18 @@
                                     new EntryKF(
                                         this.tmpPawns[n],
                                         null,
-                                        num,
+                                        groupInt,
                                         this.tmpPawns.FindAll(x => x.IsColonist).Count));
 
-                                if (Settings.ColBarSettings.UseGrouping && num != this.displayGroupForBar)
+                                if (Settings.ColBarSettings.UseGrouping && groupInt != this.displayGroupForBar)
                                 {
-                                    if (this.cachedEntries.FindAll(x => x.group == num).Count > 0)
+                                    if (this.cachedEntries.FindAll(x => x.group == groupInt).Count > 2)
                                     {
                                         this.cachedEntries.Add(
                                             new EntryKF(
                                                 null,
                                                 null,
-                                                num,
+                                                groupInt,
                                                 this.tmpPawns.FindAll(x => x.IsColonist).Count));
                                         break;
                                     }
@@ -197,7 +190,7 @@
                             }
                         }
 
-                        num++;
+                        groupInt++;
                     }
                 }
             }
@@ -229,7 +222,7 @@
             return false;
         }
 
-        private static void SortCachedColonists([NotNull][ItemCanBeNull] ref List<Pawn> tmpColonists)
+        private static void SortCachedColonists([NotNull] ref List<Pawn> tmpColonists)
         {
             IOrderedEnumerable<Pawn> orderedEnumerable = null;
             {
