@@ -246,17 +246,18 @@
             // }
             int nextUpdate = (int)(this.LastStatUpdate + this.NextStatUpdate * Find.TickManager.TickRateMultiplier);
 
-            if (Find.TickManager.TicksGame > nextUpdate)
+            if (Find.TickManager.TicksGame <= nextUpdate)
             {
-                this.UpdateColonistStats();
-
-                this.LastStatUpdate = Find.TickManager.TicksGame;
-                this.NextStatUpdate = (int)Rand.Range(120f, 300f);
-
-                // Log.Message(
-                // "CBKF updated stat " + (this.parent as Pawn).Name + ", next update in " + NextStatUpdate * Find.TickManager.TickRateMultiplier
-                // + " ticks.");
+                return;
             }
+            this.UpdateColonistStats();
+
+            this.LastStatUpdate = Find.TickManager.TicksGame;
+            this.NextStatUpdate = (int)Rand.Range(120f, 300f);
+
+            // Log.Message(
+            // "CBKF updated stat " + (this.parent as Pawn).Name + ", next update in " + NextStatUpdate * Find.TickManager.TickRateMultiplier
+            // + " ticks.");
         }
 
         public override void CompTick()
@@ -306,9 +307,8 @@
                 return false;
             }
 
-            for (int index = 0; index < thoughts.Count; index++)
+            foreach (Thought thought in thoughts)
             {
-                Thought thought = thoughts[index];
                 if (thought == null)
                 {
                     continue;

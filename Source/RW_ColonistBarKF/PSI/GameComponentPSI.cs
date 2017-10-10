@@ -396,7 +396,7 @@ namespace ColonistBarKF.PSI
             int iconNum = 0;
             Vector3 bodyLoc = animal.DrawPos;
 
-            if (animal.Faction != null && animal.Faction.IsPlayer)
+            if (animal.Faction?.IsPlayer == true)
             {
                 if (animal.health.HasHediffsNeedingTend())
                 {

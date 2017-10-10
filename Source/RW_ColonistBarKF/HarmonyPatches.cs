@@ -132,12 +132,19 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Kill_Postfix)));
 
+            // NOT WORKING, FollowMe immediatly cancels if this is active
             // harmony.Patch(
             // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
             // new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
             // null);
+
             harmony.Patch(
                 AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(int) }),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
                 null);
 

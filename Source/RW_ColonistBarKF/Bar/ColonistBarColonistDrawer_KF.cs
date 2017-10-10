@@ -28,6 +28,7 @@
     [StaticConstructorOnStartup]
     public class ColonistBarColonistDrawer_KF
     {
+
         #region Private Fields
 
         private static readonly Vector2[] bracketLocs = new Vector2[4];
@@ -476,94 +477,6 @@
                     Event.current.Use();
                 }
             }
-        }
-
-        private void GetSortList([NotNull] out List<FloatMenuOption> sortList)
-        {
-            sortList = new List<FloatMenuOption>();
-
-            FloatMenuOption sortByVanilla = new FloatMenuOption(
-                "CBKF.Settings.Vanilla".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.vanilla;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-                    });
-            FloatMenuOption sortByWeapons = new FloatMenuOption(
-                "CBKF.Settings.Weapons".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.weapons;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                    });
-            FloatMenuOption sortByName = new FloatMenuOption(
-                "CBKF.Settings.ByName".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.byName;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                    });
-
-            FloatMenuOption sortbySexAge = new FloatMenuOption(
-                "CBKF.Settings.SexAge".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.sexage;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-                    });
-            FloatMenuOption sortByMood = new FloatMenuOption(
-                "CBKF.Settings.Mood".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.mood;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                        // CheckRecacheEntries();
-                    });
-            FloatMenuOption sortByHealth = new FloatMenuOption(
-                "CBKF.Settings.Health".Translate(),
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.health;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-
-                        // CheckRecacheEntries();
-                    });
-
-            FloatMenuOption sortByMedic = new FloatMenuOption(
-                StatDefOf.MedicalTendQuality.LabelCap,
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.medicTendQuality;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-                    });
-            FloatMenuOption sortByMedic2 = new FloatMenuOption(
-                StatDefOf.MedicalSurgerySuccessChance.LabelCap,
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.medicSurgerySuccess;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-                    });
-
-            FloatMenuOption sortByTrade = new FloatMenuOption(
-                StatDefOf.TradePriceImprovement.LabelCap,
-                delegate
-                    {
-                        ColBarSettings.SortBy = SortByWhat.tradePrice;
-                        HarmonyPatches.MarkColonistsDirty_Postfix();
-                    });
-            sortList.Add(sortByVanilla);
-            sortList.Add(sortByWeapons);
-            sortList.Add(sortByName);
-            sortList.Add(sortbySexAge);
-            sortList.Add(sortByMood);
-            sortList.Add(sortByHealth);
-            sortList.Add(sortByMedic);
-            sortList.Add(sortByMedic2);
-            sortList.Add(sortByTrade);
-
         }
 
         // RimWorld.ColonistBarColonistDrawer
@@ -1217,6 +1130,94 @@
             return new Rect(x + 1f, y - (size.y - ColonistBar_KF.PawnSize.y) - 1f, size.x, size.y);
         }
 
+        private void GetSortList([NotNull] out List<FloatMenuOption> sortList)
+        {
+            sortList = new List<FloatMenuOption>();
+
+            FloatMenuOption sortByVanilla = new FloatMenuOption(
+                "CBKF.Settings.Vanilla".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.vanilla;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+                    });
+            FloatMenuOption sortByWeapons = new FloatMenuOption(
+                "CBKF.Settings.Weapons".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.weapons;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                    });
+            FloatMenuOption sortByName = new FloatMenuOption(
+                "CBKF.Settings.ByName".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.byName;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                    });
+
+            FloatMenuOption sortbySexAge = new FloatMenuOption(
+                "CBKF.Settings.SexAge".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.sexage;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+                    });
+            FloatMenuOption sortByMood = new FloatMenuOption(
+                "CBKF.Settings.Mood".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.mood;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                        // CheckRecacheEntries();
+                    });
+            FloatMenuOption sortByHealth = new FloatMenuOption(
+                "CBKF.Settings.Health".Translate(),
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.health;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+
+                        // CheckRecacheEntries();
+                    });
+
+            FloatMenuOption sortByMedic = new FloatMenuOption(
+                StatDefOf.MedicalTendQuality.LabelCap,
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.medicTendQuality;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+                    });
+            FloatMenuOption sortByMedic2 = new FloatMenuOption(
+                StatDefOf.MedicalSurgerySuccessChance.LabelCap,
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.medicSurgerySuccess;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+                    });
+
+            FloatMenuOption sortByTrade = new FloatMenuOption(
+                StatDefOf.TradePriceImprovement.LabelCap,
+                delegate
+                    {
+                        ColBarSettings.SortBy = SortByWhat.tradePrice;
+                        HarmonyPatches.MarkColonistsDirty_Postfix();
+                    });
+            sortList.Add(sortByVanilla);
+            sortList.Add(sortByWeapons);
+            sortList.Add(sortByName);
+            sortList.Add(sortbySexAge);
+            sortList.Add(sortByMood);
+            sortList.Add(sortByHealth);
+            sortList.Add(sortByMedic);
+            sortList.Add(sortByMedic2);
+            sortList.Add(sortByTrade);
+
+        }
+
         // RimWorld.ColonistBarColonistDrawer
         private Rect GroupFrameRect(int group)
         {
@@ -1248,5 +1249,6 @@
         }
 
         #endregion Private Methods
+
     }
 }
