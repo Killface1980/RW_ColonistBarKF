@@ -792,7 +792,7 @@
             }
 
             // Hungry
-            if (pawn?.needs?.food != null && (double)pawn.needs.food.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
+            if ((double)pawn.needs?.food?.CurLevel < (double)Settings.PsiSettings.LimitFoodLess)
             {
                 if (barSettings.ShowHungry)
                 {
