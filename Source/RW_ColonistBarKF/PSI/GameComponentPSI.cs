@@ -10,21 +10,12 @@ namespace ColonistBarKF.PSI
     using RimWorld;
     using RimWorld.Planet;
 
-    using static Settings;
-
-    using static Statics;
-
     using UnityEngine;
 
     using Verse;
 
     public class GameComponentPSI : GameComponent
     {
-        #region Public Fields
-
-        [NotNull]
-        public static PawnCapacityDef[] pawnCapacities;
-
         [NotNull]
         public static Vector3[] IconPosRectsBar;
 
@@ -32,17 +23,12 @@ namespace ColonistBarKF.PSI
         public static Vector3[] IconPosVectorsPSI;
 
         [NotNull]
+        public static PawnCapacityDef[] pawnCapacities;
+
+        [NotNull]
         public static Materials PSIMaterials = new Materials();
 
-        #endregion Public Fields
-
-        #region Private Fields
-
         private CellRect _viewRect;
-
-        #endregion Private Fields
-
-        #region Public Constructors
 
         public GameComponentPSI()
         {
@@ -52,15 +38,7 @@ namespace ColonistBarKF.PSI
         {
         }
 
-        #endregion Public Constructors
-
-        #region Public Properties
-
         public static float WorldScale { get; private set; } = 1f;
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         public static void DrawColonistIconsBar([NotNull] Pawn pawn, Rect psiRect, float rectAlpha)
         {
@@ -72,7 +50,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            SettingsColonistBar colBarSettings = ColBarSettings;
+            SettingsColonistBar colBarSettings = Settings.ColBarSettings;
             int barIconNum = 0;
             int rowCount = pawnStats.thisColCount;
 
@@ -92,7 +70,9 @@ namespace ColonistBarKF.PSI
             List<IconEntryBar> drawIconEntries = pawnStats.BarIconList;
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
-                int maxIconCount = Mathf.Min(ColBarSettings.IconsInColumn * 2, drawIconEntries.Count + barIconNum);
+                int maxIconCount = Mathf.Min(
+                    Settings.ColBarSettings.IconsInColumn * 2,
+                    drawIconEntries.Count + barIconNum);
                 for (int index = 0; index < maxIconCount - barIconNum; index++)
                 {
                     IconEntryBar iconEntryBar = drawIconEntries[index];
@@ -104,9 +84,216 @@ namespace ColonistBarKF.PSI
             }
 
             // Idle - bar icon already included - vanilla
-            int colCount = Mathf.CeilToInt((float)barIconNum / ColBarSettings.IconsInColumn);
+            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.ColBarSettings.IconsInColumn);
 
             pawnStats.thisColCount = colCount;
+        }
+
+        public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
+        {
+            pawnCapacities = new[]
+                                 {
+                                     PawnCapacityDefOf.BloodFiltration, PawnCapacityDefOf.BloodPumping,
+                                     PawnCapacityDefOf.Breathing, PawnCapacityDefOf.Consciousness,
+                                     PawnCapacityDefOf.Eating, PawnCapacityDefOf.Hearing,
+                                     PawnCapacityDefOf.Manipulation, PawnCapacityDefOf.Metabolism,
+                                     PawnCapacityDefOf.Moving, PawnCapacityDefOf.Sight, PawnCapacityDefOf.Talking
+                                 };
+
+            if (reloadSettings)
+            {
+                Settings.ColBarSettings = Settings.LoadBarSettings();
+                Settings.PsiSettings = Settings.LoadPsiSettings();
+                HarmonyPatches.MarkColonistsDirty_Postfix();
+            }
+
+            if (recalcIconPos)
+            {
+                RecalcBarPositionAndSize();
+                RecalcIconPositionsPSI();
+            }
+
+            if (reloadIconSet)
+            {
+                LongEventHandler.ExecuteWhenFinished(
+                    () =>
+                        {
+                            PSIMaterials = new Materials(Settings.PsiSettings.IconSet);
+
+                            // PSISettings SettingsPSI =
+                            // XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
+                            // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
+                            PSIMaterials.ReloadTextures(true);
+
+                            SkinMat = PSIMaterials[Icon.TargetSkin];
+                            HairMat = PSIMaterials[Icon.TargetHair];
+                            TargetMat = PSIMaterials[Icon.Target];
+
+                            // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
+                        });
+            }
+        }
+
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            Reinit();
+        }
+
+        public override void GameComponentOnGUI()
+        {
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
+
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                return;
+            }
+
+            if (!Settings.PsiSettings.UsePsi && !Settings.PsiSettings.UsePsiOnPrisoner
+                && !Settings.PsiSettings.ShowRelationsOnStrangers)
+            {
+                return;
+            }
+
+            this._viewRect = Find.CameraDriver.CurrentViewRect;
+            this._viewRect = this._viewRect.ExpandedBy(5);
+            Map map = Find.VisibleMap;
+
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+            {
+                if (!this._viewRect.Contains(pawn.Position))
+                {
+                    continue;
+                }
+
+                if (pawn.Map == null)
+                {
+                    continue;
+                }
+
+                // if (useGUILayout)
+                if (pawn.RaceProps.Animal)
+                {
+                    if (Settings.PsiSettings.UsePsiOnAnimals)
+                    {
+                        DrawAnimalIcons(pawn);
+                    }
+                }
+                else if (pawn.RaceProps.Humanlike)
+                {
+                    if (pawn.IsColonist)
+                    {
+                        if (Settings.PsiSettings.UsePsi)
+                        {
+                            DrawColonistIconsPSI(pawn);
+                        }
+                    }
+                    else
+                    {
+                        if (pawn.IsPrisoner && Settings.PsiSettings.UsePsiOnPrisoner)
+                        {
+                            DrawColonistIconsPSI(pawn);
+                        }
+                        else if (Settings.PsiSettings.ShowRelationsOnStrangers)
+                        {
+                            DrawColonistRelationIconsPSI(pawn);
+                        }
+                    }
+                }
+            }
+        }
+
+        // public override void GameComponentTick()
+        // {
+        // // Scans the map for new pawns
+        // if (Current.ProgramState != ProgramState.Playing)
+        // {
+        // return;
+        // }
+        // if (!Settings.ColBarSettings.UsePsi && !Settings.PsiSettings.UsePsi)
+        // {
+        // return;
+        // }
+        // this._fDelta += Time.fixedDeltaTime;
+        // if (this._fDelta < 5)
+        // {
+        // return;
+        // }
+        // this._fDelta = 0.0;
+        // }
+        public override void GameComponentUpdate()
+        {
+            if (Input.GetKeyUp(KeyCode.F11))
+            {
+                Settings.PsiSettings.UsePsi = !Settings.PsiSettings.UsePsi;
+                Settings.ColBarSettings.UsePsi = !Settings.ColBarSettings.UsePsi;
+                Messages.Message(
+                    Settings.PsiSettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(),
+                    MessageTypeDefOf.NeutralEvent);
+            }
+
+            WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);
+        }
+
+        private static void DrawAnimalIcons([NotNull] Pawn animal)
+        {
+            if (!animal.Spawned || animal.Dead)
+            {
+                return;
+            }
+
+            int iconNum = 0;
+            Vector3 bodyLoc = animal.DrawPos;
+
+            if (animal.Faction?.IsPlayer == true)
+            {
+                if (animal.health.HasHediffsNeedingTend())
+                {
+                    if (animal.health?.hediffSet != null)
+                    {
+                        float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
+
+                        if (hediffSetBleedRateTotal > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Bloodloss,
+                                Statics.gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                                Settings.ViewOpacityCrit);
+                        }
+                    }
+
+                    if (animal.health?.summaryHealth != null)
+                    {
+                        float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
+                        if (summaryHealthSummaryHealthPercent > 0.01f)
+                        {
+                            DrawIconOnColonist(
+                                bodyLoc,
+                                ref iconNum,
+                                Icon.Health,
+                                Statics.gradient4.Evaluate(summaryHealthSummaryHealthPercent),
+                                Settings.ViewOpacityCrit);
+                        }
+                    }
+                }
+            }
+
+            if (!animal.InAggroMentalState)
+            {
+                return;
+            }
+
+            if (!Settings.PsiSettings.ShowAggressive)
+            {
+                return;
+            }
+
+            DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, Settings.ViewOpacityCrit);
         }
 
         private static void DrawColonistIconsPSI([NotNull] Pawn pawn)
@@ -123,7 +310,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            SettingsPSI psiSettings = PsiSettings;
+            SettingsPSI psiSettings = Settings.PsiSettings;
             float viewOpacity = psiSettings.IconOpacity;
 
             int iconNum = 0;
@@ -167,11 +354,11 @@ namespace ColonistBarKF.PSI
             {
                 if (pawnStats.isPacifist)
                 {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Pacific, ColYellow, ViewOpacityCrit);
+                    DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Pacific, ColYellow, Settings.ViewOpacityCrit);
                 }
                 else
                 {
-                    DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Draft, ColVermillion, ViewOpacityCrit);
+                    DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Draft, ColVermillion, Settings.ViewOpacityCrit);
                 }
             }
 
@@ -221,227 +408,17 @@ namespace ColonistBarKF.PSI
                         bodyLoc,
                         ref iconNum,
                         Icon.Bloodloss,
-                        gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
-                        ViewOpacityCrit);
+                        Statics.gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
+                        Settings.ViewOpacityCrit);
                 }
 
                 DrawIconOnColonist(
                     bodyLoc,
                     ref iconNum,
                     Icon.Health,
-                    gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
-                    ViewOpacityCrit);
+                    Statics.gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
+                    Settings.ViewOpacityCrit);
             }
-        }
-
-        public static void Reinit(bool reloadSettings = true, bool reloadIconSet = true, bool recalcIconPos = true)
-        {
-            pawnCapacities = new[]
-                                 {
-                                     PawnCapacityDefOf.BloodFiltration, PawnCapacityDefOf.BloodPumping,
-                                     PawnCapacityDefOf.Breathing, PawnCapacityDefOf.Consciousness,
-                                     PawnCapacityDefOf.Eating, PawnCapacityDefOf.Hearing,
-                                     PawnCapacityDefOf.Manipulation, PawnCapacityDefOf.Metabolism,
-                                     PawnCapacityDefOf.Moving, PawnCapacityDefOf.Sight, PawnCapacityDefOf.Talking
-                                 };
-
-            if (reloadSettings)
-            {
-                ColBarSettings = LoadBarSettings();
-                PsiSettings = LoadPsiSettings();
-                HarmonyPatches.MarkColonistsDirty_Postfix();
-            }
-
-            if (recalcIconPos)
-            {
-                RecalcBarPositionAndSize();
-                RecalcIconPositionsPSI();
-            }
-
-            if (reloadIconSet)
-            {
-                LongEventHandler.ExecuteWhenFinished(
-                    () =>
-                        {
-                            PSIMaterials = new Materials(PsiSettings.IconSet);
-
-                            // PSISettings SettingsPSI =
-                            // XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
-                            // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
-                            PSIMaterials.ReloadTextures(true);
-
-                            SkinMat = PSIMaterials[Icon.TargetSkin];
-                            HairMat = PSIMaterials[Icon.TargetHair];
-                            TargetMat = PSIMaterials[Icon.Target];
-
-                            // Log.Message(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + ColBarSettings.IconSet + "/iconset.cfg");
-                        });
-            }
-        }
-
-        public override void FinalizeInit()
-        {
-            base.FinalizeInit();
-            Reinit();
-        }
-
-        public override void GameComponentOnGUI()
-        {
-            if (Current.ProgramState != ProgramState.Playing)
-            {
-                return;
-            }
-
-            if (WorldRendererUtility.WorldRenderedNow)
-            {
-                return;
-            }
-
-            if (!PsiSettings.UsePsi && !PsiSettings.UsePsiOnPrisoner && !PsiSettings.ShowRelationsOnStrangers)
-            {
-                return;
-            }
-
-            this._viewRect = Find.CameraDriver.CurrentViewRect;
-            this._viewRect = this._viewRect.ExpandedBy(5);
-            Map map = Find.VisibleMap;
-
-            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
-            {
-                if (!this._viewRect.Contains(pawn.Position))
-                {
-                    continue;
-                }
-
-                if (pawn.Map == null)
-                {
-                    continue;
-                }
-
-                // if (useGUILayout)
-                if (pawn.RaceProps.Animal)
-                {
-                    if (PsiSettings.UsePsiOnAnimals)
-                    {
-                        DrawAnimalIcons(pawn);
-                    }
-                }
-                else if (pawn.RaceProps.Humanlike)
-                {
-                    if (pawn.IsColonist)
-                    {
-                        if (PsiSettings.UsePsi)
-                        {
-                            DrawColonistIconsPSI(pawn);
-                        }
-                    }
-                    else
-                    {
-                        if (pawn.IsPrisoner && PsiSettings.UsePsiOnPrisoner)
-                        {
-                            DrawColonistIconsPSI(pawn);
-                        }
-                        else if (PsiSettings.ShowRelationsOnStrangers)
-                        {
-                            DrawColonistRelationIconsPSI(pawn);
-                        }
-                    }
-                }
-            }
-        }
-
-        // public override void GameComponentTick()
-        // {
-        // // Scans the map for new pawns
-        // if (Current.ProgramState != ProgramState.Playing)
-        // {
-        // return;
-        // }
-        // if (!Settings.ColBarSettings.UsePsi && !Settings.PsiSettings.UsePsi)
-        // {
-        // return;
-        // }
-        // this._fDelta += Time.fixedDeltaTime;
-        // if (this._fDelta < 5)
-        // {
-        // return;
-        // }
-        // this._fDelta = 0.0;
-        // }
-        public override void GameComponentUpdate()
-        {
-            if (Input.GetKeyUp(KeyCode.F11))
-            {
-                PsiSettings.UsePsi = !PsiSettings.UsePsi;
-                ColBarSettings.UsePsi = !ColBarSettings.UsePsi;
-                Messages.Message(
-                    PsiSettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(),
-                    MessageSound.Standard);
-            }
-
-            WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);
-        }
-
-        #endregion Public Methods
-
-        #region Private Methods
-
-        private static void DrawAnimalIcons([NotNull] Pawn animal)
-        {
-            if (!animal.Spawned || animal.Dead)
-            {
-                return;
-            }
-
-            int iconNum = 0;
-            Vector3 bodyLoc = animal.DrawPos;
-
-            if (animal.Faction?.IsPlayer == true)
-            {
-                if (animal.health.HasHediffsNeedingTend())
-                {
-                    if (animal.health?.hediffSet != null)
-                    {
-                        float hediffSetBleedRateTotal = animal.health.hediffSet.BleedRateTotal;
-
-                        if (hediffSetBleedRateTotal > 0.01f)
-                        {
-                            DrawIconOnColonist(
-                                bodyLoc,
-                                ref iconNum,
-                                Icon.Bloodloss,
-                                gradientRedAlertToNeutral.Evaluate(1.0f - hediffSetBleedRateTotal),
-                                ViewOpacityCrit);
-                        }
-                    }
-
-                    if (animal.health?.summaryHealth != null)
-                    {
-                        float summaryHealthSummaryHealthPercent = 1f - animal.health.summaryHealth.SummaryHealthPercent;
-                        if (summaryHealthSummaryHealthPercent > 0.01f)
-                        {
-                            DrawIconOnColonist(
-                                bodyLoc,
-                                ref iconNum,
-                                Icon.Health,
-                                gradient4.Evaluate(summaryHealthSummaryHealthPercent),
-                                ViewOpacityCrit);
-                        }
-                    }
-                }
-            }
-
-            if (!animal.InAggroMentalState)
-            {
-                return;
-            }
-
-            if (!PsiSettings.ShowAggressive)
-            {
-                return;
-            }
-
-            DrawIconOnColonist(bodyLoc, ref iconNum, Icon.Aggressive, ColVermillion, ViewOpacityCrit);
         }
 
         // private static bool HasThought(List<Thought> thoughts, ThoughtDef tdef)
@@ -450,7 +427,7 @@ namespace ColonistBarKF.PSI
         // }
         private static void RecalcBarPositionAndSize()
         {
-            SettingsColonistBar settings = ColBarSettings;
+            SettingsColonistBar settings = Settings.ColBarSettings;
             IconPosRectsBar = new Vector3[40];
             for (int index = 0; index < IconPosRectsBar.Length; ++index)
             {
@@ -474,7 +451,7 @@ namespace ColonistBarKF.PSI
 
         private static void RecalcIconPositionsPSI()
         {
-            SettingsPSI psiSettings = PsiSettings;
+            SettingsPSI psiSettings = Settings.PsiSettings;
 
             // _iconPosVectors = new Vector3[18];
             IconPosVectorsPSI = new Vector3[40];
@@ -499,7 +476,5 @@ namespace ColonistBarKF.PSI
                             * psiSettings.IconOffsetY * num2));
             }
         }
-
-        #endregion Private Methods
     }
 }

@@ -70,7 +70,7 @@
     <Compile Include="ThoughtDefOf.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="OLD_Class2.cs" />
-    <Compile Include="MapComponent_PSI.cs" />
+    <None Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PSI\PSIDrawer.cs" />
     <Compile Include="Statics.cs" />
@@ -105,11 +105,16 @@
       <Link>About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\KeyBindingDefs\keybinding.xml">
+      <Link>Fluffy\keybinding.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\ThingDefs_Buildings\Buildings_Misc.xml">
       <Link>MedicalBeacon\Buildings_Misc.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\WorkGiverDefs\WorkGivers.xml">
       <Link>MedicalBeacon\WorkGivers.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>

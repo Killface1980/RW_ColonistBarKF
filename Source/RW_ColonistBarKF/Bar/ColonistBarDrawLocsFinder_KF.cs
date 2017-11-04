@@ -2,28 +2,18 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using UnityEngine;
-    using Verse;
 
-    using static Settings;
+    using UnityEngine;
+
+    using Verse;
 
     public class ColonistBarDrawLocsFinder_KF
     {
-
-        #region Private Fields
-
         private readonly List<int> entriesInGroup = new List<int>();
+
         private readonly List<int> horizontalSlotsPerGroup = new List<int>();
 
-        #endregion Private Fields
-
-        #region Private Properties
-
-        private static float MaxColonistBarWidth => UI.screenWidth - ColBarSettings.MarginHorizontal;
-
-        #endregion Private Properties
-
-        #region Public Methods
+        private static float MaxColonistBarWidth => UI.screenWidth - Settings.ColBarSettings.MarginHorizontal;
 
         public void CalculateDrawLocs(List<Vector2> outDrawLocs, out float scale)
         {
@@ -41,16 +31,12 @@
             this.CalculateDrawLocs(outDrawLocs, scale, onlyOneRow, maxPerGlobalRow);
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         // modded
         private static int GetAllowedRowsCountForScale(float scale)
         {
-            if (ColBarSettings.UseCustomRowCount)
+            if (Settings.ColBarSettings.UseCustomRowCount)
             {
-                switch (ColBarSettings.MaxRowsCustom)
+                switch (Settings.ColBarSettings.MaxRowsCustom)
                 {
                     case 1:
                         {
@@ -206,7 +192,7 @@
 
                 Vector2 drawLoc = this.GetDrawLoc(
                     groupStartX,
-                    ColBarSettings.MarginTop,
+                    Settings.ColBarSettings.MarginTop,
                     entries[j].group,
                     numInGroup,
                     scale);
@@ -341,8 +327,5 @@
 
             return true;
         }
-
-        #endregion Private Methods
-
     }
 }

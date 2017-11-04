@@ -1,12 +1,11 @@
-﻿using System;
-using Verse;
-using Verse.AI;
-
-namespace ColonistBarKF
+﻿namespace ColonistBarKF
 {
     using JetBrains.Annotations;
 
     using RimWorld;
+
+    using Verse;
+    using Verse.AI;
 
     public class WorkGiver_ImprisonDowned : WorkGiver_TakeToBed
     {
@@ -19,13 +18,15 @@ namespace ColonistBarKF
         public override bool HasJobOnThing([NotNull] Pawn pawn, [NotNull] Thing t, bool forced = false)
         {
             Pawn victim = t as Pawn;
-            if (victim == null || !victim.Downed || victim.InBed() || !pawn.CanReserve(victim, 1, -1, null, forced) || GenAI.EnemyIsNear(victim, 10f))
+            if (victim == null || !victim.Downed || victim.InBed() || !pawn.CanReserve(victim, 1, -1, null, forced)
+                || GenAI.EnemyIsNear(victim, 10f))
             {
                 return false;
             }
 
             bool flag = false;
-            foreach (Building building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(ThingDef.Named("MedicalBeacon")))
+            foreach (Building building in pawn.Map.listerBuildings.AllBuildingsColonistOfDef(
+                ThingDef.Named("MedicalBeacon")))
             {
                 if (victim.Position.InHorDistOf(building.Position, building.def.specialDisplayRadius))
                 {
@@ -51,7 +52,8 @@ namespace ColonistBarKF
             }
             else
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
+                Building_Bed building_Bed =
+                    RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
                 return building_Bed != null && victim.CanReserve(building_Bed);
             }
         }
@@ -72,7 +74,10 @@ namespace ColonistBarKF
 
                 if (building_Bed == null)
                 {
-                    Messages.Message("CannotCapture".Translate() + ": " + "NoPrisonerBed".Translate(), victim, MessageSound.RejectInput);
+                    Messages.Message(
+                        "CannotCapture".Translate() + ": " + "NoPrisonerBed".Translate(),
+                        victim,
+                        MessageTypeDefOf.RejectInput);
                     return null;
                 }
 
@@ -82,19 +87,21 @@ namespace ColonistBarKF
             }
             else
             {
-                Building_Bed building_Bed = RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
+                Building_Bed building_Bed =
+                    RestUtility.FindBedFor(victim, pawn, victim.HostFaction == pawn.Faction, false);
                 if (building_Bed == null)
                 {
-                    Messages.Message("CannotTreat".Translate() + ": " + "NoGuestBed".Translate(), victim, MessageSound.RejectInput);
+                    Messages.Message(
+                        "CannotTreat".Translate() + ": " + "NoGuestBed".Translate(),
+                        victim,
+                        MessageTypeDefOf.RejectInput);
                     return null;
                 }
 
                 Job job = new Job(JobDefOf.Rescue, victim, building_Bed) { count = 1 };
 
                 return job;
-
             }
-
         }
     }
 }

@@ -25,6 +25,22 @@
         [CanBeNull]
         public Material this[Icon icon] => this._data[(int)icon];
 
+        public void ReloadTextures(bool smooth = false)
+        {
+            foreach (Icon icons in Enum.GetValues(typeof(Icon)).Cast<Icon>())
+            {
+                switch (icons)
+                {
+                    case Icon.None:
+                    case Icon.Length: continue;
+                    default:
+                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
+                        this._data[(int)icons] = this.LoadIconMat(path, smooth);
+                        continue;
+                }
+            }
+        }
+
         [CanBeNull]
         private Material LoadIconMat(string path, bool smooth = false)
         {
@@ -60,22 +76,6 @@
             }
 
             return material;
-        }
-
-        public void ReloadTextures(bool smooth = false)
-        {
-            foreach (Icon icons in Enum.GetValues(typeof(Icon)).Cast<Icon>())
-            {
-                switch (icons)
-                {
-                    case Icon.None:
-                    case Icon.Length: continue;
-                    default:
-                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
-                        this._data[(int)icons] = this.LoadIconMat(path, smooth);
-                        continue;
-                }
-            }
         }
     }
 }

@@ -1,31 +1,17 @@
 ﻿namespace ColonistBarKF.Menus
 {
+    using Harmony;
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Harmony;
-
-    using JetBrains.Annotations;
-
     using Verse;
 
     public static class Tools
     {
-
-        #region Public Fields
-
         public static FloatMenuLabels LabelMenu;
 
-        #endregion Public Fields
-
-        #region Private Fields
-
         private static FloatMenuColonists actionMenu;
-
-        #endregion Private Fields
-
-        #region Public Methods
 
         public static void CloseLabelMenu(bool sound)
         {
@@ -61,34 +47,32 @@
                                                             fmo.Do(
                                                                 menuOption =>
                                                                     {
-                                                                        FloatMenuOption floatMenuOption = new FloatMenuOption(
-                                                                            menuOption.Label,
-                                                                            () =>
-                                                                                {
-                                                                                    FloatMenuOption pawnOption =
-                                                                                        menuOption;
-                                                                                    actionMenu.Close();
-                                                                                    CloseLabelMenu(true);
-                                                                                    pawnOption.action();
-                                                                                },
-                                                                            (MenuOptionPriority)i++,
-                                                                            () =>
-                                                                                {
-                                                                                    // PathInfo.current = pawn;
-                                                                                });
-                                                                        actions.Add(
-                                                                            floatMenuOption);
+                                                                        FloatMenuOption floatMenuOption =
+                                                                            new FloatMenuOption(
+                                                                                menuOption.Label,
+                                                                                () =>
+                                                                                    {
+                                                                                        FloatMenuOption pawnOption =
+                                                                                            menuOption;
+                                                                                        actionMenu.Close();
+                                                                                        CloseLabelMenu(true);
+                                                                                        pawnOption.action();
+                                                                                    },
+                                                                                (MenuOptionPriority)i++,
+                                                                                () =>
+                                                                                    {
+                                                                                        // PathInfo.current = pawn;
+                                                                                    });
+                                                                        actions.Add(floatMenuOption);
                                                                     });
                                                             actionMenu = new FloatMenuColonists(actions, null);
                                                             Find.WindowStack.Add(actionMenu);
                                                         }
-                                                    }) {
-                                                          Disabled = options.All(o => o.Disabled) 
-                                                       };
+                                                    })
+            {
+                Disabled = options.All(o => o.Disabled)
+            };
             return option;
         }
-
-        #endregion Public Methods
-
     }
 }

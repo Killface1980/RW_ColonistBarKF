@@ -1,24 +1,17 @@
 namespace ColonistBarKF
 {
-    using System.Text;
-
     using RimWorld;
-
+    using System.Text;
     using Verse;
 
     [StaticConstructorOnStartup]
     public class Building_MedicalBeacon : Building
     {
+        private int guestCount;
 
-        #region Private Fields
+        private int prisonerCount;
 
-        int guestCount = 0;
-        int prisonerCount = 0;
         private int ticksToDespawn;
-
-        #endregion Private Fields
-
-        #region Public Methods
 
         public override void ExposeData()
         {
@@ -37,16 +30,15 @@ namespace ColonistBarKF
 
             if (this.Spawned)
             {
-
                 if (this.prisonerCount + this.guestCount > 0)
                 {
                     stringBuilder.AppendLine("PotentialPrisoners".Translate() + ": " + this.prisonerCount);
                     stringBuilder.AppendLine("PotentialGuests".Translate() + ": " + this.guestCount);
-
                 }
                 else if (this.ticksToDespawn > 0)
                 {
-                    stringBuilder.AppendLine("WillDespawnIn".Translate() + ": " + this.ticksToDespawn.TicksToSecondsString());
+                    stringBuilder.AppendLine(
+                        "WillDespawnIn".Translate() + ": " + this.ticksToDespawn.TicksToSecondsString());
                 }
             }
 
@@ -102,7 +94,5 @@ namespace ColonistBarKF
                 this.Destroy(DestroyMode.Deconstruct);
             }
         }
-
-        #endregion Public Methods
     }
 }

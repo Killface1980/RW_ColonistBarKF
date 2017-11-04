@@ -20,16 +20,9 @@ namespace ColonistBarKF
 
     public class FollowMe : GameComponent
     {
-
-        #region Public Fields
-
         public static Thing _followedThing;
 
         public static bool CurrentlyFollowing;
-
-        #endregion Public Fields
-
-        #region Private Fields
 
         private static readonly FieldInfo _cameraDriverDesiredDollyField =
             typeof(CameraDriver).GetField("desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -51,10 +44,6 @@ namespace ColonistBarKF
         [NotNull]
         private readonly KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
-        #endregion Private Fields
-
-        #region Public Constructors
-
         public FollowMe([NotNull] Game game)
         {
             // noop
@@ -63,34 +52,6 @@ namespace ColonistBarKF
         public FollowMe()
         {
         }
-
-        #endregion Public Constructors
-
-        #region Public Properties
-
-        [NotNull]
-        private static string FollowedLabel
-        {
-            get
-            {
-                if (_followedThing == null)
-                {
-                    return string.Empty;
-                }
-
-                Pawn pawn = _followedThing as Pawn;
-                if (pawn != null)
-                {
-                    return pawn.NameStringShort;
-                }
-
-                return _followedThing.LabelCap;
-            }
-        }
-
-        #endregion Public Properties
-
-        #region Private Properties
 
         private static Vector2 CameraDesiredDolly
         {
@@ -118,12 +79,28 @@ namespace ColonistBarKF
             }
         }
 
+        [NotNull]
+        private static string FollowedLabel
+        {
+            get
+            {
+                if (_followedThing == null)
+                {
+                    return string.Empty;
+                }
+
+                Pawn pawn = _followedThing as Pawn;
+                if (pawn != null)
+                {
+                    return pawn.NameStringShort;
+                }
+
+                return _followedThing.LabelCap;
+            }
+        }
+
         // ReSharper disable once InconsistentNaming
         private static bool MouseOverUI => Find.WindowStack.GetWindowAt(UI.MousePositionOnUIInverted) != null;
-
-        #endregion Private Properties
-
-        #region Public Methods
 
         public static void StopFollow([NotNull] string reason)
         {
@@ -131,34 +108,10 @@ namespace ColonistBarKF
             Log.Message($"FollowMe :: Stopped following {FollowedLabel} :: {reason}");
 #endif
 
-            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
+            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageTypeDefOf.NegativeEvent);
             _followedThing = null;
             CurrentlyFollowing = false;
             _cameraHasJumpedAtLeastOnce = false;
-        }
-
-        private static void TryJumpSmooth(GlobalTargetInfo target)
-        {
-            target = CameraJumper.GetAdjustedTarget(target);
-            if (!target.IsValid)
-            {
-                StopFollow("invalid target");
-                return;
-            }
-
-            // we have to use our own logic for following spawned things, as CameraJumper
-            // uses integer positions - which would be jerky.
-            if (target.HasThing)
-            {
-                TryJumpSmoothInternal(target.Thing);
-            }
-            else
-            {
-                // However, if we don't have a thing to follow, integer positions will do just fine.
-                CameraJumper.TryJump(target);
-            }
-
-            _cameraHasJumpedAtLeastOnce = true;
         }
 
         public static void TryStartFollow([CanBeNull] Thing thing)
@@ -167,15 +120,15 @@ namespace ColonistBarKF
             {
                 if (Find.Selector.NumSelected > 1)
                 {
-                    Messages.Message("FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput);
+                    Messages.Message("FollowMe.RejectMultiple".Translate(), MessageTypeDefOf.RejectInput);
                 }
                 else if (Find.Selector.NumSelected == 0)
                 {
-                    Messages.Message("FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput);
+                    Messages.Message("FollowMe.RejectNoSelection".Translate(), MessageTypeDefOf.RejectInput);
                 }
                 else
                 {
-                    Messages.Message("FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput);
+                    Messages.Message("FollowMe.RejectNotAThing".Translate(), MessageTypeDefOf.RejectInput);
                 }
             }
             else if (CurrentlyFollowing && thing == null || thing == _followedThing)
@@ -264,10 +217,6 @@ namespace ColonistBarKF
             base.StartedNewGame();
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private static void CheckDolly()
         {
             if (CameraDesiredDolly != Vector2.zero)
@@ -291,7 +240,31 @@ namespace ColonistBarKF
             _followedThing = thing;
             CurrentlyFollowing = true;
 
-            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
+            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageTypeDefOf.PositiveEvent);
+        }
+
+        private static void TryJumpSmooth(GlobalTargetInfo target)
+        {
+            target = CameraJumper.GetAdjustedTarget(target);
+            if (!target.IsValid)
+            {
+                StopFollow("invalid target");
+                return;
+            }
+
+            // we have to use our own logic for following spawned things, as CameraJumper
+            // uses integer positions - which would be jerky.
+            if (target.HasThing)
+            {
+                TryJumpSmoothInternal(target.Thing);
+            }
+            else
+            {
+                // However, if we don't have a thing to follow, integer positions will do just fine.
+                CameraJumper.TryJump(target);
+            }
+
+            _cameraHasJumpedAtLeastOnce = true;
         }
 
         private static void TryJumpSmoothInternal([NotNull] Thing thing)
@@ -379,7 +352,5 @@ namespace ColonistBarKF
                 StopFollow("moved map (dolly)");
             }
         }
-
-        #endregion Private Methods
     }
 }

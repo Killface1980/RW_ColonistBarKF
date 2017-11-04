@@ -1,36 +1,9 @@
 ﻿namespace ColonistBarKF
 {
-    using static ColonistBarKF.Position;
     using JetBrains.Annotations;
 
     public class SettingsColonistBar
     {
-        #region SortByWhat enum
-
-        public enum SortByWhat
-        {
-            vanilla = -1,
-
-            sexage,
-
-            health,
-
-            mood,
-
-            weapons,
-
-            medicTendQuality,
-
-            // medic,
-            medicSurgerySuccess,
-
-            byName,
-
-            tradePrice
-        }
-
-        #endregion SortByWhat enum
-
         // to do 0.18: rename to BaseIconSize
         public float BaseSizeFloat = 48f;
 
@@ -39,7 +12,7 @@
         public float BaseSpacingVertical = 32f;
 
         // public Position.Alignment ColBarPos = Position.Alignment.Top;
-        public Alignment ColBarPsiIconPos = Alignment.Left;
+        public Position.Alignment ColBarPsiIconPos = Position.Alignment.Left;
 
         public float IconOffsetX = 1f;
 
@@ -63,7 +36,7 @@
 
         public int MaxRowsCustom = 3;
 
-        public Alignment MoodBarPos = Alignment.Right;
+        public Position.Alignment MoodBarPos = Position.Alignment.Right;
 
         public float moodRectAlpha = 0.66f;
 
@@ -157,6 +130,10 @@
 
         public bool UseGender = true;
 
+        public bool UseGroupColors = true;
+
+        public bool UseGrouping = true;
+
         public bool UseNewMood = true;
 
         public bool UsePsi = true;
@@ -167,9 +144,29 @@
 
         public float VerticalOffset = 0f;
 
-        public bool UseGrouping = true;
+        public enum SortByWhat
+        {
+            vanilla = -1,
 
-        public bool UseGroupColors = true;
+            sexage,
 
+            health,
+
+            bleedRate,
+
+            mood,
+
+            weapons,
+
+            medicTendQuality,
+
+            // medic,
+            medicSurgerySuccess,
+
+            byName,
+
+            diplomacy,
+            tradePrice
+        }
     }
 }

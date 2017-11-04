@@ -1,43 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Buildings>
-
-  <ThingDef Name="CB_BuildingBase" Abstract="True">
-    <category>Building</category>
-    <thingClass>Building</thingClass>
-    <soundImpactDefault>BulletImpactMetal</soundImpactDefault>
-    <selectable>true</selectable>
-    <drawerType>MapMeshAndRealTime</drawerType>
-    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <repairEffect>Repair</repairEffect>
-    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
-    <filthLeaving>BuildingRubble</filthLeaving>
-    <statBases>
-      <SellPriceFactor>0.70</SellPriceFactor>
-    </statBases>
-  </ThingDef>
+<Defs>
 
   <!--============================ Spots =============================-->
-  <ThingDef ParentName="CB_BuildingBase">
+  <ThingDef ParentName="BuildingBase">
     <defName>MedicalBeacon</defName>
     <label>medical beacon</label>
-    <Description>Designates a radius within pawns will rescue colonists or imprison enemies if there are enough beds. Despawns after if no victim is in range after a certain amount of time.</Description>
+    <description>Designates a radius within pawns will rescue colonists or imprison enemies if there are enough beds. Despawns after if no victim is in range after a certain amount of time.</description>
     <thingClass>ColonistBarKF.Building_MedicalBeacon</thingClass>
     <graphicData>
       <texPath>Things/Building/Misc/CaravanPackingSpot</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
-    <AltitudeLayer>FloorEmplacement</AltitudeLayer>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
     <statBases>
       <WorkToBuild>0</WorkToBuild>
     </statBases>
     <tickerType>Normal</tickerType>
     <useHitPoints>False</useHitPoints>
     <scatterableOnMapGen>false</scatterableOnMapGen>
-    <Size>(1,1)</Size>
-    <DesignationCategory>Misc</DesignationCategory>
+    <size>(1,1)</size>
+    <designationCategory>Misc</designationCategory>
     <specialDisplayRadius>15</specialDisplayRadius>
-    <Passability>Standable</Passability>
+    <passability>Standable</passability>
     <building>
       <sowTag>SupportPlantsOnly</sowTag>
       <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
@@ -45,4 +30,4 @@
       <expandHomeArea>false</expandHomeArea>
     </building>
   </ThingDef>
-</Buildings>
+</Defs>

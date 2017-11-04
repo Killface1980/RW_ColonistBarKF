@@ -15,15 +15,12 @@
     // ReSharper disable once InconsistentNaming
     public class ColBarHelper_KF : IExposable
     {
-
-        #region Public Fields
-
         [NotNull]
         public readonly List<Vector2> cachedDrawLocs = new List<Vector2>();
 
         public float cachedScale;
 
-        public int displayGroupForBar = 0;
+        public int displayGroupForBar;
 
         public bool EntriesDirty = true;
 
@@ -45,21 +42,14 @@
         [NotNull]
         public List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
-        #endregion Public Fields
-
-        #region Private Fields
-
         [NotNull]
         private readonly List<EntryKF> cachedEntries = new List<EntryKF>();
+
         [NotNull]
-        private List<Map> tmpMaps = new List<Map>();
+        private readonly List<Map> tmpMaps = new List<Map>();
 
         [NotNull]
         private List<Pawn> tmpPawns = new List<Pawn>();
-
-        #endregion Private Fields
-
-        #region Public Properties
 
         [NotNull]
         public List<Vector2> DrawLocs => this.cachedDrawLocs;
@@ -73,10 +63,6 @@
                 return this.cachedEntries;
             }
         }
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         public bool AnyBarEntryAt(Vector2 pos)
         {
@@ -112,83 +98,137 @@
             return false;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private static void SortCachedColonists([NotNull] ref List<Pawn> tmpColonists)
         {
+            List<Pawn> sort = new List<Pawn>();
+            List<Pawn> others = new List<Pawn>();
+
+            List<Pawn> orderedEnumerable;
+            switch (Settings.ColBarSettings.SortBy)
             {
-                IOrderedEnumerable<Pawn> orderedEnumerable;
-                switch (Settings.ColBarSettings.SortBy)
-                {
-                    case SettingsColonistBar.SortByWhat.vanilla:
+                case SettingsColonistBar.SortByWhat.vanilla:
+                    {
                         tmpColonists.SortBy(x => x.thingIDNumber);
-                        Settings.SaveBarSettings();
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.byName:
+                case SettingsColonistBar.SortByWhat.byName:
+                    {
                         tmpColonists.SortBy(x => x.LabelCap);
-                        Settings.SaveBarSettings();
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.sexage:
+                case SettingsColonistBar.SortByWhat.sexage:
+                    {
                         orderedEnumerable = tmpColonists.OrderBy(x => x.gender.GetLabel() != null)
-                            .ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears);
-                        tmpColonists = orderedEnumerable.ToList();
-                        Settings.SaveBarSettings();
+                        .ThenBy(x => x.gender.GetLabel()).ThenBy(x => x?.ageTracker?.AgeBiologicalYears).ToList();
+                        tmpColonists = orderedEnumerable;
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.health:
+                case SettingsColonistBar.SortByWhat.health:
+                    {
                         tmpColonists.SortBy(x => x.health.summaryHealth.SummaryHealthPercent);
-                        Settings.SaveBarSettings();
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.mood:
-                        orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurInstantLevelPercentage);
-                        tmpColonists = orderedEnumerable.ToList();
+                case SettingsColonistBar.SortByWhat.bleedRate:
+                    {
+                        tmpColonists.SortByDescending(x => x.health.hediffSet.BleedRateTotal);
+                        break;
+                    }
+
+                case SettingsColonistBar.SortByWhat.mood:
+                    {
+                        orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurInstantLevelPercentage).ToList();
+                        tmpColonists = orderedEnumerable;
 
                         // tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
-                        Settings.SaveBarSettings();
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.weapons:
+                case SettingsColonistBar.SortByWhat.weapons:
+                    {
                         orderedEnumerable = tmpColonists
-                            .OrderByDescending(
-                                a => a?.equipment?.Primary?.def?.IsMeleeWeapon == true)
-                            .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
-                                b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting));
-                        tmpColonists = orderedEnumerable.ToList();
-                        Settings.SaveBarSettings();
+                        .OrderByDescending(a => a?.equipment?.Primary?.def?.IsMeleeWeapon == true)
+                        .ThenByDescending(c => c?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
+                            b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting)).ToList();
+                        tmpColonists = orderedEnumerable;
                         break;
+                    }
 
-                    // skill not really relevant
-                    // case SettingsColonistBar.SortByWhat.medic:
-                    // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                    // tmpColonists = orderedEnumerable.ToList();
-                    // SaveBarSettings();
-                    // break;
-                    case SettingsColonistBar.SortByWhat.medicTendQuality:
-                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
-                        Settings.SaveBarSettings();
+                // skill not really relevant
+                // case SettingsColonistBar.SortByWhat.medic:
+                // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
+                // tmpColonists = orderedEnumerable.ToList();
+                // SaveBarSettings();
+                // break;
+                case SettingsColonistBar.SortByWhat.medicTendQuality:
+                    {
+                        sort = tmpColonists.Where(x => !x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+                        others = tmpColonists.Where(x => x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+
+
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
+                        others.SortBy(x => x.LabelCap);
+
+                        sort.AddRange(others);
+
+                        tmpColonists = sort;
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
-                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
-                        Settings.SaveBarSettings();
+                case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
+                    {
+                        sort = tmpColonists.Where(x => !x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+                        others = tmpColonists.Where(x => x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
+                        others.SortBy(x => x.LabelCap);
+
+                        sort.AddRange(others);
+
+                        tmpColonists = sort;
                         break;
+                    }
 
-                    case SettingsColonistBar.SortByWhat.tradePrice:
-                        tmpColonists.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
-                        Settings.SaveBarSettings();
+                case SettingsColonistBar.SortByWhat.diplomacy:
+                    {
+                        sort = tmpColonists.Where(x => !x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+                        others = tmpColonists.Where(x => x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.DiplomacyPower));
+                        others.SortBy(x => x.LabelCap);
+
+                        sort.AddRange(others);
+
+                        tmpColonists = sort;
                         break;
+                    }
 
-                    default:
+                case SettingsColonistBar.SortByWhat.tradePrice:
+                    {
+                        sort = tmpColonists.Where(x => !x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+                        others = tmpColonists.Where(x => x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
+                        others.SortBy(x => x.LabelCap);
+
+                        sort.AddRange(others);
+
+                        tmpColonists = sort;
+                        break;
+                    }
+
+
+                default:
+                    {
                         tmpColonists.SortBy(x => x.thingIDNumber);
-                        Settings.SaveBarSettings();
                         break;
-                }
+                    }
             }
+
+            Settings.SaveBarSettings();
         }
 
         private void CheckRecacheEntries()
@@ -244,7 +284,7 @@
 
                         if (Settings.ColBarSettings.UseGrouping && groupInt != this.displayGroupForBar)
                         {
-                            if (this.cachedEntries.FindAll(x => x.@group == groupInt).Count > 2)
+                            if (this.cachedEntries.FindAll(x => x.group == groupInt).Count > 2)
                             {
                                 this.cachedEntries.Add(new EntryKF(null, tempMap, groupInt, this.tmpPawns.Count));
                                 break;
@@ -285,7 +325,7 @@
 
                                 if (Settings.ColBarSettings.UseGrouping && groupInt != this.displayGroupForBar)
                                 {
-                                    if (this.cachedEntries.FindAll(x => x.@group == groupInt).Count > 2)
+                                    if (this.cachedEntries.FindAll(x => x.group == groupInt).Count > 2)
                                     {
                                         this.cachedEntries.Add(
                                             new EntryKF(
@@ -311,7 +351,5 @@
             this.tmpCaravans.Clear();
             ColonistBar_KF.drawLocsFinder.CalculateDrawLocs(this.cachedDrawLocs, out this.cachedScale);
         }
-
-        #endregion Private Methods
     }
 }

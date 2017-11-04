@@ -2,26 +2,17 @@
 
 namespace ColonistBarKF
 {
+    using ColonistBarKF.Bar;
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.IO;
-
-    using ColonistBarKF.Bar;
-
-    using JetBrains.Annotations;
-
-    using static Settings;
-
     using UnityEngine;
-
     using Verse;
 
     public class ColonistBarKfSettings : Window
     {
-
-        #region Private Fields
-
-        private static readonly string Cbkfversion = "Colonist Bar KF 0.17.3.2";
+        private static readonly string Cbkfversion = "Colonist Bar KF 0.18.0";
 
         private static int iconLimit;
 
@@ -48,11 +39,11 @@ namespace ColonistBarKF
             new GUIStyle
             {
                 normal = {
-                            background = ColonistBarTextures.DarkGrayFond 
-                         },
+                                background = ColonistBarTextures.DarkGrayFond
+                             },
                 hover = {
-                           background = ColonistBarTextures.RedHover 
-                        }
+                               background = ColonistBarTextures.RedHover
+                            }
             };
 
         [NotNull]
@@ -61,8 +52,8 @@ namespace ColonistBarKF
             {
                 fontStyle = FontStyle.Bold,
                 normal = {
-                            textColor = Color.white 
-                         },
+                                textColor = Color.white
+                             },
                 padding = new RectOffset(0, 0, 5, 0)
             };
 
@@ -72,21 +63,18 @@ namespace ColonistBarKF
         [NotNull]
         private readonly GUIStyle headline =
             new GUIStyle
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 16,
-                    normal = {
-                                textColor = Color.white 
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 16,
+                normal = {
+                                textColor = Color.white
                              },
-                    padding = new RectOffset(0, 0, 12, 6)
-                };
+                padding = new RectOffset(0, 0, 12, 6)
+            };
 
         [NotNull]
         private readonly string[] mainToolbarStrings =
-            {
-                "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate()
-
-            };
+            { "CBKF.Settings.ColonistBar".Translate(), "CBKF.Settings.PSI".Translate() };
 
         [NotNull]
         private readonly string[] positionStrings =
@@ -118,10 +106,6 @@ namespace ColonistBarKF
 
         private Vector2 scrollPositionPSISize;
 
-        #endregion Private Fields
-
-        #region Public Constructors
-
         public ColonistBarKfSettings()
         {
             this.forcePause = false;
@@ -134,15 +118,7 @@ namespace ColonistBarKF
             Reinit(false);
         }
 
-        #endregion Public Constructors
-
-        #region Public Properties
-
         public override Vector2 InitialSize => new Vector2(540f, 650f);
-
-        #endregion Public Properties
-
-        #region Private Properties
 
         private int MainToolbarInt { get; set; }
 
@@ -150,7 +126,7 @@ namespace ColonistBarKF
         {
             get
             {
-                switch (ColBarSettings.MoodBarPos)
+                switch (Settings.ColBarSettings.MoodBarPos)
                 {
                     case Position.Alignment.Left:
                         this.moodBarPositionInt = 0;
@@ -177,23 +153,23 @@ namespace ColonistBarKF
                 switch (value)
                 {
                     case 0:
-                        ColBarSettings.MoodBarPos = Position.Alignment.Left;
+                        Settings.ColBarSettings.MoodBarPos = Position.Alignment.Left;
                         break;
 
                     case 1:
-                        ColBarSettings.MoodBarPos = Position.Alignment.Right;
+                        Settings.ColBarSettings.MoodBarPos = Position.Alignment.Right;
                         break;
 
                     case 2:
-                        ColBarSettings.MoodBarPos = Position.Alignment.Top;
+                        Settings.ColBarSettings.MoodBarPos = Position.Alignment.Top;
                         break;
 
                     case 3:
-                        ColBarSettings.MoodBarPos = Position.Alignment.Bottom;
+                        Settings.ColBarSettings.MoodBarPos = Position.Alignment.Bottom;
                         break;
 
                     default:
-                        ColBarSettings.MoodBarPos = Position.Alignment.Right;
+                        Settings.ColBarSettings.MoodBarPos = Position.Alignment.Right;
                         break;
                 }
 
@@ -205,22 +181,22 @@ namespace ColonistBarKF
         {
             get
             {
-                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left)
                 {
                     this.psiBarPositionInt = 0;
                 }
 
-                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right)
                 {
                     this.psiBarPositionInt = 1;
                 }
 
-                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Top)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Position.Alignment.Top)
                 {
                     this.psiBarPositionInt = 2;
                 }
 
-                if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom)
+                if (Settings.ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom)
                 {
                     this.psiBarPositionInt = 3;
                 }
@@ -233,35 +209,35 @@ namespace ColonistBarKF
                 switch (value)
                 {
                     case 0:
-                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Left;
-                        ColBarSettings.IconOffsetX = 1f;
-                        ColBarSettings.IconOffsetY = 1f;
-                        ColBarSettings.IconsHorizontal = false;
+                        Settings.ColBarSettings.ColBarPsiIconPos = Position.Alignment.Left;
+                        Settings.ColBarSettings.IconOffsetX = 1f;
+                        Settings.ColBarSettings.IconOffsetY = 1f;
+                        Settings.ColBarSettings.IconsHorizontal = false;
                         break;
 
                     case 1:
-                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Right;
-                        ColBarSettings.IconOffsetX = -1f;
-                        ColBarSettings.IconOffsetY = 1f;
-                        ColBarSettings.IconsHorizontal = false;
+                        Settings.ColBarSettings.ColBarPsiIconPos = Position.Alignment.Right;
+                        Settings.ColBarSettings.IconOffsetX = -1f;
+                        Settings.ColBarSettings.IconOffsetY = 1f;
+                        Settings.ColBarSettings.IconsHorizontal = false;
                         break;
 
                     case 2:
-                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Top;
-                        ColBarSettings.IconOffsetX = -1f;
-                        ColBarSettings.IconOffsetY = 1f;
-                        ColBarSettings.IconsHorizontal = true;
+                        Settings.ColBarSettings.ColBarPsiIconPos = Position.Alignment.Top;
+                        Settings.ColBarSettings.IconOffsetX = -1f;
+                        Settings.ColBarSettings.IconOffsetY = 1f;
+                        Settings.ColBarSettings.IconsHorizontal = true;
                         break;
 
                     case 3:
-                        ColBarSettings.ColBarPsiIconPos = Position.Alignment.Bottom;
-                        ColBarSettings.IconOffsetX = -1;
-                        ColBarSettings.IconOffsetY = -1;
-                        ColBarSettings.IconsHorizontal = true;
+                        Settings.ColBarSettings.ColBarPsiIconPos = Position.Alignment.Bottom;
+                        Settings.ColBarSettings.IconOffsetX = -1;
+                        Settings.ColBarSettings.IconOffsetY = -1;
+                        Settings.ColBarSettings.IconsHorizontal = true;
                         break;
 
                     default:
-                        ColBarSettings.ColBarPsiIconPos = 0;
+                        Settings.ColBarSettings.ColBarPsiIconPos = 0;
 
                         break;
                 }
@@ -274,22 +250,22 @@ namespace ColonistBarKF
         {
             get
             {
-                if (PsiSettings.IconAlignment == 0)
+                if (Settings.PsiSettings.IconAlignment == 0)
                 {
                     this.psiPositionInt = 0;
                 }
 
-                if (PsiSettings.IconAlignment == 1)
+                if (Settings.PsiSettings.IconAlignment == 1)
                 {
                     this.psiPositionInt = 1;
                 }
 
-                if (PsiSettings.IconAlignment == 2)
+                if (Settings.PsiSettings.IconAlignment == 2)
                 {
                     this.psiPositionInt = 2;
                 }
 
-                if (PsiSettings.IconAlignment == 3)
+                if (Settings.PsiSettings.IconAlignment == 3)
                 {
                     this.psiPositionInt = 3;
                 }
@@ -307,63 +283,63 @@ namespace ColonistBarKF
                 switch (value)
                 {
                     case 0:
-                        PsiSettings.IconAlignment = value;
-                        PsiSettings.IconMarginX = 1f;
-                        PsiSettings.IconMarginY = 1f;
-                        PsiSettings.IconOffsetX = 1f;
-                        PsiSettings.IconOffsetY = 1f;
-                        PsiSettings.IconsHorizontal = false;
-                        PsiSettings.IconsScreenScale = true;
-                        PsiSettings.IconsInColumn = 3;
-                        PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.5f;
-                        PsiSettings.IconOpacityCritical = 0.8f;
+                        Settings.PsiSettings.IconAlignment = value;
+                        Settings.PsiSettings.IconMarginX = 1f;
+                        Settings.PsiSettings.IconMarginY = 1f;
+                        Settings.PsiSettings.IconOffsetX = 1f;
+                        Settings.PsiSettings.IconOffsetY = 1f;
+                        Settings.PsiSettings.IconsHorizontal = false;
+                        Settings.PsiSettings.IconsScreenScale = true;
+                        Settings.PsiSettings.IconsInColumn = 3;
+                        Settings.PsiSettings.IconSize = 1f;
+                        Settings.PsiSettings.IconOpacity = 0.5f;
+                        Settings.PsiSettings.IconOpacityCritical = 0.8f;
                         break;
 
                     case 1:
-                        PsiSettings.IconAlignment = value;
-                        PsiSettings.IconMarginX = -1f;
-                        PsiSettings.IconMarginY = 1f;
-                        PsiSettings.IconOffsetX = -1f;
-                        PsiSettings.IconOffsetY = 1f;
-                        PsiSettings.IconsHorizontal = false;
-                        PsiSettings.IconsScreenScale = true;
-                        PsiSettings.IconsInColumn = 3;
-                        PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.5f;
-                        PsiSettings.IconOpacityCritical = 0.8f;
+                        Settings.PsiSettings.IconAlignment = value;
+                        Settings.PsiSettings.IconMarginX = -1f;
+                        Settings.PsiSettings.IconMarginY = 1f;
+                        Settings.PsiSettings.IconOffsetX = -1f;
+                        Settings.PsiSettings.IconOffsetY = 1f;
+                        Settings.PsiSettings.IconsHorizontal = false;
+                        Settings.PsiSettings.IconsScreenScale = true;
+                        Settings.PsiSettings.IconsInColumn = 3;
+                        Settings.PsiSettings.IconSize = 1f;
+                        Settings.PsiSettings.IconOpacity = 0.5f;
+                        Settings.PsiSettings.IconOpacityCritical = 0.8f;
                         break;
 
                     case 2:
-                        PsiSettings.IconAlignment = value;
-                        PsiSettings.IconMarginX = 1f;
-                        PsiSettings.IconMarginY = -1.63f;
-                        PsiSettings.IconOffsetX = -1f;
-                        PsiSettings.IconOffsetY = 1f;
-                        PsiSettings.IconsHorizontal = true;
-                        PsiSettings.IconsScreenScale = true;
-                        PsiSettings.IconsInColumn = 3;
-                        PsiSettings.IconSize = 1f;
-                        PsiSettings.IconOpacity = 0.5f;
-                        PsiSettings.IconOpacityCritical = 0.8f;
+                        Settings.PsiSettings.IconAlignment = value;
+                        Settings.PsiSettings.IconMarginX = 1f;
+                        Settings.PsiSettings.IconMarginY = -1.63f;
+                        Settings.PsiSettings.IconOffsetX = -1f;
+                        Settings.PsiSettings.IconOffsetY = 1f;
+                        Settings.PsiSettings.IconsHorizontal = true;
+                        Settings.PsiSettings.IconsScreenScale = true;
+                        Settings.PsiSettings.IconsInColumn = 3;
+                        Settings.PsiSettings.IconSize = 1f;
+                        Settings.PsiSettings.IconOpacity = 0.5f;
+                        Settings.PsiSettings.IconOpacityCritical = 0.8f;
                         break;
 
                     case 3:
-                        PsiSettings.IconAlignment = value;
-                        PsiSettings.IconMarginX = 1.139534f;
-                        PsiSettings.IconMarginY = 1.375f;
-                        PsiSettings.IconOffsetX = -0.9534883f;
-                        PsiSettings.IconOffsetY = -0.9534884f;
-                        PsiSettings.IconsHorizontal = true;
-                        PsiSettings.IconsScreenScale = true;
-                        PsiSettings.IconsInColumn = 4;
-                        PsiSettings.IconSize = 1.084302f;
-                        PsiSettings.IconOpacity = 0.5f;
-                        PsiSettings.IconOpacityCritical = 0.8f;
+                        Settings.PsiSettings.IconAlignment = value;
+                        Settings.PsiSettings.IconMarginX = 1.139534f;
+                        Settings.PsiSettings.IconMarginY = 1.375f;
+                        Settings.PsiSettings.IconOffsetX = -0.9534883f;
+                        Settings.PsiSettings.IconOffsetY = -0.9534884f;
+                        Settings.PsiSettings.IconsHorizontal = true;
+                        Settings.PsiSettings.IconsScreenScale = true;
+                        Settings.PsiSettings.IconsInColumn = 4;
+                        Settings.PsiSettings.IconSize = 1.084302f;
+                        Settings.PsiSettings.IconOpacity = 0.5f;
+                        Settings.PsiSettings.IconOpacityCritical = 0.8f;
                         break;
 
                     default:
-                        PsiSettings.IconAlignment = 0;
+                        Settings.PsiSettings.IconAlignment = 0;
 
                         break;
                 }
@@ -373,10 +349,6 @@ namespace ColonistBarKF
         }
 
         private int PSIToolbarInt { get; set; }
-
-        #endregion Private Properties
-
-        #region Public Methods
 
         public override void DoWindowContents(Rect rect)
         {
@@ -424,7 +396,6 @@ namespace ColonistBarKF
                         GUILayout.BeginVertical();
                         this.FillPageCaravanSettings();
                         GUILayout.EndVertical();
-
 
                         GUILayout.EndScrollView();
                     }
@@ -524,13 +495,9 @@ namespace ColonistBarKF
 
         public override void PreClose()
         {
-            SaveBarSettings();
-            SavePsiSettings();
+            Settings.SaveBarSettings();
+            Settings.SavePsiSettings();
         }
-
-        #endregion Public Methods
-
-        #region Private Methods
 
         private void DrawCheckboxArea(
             [NotNull] string iconName,
@@ -632,9 +599,9 @@ namespace ColonistBarKF
 
             GUILayout.BeginVertical();
             GUILayout.Space(Text.LineHeight / 2);
-            if (PsiSettings.ShowTargetPoint)
+            if (Settings.PsiSettings.ShowTargetPoint)
             {
-                if (!PsiSettings.UseColoredTarget)
+                if (!Settings.PsiSettings.UseColoredTarget)
                 {
                     if (targetSingle != null)
                     {
@@ -704,11 +671,11 @@ namespace ColonistBarKF
             GUILayout.Space(Text.LineHeight / 2);
 
             // Label("PSI.Settings.VisibilityButton".Translate(), FontBold);
-            PsiSettings.ShowTargetPoint = GUILayout.Toggle(
-                PsiSettings.ShowTargetPoint,
+            Settings.PsiSettings.ShowTargetPoint = GUILayout.Toggle(
+                Settings.PsiSettings.ShowTargetPoint,
                 "PSI.Settings.Visibility.TargetPoint".Translate());
-            PsiSettings.UseColoredTarget = GUILayout.Toggle(
-                PsiSettings.UseColoredTarget,
+            Settings.PsiSettings.UseColoredTarget = GUILayout.Toggle(
+                Settings.PsiSettings.UseColoredTarget,
                 "PSI.Settings.IconOpacityAndColor.UseColoredTarget".Translate());
 
             GUILayout.Space(Text.LineHeight / 2);
@@ -727,56 +694,56 @@ namespace ColonistBarKF
         {
             GUILayout.BeginVertical(this.fondBoxes);
 
-            ColBarSettings.UseCustomIconSize = GUILayout.Toggle(
-                ColBarSettings.UseCustomIconSize,
-                "CBKF.Settings.BasicSize".Translate() + ColBarSettings.BaseSizeFloat.ToString("N0") + " px, "
+            Settings.ColBarSettings.UseCustomIconSize = GUILayout.Toggle(
+                Settings.ColBarSettings.UseCustomIconSize,
+                "CBKF.Settings.BasicSize".Translate() + Settings.ColBarSettings.BaseSizeFloat.ToString("N0") + " px, "
                 + ColonistBar_KF.BarHelperKf.cachedScale.ToStringPercent() + " %, "
-                + (int)ColBarSettings.BaseSpacingHorizontal + " x, " + (int)ColBarSettings.BaseSpacingVertical + " y");
+                + (int)Settings.ColBarSettings.BaseSpacingHorizontal + " x, " + (int)Settings.ColBarSettings.BaseSpacingVertical + " y");
 
-            if (ColBarSettings.UseCustomIconSize)
+            if (Settings.ColBarSettings.UseCustomIconSize)
             {
                 GUILayout.Space(Text.LineHeight / 2);
 
-                ColBarSettings.BaseSizeFloat = GUILayout.HorizontalSlider(ColBarSettings.BaseSizeFloat, 24f, 256f);
+                Settings.ColBarSettings.BaseSizeFloat = GUILayout.HorizontalSlider(Settings.ColBarSettings.BaseSizeFloat, 24f, 256f);
 
-                ColBarSettings.BaseSpacingHorizontal =
-                    GUILayout.HorizontalSlider(ColBarSettings.BaseSpacingHorizontal, 1f, 72f);
-                ColBarSettings.BaseSpacingVertical =
-                    GUILayout.HorizontalSlider(ColBarSettings.BaseSpacingVertical, 1f, 96f);
+                Settings.ColBarSettings.BaseSpacingHorizontal =
+                    GUILayout.HorizontalSlider(Settings.ColBarSettings.BaseSpacingHorizontal, 1f, 72f);
+                Settings.ColBarSettings.BaseSpacingVertical =
+                    GUILayout.HorizontalSlider(Settings.ColBarSettings.BaseSpacingVertical, 1f, 96f);
             }
             else
             {
-                ColBarSettings.BaseSizeFloat = 48f;
-                ColBarSettings.BaseSpacingHorizontal = 24f;
-                ColBarSettings.BaseSpacingVertical = 32f;
+                Settings.ColBarSettings.BaseSizeFloat = 48f;
+                Settings.ColBarSettings.BaseSpacingHorizontal = 24f;
+                Settings.ColBarSettings.BaseSpacingVertical = 32f;
             }
 
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseCustomPawnTextureCameraOffsets = GUILayout.Toggle(
-                ColBarSettings.UseCustomPawnTextureCameraOffsets,
+            Settings.ColBarSettings.UseCustomPawnTextureCameraOffsets = GUILayout.Toggle(
+                Settings.ColBarSettings.UseCustomPawnTextureCameraOffsets,
                 "CBKF.Settings.PawnTextureCameraOffsets".Translate()
-                + ColBarSettings.PawnTextureCameraHorizontalOffset.ToString("N2") + " x, "
-                + ColBarSettings.PawnTextureCameraVerticalOffset.ToString("N2") + " y, "
-                + ColBarSettings.PawnTextureCameraZoom.ToString("N2") + " z");
-            if (ColBarSettings.UseCustomPawnTextureCameraOffsets)
+                + Settings.ColBarSettings.PawnTextureCameraHorizontalOffset.ToString("N2") + " x, "
+                + Settings.ColBarSettings.PawnTextureCameraVerticalOffset.ToString("N2") + " y, "
+                + Settings.ColBarSettings.PawnTextureCameraZoom.ToString("N2") + " z");
+            if (Settings.ColBarSettings.UseCustomPawnTextureCameraOffsets)
             {
                 GUILayout.Space(Text.LineHeight / 2);
-                ColBarSettings.PawnTextureCameraHorizontalOffset = GUILayout.HorizontalSlider(
-                    ColBarSettings.PawnTextureCameraHorizontalOffset,
+                Settings.ColBarSettings.PawnTextureCameraHorizontalOffset = GUILayout.HorizontalSlider(
+                    Settings.ColBarSettings.PawnTextureCameraHorizontalOffset,
                     0.7f,
                     -0.7f);
-                ColBarSettings.PawnTextureCameraVerticalOffset =
-                    GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f);
-                ColBarSettings.PawnTextureCameraZoom =
-                    GUILayout.HorizontalSlider(ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f);
+                Settings.ColBarSettings.PawnTextureCameraVerticalOffset =
+                    GUILayout.HorizontalSlider(Settings.ColBarSettings.PawnTextureCameraVerticalOffset, 0f, 1f);
+                Settings.ColBarSettings.PawnTextureCameraZoom =
+                    GUILayout.HorizontalSlider(Settings.ColBarSettings.PawnTextureCameraZoom, 0.3f, 3f);
             }
             else
             {
-                ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
-                ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
-                ColBarSettings.PawnTextureCameraZoom = 1.28205f;
+                Settings.ColBarSettings.PawnTextureCameraHorizontalOffset = 0f;
+                Settings.ColBarSettings.PawnTextureCameraVerticalOffset = 0.3f;
+                Settings.ColBarSettings.PawnTextureCameraZoom = 1.28205f;
             }
 
             GUILayout.EndVertical();
@@ -820,15 +787,15 @@ namespace ColonistBarKF
         private void FillPageCaravanSettings()
         {
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseGrouping = GUILayout.Toggle(
-                ColBarSettings.UseGrouping,
+            Settings.ColBarSettings.UseGrouping = GUILayout.Toggle(
+                Settings.ColBarSettings.UseGrouping,
                 "CBKF.Settings.UseGrouping".Translate());
 
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseGroupColors = GUILayout.Toggle(
-                ColBarSettings.UseGroupColors,
+            Settings.ColBarSettings.UseGroupColors = GUILayout.Toggle(
+                Settings.ColBarSettings.UseGroupColors,
                 "CBKF.Settings.UseGroupColors".Translate());
 
             GUILayout.EndVertical();
@@ -837,26 +804,26 @@ namespace ColonistBarKF
         private void FillPageMain()
         {
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
-                ColBarSettings.UseCustomMarginTop,
-                "CBKF.Settings.ColonistBarOffset".Translate() + (int)ColBarSettings.MarginTop + " y \n"
+            Settings.ColBarSettings.UseCustomMarginTop = GUILayout.Toggle(
+                Settings.ColBarSettings.UseCustomMarginTop,
+                "CBKF.Settings.ColonistBarOffset".Translate() + (int)Settings.ColBarSettings.MarginTop + " y \n"
                 + "CBKF.Settings.MaxColonistBarWidth".Translate() + ": "
-                + ((float)UI.screenWidth - (int)ColBarSettings.MarginHorizontal) + " px");
+                + ((float)UI.screenWidth - (int)Settings.ColBarSettings.MarginHorizontal) + " px");
 
-            if (ColBarSettings.UseCustomMarginTop)
+            if (Settings.ColBarSettings.UseCustomMarginTop)
             {
                 GUILayout.Space(Text.LineHeight / 2);
-                ColBarSettings.MarginTop =
-                    GUILayout.HorizontalSlider(ColBarSettings.MarginTop, 0f, (float)UI.screenHeight / 6);
-                ColBarSettings.MarginHorizontal = GUILayout.HorizontalSlider(
-                    ColBarSettings.MarginHorizontal,
+                Settings.ColBarSettings.MarginTop =
+                    GUILayout.HorizontalSlider(Settings.ColBarSettings.MarginTop, 0f, (float)UI.screenHeight / 6);
+                Settings.ColBarSettings.MarginHorizontal = GUILayout.HorizontalSlider(
+                    Settings.ColBarSettings.MarginHorizontal,
                     (float)UI.screenWidth * 3 / 5,
                     0f);
             }
             else
             {
-                ColBarSettings.MarginTop = 21f;
-                ColBarSettings.MarginHorizontal = 520f;
+                Settings.ColBarSettings.MarginTop = 21f;
+                Settings.ColBarSettings.MarginHorizontal = 520f;
             }
 
             // listing.Gap(3f);
@@ -864,29 +831,29 @@ namespace ColonistBarKF
 
             // listing.Gap(3f);
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
-                ColBarSettings.UseCustomRowCount,
+            Settings.ColBarSettings.UseCustomRowCount = GUILayout.Toggle(
+                Settings.ColBarSettings.UseCustomRowCount,
                 "PSI.Settings.Arrangement.ColonistsPerColumn".Translate()
-                + (ColBarSettings.UseCustomRowCount ? ColBarSettings.MaxRowsCustom : 3));
-            if (ColBarSettings.UseCustomRowCount)
+                + (Settings.ColBarSettings.UseCustomRowCount ? Settings.ColBarSettings.MaxRowsCustom : 3));
+            if (Settings.ColBarSettings.UseCustomRowCount)
             {
-                ColBarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(ColBarSettings.MaxRowsCustom, 1f, 5f);
+                Settings.ColBarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(Settings.ColBarSettings.MaxRowsCustom, 1f, 5f);
             }
 
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
 
-            ColBarSettings.UseWeaponIcons = GUILayout.Toggle(
-                ColBarSettings.UseWeaponIcons,
+            Settings.ColBarSettings.UseWeaponIcons = GUILayout.Toggle(
+                Settings.ColBarSettings.UseWeaponIcons,
                 "CBKF.Settings.UseWeaponIcons".Translate());
 
-            ColBarSettings.UseGender = GUILayout.Toggle(
-                ColBarSettings.UseGender,
+            Settings.ColBarSettings.UseGender = GUILayout.Toggle(
+                Settings.ColBarSettings.UseGender,
                 "CBKF.Settings.useGender".Translate());
 
-            ColBarSettings.useZoomToMouse = GUILayout.Toggle(
-                ColBarSettings.useZoomToMouse,
+            Settings.ColBarSettings.useZoomToMouse = GUILayout.Toggle(
+                Settings.ColBarSettings.useZoomToMouse,
                 "CBKF.Settings.useZoomToMouse".Translate());
 
             GUILayout.Label("FollowMe.MiddleClick".Translate());
@@ -908,17 +875,17 @@ namespace ColonistBarKF
             // }
             // #endregion
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UseNewMood = GUILayout.Toggle(
-                ColBarSettings.UseNewMood,
+            Settings.ColBarSettings.UseNewMood = GUILayout.Toggle(
+                Settings.ColBarSettings.UseNewMood,
                 "CBKF.Settings.UseNewMood".Translate());
 
-            if (ColBarSettings.UseNewMood)
+            if (Settings.ColBarSettings.UseNewMood)
             {
-                ColBarSettings.UseExternalMoodBar = GUILayout.Toggle(
-                    ColBarSettings.UseExternalMoodBar,
+                Settings.ColBarSettings.UseExternalMoodBar = GUILayout.Toggle(
+                    Settings.ColBarSettings.UseExternalMoodBar,
                     "CBKF.Settings.UseExternalMoodBar".Translate());
 
-                if (ColBarSettings.UseExternalMoodBar)
+                if (Settings.ColBarSettings.UseExternalMoodBar)
                 {
                     GUILayout.BeginHorizontal();
                     this.MoodBarPositionInt = GUILayout.Toolbar(this.MoodBarPositionInt, this.positionStrings);
@@ -928,7 +895,7 @@ namespace ColonistBarKF
             }
             else
             {
-                ColBarSettings.UseExternalMoodBar = false;
+                Settings.ColBarSettings.UseExternalMoodBar = false;
             }
 
             GUILayout.EndVertical();
@@ -939,7 +906,7 @@ namespace ColonistBarKF
         private void FillPagePSIIconSet(Rect viewRect)
         {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("PSI.Settings.IconSet".Translate() + PsiSettings.IconSet))
+            if (GUILayout.Button("PSI.Settings.IconSet".Translate() + Settings.PsiSettings.IconSet))
             {
                 FloatMenuOption fmoDefault = new FloatMenuOption(
                     "PSI.Settings.Preset.0".Translate(),
@@ -947,9 +914,9 @@ namespace ColonistBarKF
                         {
                             try
                             {
-                                PsiSettings.IconSet = "default";
-                                PsiSettings.UseColoredTarget = true;
-                                SavePsiSettings();
+                                Settings.PsiSettings.IconSet = "default";
+                                Settings.PsiSettings.UseColoredTarget = true;
+                                Settings.SavePsiSettings();
                                 Reinit(false, true, false);
                             }
                             catch (IOException)
@@ -964,9 +931,9 @@ namespace ColonistBarKF
                         {
                             try
                             {
-                                PsiSettings.IconSet = "original";
-                                PsiSettings.UseColoredTarget = false;
-                                SavePsiSettings();
+                                Settings.PsiSettings.IconSet = "original";
+                                Settings.PsiSettings.UseColoredTarget = false;
+                                Settings.SavePsiSettings();
                                 Reinit(false, true, false);
                             }
                             catch (IOException)
@@ -1002,194 +969,194 @@ namespace ColonistBarKF
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Draft".Translate(),
                 PSIMaterials[Icon.Draft],
-                ref ColBarSettings.ShowDraft,
-                ref PsiSettings.ShowDraft,
+                ref Settings.ColBarSettings.ShowDraft,
+                ref Settings.PsiSettings.ShowDraft,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Unarmed".Translate(),
                 PSIMaterials[Icon.Unarmed],
-                ref ColBarSettings.ShowUnarmed,
-                ref PsiSettings.ShowUnarmed,
+                ref Settings.ColBarSettings.ShowUnarmed,
+                ref Settings.PsiSettings.ShowUnarmed,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Idle".Translate(),
                 PSIMaterials[Icon.Idle],
-                ref ColBarSettings.ShowIdle,
-                ref PsiSettings.ShowIdle,
+                ref Settings.ColBarSettings.ShowIdle,
+                ref Settings.PsiSettings.ShowIdle,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Sad".Translate(),
                 PSIMaterials[Icon.Sad],
-                ref ColBarSettings.ShowSad,
-                ref PsiSettings.ShowSad,
+                ref Settings.ColBarSettings.ShowSad,
+                ref Settings.PsiSettings.ShowSad,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Aggressive".Translate(),
                 PSIMaterials[Icon.Aggressive],
-                ref ColBarSettings.ShowAggressive,
-                ref PsiSettings.ShowAggressive,
+                ref Settings.ColBarSettings.ShowAggressive,
+                ref Settings.PsiSettings.ShowAggressive,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Panic".Translate(),
                 PSIMaterials[Icon.Panic],
-                ref ColBarSettings.ShowPanic,
-                ref PsiSettings.ShowPanic,
+                ref Settings.ColBarSettings.ShowPanic,
+                ref Settings.PsiSettings.ShowPanic,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Dazed".Translate(),
                 PSIMaterials[Icon.Dazed],
-                ref ColBarSettings.ShowDazed,
-                ref PsiSettings.ShowDazed,
+                ref Settings.ColBarSettings.ShowDazed,
+                ref Settings.PsiSettings.ShowDazed,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Leave".Translate(),
                 PSIMaterials[Icon.Leave],
-                ref ColBarSettings.ShowLeave,
-                ref PsiSettings.ShowLeave,
+                ref Settings.ColBarSettings.ShowLeave,
+                ref Settings.PsiSettings.ShowLeave,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Hungry".Translate(),
                 PSIMaterials[Icon.Hungry],
-                ref ColBarSettings.ShowHungry,
-                ref PsiSettings.ShowHungry,
+                ref Settings.ColBarSettings.ShowHungry,
+                ref Settings.PsiSettings.ShowHungry,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Tired".Translate(),
                 PSIMaterials[Icon.Tired],
-                ref ColBarSettings.ShowTired,
-                ref PsiSettings.ShowTired,
+                ref Settings.ColBarSettings.ShowTired,
+                ref Settings.PsiSettings.ShowTired,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.TooCold".Translate(),
                 PSIMaterials[Icon.TooCold],
-                ref ColBarSettings.ShowTooCold,
-                ref PsiSettings.ShowTooCold,
+                ref Settings.ColBarSettings.ShowTooCold,
+                ref Settings.PsiSettings.ShowTooCold,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.TooHot".Translate(),
                 PSIMaterials[Icon.TooHot],
-                ref ColBarSettings.ShowTooHot,
-                ref PsiSettings.ShowTooHot,
+                ref Settings.ColBarSettings.ShowTooHot,
+                ref Settings.PsiSettings.ShowTooHot,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.ApparelHealth".Translate(),
                 PSIMaterials[Icon.ApparelHealth],
-                ref ColBarSettings.ShowApparelHealth,
-                ref PsiSettings.ShowApparelHealth,
+                ref Settings.ColBarSettings.ShowApparelHealth,
+                ref Settings.PsiSettings.ShowApparelHealth,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Naked".Translate(),
                 PSIMaterials[Icon.Naked],
-                ref ColBarSettings.ShowNaked,
-                ref PsiSettings.ShowNaked,
+                ref Settings.ColBarSettings.ShowNaked,
+                ref Settings.PsiSettings.ShowNaked,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Health".Translate(),
                 PSIMaterials[Icon.Health],
-                ref ColBarSettings.ShowHealth,
-                ref PsiSettings.ShowHealth,
+                ref Settings.ColBarSettings.ShowHealth,
+                ref Settings.PsiSettings.ShowHealth,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.MedicalAttention".Translate(),
                 PSIMaterials[Icon.MedicalAttention],
-                ref ColBarSettings.ShowMedicalAttention,
-                ref PsiSettings.ShowMedicalAttention,
+                ref Settings.ColBarSettings.ShowMedicalAttention,
+                ref Settings.PsiSettings.ShowMedicalAttention,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Injury".Translate(),
                 PSIMaterials[Icon.Effectiveness],
-                ref ColBarSettings.ShowEffectiveness,
-                ref PsiSettings.ShowEffectiveness,
+                ref Settings.ColBarSettings.ShowEffectiveness,
+                ref Settings.PsiSettings.ShowEffectiveness,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Bloodloss".Translate(),
                 PSIMaterials[Icon.Bloodloss],
-                ref ColBarSettings.ShowBloodloss,
-                ref PsiSettings.ShowBloodloss,
+                ref Settings.ColBarSettings.ShowBloodloss,
+                ref Settings.PsiSettings.ShowBloodloss,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pain".Translate(),
                 PSIMaterials[Icon.Pain],
-                ref ColBarSettings.ShowPain,
-                ref PsiSettings.ShowPain,
+                ref Settings.ColBarSettings.ShowPain,
+                ref Settings.PsiSettings.ShowPain,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Drunk".Translate(),
                 PSIMaterials[Icon.Drunk],
-                ref ColBarSettings.ShowDrunk,
-                ref PsiSettings.ShowDrunk,
+                ref Settings.ColBarSettings.ShowDrunk,
+                ref Settings.PsiSettings.ShowDrunk,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Toxicity".Translate(),
                 PSIMaterials[Icon.Toxicity],
-                ref ColBarSettings.ShowToxicity,
-                ref PsiSettings.ShowToxicity,
+                ref Settings.ColBarSettings.ShowToxicity,
+                ref Settings.PsiSettings.ShowToxicity,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.NightOwl".Translate(),
                 PSIMaterials[Icon.NightOwl],
-                ref ColBarSettings.ShowNightOwl,
-                ref PsiSettings.ShowNightOwl,
+                ref Settings.ColBarSettings.ShowNightOwl,
+                ref Settings.PsiSettings.ShowNightOwl,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.LeftUnburied".Translate(),
                 PSIMaterials[Icon.LeftUnburied],
-                ref ColBarSettings.ShowLeftUnburied,
-                ref PsiSettings.ShowLeftUnburied,
+                ref Settings.ColBarSettings.ShowLeftUnburied,
+                ref Settings.PsiSettings.ShowLeftUnburied,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.CabinFever".Translate(),
                 PSIMaterials[Icon.CabinFever],
-                ref ColBarSettings.ShowCabinFever,
-                ref PsiSettings.ShowCabinFever,
+                ref Settings.ColBarSettings.ShowCabinFever,
+                ref Settings.PsiSettings.ShowCabinFever,
                 ref num);
 
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Bedroom".Translate(),
                 PSIMaterials[Icon.Bedroom],
-                ref ColBarSettings.ShowBedroom,
-                ref PsiSettings.ShowBedroom,
+                ref Settings.ColBarSettings.ShowBedroom,
+                ref Settings.PsiSettings.ShowBedroom,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Greedy".Translate(),
                 PSIMaterials[Icon.Greedy],
-                ref ColBarSettings.ShowGreedy,
-                ref PsiSettings.ShowGreedy,
+                ref Settings.ColBarSettings.ShowGreedy,
+                ref Settings.PsiSettings.ShowGreedy,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Jealous".Translate(),
                 PSIMaterials[Icon.Jealous],
-                ref ColBarSettings.ShowJealous,
-                ref PsiSettings.ShowJealous,
+                ref Settings.ColBarSettings.ShowJealous,
+                ref Settings.PsiSettings.ShowJealous,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pyromaniac".Translate(),
                 PSIMaterials[Icon.Pyromaniac],
-                ref ColBarSettings.ShowPyromaniac,
-                ref PsiSettings.ShowPyromaniac,
+                ref Settings.ColBarSettings.ShowPyromaniac,
+                ref Settings.PsiSettings.ShowPyromaniac,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Prosthophile".Translate(),
                 PSIMaterials[Icon.Prosthophile],
-                ref ColBarSettings.ShowProsthophile,
-                ref PsiSettings.ShowProsthophile,
+                ref Settings.ColBarSettings.ShowProsthophile,
+                ref Settings.PsiSettings.ShowProsthophile,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Prosthophobe".Translate(),
                 PSIMaterials[Icon.Prosthophobe],
-                ref ColBarSettings.ShowProsthophobe,
-                ref PsiSettings.ShowProsthophobe,
+                ref Settings.ColBarSettings.ShowProsthophobe,
+                ref Settings.PsiSettings.ShowProsthophobe,
                 ref num);
             this.DrawCheckboxArea(
                 "PSI.Settings.Visibility.Pacific".Translate(),
                 PSIMaterials[Icon.Pacific],
-                ref ColBarSettings.ShowPacific,
-                ref PsiSettings.ShowPacific,
+                ref Settings.ColBarSettings.ShowPacific,
+                ref Settings.PsiSettings.ShowPacific,
                 ref num);
 
             // DrawCheckboxArea("PSI.Settings.Visibility.Marriage".Translate(), PSIMaterials[Icons.Marriage], ref ColBarSettings.ShowMarriage, ref PsiSettings.ShowMarriage, ref num);
@@ -1205,16 +1172,16 @@ namespace ColonistBarKF
 
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
-                "PSI.Settings.IconOpacityAndColor.Opacity".Translate() + (PsiSettings.IconOpacity * 100).ToString("N0")
+                "PSI.Settings.IconOpacityAndColor.Opacity".Translate() + (Settings.PsiSettings.IconOpacity * 100).ToString("N0")
                 + " %");
-            PsiSettings.IconOpacity = GUILayout.HorizontalSlider(PsiSettings.IconOpacity, 0.1f, 1f);
+            Settings.PsiSettings.IconOpacity = GUILayout.HorizontalSlider(Settings.PsiSettings.IconOpacity, 0.1f, 1f);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
                 "PSI.Settings.IconOpacityAndColor.OpacityCritical".Translate()
-                + (PsiSettings.IconOpacityCritical * 100).ToString("N0") + " %");
-            PsiSettings.IconOpacityCritical = GUILayout.HorizontalSlider(PsiSettings.IconOpacityCritical, 0.1f, 1f);
+                + (Settings.PsiSettings.IconOpacityCritical * 100).ToString("N0") + " %");
+            Settings.PsiSettings.IconOpacityCritical = GUILayout.HorizontalSlider(Settings.PsiSettings.IconOpacityCritical, 0.1f, 1f);
             GUILayout.EndVertical();
 
             // if (listing.DoTextButton("PSI.Settings.ResetColors".Translate()))
@@ -1248,21 +1215,21 @@ namespace ColonistBarKF
                                                                 {
                                                                     try
                                                                     {
-                                                                        PsiSettings.LimitBleedMult
+                                                                        Settings.PsiSettings.LimitBleedMult
                                                                             = 2f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitDiseaseLess =
                                                                             1f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitEfficiencyLess =
                                                                             0.6f;
-                                                                        PsiSettings.LimitFoodLess
+                                                                        Settings.PsiSettings.LimitFoodLess
                                                                             = 0.2f;
 
                                                                         // PsiSettings.LimitMoodLess = 0.2f;
-                                                                        PsiSettings.LimitRestLess
+                                                                        Settings.PsiSettings.LimitRestLess
                                                                             = 0.2f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = 3f;
                                                                     }
@@ -1280,21 +1247,21 @@ namespace ColonistBarKF
                                                                 {
                                                                     try
                                                                     {
-                                                                        PsiSettings.LimitBleedMult
+                                                                        Settings.PsiSettings.LimitBleedMult
                                                                             = 3f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitDiseaseLess =
                                                                             1f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitEfficiencyLess =
                                                                             0.75f;
-                                                                        PsiSettings.LimitFoodLess
+                                                                        Settings.PsiSettings.LimitFoodLess
                                                                             = 0.25f;
 
                                                                         // PsiSettings.LimitMoodLess = 0.25f;
-                                                                        PsiSettings.LimitRestLess
+                                                                        Settings.PsiSettings.LimitRestLess
                                                                             = 0.25f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = 0f;
                                                                     }
@@ -1312,21 +1279,21 @@ namespace ColonistBarKF
                                                                 {
                                                                     try
                                                                     {
-                                                                        PsiSettings.LimitBleedMult
+                                                                        Settings.PsiSettings.LimitBleedMult
                                                                             = 4f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitDiseaseLess =
                                                                             1f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitEfficiencyLess =
                                                                             0.9f;
-                                                                        PsiSettings.LimitFoodLess
+                                                                        Settings.PsiSettings.LimitFoodLess
                                                                             = 0.3f;
 
                                                                         // PsiSettings.LimitMoodLess = 0.3f;
-                                                                        PsiSettings.LimitRestLess
+                                                                        Settings.PsiSettings.LimitRestLess
                                                                             = 0.3f;
-                                                                        PsiSettings
+                                                                        Settings.PsiSettings
                                                                                 .LimitTempComfortOffset
                                                                             = -3f;
                                                                     }
@@ -1351,26 +1318,26 @@ namespace ColonistBarKF
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
                 "PSI.Settings.Sensitivity.Bleeding".Translate()
-                + ("PSI.Settings.Sensitivity.Bleeding." + Math.Round(PsiSettings.LimitBleedMult - 0.25)).Translate());
-            PsiSettings.LimitBleedMult = GUILayout.HorizontalSlider(PsiSettings.LimitBleedMult, 0.5f, 5f);
+                + ("PSI.Settings.Sensitivity.Bleeding." + Math.Round(Settings.PsiSettings.LimitBleedMult - 0.25)).Translate());
+            Settings.PsiSettings.LimitBleedMult = GUILayout.HorizontalSlider(Settings.PsiSettings.LimitBleedMult, 0.5f, 5f);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
-                "PSI.Settings.Sensitivity.Injured".Translate() + (int)(PsiSettings.LimitEfficiencyLess * 100.0) + " %");
-            PsiSettings.LimitEfficiencyLess = GUILayout.HorizontalSlider(PsiSettings.LimitEfficiencyLess, 0.01f, 1f);
+                "PSI.Settings.Sensitivity.Injured".Translate() + (int)(Settings.PsiSettings.LimitEfficiencyLess * 100.0) + " %");
+            Settings.PsiSettings.LimitEfficiencyLess = GUILayout.HorizontalSlider(Settings.PsiSettings.LimitEfficiencyLess, 0.01f, 1f);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
-                "PSI.Settings.Sensitivity.Food".Translate() + (int)(PsiSettings.LimitFoodLess * 100.0) + " %");
-            PsiSettings.LimitFoodLess = GUILayout.HorizontalSlider(PsiSettings.LimitFoodLess, 0.01f, 0.99f);
+                "PSI.Settings.Sensitivity.Food".Translate() + (int)(Settings.PsiSettings.LimitFoodLess * 100.0) + " %");
+            Settings.PsiSettings.LimitFoodLess = GUILayout.HorizontalSlider(Settings.PsiSettings.LimitFoodLess, 0.01f, 0.99f);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
-                "PSI.Settings.Sensitivity.Rest".Translate() + (int)(PsiSettings.LimitRestLess * 100.0) + " %");
-            PsiSettings.LimitRestLess = GUILayout.HorizontalSlider(PsiSettings.LimitRestLess, 0.01f, 0.99f);
+                "PSI.Settings.Sensitivity.Rest".Translate() + (int)(Settings.PsiSettings.LimitRestLess * 100.0) + " %");
+            Settings.PsiSettings.LimitRestLess = GUILayout.HorizontalSlider(Settings.PsiSettings.LimitRestLess, 0.01f, 0.99f);
             GUILayout.EndVertical();
 
             // Replaced with thought check => human leather, dead man's apparel
@@ -1383,9 +1350,9 @@ namespace ColonistBarKF
             // GUILayout.EndVertical();
             GUILayout.BeginVertical(this.fondBoxes);
             GUILayout.Label(
-                "PSI.Settings.Sensitivity.Temperature".Translate() + (int)PsiSettings.LimitTempComfortOffset + " °C");
-            PsiSettings.LimitTempComfortOffset =
-                GUILayout.HorizontalSlider(PsiSettings.LimitTempComfortOffset, -10f, 10f);
+                "PSI.Settings.Sensitivity.Temperature".Translate() + (int)Settings.PsiSettings.LimitTempComfortOffset + " °C");
+            Settings.PsiSettings.LimitTempComfortOffset =
+                GUILayout.HorizontalSlider(Settings.PsiSettings.LimitTempComfortOffset, -10f, 10f);
             GUILayout.EndVertical();
 
             GUILayout.EndScrollView();
@@ -1400,8 +1367,8 @@ namespace ColonistBarKF
             this.scrollPositionPSISize = GUILayout.BeginScrollView(this.scrollPositionPSISize);
 
             GUILayout.BeginVertical(this.fondBoxes);
-            ColBarSettings.UsePsi = GUILayout.Toggle(ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
-            if (ColBarSettings.UsePsi)
+            Settings.ColBarSettings.UsePsi = GUILayout.Toggle(Settings.ColBarSettings.UsePsi, "CBKF.Settings.UsePsiOnBar".Translate());
+            if (Settings.ColBarSettings.UsePsi)
             {
                 GUILayout.BeginHorizontal();
                 this.PsiBarPositionInt = GUILayout.Toolbar(this.PsiBarPositionInt, this.positionStrings);
@@ -1410,25 +1377,25 @@ namespace ColonistBarKF
 
                 GUILayout.Space(Text.LineHeight / 2);
 
-                GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + ColBarSettings.IconsInColumn);
-                ColBarSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(ColBarSettings.IconsInColumn, 2f, 5f);
+                GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + Settings.ColBarSettings.IconsInColumn);
+                Settings.ColBarSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(Settings.ColBarSettings.IconsInColumn, 2f, 5f);
             }
 
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(this.fondBoxes);
-            PsiSettings.UsePsi = GUILayout.Toggle(PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
-            PsiSettings.ShowRelationsOnStrangers = GUILayout.Toggle(
-                PsiSettings.ShowRelationsOnStrangers,
+            Settings.PsiSettings.UsePsi = GUILayout.Toggle(Settings.PsiSettings.UsePsi, "PSI.Settings.UsePSI".Translate());
+            Settings.PsiSettings.ShowRelationsOnStrangers = GUILayout.Toggle(
+                Settings.PsiSettings.ShowRelationsOnStrangers,
                 "PSI.Settings.ShowRelationsOnStrangers".Translate());
-            PsiSettings.UsePsiOnPrisoner = GUILayout.Toggle(
-                PsiSettings.UsePsiOnPrisoner,
+            Settings.PsiSettings.UsePsiOnPrisoner = GUILayout.Toggle(
+                Settings.PsiSettings.UsePsiOnPrisoner,
                 "PSI.Settings.UsePSIOnPrisoner".Translate());
-            PsiSettings.UsePsiOnAnimals = GUILayout.Toggle(
-                PsiSettings.UsePsiOnAnimals,
+            Settings.PsiSettings.UsePsiOnAnimals = GUILayout.Toggle(
+                Settings.PsiSettings.UsePsiOnAnimals,
                 "PSI.Settings.UsePsiOnAnimals".Translate());
 
-            if (PsiSettings.UsePsi || PsiSettings.UsePsiOnPrisoner)
+            if (Settings.PsiSettings.UsePsi || Settings.PsiSettings.UsePsiOnPrisoner)
             {
                 GUILayout.Space(Text.LineHeight / 2);
 
@@ -1439,20 +1406,20 @@ namespace ColonistBarKF
 
                 GUILayout.Space(Text.LineHeight / 2);
 
-                PsiSettings.IconsHorizontal = GUILayout.Toggle(
-                    PsiSettings.IconsHorizontal,
+                Settings.PsiSettings.IconsHorizontal = GUILayout.Toggle(
+                    Settings.PsiSettings.IconsHorizontal,
                     "PSI.Settings.Arrangement.Horizontal".Translate());
 
-                PsiSettings.IconsScreenScale = GUILayout.Toggle(
-                    PsiSettings.IconsScreenScale,
+                Settings.PsiSettings.IconsScreenScale = GUILayout.Toggle(
+                    Settings.PsiSettings.IconsScreenScale,
                     "PSI.Settings.Arrangement.ScreenScale".Translate());
 
                 GUILayout.Space(Text.LineHeight / 2);
 
-                GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + PsiSettings.IconsInColumn);
-                PsiSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(PsiSettings.IconsInColumn, 1f, 7f);
+                GUILayout.Label("PSI.Settings.Arrangement.IconsPerColumn".Translate() + Settings.PsiSettings.IconsInColumn);
+                Settings.PsiSettings.IconsInColumn = (int)GUILayout.HorizontalSlider(Settings.PsiSettings.IconsInColumn, 1f, 7f);
 
-                int num = (int)(PsiSettings.IconSize * 4.5);
+                int num = (int)(Settings.PsiSettings.IconSize * 4.5);
 
                 if (num > 8)
                 {
@@ -1466,23 +1433,23 @@ namespace ColonistBarKF
                 GUILayout.Space(Text.LineHeight / 2);
                 GUILayout.Label(
                     "PSI.Settings.Arrangement.IconSize".Translate() + ("PSI.Settings.SizeLabel." + num).Translate());
-                PsiSettings.IconSize = GUILayout.HorizontalSlider(PsiSettings.IconSize, 0.5f, 2f);
+                Settings.PsiSettings.IconSize = GUILayout.HorizontalSlider(Settings.PsiSettings.IconSize, 0.5f, 2f);
                 GUILayout.Space(Text.LineHeight / 2);
 
                 GUILayout.BeginVertical(this.fondBoxes);
                 GUILayout.Label(
-                    "PSI.Settings.Arrangement.IconPosition".Translate() + (int)(PsiSettings.IconMarginX * 100.0)
-                    + " x, " + (int)(PsiSettings.IconMarginY * 100.0) + " y");
-                PsiSettings.IconMarginX = GUILayout.HorizontalSlider(PsiSettings.IconMarginX, -2f, 2f);
-                PsiSettings.IconMarginY = GUILayout.HorizontalSlider(PsiSettings.IconMarginY, -2f, 2f);
+                    "PSI.Settings.Arrangement.IconPosition".Translate() + (int)(Settings.PsiSettings.IconMarginX * 100.0)
+                    + " x, " + (int)(Settings.PsiSettings.IconMarginY * 100.0) + " y");
+                Settings.PsiSettings.IconMarginX = GUILayout.HorizontalSlider(Settings.PsiSettings.IconMarginX, -2f, 2f);
+                Settings.PsiSettings.IconMarginY = GUILayout.HorizontalSlider(Settings.PsiSettings.IconMarginY, -2f, 2f);
                 GUILayout.EndVertical();
 
                 GUILayout.BeginVertical(this.fondBoxes);
                 GUILayout.Label(
-                    "PSI.Settings.Arrangement.IconOffset".Translate() + (int)(PsiSettings.IconOffsetX * 100.0) + " x, "
-                    + (int)(PsiSettings.IconOffsetY * 100.0) + " y");
-                PsiSettings.IconOffsetX = GUILayout.HorizontalSlider(PsiSettings.IconOffsetX, -2f, 2f);
-                PsiSettings.IconOffsetY = GUILayout.HorizontalSlider(PsiSettings.IconOffsetY, -2f, 2f);
+                    "PSI.Settings.Arrangement.IconOffset".Translate() + (int)(Settings.PsiSettings.IconOffsetX * 100.0) + " x, "
+                    + (int)(Settings.PsiSettings.IconOffsetY * 100.0) + " y");
+                Settings.PsiSettings.IconOffsetX = GUILayout.HorizontalSlider(Settings.PsiSettings.IconOffsetX, -2f, 2f);
+                Settings.PsiSettings.IconOffsetY = GUILayout.HorizontalSlider(Settings.PsiSettings.IconOffsetY, -2f, 2f);
                 GUILayout.EndVertical();
 
                 // if (!listing.DoTextButton("PSI.Settings.ReturnButton".Translate()))
@@ -1512,15 +1479,12 @@ namespace ColonistBarKF
 
         private void ResetBarSettings()
         {
-            ColBarSettings = new SettingsColonistBar();
+            Settings.ColBarSettings = new SettingsColonistBar();
         }
 
         private void ResetPSISettings()
         {
-            PsiSettings = new SettingsPSI();
+            Settings.PsiSettings = new SettingsPSI();
         }
-
-        #endregion Private Methods
-
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<KeyBindingDefs>
+<Defs>
 
   <!-- In-game camera -->
   <KeyBindingDef Name="GameKeyBinding" Abstract="true">
@@ -12,5 +12,4 @@
     <label>follow</label>
     <defaultKeyCodeA>Home</defaultKeyCodeA>
   </KeyBindingDef>
-
-</KeyBindingDefs>
+</Defs>

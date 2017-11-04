@@ -21,12 +21,12 @@
         // ReSharper disable once InconsistentNaming
         private readonly FieldInfo _desSizeFi = typeof(CameraDriver).GetField("desiredSize", AllFlags);
 
+        // tolerance for zoom
+        private readonly float tolerance = 0.1f;
+
         // helpers
         // ReSharper disable once InconsistentNaming
         private Vector3 _lastMouseMapPosition = Vector3.zero;
-
-        // tolerance for zoom
-        private readonly float tolerance = 0.1f;
 
         public ZoomToMouse(Game game)
         {
@@ -39,14 +39,14 @@
 
         private Vector3 CurrentMouseMapPosition => UI.MouseMapPosition();
 
-        private Vector3 MouseMapOffset => this._lastMouseMapPosition - this.CurrentMouseMapPosition;
+        private Vector3 CurrentRealPosition => (Vector3)this._curPos.Invoke(Current.CameraDriver, null);
 
         // reflection helpers
         private float CurrentSize => (float)this._curSizeFi.GetValue(Current.CameraDriver);
 
         private float DesiredSize => (float)this._desSizeFi.GetValue(Current.CameraDriver);
 
-        private Vector3 CurrentRealPosition => (Vector3)this._curPos.Invoke(Current.CameraDriver, null);
+        private Vector3 MouseMapOffset => this._lastMouseMapPosition - this.CurrentMouseMapPosition;
 
         public override void GameComponentOnGUI()
         {

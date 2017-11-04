@@ -9,8 +9,6 @@
     [StaticConstructorOnStartup]
     internal static class ColonistBarTextures
     {
-        #region Public Fields
-
         [NotNull]
         public static readonly Texture2D BgTex = Command.BGTex;
 
@@ -27,30 +25,28 @@
 
         public static readonly Color ColBlue = new Color32(0, 114, 178, 255);
 
-        public static readonly Color ColBlueishGreen = new Color32(0, 158, 115, 255);
-
-        public static readonly Color ColOrange = new Color32(177, 123, 0, 255);
-
-        public static readonly Color ColorNeutralSoft = new Color(0.6f, 0.6f, 0.6f, 0.3f);
-
-        public static readonly Color ColSkyBlue = new Color32(92, 180, 230, 255);
-
-        public static readonly Color ColVermillion = new Color32(204, 63, 0, 255);
-
-        public static readonly Color ColYellow = new Color32(176, 179, 0, 255);
-
-        public static readonly Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
-
         public static readonly Color ColBlueBg = new Color32(0, 114, 178, 80);
 
+        public static readonly Color ColBlueishGreen = new Color32(0, 158, 115, 255);
+
         public static readonly Color ColBlueishGreenBg = new Color32(0, 158, 115, 60);
+
+        public static readonly Color ColOrange = new Color32(177, 123, 0, 255);
 
         // public static readonly Color32 ColVermillion = new Color32(179, 55, 0, 255);
         public static readonly Color ColOrangeBg = new Color32(177, 123, 0, 60);
 
+        public static readonly Color ColorNeutralSoft = new Color(0.6f, 0.6f, 0.6f, 0.3f);
+
         public static readonly Color ColReddishPurple = new Color32(204, 121, 167, 255);
 
+        public static readonly Color ColSkyBlue = new Color32(92, 180, 230, 255);
+
         public static readonly Color ColSkyBlueBg = new Color32(92, 180, 230, 80);
+
+        public static readonly Color ColVermillion = new Color32(204, 63, 0, 255);
+
+        public static readonly Color ColYellow = new Color32(176, 179, 0, 255);
 
         // Color blind palette
         public static readonly Color ColYellowBg = new Color32(176, 179, 0, 60);
@@ -62,6 +58,8 @@
         [NotNull]
         public static readonly Texture2D DeadColonistTex = ContentFinder<Texture2D>.Get("UI/Misc/DeadColonist");
 
+        public static readonly Color FemaleColor = new Color(1f, 0.64f, 0.8f, 1f);
+
         [NotNull]
         public static readonly Texture2D GrayFond = SolidColorMaterials.NewSolidColorTexture(new Color(1, 1, 1, 0.07f));
 
@@ -72,8 +70,7 @@
         public static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
         [NotNull]
-        public static readonly Texture2D IconAttacking =
-            ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Attacking");
+        public static readonly Texture2D IconAttacking = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Attacking");
 
         [NotNull]
         public static readonly Texture2D IconBurning = ContentFinder<Texture2D>.Get("UI/Icons/ColonistBar/Burning");
@@ -163,8 +160,6 @@
 
         [NotNull]
         public static Material TargetMat;
-
-        #endregion Public Fields
 
         // public static Color ColorHealthBarGreen = new Color(0f, 0.8f, 0f);
     }

@@ -1,21 +1,15 @@
 ﻿namespace ColonistBarKF.Bar
 {
-    using System.Collections.Generic;
-
     using JetBrains.Annotations;
-
     using RimWorld;
     using RimWorld.Planet;
-
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
 
     [StaticConstructorOnStartup]
     public static class ColonistBar_KF
     {
-        #region Fields
-
         public const float SpacingLabel = 15f;
 
         public static ColBarHelper_KF BarHelperKf = new ColBarHelper_KF();
@@ -26,17 +20,15 @@
         [NotNull]
         public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
 
-        #endregion Fields
-
-        #region Properties
+        public static Vector2 BaseSize => new Vector2(
+            Settings.ColBarSettings.BaseSizeFloat,
+            Settings.ColBarSettings.BaseSizeFloat);
 
         public static Vector2 FullSize => new Vector2(
                                               Settings.ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal
                                               + WidthPSIHorizontal,
                                               Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical
                                               + HeightPSIVertical) * Scale;
-
-        private static float HeightMoodBarVertical { get; set; }
 
         public static float HeightPSIVertical { get; private set; }
 
@@ -68,17 +60,12 @@
 
         public static bool Visible => UI.screenWidth >= 800 && UI.screenHeight >= 500;
 
-        private static float WidthMoodBarHorizontal { get; set; }
-
         public static float WidthPSIHorizontal { get; private set; }
 
         public static float WidthSpacingHorizontal => Settings.ColBarSettings.BaseSpacingHorizontal
                                                       + WidthMoodBarHorizontal + WidthPSIHorizontal;
 
-        public static Vector2 BaseSize => new Vector2(
-            Settings.ColBarSettings.BaseSizeFloat,
-            Settings.ColBarSettings.BaseSizeFloat);
-
+        private static float HeightMoodBarVertical { get; set; }
 
         private static bool ShowGroupFrames
         {
@@ -95,9 +82,7 @@
             }
         }
 
-        #endregion Properties
-
-        #region Methods
+        private static float WidthMoodBarHorizontal { get; set; }
 
         [NotNull]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
@@ -164,7 +149,6 @@
                             drawer.DrawEmptyFrame(rect, entry.map, entry.groupCount);
                         }
                     }
-
                 }
 
                 num = -1;
@@ -302,7 +286,5 @@
                 }
             }
         }
-
-        #endregion Methods
     }
 }

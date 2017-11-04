@@ -1,19 +1,13 @@
 ﻿namespace ColonistBarKF.Menus
 {
-    using System.Collections.Generic;
-
     using Harmony;
-
     using JetBrains.Annotations;
-
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
 
     public class FloatMenuColonists : FloatMenu
     {
-        #region Public Constructors
-
         public FloatMenuColonists([NotNull] List<FloatMenuOption> options, [CanBeNull] string label)
             : base(options, label)
         {
@@ -21,10 +15,6 @@
             this.vanishIfMouseDistant = true;
             this.closeOnClickedOutside = true;
         }
-
-        #endregion Public Constructors
-
-        #region Public Methods
 
         public override void DoWindowContents(Rect rect)
         {
@@ -45,7 +35,5 @@
 
             Tools.CloseLabelMenu(false);
         }
-
-        #endregion Public Methods
     }
 }

@@ -211,7 +211,7 @@ namespace ColonistBarKF.PSI
             Material material = PSIMaterials[icon];
             if (material == null)
             {
-               // Debug.LogError("Material = null.");
+                // Debug.LogError("Material = null.");
                 return;
             }
 

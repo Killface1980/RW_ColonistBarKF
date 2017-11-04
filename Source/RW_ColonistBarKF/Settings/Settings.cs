@@ -10,23 +10,13 @@
 
     public static class Settings
     {
-        #region Public Fields
-
         [NotNull]
         public static SettingsColonistBar ColBarSettings = new SettingsColonistBar();
 
         [NotNull]
         public static SettingsPSI PsiSettings = new SettingsPSI();
 
-        #endregion Public Fields
-
-        #region Public Properties
-
         public static float ViewOpacityCrit => Mathf.Max(PsiSettings.IconOpacityCritical, PsiSettings.IconOpacity);
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         public static void SaveBarSettings([NotNull] string path = "ColonistBar_KF.xml")
         {
@@ -39,10 +29,6 @@
             string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
             DirectXmlSaver.SaveDataObject(PsiSettings, configFolder + "/" + path);
         }
-
-        #endregion Public Methods
-
-        #region Internal Methods
 
         [NotNull]
         internal static SettingsColonistBar LoadBarSettings([NotNull] string path = "ColonistBar_KF.xml")
@@ -60,7 +46,5 @@
             SettingsPSI result = DirectXmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
             return result;
         }
-
-        #endregion Internal Methods
     }
 }

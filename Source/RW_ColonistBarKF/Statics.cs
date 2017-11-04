@@ -1,6 +1,7 @@
 ﻿namespace ColonistBarKF
 {
     using ColonistBarKF.Bar;
+
     using JetBrains.Annotations;
 
     using UnityEngine;
@@ -11,15 +12,10 @@
         public static Gradient gradient4 = new Gradient();
 
         [NotNull]
-        private static Gradient gradient4Mood = new Gradient();
-
-        [NotNull]
         public static Gradient gradientRedAlertToNeutral = new Gradient();
 
-        public static Color EvaluateMoodOffset(float moodOffset)
-        {
-            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
-        }
+        [NotNull]
+        private static readonly Gradient gradient4Mood = new Gradient();
 
         static Statics()
         {
@@ -77,6 +73,11 @@
             gak[2].alpha = 0.8f;
             gak[2].time = 1.0f;
             gradientRedAlertToNeutral.SetKeys(gck, gak);
+        }
+
+        public static Color EvaluateMoodOffset(float moodOffset)
+        {
+            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
     }
 }

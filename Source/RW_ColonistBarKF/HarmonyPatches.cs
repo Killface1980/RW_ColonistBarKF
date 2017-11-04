@@ -19,12 +19,6 @@
     [StaticConstructorOnStartup]
     internal class HarmonyPatches
     {
-        #region Fields
-
-        #endregion Fields
-
-        #region Constructors
-
         static HarmonyPatches()
         {
             bool injected = false;
@@ -126,7 +120,6 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_SpawnSetup_Postfix)));
 
-
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
@@ -137,15 +130,20 @@
             // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
             // new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
             // null);
-
             harmony.Patch(
-                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(Vector3) }),
+                AccessTools.Method(
+                    typeof(WorldCameraDriver),
+                    nameof(WorldCameraDriver.JumpTo),
+                    new[] { typeof(Vector3) }),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
                 null);
 
             harmony.Patch(
-                AccessTools.Method(typeof(WorldCameraDriver), nameof(WorldCameraDriver.JumpTo), new[] { typeof(int) }),
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
+                AccessTools.Method(
+                    typeof(CameraDriver),
+                    nameof(CameraDriver.JumpToVisibleMapLoc),
+                    new[] { typeof(Vector3) }),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix_Vector3)),
                 null);
 
             harmony.Patch(
@@ -183,9 +181,13 @@
                 + " patches with harmony.");
         }
 
-        #endregion Constructors
+        public static void MarkColonistsDirty_Postfix()
+        {
+            ColonistBar_KF.RecalcSizes();
+            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
 
-        #region Methods
+            // Log.Message("Colonists marked dirty.01");
+        }
 
         private static bool CaravanMemberCaravanAt_Prefix([CanBeNull] ref Caravan __result, Vector2 at)
         {
@@ -257,6 +259,27 @@
             return false;
         }
 
+        private static void DeSpawn_Postfix([NotNull] Thing __instance)
+        {
+            Pawn pawn = __instance as Pawn;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            if (pawn.Faction != Faction.OfPlayer)
+            {
+                return;
+            }
+
+            if (!pawn.RaceProps.Humanlike)
+            {
+                return;
+            }
+
+            EntriesDirty_Postfix();
+        }
+
         private static void EntriesDirty_Postfix()
         {
             ColonistBar_KF.BarHelperKf.EntriesDirty = true;
@@ -276,6 +299,22 @@
 
             __result = ColonistBar_KF.BarHelperKf.tmpColonistsInOrder;
             return false;
+        }
+
+        private static void IsColonistBarNull_Postfix()
+        {
+            if (Find.ColonistBar != null)
+            {
+                EntriesDirty_Postfix();
+            }
+        }
+
+        private static void IsPlayingDirty_Postfix()
+        {
+            if (Current.ProgramState == ProgramState.Playing)
+            {
+                EntriesDirty_Postfix();
+            }
         }
 
         private static bool MapColonistsOrCorpsesInScreenRect_Prefix(ref List<Thing> __result, Rect rect)
@@ -298,81 +337,6 @@
 
             __result = ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
             return false;
-        }
-
-        public static void MarkColonistsDirty_Postfix()
-        {
-            ColonistBar_KF.RecalcSizes();
-            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
-
-            // Log.Message("Colonists marked dirty.01");
-        }
-
-        private static void DeSpawn_Postfix([NotNull] Thing __instance)
-        {
-            Pawn pawn = __instance as Pawn;
-            if (pawn == null)
-            {
-                return;
-            }
-
-            if (pawn.Faction != Faction.OfPlayer)
-            {
-                return;
-            }
-
-            if (!pawn.RaceProps.Humanlike)
-            {
-                return;
-            }
-
-            EntriesDirty_Postfix();
-        }
-
-        private static void IsColonistBarNull_Postfix()
-        {
-            if (Find.ColonistBar != null)
-            {
-                EntriesDirty_Postfix();
-            }
-        }
-
-        private static void IsPlayingDirty_Postfix()
-        {
-            if (Current.ProgramState == ProgramState.Playing)
-            {
-                EntriesDirty_Postfix();
-            }
-        }
-
-        private static void Pawn_Kill_Postfix([NotNull] Pawn __instance)
-        {
-            if (__instance.Faction != null && __instance.Faction.IsPlayer
-                && Current.ProgramState == ProgramState.Playing)
-            {
-                EntriesDirty_Postfix();
-                CompPSI compPSI = __instance.GetComp<CompPSI>();
-                if (compPSI != null)
-                {
-                    compPSI.BGColor = Color.gray;
-                    compPSI.thisColCount = 0;
-                }
-            }
-        }
-
-        private static void StopFollow_Prefix([NotNull] Pawn __instance)
-        {
-            if (FollowMe.CurrentlyFollowing)
-            {
-                FollowMe.StopFollow("Harmony");
-            }
-        }
-
-        private static void Pawn_PostApplyDamage_Postfix([NotNull] Pawn __instance)
-        {
-            CompPSI compPSI = __instance.GetComp<CompPSI>();
-
-            compPSI?.SetEntriesDirty();
         }
 
         private static void NotifyColonistBar_Postfix([NotNull] Corpse __instance)
@@ -413,17 +377,26 @@
             }
         }
 
-        private static void PlaySettingsDirty_Postfix(bool __state)
+        private static void Pawn_Kill_Postfix([NotNull] Pawn __instance)
         {
-            if (__state != Find.PlaySettings.showColonistBar)
+            if (__instance.Faction != null && __instance.Faction.IsPlayer
+                && Current.ProgramState == ProgramState.Playing)
             {
                 EntriesDirty_Postfix();
+                CompPSI compPSI = __instance.GetComp<CompPSI>();
+                if (compPSI != null)
+                {
+                    compPSI.BGColor = Color.gray;
+                    compPSI.thisColCount = 0;
+                }
             }
         }
 
-        private static void PlaySettingsDirty_Prefix(bool __state)
+        private static void Pawn_PostApplyDamage_Postfix([NotNull] Pawn __instance)
         {
-            __state = Find.PlaySettings.showColonistBar;
+            CompPSI compPSI = __instance.GetComp<CompPSI>();
+
+            compPSI?.SetEntriesDirty();
         }
 
         private static void Pawn_SpawnSetup_Postfix(Pawn __instance)
@@ -444,7 +417,36 @@
             }
         }
 
+        private static void PlaySettingsDirty_Postfix(bool __state)
+        {
+            if (__state != Find.PlaySettings.showColonistBar)
+            {
+                EntriesDirty_Postfix();
+            }
+        }
 
-        #endregion Methods
+        private static void PlaySettingsDirty_Prefix(bool __state)
+        {
+            __state = Find.PlaySettings.showColonistBar;
+        }
+
+        private static void StopFollow_Prefix()
+        {
+            if (FollowMe.CurrentlyFollowing)
+            {
+                FollowMe.StopFollow("Harmony");
+            }
+        }
+
+        private static void StopFollow_Prefix_Vector3([NotNull] Vector3 loc)
+        {
+            if (FollowMe.CurrentlyFollowing)
+            {
+                if (FollowMe._followedThing.TrueCenter() != loc)
+                {
+                    FollowMe.StopFollow("Harmony");
+                }
+            }
+        }
     }
 }

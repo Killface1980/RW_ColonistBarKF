@@ -7,8 +7,6 @@
     [DefOf]
     public static class ThoughtDefOf
     {
-        #region Fields
-
         // ThoughtDefs which are not included in RW ThoughtDefOf
         [NotNull]
         public static ThoughtDef ApparelDamaged;
@@ -51,7 +49,5 @@
 
         [NotNull]
         public static ThoughtDef WantToSleepWithSpouseOrLover;
-
-        #endregion Fields
     }
 }

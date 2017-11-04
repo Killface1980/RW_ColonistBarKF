@@ -146,7 +146,7 @@
   <PSI.Settings.Visibility.Toxicity>Toxic Buildup</PSI.Settings.Visibility.Toxicity>
   <PSI.Settings.Visibility.Unarmed>Unarmed</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Visibility</PSI.Settings.VisibilityButton>
-  
+
   <!--New - August 2017-->
   <CBKF.Settings.Grouping>Grouping</CBKF.Settings.Grouping>
   <CBKF.Settings.UseGrouping>Collapse groups</CBKF.Settings.UseGrouping>

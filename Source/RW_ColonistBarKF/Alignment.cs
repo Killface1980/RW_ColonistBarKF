@@ -1,9 +1,7 @@
 ﻿namespace ColonistBarKF
 {
-    public class Position
+    public static class Position
     {
-        #region Alignment enum
-
         public enum Alignment
         {
             Left,
@@ -14,7 +12,5 @@
 
             Bottom
         }
-
-        #endregion Alignment enum
     }
 }
