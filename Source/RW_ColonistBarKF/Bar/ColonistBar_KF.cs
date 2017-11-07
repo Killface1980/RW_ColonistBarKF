@@ -21,23 +21,23 @@
         public static ColonistBarDrawLocsFinder_KF drawLocsFinder = new ColonistBarDrawLocsFinder_KF();
 
         public static Vector2 BaseSize => new Vector2(
-            Settings.ColBarSettings.BaseSizeFloat,
-            Settings.ColBarSettings.BaseSizeFloat);
+            Settings.barSettings.BaseIconSize,
+            Settings.barSettings.BaseIconSize);
 
         public static Vector2 FullSize => new Vector2(
-                                              Settings.ColBarSettings.BaseSizeFloat + WidthMoodBarHorizontal
+                                              Settings.barSettings.BaseIconSize + WidthMoodBarHorizontal
                                               + WidthPSIHorizontal,
-                                              Settings.ColBarSettings.BaseSizeFloat + HeightMoodBarVertical
+                                              Settings.barSettings.BaseIconSize + HeightMoodBarVertical
                                               + HeightPSIVertical) * Scale;
 
         public static float HeightPSIVertical { get; private set; }
 
-        public static float HeightSpacingVertical => Settings.ColBarSettings.BaseSpacingVertical + HeightMoodBarVertical
+        public static float HeightSpacingVertical => Settings.barSettings.BaseSpacingVertical + HeightMoodBarVertical
                                                      + HeightPSIVertical;
 
         public static Vector2 PawnSize => new Vector2(
-                                              Settings.ColBarSettings.BaseSizeFloat,
-                                              Settings.ColBarSettings.BaseSizeFloat) * Scale;
+                                              Settings.barSettings.BaseIconSize,
+                                              Settings.barSettings.BaseIconSize) * Scale;
 
         public static int PsiRowsOnBar
         {
@@ -62,7 +62,7 @@
 
         public static float WidthPSIHorizontal { get; private set; }
 
-        public static float WidthSpacingHorizontal => Settings.ColBarSettings.BaseSpacingHorizontal
+        public static float WidthSpacingHorizontal => Settings.barSettings.BaseSpacingHorizontal
                                                       + WidthMoodBarHorizontal + WidthPSIHorizontal;
 
         private static float HeightMoodBarVertical { get; set; }
@@ -248,38 +248,38 @@
 
             HeightPSIVertical = 0f;
 
-            if (Settings.ColBarSettings.UseExternalMoodBar)
+            if (Settings.barSettings.UseExternalMoodBar)
             {
-                switch (Settings.ColBarSettings.MoodBarPos)
+                switch (Settings.barSettings.MoodBarPos)
                 {
                     case Position.Alignment.Left:
                     case Position.Alignment.Right:
-                        WidthMoodBarHorizontal = Settings.ColBarSettings.BaseSizeFloat / 4;
+                        WidthMoodBarHorizontal = Settings.barSettings.BaseIconSize / 4;
                         break;
 
                     case Position.Alignment.Top:
                     case Position.Alignment.Bottom:
-                        HeightMoodBarVertical = Settings.ColBarSettings.BaseSizeFloat / 4;
+                        HeightMoodBarVertical = Settings.barSettings.BaseIconSize / 4;
                         break;
 
                     default: break;
                 }
             }
 
-            if (Settings.ColBarSettings.UsePsi)
+            if (Settings.barSettings.UsePsi)
             {
-                switch (Settings.ColBarSettings.ColBarPsiIconPos)
+                switch (Settings.barSettings.ColBarPsiIconPos)
                 {
                     case Position.Alignment.Left:
                     case Position.Alignment.Right:
-                        WidthPSIHorizontal = Settings.ColBarSettings.BaseSizeFloat
-                                             / Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                        WidthPSIHorizontal = Settings.barSettings.BaseIconSize
+                                             / Settings.barSettings.IconsInColumn * PsiRowsOnBar;
                         break;
 
                     case Position.Alignment.Top:
                     case Position.Alignment.Bottom:
-                        HeightPSIVertical = Settings.ColBarSettings.BaseSizeFloat
-                                            / Settings.ColBarSettings.IconsInColumn * PsiRowsOnBar;
+                        HeightPSIVertical = Settings.barSettings.BaseIconSize
+                                            / Settings.barSettings.IconsInColumn * PsiRowsOnBar;
                         break;
 
                     default: break;

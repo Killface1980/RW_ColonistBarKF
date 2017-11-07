@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -13,9 +15,11 @@
 
         private readonly List<int> horizontalSlotsPerGroup = new List<int>();
 
-        private static float MaxColonistBarWidth => UI.screenWidth - Settings.ColBarSettings.MarginHorizontal;
+        private static float MaxColonistBarWidth => UI.screenWidth - Settings.barSettings.MarginHorizontal;
 
-        public void CalculateDrawLocs(List<Vector2> outDrawLocs, out float scale)
+        private static float MaxColonistBarHeight => UI.screenHeight - Settings.barSettings.MarginVertical;
+
+        public void CalculateDrawLocs([NotNull] List<Vector2> outDrawLocs, out float scale)
         {
             if (ColonistBar_KF.BarHelperKf.Entries.Count == 0)
             {
@@ -34,9 +38,9 @@
         // modded
         private static int GetAllowedRowsCountForScale(float scale)
         {
-            if (Settings.ColBarSettings.UseCustomRowCount)
+            if (Settings.barSettings.UseCustomRowCount)
             {
-                switch (Settings.ColBarSettings.MaxRowsCustom)
+                switch (Settings.barSettings.MaxRowsCustom)
                 {
                     case 1:
                         {
@@ -149,7 +153,7 @@
             }
         }
 
-        private void CalculateDrawLocs(List<Vector2> outDrawLocs, float scale, bool onlyOneRow, int maxPerGlobalRow)
+        private void CalculateDrawLocs([NotNull] List<Vector2> outDrawLocs, float scale, bool onlyOneRow, int maxPerGlobalRow)
         {
             outDrawLocs.Clear();
             int entriesCount = maxPerGlobalRow;
@@ -165,12 +169,14 @@
             }
 
             int groupsCount = this.CalculateGroupsCount();
-            float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * scale;
-            float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
             List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
             int index = -1;
             int numInGroup = -1;
+
+            float scaledEntryWidthFloat = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * scale;
+            float groupWidth = entriesCount * scaledEntryWidthFloat + (groupsCount - 1) * 25f * scale;
             float groupStartX = (UI.screenWidth - groupWidth) / 2f;
+
             for (int j = 0; j < entries.Count; j++)
             {
                 if (index != entries[j].group)
@@ -192,7 +198,7 @@
 
                 Vector2 drawLoc = this.GetDrawLoc(
                     groupStartX,
-                    Settings.ColBarSettings.MarginTop,
+                    Settings.barSettings.MarginTop,
                     entries[j].group,
                     numInGroup,
                     scale);
@@ -217,6 +223,8 @@
             return num2;
         }
 
+        //   private bool horizontal = true;
+
         private float FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow)
         {
             float bestScale = 1f;
@@ -226,7 +234,8 @@
             {
                 // float num3 = (ColonistBar.BaseSize.x + 24f) * num;
                 float neededPerEntry = (ColonistBar_KF.BaseSize.x + ColonistBar_KF.WidthSpacingHorizontal) * bestScale;
-                float availableScreen = MaxColonistBarWidth - (groupsCount - 1) * 25f * bestScale;
+                float availableScreen = MaxColonistBarWidth - ((groupsCount - 1) * 25f * bestScale);
+
                 maxPerGlobalRow = Mathf.FloorToInt(availableScreen / neededPerEntry);
                 onlyOneRow = true;
                 if (this.TryDistributeHorizontalSlotsBetweenGroups(maxPerGlobalRow))

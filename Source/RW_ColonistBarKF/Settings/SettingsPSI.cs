@@ -2,6 +2,8 @@
 {
     using JetBrains.Annotations;
 
+    using Verse;
+
     public class SettingsPSI
     {
         // PSI settings
@@ -126,5 +128,6 @@
         public bool UsePsiOnAnimals = true;
 
         public bool UsePsiOnPrisoner = true;
+
     }
 }

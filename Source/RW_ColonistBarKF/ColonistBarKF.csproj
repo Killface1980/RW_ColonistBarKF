@@ -61,10 +61,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
+    <None Include="Class1.cs" />
     <Compile Include="EntryKF.cs" />
     <Compile Include="Menus\FloatMenuLabels.cs" />
     <Compile Include="Menus\Tools.cs" />
     <Compile Include="Menus\FloatMenuColonists.cs" />
+    <None Include="Settings\ControllerBar.cs" />
+    <Compile Include="PSI\BarIconDrawer.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="WorkGiver_ImprisonDowned.cs" />
     <Compile Include="MedicalBeacon\Building_MedicalBeacon.cs" />
     <Compile Include="ThoughtDefOf.cs" />
@@ -77,7 +81,7 @@
     <None Include="PawnstatsChecker.cs" />
     <Compile Include="PSI\IconEntryPSI.cs" />
     <Compile Include="PSI\IconEntryBar.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <None Include="Settings\ControllerPSI.cs" />
     <Compile Include="CompPSI.cs" />
     <None Include="ColorPicker\ColorHelper.cs" />
     <None Include="ColorPicker\ColorWrapper.cs" />
@@ -92,7 +96,7 @@
     <Compile Include="PSI\GameComponentPSI.cs" />
     <None Include="PSI\PawnStats.cs" />
     <None Include="CB_SpecialInjector.cs" />
-    <Compile Include="Bar\ColonistBarTextures.cs" />
+    <Compile Include="Bar\Textures.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />
     <Compile Include="Fluffy\ZoomToMouse.cs" />
     <Compile Include="Settings\SettingsColonistBar.cs" />

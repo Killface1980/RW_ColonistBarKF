@@ -12,8 +12,39 @@ namespace ColonistBarKF.PSI
 
     using Verse;
 
-    public static class PSIDrawer
+    public class PSIDrawer
     {
+        [NotNull]
+        public static Vector3[] IconPosVectorsPSI;
+
+        public static void RecalcIconPositionsPSI()
+        {
+            SettingsPSI psiSettings = Settings.psiSettings;
+
+            // _iconPosVectors = new Vector3[18];
+            IconPosVectorsPSI = new Vector3[40];
+            for (int index = 0; index < IconPosVectorsPSI.Length; ++index)
+            {
+                int num1 = index / psiSettings.IconsInColumn;
+                int num2 = index % psiSettings.IconsInColumn;
+                if (psiSettings.IconsHorizontal)
+                {
+                    int num3 = num1;
+                    num1 = num2;
+                    num2 = num3;
+                }
+
+                float y = Altitudes.AltitudeFor(AltitudeLayer.MetaOverlays);
+
+                IconPosVectorsPSI[index] = new Vector3(
+                    (float)(-0.600000023841858 * psiSettings.IconMarginX - 0.550000011920929 * psiSettings.IconSize
+                            * psiSettings.IconOffsetX * num1),
+                    y,
+                    (float)(-0.600000023841858 * psiSettings.IconMarginY + 0.550000011920929 * psiSettings.IconSize
+                            * psiSettings.IconOffsetY * num2));
+            }
+        }
+
         public static void DrawIcon_posOffset(
             Vector3 bodyPos,
             Vector3 posOffset,
@@ -28,7 +59,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.PsiSettings.IconsScreenScale)
+            if (Settings.psiSettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -40,14 +71,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.PsiSettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.psiSettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.PsiSettings.IconSize,
-                num2 * Settings.PsiSettings.IconSize);
+                num2 * Settings.psiSettings.IconSize,
+                num2 * Settings.psiSettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -55,101 +86,8 @@ namespace ColonistBarKF.PSI
             GUI.color = guiColor;
         }
 
-        public static void DrawIconOnBar(Rect psiRect, IconEntryBar iconEntryBar, int entry, int rowCount)
-        {
-            Material material = PSIMaterials[iconEntryBar.icon];
 
-            if (material == null)
-            {
-                return;
-            }
 
-            Vector3 posOffset = IconPosRectsBar[entry];
-
-            Color GuiColor = GUI.color;
-            GuiColor.a = iconEntryBar.color.a;
-            GUI.color = GuiColor;
-
-            material.color = iconEntryBar.color;
-
-            Rect iconRect = new Rect(psiRect);
-
-            float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
-
-            iconRect.height = iconRect.width = size;
-
-            switch (Settings.ColBarSettings.ColBarPsiIconPos)
-            {
-                case Position.Alignment.Left:
-                    iconRect.x = psiRect.xMax - size;
-                    iconRect.y = psiRect.yMax - size;
-                    break;
-
-                case Position.Alignment.Right:
-                    iconRect.x = psiRect.xMin;
-                    iconRect.y = psiRect.yMax - size;
-                    break;
-
-                case Position.Alignment.Top:
-                    iconRect.y = psiRect.yMax - size;
-                    break;
-
-                case Position.Alignment.Bottom:
-                    iconRect.y = psiRect.yMin;
-                    break;
-            }
-
-            // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
-            // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
-
-            // On Colonist
-            // iconRect.x -= iconRect.width * 0.5f;
-            // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, ColonistBarTextures.BgTexIconPSI);
-            GUI.color = iconEntryBar.color;
-
-            iconRect.x += size * 0.1f;
-            iconRect.y += iconRect.height * 0.1f;
-            iconRect.width *= 0.8f;
-            iconRect.height *= 0.8f;
-
-            GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = GuiColor;
-
-            if (iconEntryBar.tooltip != null)
-            {
-                TooltipHandler.TipRegion(iconRect, iconEntryBar.tooltip);
-            }
-        }
-
-        public static void DrawIconOnBar(
-            Rect psiRect,
-            ref int num,
-            Icon icon,
-            Color color,
-            float rectAlpha,
-            int rowCount,
-            [CanBeNull] string tooltip = null)
-        {
-            // only two columns visible
-            if (num == Settings.ColBarSettings.IconsInColumn * 2)
-            {
-                return;
-            }
-
-            Material material = PSIMaterials[icon];
-
-            if (material == null)
-            {
-                return;
-            }
-
-            DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
-
-            num++;
-        }
 
         public static void DrawIconOnColonist(Vector3 bodyPos, IconEntryPSI entryPSI, int entryCount)
         {
@@ -158,7 +96,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Material material = PSIMaterials[entryPSI.icon];
+            Material material = GameComponentPSI.PSIMaterials[entryPSI.icon];
             if (material == null)
             {
                 Debug.LogError("Material = null.");
@@ -174,7 +112,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.PsiSettings.IconsScreenScale)
+            if (Settings.psiSettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -186,14 +124,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.PsiSettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.psiSettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.PsiSettings.IconSize,
-                num2 * Settings.PsiSettings.IconSize);
+                num2 * Settings.psiSettings.IconSize,
+                num2 * Settings.psiSettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -208,7 +146,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Material material = PSIMaterials[icon];
+            Material material = GameComponentPSI.PSIMaterials[icon];
             if (material == null)
             {
                 // Debug.LogError("Material = null.");
@@ -217,75 +155,6 @@ namespace ColonistBarKF.PSI
 
             DrawIcon_posOffset(bodyPos, IconPosVectorsPSI[num], material, color, opacity);
             num++;
-        }
-
-        private static void DrawIcon_onBar(
-            Rect rect,
-            Vector3 posOffset,
-            [NotNull] Material material,
-            Color color,
-            float rectAlpha,
-            int rowCount,
-            [CanBeNull] string tooltip = null)
-        {
-            // Widgets.DrawBoxSolid(rect, Color.cyan);
-            color.a *= rectAlpha;
-            Color GuiColor = GUI.color;
-            GuiColor.a = rectAlpha;
-            GUI.color = GuiColor;
-
-            material.color = color;
-
-            Rect iconRect = new Rect(rect);
-
-            float size = Mathf.Min(iconRect.width, iconRect.height) / rowCount;
-
-            iconRect.height = iconRect.width = size;
-
-            switch (Settings.ColBarSettings.ColBarPsiIconPos)
-            {
-                case Position.Alignment.Left:
-                    iconRect.x = rect.xMax - size;
-                    iconRect.y = rect.yMax - size;
-                    break;
-
-                case Position.Alignment.Right:
-                    iconRect.x = rect.xMin;
-                    iconRect.y = rect.yMax - size;
-                    break;
-
-                case Position.Alignment.Top:
-                    iconRect.y = rect.yMax - size;
-                    break;
-
-                case Position.Alignment.Bottom:
-                    iconRect.y = rect.yMin;
-                    break;
-            }
-
-            // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
-            // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.ColBarSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.ColBarSettings.IconOffsetY * posOffset.z * iconRect.height;
-
-            // On Colonist
-            // iconRect.x -= iconRect.width * 0.5f;
-            // iconRect.y -= iconRect.height * 0.5f;
-            GUI.DrawTexture(iconRect, ColonistBarTextures.BgTexIconPSI);
-            GUI.color = color;
-
-            iconRect.x += size * 0.1f;
-            iconRect.y += iconRect.height * 0.1f;
-            iconRect.width *= 0.8f;
-            iconRect.height *= 0.8f;
-
-            GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = GuiColor;
-
-            if (tooltip != null)
-            {
-                TooltipHandler.TipRegion(iconRect, tooltip);
-            }
         }
     }
 }

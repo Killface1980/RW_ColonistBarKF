@@ -7,7 +7,7 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    internal static class ColonistBarTextures
+    internal static class Textures
     {
         [NotNull]
         public static readonly Texture2D BgTex = Command.BGTex;

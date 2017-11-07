@@ -2,10 +2,11 @@
 {
     using JetBrains.Annotations;
 
+    using Verse;
+
     public class SettingsColonistBar
     {
-        // to do 0.18: rename to BaseIconSize
-        public float BaseSizeFloat = 48f;
+        public float BaseIconSize = 48f;
 
         public float BaseSpacingHorizontal = 24f;
 
@@ -18,19 +19,16 @@
 
         public float IconOffsetY = 1f;
 
-        [NotNull]
-        public string IconSet = "default";
-
         public bool IconsHorizontal;
 
         public int IconsInColumn = 3;
-
-        public bool IconsScreenScale = true;
 
         public float LimitBleedMult = 3f;
 
         // public float LimitMoodLess = 0.25f;
         public float MarginHorizontal = 520f;
+
+        public float MarginVertical = 220f;
 
         public float MarginTop = 21f;
 

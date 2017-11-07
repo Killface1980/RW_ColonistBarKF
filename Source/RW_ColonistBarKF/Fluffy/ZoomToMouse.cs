@@ -55,7 +55,7 @@
                 return;
             }
 
-            if (!Settings.ColBarSettings.useZoomToMouse)
+            if (!Settings.barSettings.useZoomToMouse)
             {
                 return;
             }
