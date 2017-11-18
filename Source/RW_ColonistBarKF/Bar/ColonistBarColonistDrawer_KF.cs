@@ -226,6 +226,7 @@
             Map map = entries.Find(x => x.group == group).map;
             float num;
             Color color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
+            //  Color color = new Color(0.23f, 0.23f, 0.23f, 0.4f);
 
             bool flag = Mouse.IsOver(position);
 
@@ -271,6 +272,54 @@
 
             color.a *= num;
             Widgets.DrawRectFast(position, color);
+            return;
+
+            // Stupid stuff
+            if (Mouse.IsOver(position) && Event.current.type == EventType.MouseDown)
+            {
+                List<Pawn> tmpColonists = new List<Pawn>();
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    Pawn pawn = entries[i].pawn;
+                    if (pawn == null)
+                    {
+                        continue;
+                    }
+                    tmpColonists.Add(pawn);
+                }
+                if (tmpColonists.Count != 0)
+                {
+                    bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
+                    int num3 = -1;
+                    int num2 = tmpColonists.Count - 1;
+                    while (num2 >= 0)
+                    {
+                        if (!worldRenderedNow && Find.Selector.IsSelected(tmpColonists[num2]))
+                        {
+                            goto IL_00c4;
+                        }
+                        if (worldRenderedNow && tmpColonists[num2].IsCaravanMember()
+                            && Find.WorldSelector.IsSelected(tmpColonists[num2].GetCaravan()))
+                        {
+                            goto IL_00c4;
+                        }
+                        num2--;
+                        continue;
+
+                        IL_00c4:
+                        num3 = num2;
+                        break;
+                    }
+                    if (num3 == -1)
+                    {
+                        CameraJumper.TryJumpAndSelect(tmpColonists[0]);
+                    }
+                    else
+                    {
+                        CameraJumper.TryJumpAndSelect(tmpColonists[(num3 + 1) % tmpColonists.Count]);
+                    }
+                }
+            }
         }
 
         public void HandleClicks(Rect rect, [CanBeNull] Pawn colonist, int showThisMap)

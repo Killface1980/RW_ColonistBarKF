@@ -140,6 +140,8 @@
 
         public bool useZoomToMouse = false;
 
+        public bool useFollowMessage = true;
+
         public float VerticalOffset = 0f;
 
         public enum SortByWhat

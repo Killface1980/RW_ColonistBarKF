@@ -140,6 +140,22 @@
 
             harmony.Patch(
                 AccessTools.Method(
+                    typeof(ThingSelectionUtility),
+                    nameof(ThingSelectionUtility.SelectNextColonist)),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StartFollowSelectedColonist1)),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StartFollowSelectedColonist2)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(
+                    typeof(ThingSelectionUtility),
+                    nameof(ThingSelectionUtility.SelectPreviousColonist)),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StartFollowSelectedColonist1)),
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(StartFollowSelectedColonist2)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(
                     typeof(CameraDriver),
                     nameof(CameraDriver.JumpToVisibleMapLoc),
                     new[] { typeof(Vector3) }),
@@ -425,7 +441,8 @@
             }
         }
 
-        private static void PlaySettingsDirty_Prefix(bool __state)
+        // ReSharper disable once RedundantAssignment
+        private static void PlaySettingsDirty_Prefix(ref bool __state)
         {
             __state = Find.PlaySettings.showColonistBar;
         }
@@ -436,6 +453,19 @@
             {
                 FollowMe.StopFollow("Harmony");
             }
+        }
+
+        private static void StartFollowSelectedColonist1(ref bool __state)
+        {
+            __state = FollowMe.CurrentlyFollowing;
+        }
+        private static void StartFollowSelectedColonist2(bool __state)
+        {
+            if (__state)
+            {
+                FollowMe.TryStartFollow(Find.Selector.SingleSelectedThing);
+            }
+
         }
 
         private static void StopFollow_Prefix_Vector3([NotNull] Vector3 loc)

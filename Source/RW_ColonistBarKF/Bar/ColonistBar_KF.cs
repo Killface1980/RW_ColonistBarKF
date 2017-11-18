@@ -67,20 +67,7 @@
 
         private static float HeightMoodBarVertical { get; set; }
 
-        private static bool ShowGroupFrames
-        {
-            get
-            {
-                List<EntryKF> entries = BarHelperKf.Entries;
-                int num = -1;
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    num = Mathf.Max(num, entries[i].group);
-                }
 
-                return num >= 1;
-            }
-        }
 
         private static float WidthMoodBarHorizontal { get; set; }
 
@@ -117,12 +104,12 @@
             {
                 List<EntryKF> entries = BarHelperKf.Entries;
                 int num = -1;
-                bool showGroupFrames = ShowGroupFrames;
-                for (int i = 0; i < BarHelperKf.cachedDrawLocs.Count; i++)
+                bool showGroupFrames = BarHelperKf.ShowGroupFrames;
+                for (int i = 0; i < BarHelperKf.DrawLocs.Count; i++)
                 {
                     Rect rect = new Rect(
-                        BarHelperKf.cachedDrawLocs[i].x,
-                        BarHelperKf.cachedDrawLocs[i].y,
+                        BarHelperKf.DrawLocs[i].x,
+                        BarHelperKf.DrawLocs[i].y,
                         FullSize.x,
                         FullSize.y + SpacingLabel);
                     EntryKF entry = entries[i];
@@ -130,6 +117,7 @@
                     num = entry.group;
                     if (entry.groupCount > 0)
                     {
+                        // Pawn can be null, click extends group
                         drawer.HandleClicks(rect, entry.pawn, entry.group);
                     }
 
@@ -154,7 +142,7 @@
                 num = -1;
                 if (showGroupFrames)
                 {
-                    for (int j = 0; j < BarHelperKf.cachedDrawLocs.Count; j++)
+                    for (int j = 0; j < BarHelperKf.DrawLocs.Count; j++)
                     {
                         EntryKF entry2 = entries[j];
                         bool flag2 = num != entry2.group;

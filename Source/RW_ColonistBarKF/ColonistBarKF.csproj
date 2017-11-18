@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>ColonistBarKF.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,13 +33,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>ColonistBarKF.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoCCL|AnyCPU'">
     <OutputPath>..\..\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ColonistBarKF.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
@@ -66,14 +68,12 @@
     <Compile Include="Menus\FloatMenuLabels.cs" />
     <Compile Include="Menus\Tools.cs" />
     <Compile Include="Menus\FloatMenuColonists.cs" />
+    <None Include="ColonistBarKF.ruleset" />
     <None Include="Settings\ControllerBar.cs" />
     <Compile Include="PSI\BarIconDrawer.cs" />
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="WorkGiver_ImprisonDowned.cs" />
-    <Compile Include="MedicalBeacon\Building_MedicalBeacon.cs" />
     <Compile Include="ThoughtDefOf.cs" />
     <Compile Include="Icon.cs" />
-    <Compile Include="OLD_Class2.cs" />
     <None Include="MapComponent_PSI.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PSI\PSIDrawer.cs" />
@@ -95,7 +95,6 @@
     <Compile Include="PSIMaterials.cs" />
     <Compile Include="PSI\GameComponentPSI.cs" />
     <None Include="PSI\PawnStats.cs" />
-    <None Include="CB_SpecialInjector.cs" />
     <Compile Include="Bar\Textures.cs" />
     <Compile Include="Fluffy\FollowMe.cs" />
     <Compile Include="Fluffy\ZoomToMouse.cs" />
@@ -111,14 +110,6 @@
     </Content>
     <Content Include="..\..\Defs\KeyBindingDefs\keybinding.xml">
       <Link>Fluffy\keybinding.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs_Buildings\Buildings_Misc.xml">
-      <Link>MedicalBeacon\Buildings_Misc.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\WorkGiverDefs\WorkGivers.xml">
-      <Link>MedicalBeacon\WorkGivers.xml</Link>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\ChineseSimplified\Keyed\ColonistBar_KF.xml">
       <Link>Languages\ChineseSimplified\ColonistBar_KF.xml</Link>

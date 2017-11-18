@@ -12,6 +12,14 @@ namespace ColonistBarKF.PSI
 
     public static class BarIconDrawer
     {
+        #region Private Fields
+
+        [NotNull]
+        private static Vector3[] iconPosRectsBar;
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         public static void DrawColonistIconsBar([NotNull]this Pawn pawn, Rect psiRect, float rectAlpha)
         {
@@ -62,41 +70,11 @@ namespace ColonistBarKF.PSI
             pawnStats.thisColCount = colCount;
         }
 
-        private static void DrawIconOnBar(
-            Rect psiRect,
-            ref int num,
-            Icon icon,
-            Color color,
-            float rectAlpha,
-            int rowCount,
-            [CanBeNull] string tooltip = null)
-        {
-            // only two columns visible
-            if (num == Settings.barSettings.IconsInColumn * 2)
-            {
-                return;
-            }
-
-            Material material = GameComponentPSI.PSIMaterials[icon];
-
-            if (material == null)
-            {
-                return;
-            }
-
-            DrawIcon_onBar(psiRect, IconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
-
-            num++;
-        }
-
-        [NotNull]
-        public static Vector3[] IconPosRectsBar;
-
         public static void RecalcBarPositionAndSize()
         {
             SettingsColonistBar settings = Settings.barSettings;
-            IconPosRectsBar = new Vector3[40];
-            for (int index = 0; index < IconPosRectsBar.Length; ++index)
+            iconPosRectsBar = new Vector3[40];
+            for (int index = 0; index < iconPosRectsBar.Length; ++index)
             {
                 int num1;
                 int num2;
@@ -112,9 +90,13 @@ namespace ColonistBarKF.PSI
                     // num1 = index % ColBarSettings.IconsInColumn;
                 }
 
-                IconPosRectsBar[index] = new Vector3(-num1, 3f, num2);
+                iconPosRectsBar[index] = new Vector3(-num1, 3f, num2);
             }
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private static void DrawIcon_onBar(
             Rect rect,
@@ -185,6 +167,33 @@ namespace ColonistBarKF.PSI
             }
         }
 
+        private static void DrawIconOnBar(
+                            Rect psiRect,
+            ref int num,
+            Icon icon,
+            Color color,
+            float rectAlpha,
+            int rowCount,
+            [CanBeNull] string tooltip = null)
+        {
+            // only two columns visible
+            if (num == Settings.barSettings.IconsInColumn * 2)
+            {
+                return;
+            }
+
+            Material material = GameComponentPSI.PSIMaterials[icon];
+
+            if (material == null)
+            {
+                return;
+            }
+
+            DrawIcon_onBar(psiRect, iconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
+
+            num++;
+        }
+
         private static void DrawIconOnBar(Rect psiRect, IconEntryBar iconEntryBar, int entry, int rowCount)
         {
             Material material = GameComponentPSI.PSIMaterials[iconEntryBar.icon];
@@ -194,7 +203,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Vector3 posOffset = IconPosRectsBar[entry];
+            Vector3 posOffset = iconPosRectsBar[entry];
 
             Color GuiColor = GUI.color;
             GuiColor.a = iconEntryBar.color.a;
@@ -253,5 +262,7 @@ namespace ColonistBarKF.PSI
                 TooltipHandler.TipRegion(iconRect, iconEntryBar.tooltip);
             }
         }
+
+        #endregion Private Methods
     }
 }

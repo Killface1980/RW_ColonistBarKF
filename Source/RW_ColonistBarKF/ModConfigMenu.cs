@@ -861,6 +861,9 @@ namespace ColonistBarKF
 
             GUILayout.Label("FollowMe.MiddleClick".Translate());
 
+            Settings.barSettings.useFollowMessage = GUILayout.Toggle(
+                Settings.barSettings.useFollowMessage,
+                "CBKF.Settings.useFollowMessage".Translate());
             // #region DoubleClickTime
             // ColBarSettings.UseCustomDoubleClickTime = GUILayout.Toggle(
             // ColBarSettings.UseCustomDoubleClickTime,

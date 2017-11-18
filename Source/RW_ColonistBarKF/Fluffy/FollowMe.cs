@@ -107,8 +107,10 @@ namespace ColonistBarKF
 #if DEBUG
             Log.Message($"FollowMe :: Stopped following {FollowedLabel} :: {reason}");
 #endif
-
-            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageTypeDefOf.NegativeEvent);
+            if (Settings.barSettings.useFollowMessage)
+            {
+                Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageTypeDefOf.NegativeEvent);
+            }
             _followedThing = null;
             CurrentlyFollowing = false;
             _cameraHasJumpedAtLeastOnce = false;
@@ -240,7 +242,10 @@ namespace ColonistBarKF
             _followedThing = thing;
             CurrentlyFollowing = true;
 
-            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageTypeDefOf.PositiveEvent);
+            if (Settings.barSettings.useFollowMessage)
+            {
+                Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageTypeDefOf.PositiveEvent);
+            }
         }
 
         private static void TryJumpSmooth(GlobalTargetInfo target)

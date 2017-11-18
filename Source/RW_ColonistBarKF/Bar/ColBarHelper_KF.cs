@@ -14,22 +14,22 @@
         #region Public Fields
 
         [NotNull]
-        public readonly List<Vector2> cachedDrawLocs = new List<Vector2>();
+        private List<Vector2> cachedDrawLocs = new List<Vector2>();
 
         [NotNull]
-        public readonly List<Pawn> tmpCaravanPawns = new List<Pawn>();
+        public List<Pawn> tmpCaravanPawns = new List<Pawn>();
 
         [NotNull]
-        public readonly List<Caravan> tmpCaravans = new List<Caravan>();
+        public List<Caravan> tmpCaravans = new List<Caravan>();
 
         [NotNull]
-        public readonly List<Thing> tmpColonists = new List<Thing>();
+        public List<Thing> tmpColonists = new List<Thing>();
 
         [NotNull]
-        public readonly List<Pawn> tmpColonistsInOrder = new List<Pawn>();
+        public List<Pawn> tmpColonistsInOrder = new List<Pawn>();
 
         [NotNull]
-        public readonly List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
+        public List<Thing> tmpMapColonistsOrCorpsesInScreenRect = new List<Thing>();
 
         public float cachedScale;
 
@@ -52,6 +52,7 @@
 
         [NotNull]
         private List<Pawn> tmpPawns = new List<Pawn>();
+
 
         #endregion Private Fields
 
@@ -154,8 +155,7 @@
 
                 case SettingsColonistBar.SortByWhat.mood:
                     {
-                        orderedEnumerable = tmpColonists.OrderBy(x => x?.needs?.mood?.CurInstantLevelPercentage).ToList();
-                        tmpColonists = orderedEnumerable;
+                        tmpColonists.SortBy(x => x.needs?.mood?.CurInstantLevelPercentage ?? 0f);
 
                         // tmpColonists.SortBy(x => x.needs.mood.CurLevelPercentage);
                         break;
@@ -171,16 +171,11 @@
                         break;
                     }
 
-                // skill not really relevant
-                // case SettingsColonistBar.SortByWhat.medic:
-                // orderedEnumerable = tmpColonists.OrderBy(b => b?.skills != null).ThenByDescending(b => b?.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf.Doctor));
-                // tmpColonists = orderedEnumerable.ToList();
-                // SaveBarSettings();
-                // break;
+
                 case SettingsColonistBar.SortByWhat.medicTendQuality:
                     {
-                        sort = tmpColonists.Where(x => !x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
-                        others = tmpColonists.Where(x => x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+                        sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
                         others.SortBy(x => x.LabelCap);
@@ -193,8 +188,9 @@
 
                 case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
                     {
-                        sort = tmpColonists.Where(x => !x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
-                        others = tmpColonists.Where(x => x.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)).ToList();
+
+                        sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)??false).ToList();
+                        others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor)??true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
                         others.SortBy(x => x.LabelCap);
@@ -207,8 +203,8 @@
 
                 case SettingsColonistBar.SortByWhat.diplomacy:
                     {
-                        sort = tmpColonists.Where(x => !x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
-                        others = tmpColonists.Where(x => x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+                        sort = tmpColonists.Where(x => !x?.story?.WorkTagIsDisabled(WorkTags.Social)?? false).ToList();
+                        others = tmpColonists.Where(x => x?.story?.WorkTagIsDisabled(WorkTags.Social)??true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.DiplomacyPower));
                         others.SortBy(x => x.LabelCap);
@@ -221,8 +217,8 @@
 
                 case SettingsColonistBar.SortByWhat.tradePrice:
                     {
-                        sort = tmpColonists.Where(x => !x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
-                        others = tmpColonists.Where(x => x.story.WorkTagIsDisabled(WorkTags.Social)).ToList();
+                        sort = tmpColonists.Where(x => !x?.story?.WorkTagIsDisabled(WorkTags.Social)??false).ToList();
+                        others = tmpColonists.Where(x => x?.story?.WorkTagIsDisabled(WorkTags.Social)??true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
                         others.SortBy(x => x.LabelCap);
@@ -243,6 +239,20 @@
             Settings.SaveBarSettings();
         }
 
+        public bool ShowGroupFrames
+        {
+            get
+            {
+                List<EntryKF> entries = this.Entries;
+                int num = -1;
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    num = Mathf.Max(num, entries[i].group);
+                }
+
+                return num >= 1;
+            }
+        }
         private void CheckRecacheEntries()
         {
             if (!this.EntriesDirty)
@@ -258,22 +268,25 @@
                 this.tmpMaps.AddRange(Find.Maps);
                 this.tmpMaps.SortBy(x => !x.IsPlayerHome, x => x.uniqueID);
                 int groupInt = 0;
-                foreach (Map tempMap in this.tmpMaps)
+                for (int index = 0; index < this.tmpMaps.Count; index++)
                 {
+                    Map tempMap = this.tmpMaps[index];
                     this.tmpPawns.Clear();
                     this.tmpPawns.AddRange(tempMap.mapPawns.FreeColonists);
                     List<Thing> list = tempMap.listerThings.ThingsInGroup(ThingRequestGroup.Corpse);
-                    foreach (Thing thing in list)
+                    for (int i = 0; i < list.Count; i++)
                     {
+                        Thing thing = list[i];
                         if (!thing.IsDessicated())
                         {
                             Pawn innerPawn = ((Corpse)thing).InnerPawn;
-                            if (innerPawn != null)
+                            if (innerPawn == null)
                             {
-                                if (innerPawn.IsColonist)
-                                {
-                                    this.tmpPawns.Add(innerPawn);
-                                }
+                                continue;
+                            }
+                            if (innerPawn.IsColonist)
+                            {
+                                this.tmpPawns.Add(innerPawn);
                             }
                         }
                     }
