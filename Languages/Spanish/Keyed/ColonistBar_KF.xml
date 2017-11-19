@@ -148,4 +148,6 @@
   <PSI.Settings.VisibilityButton>Visibilidad</PSI.Settings.VisibilityButton>
 
   <!--only August updates needed-->
+  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
+
 </LanguageData>

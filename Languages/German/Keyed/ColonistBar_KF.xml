@@ -12,6 +12,7 @@
 	<CBKF.Settings.ColBarIconVisibility>In Leiste</CBKF.Settings.ColBarIconVisibility>
 	<CBKF.Settings.ColonistBar>Colonist Bar KF</CBKF.Settings.ColonistBar>
 	<CBKF.Settings.ColonistBarOffset>Abstände zu den Rändern: </CBKF.Settings.ColonistBarOffset>
+  <CBKF.Settings.useFollowMessage>Zeige FollowMe Nachricht</CBKF.Settings.useFollowMessage>
 	<CBKF.Settings.DoubleClickTime>Doppelklick-Intervall</CBKF.Settings.DoubleClickTime>
 	<CBKF.Settings.FemaleColor>Farbe für weibliche Kolonisten</CBKF.Settings.FemaleColor>
 	<CBKF.Settings.FixedScale>Benutze feste Skalierung</CBKF.Settings.FixedScale>

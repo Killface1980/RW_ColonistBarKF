@@ -147,5 +147,7 @@
 	<PSI.Efficiency>Efficiency</PSI.Efficiency>
   <PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
-<!--+ August-->
+  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
+
+  <!--+ August-->
 </LanguageData>

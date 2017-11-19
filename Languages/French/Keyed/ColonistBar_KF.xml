@@ -12,6 +12,7 @@
   <CBKF.Settings.DoubleClickTime>Temps de Double Clic</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Couleur des colons féminins</CBKF.Settings.FemaleColor>
   <CBKF.Settings.FixedScale>Utiliser une échelle fixe</CBKF.Settings.FixedScale>
+  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
   <CBKF.Settings.Health>Santé</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Couleur des colons masculins</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Marge du bas</CBKF.Settings.MarginBottom>

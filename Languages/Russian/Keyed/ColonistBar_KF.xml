@@ -148,4 +148,6 @@
   <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
 
   <!-- + August updates-->
+  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
+
 </LanguageData>

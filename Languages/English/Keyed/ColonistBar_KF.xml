@@ -12,6 +12,7 @@
   <CBKF.Settings.DoubleClickTime>Double Click Time</CBKF.Settings.DoubleClickTime>
   <CBKF.Settings.FemaleColor>Color for female colonists</CBKF.Settings.FemaleColor>
   <CBKF.Settings.FixedScale>Use fixed scaling</CBKF.Settings.FixedScale>
+  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
   <CBKF.Settings.Health>Health</CBKF.Settings.Health>
   <CBKF.Settings.MaleColor>Color for male colonists</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Bottom margin</CBKF.Settings.MarginBottom>
