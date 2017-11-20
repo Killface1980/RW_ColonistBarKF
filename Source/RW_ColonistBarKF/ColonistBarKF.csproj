@@ -65,9 +65,6 @@
     <Compile Include="Alignment.cs" />
     <None Include="Class1.cs" />
     <Compile Include="EntryKF.cs" />
-    <Compile Include="Menus\FloatMenuLabels.cs" />
-    <Compile Include="Menus\Tools.cs" />
-    <Compile Include="Menus\FloatMenuColonists.cs" />
     <None Include="ColonistBarKF.ruleset" />
     <None Include="Settings\ControllerBar.cs" />
     <Compile Include="PSI\BarIconDrawer.cs" />
@@ -136,6 +133,15 @@
     <Content Include="..\..\Languages\Spanish\Keyed\ColonistBar_KF.xml">
       <Link>Languages\Spanish\ColonistBar_KF.xml</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Menus\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KillfaceTools\KillfaceTools.csproj">
+      <Project>{9475c556-5882-4138-8e2e-710922e40df0}</Project>
+      <Name>KillfaceTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

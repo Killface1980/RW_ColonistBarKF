@@ -1,10 +1,13 @@
-﻿namespace ColonistBarKF.Menus
+﻿namespace KillfaceTools.FMO
 {
-    using Harmony;
-    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Harmony;
+
+    using JetBrains.Annotations;
+
     using Verse;
 
     public static class Tools

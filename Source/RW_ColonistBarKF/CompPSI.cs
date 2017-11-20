@@ -546,11 +546,11 @@
             float viewOpacityCrit = Settings.ViewOpacityCrit;
 
             needs?.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
-            this.pawnHealth = 1f - pawn.health.summaryHealth.SummaryHealthPercent;
+            this.pawnHealth = 1f - pawn?.health?.summaryHealth?.SummaryHealthPercent ?? 1f;
 
             // Log.Message(pawn + " health: " + this.pawnHealth);
             // Idle - Colonist icon only
-            if (pawn.mindState.IsIdle)
+            if (pawn.mindState?.IsIdle ?? false)
             {
                 if (psiSettings.ShowIdle && GenDate.DaysPassed >= 0.1)
                 {
@@ -575,7 +575,7 @@
                 }
             }
 
-            if (pawn.equipment.Primary == null && !pawn.IsPrisoner && !this.isPacifist)
+            if (pawn.equipment?.Primary == null && !pawn.IsPrisoner && !this.isPacifist)
             {
                 // AddIconsToList(
                 // barSettings.ShowUnarmed,
@@ -629,7 +629,7 @@
             {
                 {
                     // if (pawnCapacityDef != PawnCapacityDefOf.Consciousness)
-                    float level = pawn.health.capacities.GetLevel(pawnCapacityDef);
+                    float level = pawn.health?.capacities?.GetLevel(pawnCapacityDef) ?? 1f;
                     if (level < efficiency)
                     {
                         if (efficiencyTip.NullOrEmpty())
@@ -795,30 +795,31 @@
             if (needs != null)
             {
                 // Hungry
-                if ((double)needs.food?.CurLevel < (double)Settings.psiSettings.LimitFoodLess)
-                {
-                    if (barSettings.ShowHungry)
+                if (needs.food != null)// && pawn.needs.food is Need_Food)
+                    if ((double)needs.food?.CurLevel < (double)Settings.psiSettings.LimitFoodLess)
                     {
-                        string tooltip = needs.food.GetTipString();
+                        if (barSettings.ShowHungry)
+                        {
+                            string tooltip = needs.food.GetTipString();
 
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.Hungry,
-                                Statics.gradientRedAlertToNeutral.Evaluate(
-                                    needs.food.CurLevel / Settings.psiSettings.LimitFoodLess),
-                                tooltip));
-                    }
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.Hungry,
+                                    Statics.gradientRedAlertToNeutral.Evaluate(
+                                        needs.food.CurLevel / Settings.psiSettings.LimitFoodLess),
+                                    tooltip));
+                        }
 
-                    if (psiSettings.ShowHungry)
-                    {
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.Hungry,
-                                Statics.gradientRedAlertToNeutral.Evaluate(
-                                    needs.food.CurLevel / Settings.psiSettings.LimitFoodLess),
-                                viewOpacityCrit));
+                        if (psiSettings.ShowHungry)
+                        {
+                            psiIconList.Add(
+                                new IconEntryPSI(
+                                    Icon.Hungry,
+                                    Statics.gradientRedAlertToNeutral.Evaluate(
+                                        needs.food.CurLevel / Settings.psiSettings.LimitFoodLess),
+                                    viewOpacityCrit));
+                        }
                     }
-                }
 
                 // Tired
                 if (needs.rest.CurLevel < (double)Settings.psiSettings.LimitRestLess)
@@ -855,223 +856,226 @@
             List<Hediff> hediffs = null;
 
             // Sick thoughts
-            if (pawn.health?.hediffSet != null)
+            if (pawn.health != null)
             {
-                hediffs = pawn.health.hediffSet.hediffs;
-
-                // Health
-                // Infection
-
-                // Bleed rate
-                this.BleedRate = Mathf.Clamp01(
-                    pawn.health.hediffSet.BleedRateTotal * Settings.psiSettings.LimitBleedMult);
-
-                if (this.BleedRate > 0.0f)
+                if (pawn.health?.hediffSet != null)
                 {
-                    if (barSettings.ShowBloodloss)
-                    {
-                        string tooltip = "BleedingRate".Translate() + ": "
-                                         + pawn.health.hediffSet.BleedRateTotal.ToStringPercent() + "/d";
+                    hediffs = pawn.health.hediffSet.hediffs;
 
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.Bloodloss,
-                                Statics.gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
-                                tooltip));
+                    // Health
+                    // Infection
+
+                    // Bleed rate
+                    this.BleedRate = Mathf.Clamp01(
+                        pawn.health.hediffSet.BleedRateTotal * Settings.psiSettings.LimitBleedMult);
+
+                    if (this.BleedRate > 0.0f)
+                    {
+                        if (barSettings.ShowBloodloss)
+                        {
+                            string tooltip = "BleedingRate".Translate() + ": "
+                                             + pawn.health.hediffSet.BleedRateTotal.ToStringPercent() + "/d";
+
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.Bloodloss,
+                                    Statics.gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
+                                    tooltip));
+                        }
+
+                        if (psiSettings.ShowBloodloss)
+                        {
+                            psiIconList.Add(
+                                new IconEntryPSI(
+                                    Icon.Bloodloss,
+                                    Statics.gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
+                                    viewOpacityCrit));
+                        }
                     }
 
-                    if (psiSettings.ShowBloodloss)
+                    if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
                     {
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.Bloodloss,
-                                Statics.gradientRedAlertToNeutral.Evaluate(1.0f - this.BleedRate),
-                                viewOpacityCrit));
+                        if (barSettings.ShowMedicalAttention)
+                        {
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.MedicalAttention,
+                                    Textures.ColVermillion,
+                                    "NeedsTendingNow".Translate()));
+                        }
+
+                        if (psiSettings.ShowMedicalAttention)
+                        {
+                            psiIconList.Add(
+                                new IconEntryPSI(
+                                    Icon.MedicalAttention,
+                                    Textures.ColVermillion,
+                                    viewOpacityCrit));
+                        }
+                    }
+                    else if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                    {
+                        if (barSettings.ShowMedicalAttention)
+                        {
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.MedicalAttention,
+                                    Textures.ColYellow,
+                                    "NeedsTendingNow".Translate()));
+                        }
+
+                        if (psiSettings.ShowMedicalAttention)
+                        {
+                            psiIconList.Add(
+                                new IconEntryPSI(Icon.MedicalAttention, Textures.ColYellow, viewOpacityCrit));
+                        }
+                    }
+
+                    if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
+                    {
+                        if (barSettings.ShowMedicalAttention)
+                        {
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.MedicalAttention,
+                                    Textures.ColBlueishGreen,
+                                    "ShouldHaveSurgeryDoneNow".Translate()));
+                        }
+
+                        if (psiSettings.ShowMedicalAttention)
+                        {
+                            psiIconList.Add(
+                                new IconEntryPSI(
+                                    Icon.MedicalAttention,
+                                    Textures.ColBlueishGreen,
+                                    viewOpacityCrit));
+                        }
                     }
                 }
 
-                if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
+                if ((pawn.health?.hediffSet?.AnyHediffMakesSickThought ?? false) && !pawn.Destroyed && pawn.playerSettings.medCare >= 0)
                 {
-                    if (barSettings.ShowMedicalAttention)
+                    if (hediffs != null)
                     {
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.MedicalAttention,
-                                Textures.ColVermillion,
-                                "NeedsTendingNow".Translate()));
+                        this.severity = 0f;
+                        this.immunity = 0f;
+                        foreach (Hediff hediff in hediffs)
+                        {
+                            if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought
+                                || hediff.LabelCap.NullOrEmpty() || hediff.SeverityLabel.NullOrEmpty())
+                            {
+                                continue;
+                            }
+
+                            this.ToxicBuildUpVisible = 0;
+                            this.healthTip = hediff.LabelCap;
+                            if (!thoughts.NullOrEmpty())
+                            {
+                                GetThought(ThoughtDefOf.Sick, out int dummy, out this.sickTip, out this.sickMoodOffset);
+                            }
+
+                            // this.ToxicBuildUpVisible
+                            if (hediff.def == HediffDefOf.ToxicBuildup)
+                            {
+                                this.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
+                                this.ToxicBuildUpVisible = Mathf.InverseLerp(0.049f, 1f, hediff.Severity);
+                                continue;
+                            }
+
+                            HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
+                            if (compImmunizable != null)
+                            {
+                                this.severity = Mathf.Max(this.severity, hediff.Severity);
+                                this.immunity = compImmunizable.Immunity;
+                                float basehealth = this.HealthDisease - (this.severity - this.immunity / 4) - 0.25f;
+                                this.HealthDisease = basehealth;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+                            if (!hediff.def.PossibleToDevelopImmunityNaturally())
+                            {
+                                continue;
+                            }
+
+                            if (hediff.CurStage?.capMods == null)
+                            {
+                                continue;
+                            }
+
+                            if (!hediff.CurStage.becomeVisible)
+                            {
+                                continue;
+                            }
+
+                            if (hediff.FullyImmune())
+                            {
+                                continue;
+                            }
+
+                            if (!hediff.def.tendable)
+                            {
+                                continue;
+                            }
+
+                            if (Math.Abs(pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05)
+                            {
+                                continue;
+                            }
+
+                            if (this.DiseaseDisappearance > compImmunizable.Immunity)
+                            {
+                                this.DiseaseDisappearance = compImmunizable.Immunity;
+                            }
+
+                            // break;
+                        }
                     }
 
-                    if (psiSettings.ShowMedicalAttention)
+                    if (this.DiseaseDisappearance < Settings.psiSettings.LimitDiseaseLess)
                     {
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.MedicalAttention,
-                                Textures.ColVermillion,
-                                viewOpacityCrit));
+                        string tooltip = this.sickTip + "\n" + this.healthTip + "\n" + "Immunity".Translate() + " / "
+                                         + "PSI.DiseaseProgress".Translate() + ": \n" + this.immunity.ToStringPercent()
+                                         + " / " + this.severity.ToStringPercent() + ": \n" + this.sickMoodOffset;
+
+                        if (barSettings.ShowHealth)
+                        {
+                            // Regular Sickness
+                            barIconList.Add(
+                                new IconEntryBar(
+                                    Icon.Health,
+                                    Statics.gradient4.Evaluate(this.DiseaseDisappearance / psiSettings.LimitDiseaseLess),
+                                    tooltip));
+                        }
+
+                        if (psiSettings.ShowHealth)
+                        {
+                            // Regular Sickness
+                            psiIconList.Add(
+                                new IconEntryPSI(
+                                    Icon.Health,
+                                    Statics.gradient4.Evaluate(this.DiseaseDisappearance / psiSettings.LimitDiseaseLess),
+                                    viewOpacityCrit));
+                        }
                     }
                 }
-                else if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                else if (pawn.health.summaryHealth?.SummaryHealthPercent < 1f)
                 {
-                    if (barSettings.ShowMedicalAttention)
-                    {
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.MedicalAttention,
-                                Textures.ColYellow,
-                                "NeedsTendingNow".Translate()));
-                    }
-
-                    if (psiSettings.ShowMedicalAttention)
-                    {
-                        psiIconList.Add(
-                            new IconEntryPSI(Icon.MedicalAttention, Textures.ColYellow, viewOpacityCrit));
-                    }
-                }
-
-                if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
-                {
-                    if (barSettings.ShowMedicalAttention)
-                    {
-                        barIconList.Add(
-                            new IconEntryBar(
-                                Icon.MedicalAttention,
-                                Textures.ColBlueishGreen,
-                                "ShouldHaveSurgeryDoneNow".Translate()));
-                    }
-
-                    if (psiSettings.ShowMedicalAttention)
-                    {
-                        psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.MedicalAttention,
-                                Textures.ColBlueishGreen,
-                                viewOpacityCrit));
-                    }
-                }
-            }
-
-            if (pawn.health.hediffSet.AnyHediffMakesSickThought && !pawn.Destroyed && pawn.playerSettings.medCare >= 0)
-            {
-                if (hediffs != null)
-                {
-                    this.severity = 0f;
-                    this.immunity = 0f;
-                    foreach (Hediff hediff in hediffs)
-                    {
-                        if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought
-                            || hediff.LabelCap.NullOrEmpty() || hediff.SeverityLabel.NullOrEmpty())
-                        {
-                            continue;
-                        }
-
-                        this.ToxicBuildUpVisible = 0;
-                        this.healthTip = hediff.LabelCap;
-                        if (!thoughts.NullOrEmpty())
-                        {
-                            GetThought(ThoughtDefOf.Sick, out int dummy, out this.sickTip, out this.sickMoodOffset);
-                        }
-
-                        // this.ToxicBuildUpVisible
-                        if (hediff.def == HediffDefOf.ToxicBuildup)
-                        {
-                            this.toxicTip = hediff.LabelCap + "\n" + hediff.SeverityLabel;
-                            this.ToxicBuildUpVisible = Mathf.InverseLerp(0.049f, 1f, hediff.Severity);
-                            continue;
-                        }
-
-                        HediffComp_Immunizable compImmunizable = hediff.TryGetComp<HediffComp_Immunizable>();
-                        if (compImmunizable != null)
-                        {
-                            this.severity = Mathf.Max(this.severity, hediff.Severity);
-                            this.immunity = compImmunizable.Immunity;
-                            float basehealth = this.HealthDisease - (this.severity - this.immunity / 4) - 0.25f;
-                            this.HealthDisease = basehealth;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.def.PossibleToDevelopImmunityNaturally())
-                        {
-                            continue;
-                        }
-
-                        if (hediff.CurStage?.capMods == null)
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.CurStage.becomeVisible)
-                        {
-                            continue;
-                        }
-
-                        if (hediff.FullyImmune())
-                        {
-                            continue;
-                        }
-
-                        if (!hediff.def.tendable)
-                        {
-                            continue;
-                        }
-
-                        if (Math.Abs(pawn.health.immunity.GetImmunity(hediff.def) - 1.0) < 0.05)
-                        {
-                            continue;
-                        }
-
-                        if (this.DiseaseDisappearance > compImmunizable.Immunity)
-                        {
-                            this.DiseaseDisappearance = compImmunizable.Immunity;
-                        }
-
-                        // break;
-                    }
-                }
-
-                if (this.DiseaseDisappearance < Settings.psiSettings.LimitDiseaseLess)
-                {
-                    string tooltip = this.sickTip + "\n" + this.healthTip + "\n" + "Immunity".Translate() + " / "
-                                     + "PSI.DiseaseProgress".Translate() + ": \n" + this.immunity.ToStringPercent()
-                                     + " / " + this.severity.ToStringPercent() + ": \n" + this.sickMoodOffset;
-
+                    string tooltip = "Health".Translate() + ": "
+                                     + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
                     if (barSettings.ShowHealth)
                     {
-                        // Regular Sickness
                         barIconList.Add(
-                            new IconEntryBar(
-                                Icon.Health,
-                                Statics.gradient4.Evaluate(this.DiseaseDisappearance / psiSettings.LimitDiseaseLess),
-                                tooltip));
+                            new IconEntryBar(Icon.Health, Statics.gradient4.Evaluate(this.pawnHealth), tooltip));
                     }
 
                     if (psiSettings.ShowHealth)
                     {
-                        // Regular Sickness
                         psiIconList.Add(
-                            new IconEntryPSI(
-                                Icon.Health,
-                                Statics.gradient4.Evaluate(this.DiseaseDisappearance / psiSettings.LimitDiseaseLess),
-                                viewOpacityCrit));
+                            new IconEntryPSI(Icon.Health, Statics.gradient4.Evaluate(this.pawnHealth), viewOpacityCrit));
                     }
-                }
-            }
-            else if (pawn.health.summaryHealth.SummaryHealthPercent < 1f)
-            {
-                string tooltip = "Health".Translate() + ": "
-                                 + pawn.health.summaryHealth.SummaryHealthPercent.ToStringPercent();
-                if (barSettings.ShowHealth)
-                {
-                    barIconList.Add(
-                        new IconEntryBar(Icon.Health, Statics.gradient4.Evaluate(this.pawnHealth), tooltip));
-                }
-
-                if (psiSettings.ShowHealth)
-                {
-                    psiIconList.Add(
-                        new IconEntryPSI(Icon.Health, Statics.gradient4.Evaluate(this.pawnHealth), viewOpacityCrit));
                 }
             }
 
@@ -1372,8 +1376,9 @@
             this.addictionLabel = null;
             if (hediffs != null)
             {
-                foreach (Hediff hediff in hediffs)
+                for (int i = 0; i < hediffs.Count; i++)
                 {
+                    Hediff hediff = hediffs[i];
                     if (hediff is Hediff_Addiction)
                     {
                         this.isAddict = true;

@@ -1,4 +1,4 @@
-﻿namespace ColonistBarKF.Menus
+﻿namespace KillfaceTools.FMO
 {
     using System;
     using System.Collections.Generic;

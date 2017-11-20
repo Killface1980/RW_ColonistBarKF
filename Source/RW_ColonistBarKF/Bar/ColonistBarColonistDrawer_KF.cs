@@ -4,10 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using ColonistBarKF.Menus;
     using ColonistBarKF.PSI;
 
     using JetBrains.Annotations;
+
+    using KillfaceTools.FMO;
 
     using RimWorld;
     using RimWorld.Planet;

@@ -1,9 +1,13 @@
-﻿namespace ColonistBarKF.Menus
+﻿namespace KillfaceTools.FMO
 {
-    using Harmony;
-    using JetBrains.Annotations;
     using System.Collections.Generic;
+
+    using Harmony;
+
+    using JetBrains.Annotations;
+
     using UnityEngine;
+
     using Verse;
 
     public class FloatMenuColonists : FloatMenu
