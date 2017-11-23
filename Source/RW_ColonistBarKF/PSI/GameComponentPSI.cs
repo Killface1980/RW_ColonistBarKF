@@ -361,11 +361,12 @@ namespace ColonistBarKF.PSI
                         Settings.ViewOpacityCrit);
                 }
 
+                Color color = Statics.gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent);
                 PSIDrawer.DrawIconOnColonist(
                     bodyLoc,
                     ref iconNum,
                     Icon.Health,
-                    Statics.gradient4.Evaluate(1f - pawn.health.summaryHealth.SummaryHealthPercent),
+                    color,
                     Settings.ViewOpacityCrit);
             }
         }

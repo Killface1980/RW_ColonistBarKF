@@ -1,13 +1,10 @@
 ﻿namespace KillfaceTools.FMO
 {
+    using Harmony;
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Harmony;
-
-    using JetBrains.Annotations;
-
     using Verse;
 
     public static class Tools
@@ -71,10 +68,9 @@
                                                             actionMenu = new FloatMenuColonists(actions, null);
                                                             Find.WindowStack.Add(actionMenu);
                                                         }
-                                                    })
-            {
-                Disabled = options.All(o => o.Disabled)
-            };
+                                                    }) {
+                                                          Disabled = options.All(o => o.Disabled)
+                                                       };
             return option;
         }
     }

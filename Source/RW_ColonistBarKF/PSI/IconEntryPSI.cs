@@ -10,11 +10,14 @@
 
         public float opacity;
 
-        public IconEntryPSI(Icon icon, Color color, float opacity)
+        public int priority;
+
+        public IconEntryPSI(Icon icon, Color color, float opacity, int priority = 10)
         {
             this.icon = icon;
             this.color = color;
             this.opacity = opacity;
+            this.priority = priority;
         }
     }
 }

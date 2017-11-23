@@ -1,20 +1,14 @@
 ﻿namespace ColonistBarKF.Bar
 {
+    using ColonistBarKF.PSI;
+    using JetBrains.Annotations;
+    using KillfaceTools.FMO;
+    using RimWorld;
+    using RimWorld.Planet;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using ColonistBarKF.PSI;
-
-    using JetBrains.Annotations;
-
-    using KillfaceTools.FMO;
-
-    using RimWorld;
-    using RimWorld.Planet;
-
     using UnityEngine;
-
     using Verse;
     using Verse.AI;
     using Verse.AI.Group;

@@ -75,7 +75,7 @@
             gradientRedAlertToNeutral.SetKeys(gck, gak);
         }
 
-        public static Color EvaluateMoodOffset(float moodOffset)
+        public static Color MoodOffsetColor(this float moodOffset)
         {
             return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
