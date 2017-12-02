@@ -89,30 +89,33 @@
 
                 GUI.color = color;
 
-                if (colonist.needs?.mood?.thoughts != null)
+                if (!colonist.Dead)
                 {
-                    if (Settings.barSettings.UseExternalMoodBar || Settings.barSettings.UseNewMood)
+                    if (psiComp.Mood?.thoughts != null)
                     {
-                        if (psiComp.Mood != null && psiComp.Mb != null)
+                        if (Settings.barSettings.UseExternalMoodBar || Settings.barSettings.UseNewMood)
                         {
-                            // string tooltip = colonist.needs.mood.GetTipString();
-                            DrawNewMoodRect(moodBorderRect, psiComp.Mood, psiComp.Mb);
+                            if (psiComp.Mood != null && psiComp.Mb != null)
+                            {
+                                // string tooltip = colonist.needs.mood.GetTipString();
+                                DrawNewMoodRect(moodBorderRect, psiComp.Mood, psiComp.Mb);
+                            }
+                        }
+                        else
+                        {
+                            Rect position = pawnRect.ContractedBy(2f);
+                            float num = position.height * colonist.needs.mood.CurLevelPercentage;
+                            position.yMin = position.yMax - num;
+                            position.height = num;
+                            GUI.DrawTexture(position, Textures.VanillaMoodBgTex);
                         }
                     }
-                    else
-                    {
-                        Rect position = pawnRect.ContractedBy(2f);
-                        float num = position.height * colonist.needs.mood.CurLevelPercentage;
-                        position.yMin = position.yMax - num;
-                        position.height = num;
-                        GUI.DrawTexture(position, Textures.VanillaMoodBgTex);
-                    }
-                }
 
-                // PSI
-                if (Settings.barSettings.UsePsi)
-                {
-                    colonist.DrawColonistIconsBar(psiRect, entryRectAlpha);
+                    // PSI
+                    if (Settings.barSettings.UsePsi)
+                    {
+                        colonist.DrawColonistIconsBar(psiRect, entryRectAlpha);
+                    }
                 }
             }
             else
@@ -391,10 +394,10 @@
                         if (colonist != null && SelPawn != null && SelPawn != colonist && SelPawn.Map != null
                             && colonist.Map == SelPawn.Map && SelPawn.IsColonistPlayerControlled)
                         {
-                            foreach (FloatMenuOption choice in FloatMenuMakerMap.ChoicesAtFor(
-                                colonist.TrueCenter(),
-                                SelPawn))
+                            List<FloatMenuOption> fmoptions = FloatMenuMakerMap.ChoicesAtFor(colonist.TrueCenter(), SelPawn);
+                            for (int i = 0; i < fmoptions.Count; i++)
                             {
+                                FloatMenuOption choice = fmoptions[i];
                                 choicesList.Add(choice);
 
                                 // floatOptionList.Add(choice);
@@ -463,20 +466,20 @@
                         if (!choicesList.NullOrEmpty())
                         {
                             labeledSortingActions.Add(
-                                "CBKF.Settings.ChoicesForPawn".Translate(SelPawn, colonist),
+                                "CBKF.Settings.ChoicesForPawn".Translate(SelPawn, colonist) + Tools.NestedString,
                                 choicesList);
                         }
 
-                        labeledSortingActions.Add("CBKF.Settings.OrderingOptions".Translate(), sortList);
+                        labeledSortingActions.Add("CBKF.Settings.OrderingOptions".Translate() + Tools.NestedString, sortList);
 
-                        // labeledSortingActions.Add("CBKF.Settings.AllStatsSortingOptions".Translate(), extraSortList);
                         labeledSortingActions.Add("CBKF.Settings.SettingsColonistBar".Translate(), floatOptionList);
 
                         List<FloatMenuOption> items = labeledSortingActions.Keys.Select(
-                            label =>
+                            groupContent =>
                                 {
-                                    List<FloatMenuOption> fmo = labeledSortingActions[label];
-                                    return Tools.MakeMenuItemForLabel(label, fmo);
+                                    List<FloatMenuOption> fmo = labeledSortingActions[groupContent];
+
+                                    return Tools.MakeMenuItemForLabel(groupContent, fmo);
                                 }).ToList();
 
                         Tools.LabelMenu = new FloatMenuLabels(items);
@@ -790,12 +793,12 @@
             Rect moodRect,
             [NotNull] Texture2D moodTex,
             float moodPercent,
-            [NotNull] Need mood,
+            float mood,
             out Rect rect1,
             out Rect rect2)
         {
-            float x = moodRect.x + moodRect.width * mood.CurInstantLevelPercentage;
-            float y = moodRect.yMax - moodRect.height * mood.CurInstantLevelPercentage;
+            float x = moodRect.x + moodRect.width * mood;
+            float y = moodRect.yMax - moodRect.height * mood;
             rect1 = new Rect(moodRect.x, y, moodRect.width, 1);
             rect2 = new Rect(moodRect.xMax + 1, y - 1, 2, 3);
 
@@ -924,12 +927,12 @@
                 GUI.DrawTexture(moodRect, Textures.MoodNeutralTex);
                 GUI.color = moodCol;
             }
-
+            float moodFloat = mood.CurInstantLevelPercentage;
             DrawCurrentMood(
                 moodRect,
                 Textures.MoodNeutralTex,
                 moodPercent,
-                mood,
+                moodFloat,
                 out Rect rect1,
                 out Rect rect2);
             GUI.color = color;

@@ -176,6 +176,12 @@ namespace ColonistBarKF
             {
                 if (CurrentlyFollowing)
                 {
+                    if (Find.VisibleMap == null)
+                    {
+                        StopFollow("Map null");
+                        return;
+                    }
+
                     this.CheckKeyScroll();
                     this.CheckScreenEdgeScroll();
                     this.CheckCameraJump();

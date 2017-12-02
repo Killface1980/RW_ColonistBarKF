@@ -1,13 +1,18 @@
 ﻿namespace ColonistBarKF
 {
-    using ColonistBarKF.Bar;
-    using ColonistBarKF.PSI;
-    using JetBrains.Annotations;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using ColonistBarKF.Bar;
+    using ColonistBarKF.PSI;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
     using Verse.AI;
 
@@ -287,10 +292,10 @@
         private void CheckJobs()
         {
             this.TargetPos = Vector3.zero;
-            if (pawn.jobs.curJob != null)
+            Job curJob = this.pawn.CurJob;
+            if (curJob != null)
             {
-                JobDriver curDriver = pawn.jobs.curDriver;
-                Job curJob = pawn.jobs.curJob;
+                JobDriver curDriver = this.pawn.jobs.curDriver;
                 LocalTargetInfo targetInfo = curJob.targetA;
                 if (curDriver is JobDriver_HaulToContainer || curDriver is JobDriver_HaulToCell
                     || curDriver is JobDriver_FoodDeliver || curDriver is JobDriver_FoodFeedPatient
@@ -312,7 +317,7 @@
                     }
                 }
 
-                if (curDriver is JobDriver_Hunt && pawn.carryTracker?.CarriedThing != null)
+                if (curDriver is JobDriver_Hunt && this.pawn.carryTracker?.CarriedThing != null)
                 {
                     targetInfo = curJob.targetB;
                 }
@@ -327,7 +332,7 @@
                     targetInfo = null;
                 }
 
-                if (curJob.def == JobDefOf.LayDown && pawn.InBed())
+                if (curJob.def == JobDefOf.LayDown && this.pawn.InBed())
                 {
                     targetInfo = null;
                 }
@@ -387,78 +392,77 @@
             // + " ticks.");
         }
 
-        private void CheckTraits()
+        public void CheckTraits()
         {
             {
-                if (pawn.RaceProps.hasGenders)
+                if (this.pawn.RaceProps.hasGenders)
                 {
-                    if (pawn.Dead)
+                    if (this.pawn.Dead)
                     {
-                        this.bgColor = Color.gray;
+                        this.BGColor = Color.gray;
                     }
                     else
                     {
-                        switch (pawn.gender)
+                        switch (this.pawn.gender)
                         {
                             case Gender.Male:
-                                this.bgColor = Textures.MaleColor;
+                                this.BGColor = Textures.MaleColor;
                                 break;
 
                             case Gender.Female:
-                                this.bgColor = Textures.FemaleColor;
+                                this.BGColor = Textures.FemaleColor;
                                 break;
                         }
                     }
                 }
 
                 // One time traits check
-                if (pawn.story?.traits != null)
+                if (this.pawn.story?.traits != null)
                 {
                     // Masochist
-                    this.isMasochist = pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
+                    this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
 
                     // Masochist trait check
-                    this.painThought = ThoughtDef.Named(
-                        pawn.story.traits.HasTrait(TraitDef.Named("Masochist")) ? "MasochistPain" : "Pain");
+                    this.painThought = ThoughtDef.Named(this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist")) ? "MasochistPain" : "Pain");
 
                     // Pacifist
-                    this.isPacifist = pawn.story.WorkTagIsDisabled(WorkTags.Violent);
+                    this.isPacifist = this.pawn.story.WorkTagIsDisabled(WorkTags.Violent);
 
                     // Pyromaniac
-                    this.isPyromaniac = pawn.story.traits.HasTrait(TraitDefOf.Pyromaniac);
+                    this.isPyromaniac = this.pawn.story.traits.HasTrait(TraitDefOf.Pyromaniac);
 
                     // Prostho
-                    if (pawn.story.traits.HasTrait(TraitDefOf.Prosthophobe))
+                    if (this.pawn.story.traits.HasTrait(TraitDefOf.Prosthophobe))
                     {
                         this.prostho = -1;
                     }
 
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("Prosthophile")))
+                    if (this.pawn.story.traits.HasTrait(TraitDef.Named("Prosthophile")))
                     {
                         this.prostho = 1;
                     }
 
                     // Night Owl
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("NightOwl")))
+                    if (this.pawn.story.traits.HasTrait(TraitDef.Named("NightOwl")))
                     {
                         this.isNightOwl = true;
                     }
 
                     // Jealous
-                    if (pawn.story.traits.HasTrait(TraitDef.Named("Jealous")))
+                    if (this.pawn.story.traits.HasTrait(TraitDef.Named("Jealous")))
                     {
                         this.hasJealousTrait = true;
                     }
 
                     // Drug desire
-                    if (pawn.story.traits.HasTrait(TraitDefOf.DrugDesire))
+                    if (this.pawn.story.traits.HasTrait(TraitDefOf.DrugDesire))
                     {
-                        this.drugDesire = pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire);
-                        this.drugUserLabel = pawn.story.traits.GetTrait(TraitDefOf.DrugDesire).LabelCap;
+                        this.drugDesire = this.pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire);
+                        this.drugUserLabel = this.pawn.story.traits.GetTrait(TraitDefOf.DrugDesire).LabelCap;
                     }
 
                     // Greedy
-                    if (pawn.story.traits.HasTrait(TraitDefOf.Greedy))
+                    if (this.pawn.story.traits.HasTrait(TraitDefOf.Greedy))
                     {
                         this.hasGreedyTrait = true;
                     }
@@ -501,6 +505,18 @@
                 return;
             }
 
+            Pawn_NeedsTracker needs = this.pawn.needs;
+            if (needs?.mood != null)
+            {
+                this.Mb = this.pawn.mindState?.mentalBreaker;
+                this.Mood = needs.mood;
+            }
+            else
+            {
+                this.Mood = null;
+                this.Mb = null;
+            }
+
             if (!barSettings.UsePsi && !psiSettings.UsePsi)
             {
                 return;
@@ -512,20 +528,9 @@
             float viewOpacityCrit = Settings.ViewOpacityCrit;
 
             // Mental Breaker for MoodBars
-            Pawn_NeedsTracker needs = pawn.needs;
             if (needs != null)
             {
-                if (needs.mood != null)
-                {
-                    this.Mb = pawn.mindState?.mentalBreaker;
-                    this.Mood = needs.mood;
-                    needs.mood.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
-                }
-                else
-                {
-                    this.Mood = null;
-                    this.Mb = null;
-                }
+                needs.mood?.thoughts?.GetDistinctMoodThoughtGroups(thoughts);
 
                 // Hungry
                 if (needs.food != null)
@@ -574,7 +579,7 @@
 
             // Log.Message(pawn + " health: " + this.pawnHealth);
             // Idle - Colonist icon only
-            if ((pawn.mindState != null) && pawn.mindState.IsIdle)
+            if ((this.pawn.mindState != null) && this.pawn.mindState.IsIdle)
             {
                 if (psiSettings.ShowIdle && GenDate.DaysPassed >= 0.1)
                 {
@@ -590,7 +595,7 @@
                         new IconEntryBar(
                             Icon.Pacific,
                             Textures.ColBlueishGreen,
-                            "IsIncapableOfViolence".Translate(pawn.NameStringShort)));
+                            "IsIncapableOfViolence".Translate(this.pawn.NameStringShort)));
                 }
 
                 if (psiSettings.ShowPacific)
@@ -599,7 +604,7 @@
                 }
             }
 
-            if (pawn.equipment?.Primary == null && !pawn.IsPrisoner && !this.isPacifist)
+            if (this.pawn.equipment?.Primary == null && !this.pawn.IsPrisoner && !this.isPacifist)
             {
                 // AddIconsToList(
                 // barSettings.ShowUnarmed,
@@ -649,12 +654,12 @@
             bool flag2 = false;
 
             // temperature
-            float temperatureForCell = GenTemperature.GetTemperatureForCell(pawn.Position, pawn.Map);
+            float temperatureForCell = GenTemperature.GetTemperatureForCell(this.pawn.Position, this.pawn.Map);
 
-            this.TooCold = (float)((pawn.ComfortableTemperatureRange().min
+            this.TooCold = (float)((this.pawn.ComfortableTemperatureRange().min
                                     - (double)Settings.psiSettings.LimitTempComfortOffset - temperatureForCell) / 10f);
 
-            this.TooHot = (float)((temperatureForCell - (double)pawn.ComfortableTemperatureRange().max
+            this.TooHot = (float)((temperatureForCell - (double)this.pawn.ComfortableTemperatureRange().max
                                    - Settings.psiSettings.LimitTempComfortOffset) / 10f);
 
             this.TooCold = Mathf.Clamp(this.TooCold, 0f, 2f);
@@ -702,14 +707,14 @@
 
             // Mental Sanity
             this.MentalSanity = null;
-            if (pawn.mindState != null && pawn.InMentalState)
+            if (this.pawn.mindState != null && this.pawn.InMentalState)
             {
-                this.MentalSanity = pawn.MentalStateDef;
+                this.MentalSanity = this.pawn.MentalStateDef;
             }
 
             if (this.MentalSanity != null)
             {
-                if (pawn.InAggroMentalState)
+                if (this.pawn.InAggroMentalState)
                 {
                     if (barSettings.ShowAggressive)
                     {
@@ -775,7 +780,7 @@
             List<Hediff> hediffs = null;
 
             // Sick thoughts
-            Pawn_HealthTracker health = pawn.health;
+            Pawn_HealthTracker health = this.pawn.health;
             if (health != null)
             {
                 array = GameComponentPSI.pawnCapacities;
@@ -849,7 +854,7 @@
                         }
                     }
 
-                    if (HealthAIUtility.ShouldBeTendedNowUrgent(pawn))
+                    if (HealthAIUtility.ShouldBeTendedNowUrgent(this.pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
@@ -866,7 +871,7 @@
                                 new IconEntryPSI(Icon.MedicalAttention, Textures.ColVermillion, viewOpacityCrit));
                         }
                     }
-                    else if (HealthAIUtility.ShouldBeTendedNow(pawn))
+                    else if (HealthAIUtility.ShouldBeTendedNow(this.pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
@@ -884,7 +889,7 @@
                         }
                     }
 
-                    if (HealthAIUtility.ShouldHaveSurgeryDoneNow(pawn))
+                    if (HealthAIUtility.ShouldHaveSurgeryDoneNow(this.pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
@@ -902,8 +907,8 @@
                         }
                     }
 
-                    if ((health?.hediffSet?.AnyHediffMakesSickThought ?? false) && !pawn.Destroyed
-                        && pawn.playerSettings.medCare >= 0)
+                    if ((health?.hediffSet?.AnyHediffMakesSickThought ?? false) && !this.pawn.Destroyed
+                        && this.pawn.playerSettings.medCare >= 0)
                     {
                         if (hediffs != null)
                         {
@@ -1023,7 +1028,7 @@
                 {
                     string tooltip = "Health".Translate() + ": "
                                      + health.summaryHealth.SummaryHealthPercent.ToStringPercent();
-                    var pawnHealth = 1f - pawn.health?.summaryHealth?.SummaryHealthPercent ?? 1f;
+                    var pawnHealth = 1f - this.pawn.health?.summaryHealth?.SummaryHealthPercent ?? 1f;
 
                     Color color = Statics.gradient4.Evaluate(pawnHealth);
                     if (barSettings.ShowHealth)
@@ -1161,7 +1166,7 @@
             }
 
             // Bed status
-            if (pawn.ownership.OwnedBed != null)
+            if (this.pawn.ownership.OwnedBed != null)
             {
                 GetThought(
                     ThoughtDefOf.SharedBed,

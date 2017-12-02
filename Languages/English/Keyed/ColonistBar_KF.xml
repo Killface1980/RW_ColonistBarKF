@@ -23,7 +23,7 @@
   <CBKF.Settings.Medic>Medical Skill</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Mood</CBKF.Settings.Mood>
   <CBKF.Settings.OrderBy>Order By</CBKF.Settings.OrderBy>
-  <CBKF.Settings.OrderingOptions>Ordering ►</CBKF.Settings.OrderingOptions>
+  <CBKF.Settings.OrderingOptions>Ordering</CBKF.Settings.OrderingOptions>
   <CBKF.Settings.PawnTextureCameraOffsets>Camera Offset and Zoom: </CBKF.Settings.PawnTextureCameraOffsets>
   <CBKF.Settings.PSI>Pawn State Icons™</CBKF.Settings.PSI>
   <CBKF.Settings.PSIIconVisibility>On colonist</CBKF.Settings.PSIIconVisibility>
@@ -152,7 +152,5 @@
   <CBKF.Settings.Grouping>Grouping</CBKF.Settings.Grouping>
   <CBKF.Settings.UseGrouping>Collapse groups</CBKF.Settings.UseGrouping>
   <CBKF.Settings.UseGroupColors>Color code colonist groups</CBKF.Settings.UseGroupColors>
-  <CBKF.Settings.ChoicesForPawn>{0}'s choices with {1}  ►</CBKF.Settings.ChoicesForPawn>
- <!--Crashing, not used-->
-  <CBKF.Settings.AllStatsSortingOptions>Sort by all stats  ►</CBKF.Settings.AllStatsSortingOptions>
+  <CBKF.Settings.ChoicesForPawn>{0}'s choices with {1}</CBKF.Settings.ChoicesForPawn>
 </LanguageData>

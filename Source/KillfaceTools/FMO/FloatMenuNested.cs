@@ -10,9 +10,9 @@
 
     using Verse;
 
-    public class FloatMenuColonists : FloatMenu
+    public class FloatMenuNested : FloatMenu
     {
-        public FloatMenuColonists([NotNull] List<FloatMenuOption> options, [CanBeNull] string label)
+        public FloatMenuNested([NotNull] List<FloatMenuOption> options, [CanBeNull] string label)
             : base(options, label)
         {
             this.givesColonistOrders = true;

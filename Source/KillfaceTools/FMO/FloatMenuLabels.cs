@@ -20,8 +20,8 @@
 
     public class FloatMenuOptionNoClose : FloatMenuOption
     {
-        public FloatMenuOptionNoClose(string label, Action action)
-            : base(label, action)
+        public FloatMenuOptionNoClose(string label, Action action, float extraPartWidth, Func<Rect, bool> extraPartOnGUI =null)
+            : base(label, action, extraPartWidth: extraPartWidth, extraPartOnGUI: extraPartOnGUI)
         {
         }
 

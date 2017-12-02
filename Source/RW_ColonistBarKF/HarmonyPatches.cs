@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using ColonistBarKF.Bar;
 
@@ -124,6 +125,11 @@
                 AccessTools.Method(typeof(Pawn), nameof(Pawn.Kill)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Kill_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.Notify_Resurrected)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(Pawn_Resurrected_Postfix)));
 
             // NOT WORKING, FollowMe immediatly cancels if this is active
             // harmony.Patch(
@@ -405,6 +411,20 @@
                     compPSI.BGColor = Color.gray;
                     compPSI.thisColCount = 0;
                 }
+            }
+        }
+
+        private static void Pawn_Resurrected_Postfix([NotNull] Pawn_HealthTracker __instance)
+        {
+            FieldInfo PawnFieldInfo = typeof(Pawn_HealthTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            Pawn pawn = (Pawn)PawnFieldInfo.GetValue(__instance);
+
+            if (pawn.Faction != null && pawn.Faction.IsPlayer
+                && Current.ProgramState == ProgramState.Playing)
+            {
+                EntriesDirty_Postfix();
+                CompPSI compPSI = pawn.GetComp<CompPSI>();
+                compPSI?.CheckTraits();
             }
         }
 

@@ -5,13 +5,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using UnityEngine;
+
     using Verse;
 
     public static class Tools
     {
+        public const string NestedString = " ►";
+
         public static FloatMenuLabels LabelMenu;
 
-        private static FloatMenuColonists actionMenu;
+        private static FloatMenuNested actionMenu;
 
         public static void CloseLabelMenu(bool sound)
         {
@@ -27,11 +32,13 @@
             // List<SortByWhat> sortByWhats = fmo.Keys.ToList();
             List<FloatMenuOption> options = fmo.ToList();
             string labelFixed = label;
+            bool isSingle = options.Count == 1 && !labelFixed.Contains(NestedString);
+
             FloatMenuOptionNoClose option = new FloatMenuOptionNoClose(
                                                 labelFixed,
                                                 () =>
                                                     {
-                                                        if (options.Count() == 1 && options[0].Disabled == false)
+                                                        if (isSingle && options[0].Disabled == false)
                                                         {
                                                             Action action = options[0].action;
                                                             if (action != null)
@@ -59,18 +66,20 @@
                                                                                         pawnOption.action();
                                                                                     },
                                                                                 (MenuOptionPriority)i++,
-                                                                                () =>
-                                                                                    {
-                                                                                        // PathInfo.current = pawn;
-                                                                                    });
+                                                                                menuOption.mouseoverGuiAction,
+                                                                                menuOption.revalidateClickTarget,
+                                                                                menuOption.extraPartWidth,
+                                                                                menuOption.extraPartOnGUI);
                                                                         actions.Add(floatMenuOption);
                                                                     });
-                                                            actionMenu = new FloatMenuColonists(actions, null);
+                                                            actionMenu = new FloatMenuNested(actions, null);
                                                             Find.WindowStack.Add(actionMenu);
                                                         }
-                                                    }) {
-                                                          Disabled = options.All(o => o.Disabled)
-                                                       };
+                                                    },
+                                                isSingle ? options[0].extraPartWidth : 0f,
+                                                isSingle ? options[0].extraPartOnGUI : null)
+            { Disabled = options.All(o => o.Disabled) };
+
             return option;
         }
     }
