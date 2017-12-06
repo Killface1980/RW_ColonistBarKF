@@ -1,6 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-
   <CBKF.Settings.Advanced>Дополнительные настройки</CBKF.Settings.Advanced>
   <CBKF.Settings.BarPosition>Основные настройки</CBKF.Settings.BarPosition>
   <CBKF.Settings.BaseSpacingHorizontal>По горизонтали: </CBKF.Settings.BaseSpacingHorizontal>
@@ -8,51 +7,56 @@
   <CBKF.Settings.BasicSize>Размер и расстояние между иконок: </CBKF.Settings.BasicSize>
   <CBKF.Settings.ByName>Сортировка: по имени</CBKF.Settings.ByName>
   <CBKF.Settings.ColBarIconVisibility>На панели</CBKF.Settings.ColBarIconVisibility>
-  <CBKF.Settings.ColonistBar>Панель колонистов™</CBKF.Settings.ColonistBar>
-  <CBKF.Settings.ColonistBarOffset>Смешение панели колонистов: </CBKF.Settings.ColonistBarOffset>
+  <CBKF.Settings.ColonistBar>Панель поселенцев™</CBKF.Settings.ColonistBar>
+  <CBKF.Settings.ColonistBarOffset>Смешение панели поселенцев: </CBKF.Settings.ColonistBarOffset>
   <CBKF.Settings.DoubleClickTime>Скорость двойного клика</CBKF.Settings.DoubleClickTime>
-  <CBKF.Settings.FemaleColor>Цвет для колонистов женского пола</CBKF.Settings.FemaleColor>
+  <CBKF.Settings.FemaleColor>Цвет для поселенцев женского пола</CBKF.Settings.FemaleColor>
   <CBKF.Settings.FixedScale>Использовать фиксированное масштабирование</CBKF.Settings.FixedScale>
+  <CBKF.Settings.useFollowMessage>Использовать уведомление о следовании</CBKF.Settings.useFollowMessage>
   <CBKF.Settings.Health>Сортировка: по здоровью</CBKF.Settings.Health>
-  <CBKF.Settings.MaleColor>Цвет для колонистов мужского пола</CBKF.Settings.MaleColor>
+  <CBKF.Settings.MaleColor>Цвет для поселенцев мужского пола</CBKF.Settings.MaleColor>
   <CBKF.Settings.MarginBottom>Нижнее поле</CBKF.Settings.MarginBottom>
-  <CBKF.Settings.MarginLeft>Левое поле</CBKF.Settings.MarginLeft>
+  <CBKF.Settings.MarginHorizontal>Максимальная ширина иконки поселенца: </CBKF.Settings.MarginHorizontal>
   <CBKF.Settings.MarginRight>Правое поле</CBKF.Settings.MarginRight>
   <CBKF.Settings.MarginTop>Верхнее поле</CBKF.Settings.MarginTop>
   <CBKF.Settings.MaxColonistBarWidth>Максимальная ширина панели</CBKF.Settings.MaxColonistBarWidth>
   <CBKF.Settings.Medic>Сортировка: по навыку медицины</CBKF.Settings.Medic>
   <CBKF.Settings.Mood>Сортировка: по настроению</CBKF.Settings.Mood>
   <CBKF.Settings.OrderBy>Сортировать по</CBKF.Settings.OrderBy>
-  <CBKF.Settings.OrderingOptions>Параметры сортировки</CBKF.Settings.OrderingOptions>
+  <CBKF.Settings.OrderingOptions>Параметры сортировки  ►</CBKF.Settings.OrderingOptions>
   <CBKF.Settings.PawnTextureCameraOffsets>Сдвиг и масштабирование камеры: </CBKF.Settings.PawnTextureCameraOffsets>
-  <CBKF.Settings.PSI>Иконки состояния колонистов™</CBKF.Settings.PSI>
-  <CBKF.Settings.PSIIconVisibility>На колонисте</CBKF.Settings.PSIIconVisibility>
+  <CBKF.Settings.PSI>Иконки состояния поселенцев™</CBKF.Settings.PSI>
+  <CBKF.Settings.PSIIconVisibility>На поселенце</CBKF.Settings.PSIIconVisibility>
   <CBKF.Settings.ResetColors>Сброс цвета</CBKF.Settings.ResetColors>
-  <CBKF.Settings.RevertSettings>Сброс настроек панели колонистов</CBKF.Settings.RevertSettings>
-  <CBKF.Settings.SettingsColonistBar>Настройка панели колонистов</CBKF.Settings.SettingsColonistBar>
+  <CBKF.Settings.RevertSettings>Сброс настроек панели поселенцев</CBKF.Settings.RevertSettings>
+  <CBKF.Settings.SettingsColonistBar>Настройка панели поселенцев</CBKF.Settings.SettingsColonistBar>
   <CBKF.Settings.SexAge>Сортировка: по полу и возрасту</CBKF.Settings.SexAge>
   <CBKF.Settings.useBottom>Снизу</CBKF.Settings.useBottom>
-  <CBKF.Settings.UseExternalMoodBar>Использовать панель настроения рядом с колонистом™: </CBKF.Settings.UseExternalMoodBar>
-  <CBKF.Settings.useGender>Использовать цвет фона по полу колониста</CBKF.Settings.useGender>
+  <CBKF.Settings.UseExternalMoodBar>Использовать панель настроения рядом с поселенцем™: </CBKF.Settings.UseExternalMoodBar>
+  <CBKF.Settings.useGender>Использовать цвет фона по полу поселенца</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Слева</CBKF.Settings.useLeft>
-  <CBKF.Settings.UseNewMood>Использовать панель настроения за колонистом™</CBKF.Settings.UseNewMood>
-  <CBKF.Settings.UsePsiOnBar>Показывать иконки состояния на панели колонистов</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UseNewMood>Использовать панель настроения за поселенцем™</CBKF.Settings.UseNewMood>
+  <CBKF.Settings.UsePsiOnBar>Показывать иконки состояния на панели поселенцев</CBKF.Settings.UsePsiOnBar>
   <CBKF.Settings.useRight>Справа</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Сверху</CBKF.Settings.useTop>
-  <CBKF.Settings.UseWeaponIcons>Показывать иконки оружия на панели колонистов</CBKF.Settings.UseWeaponIcons>
+  <CBKF.Settings.UseWeaponIcons>Показывать иконки оружия на панели поселенцев</CBKF.Settings.UseWeaponIcons>
   <CBKF.Settings.useZoomToMouse>Использовать приближение по курсору мыши™</CBKF.Settings.useZoomToMouse>
   <CBKF.Settings.Vanilla>Сортировка: как в оригинале</CBKF.Settings.Vanilla>
   <CBKF.Settings.Weapons>Сортировка: по навыку стрельбы</CBKF.Settings.Weapons>
   <FollowMe.Cancel>Камера больше не следует за {0}.</FollowMe.Cancel>
   <FollowMe.Follow>Камера следует за {0}.</FollowMe.Follow>
-  <FollowMe.MiddleClick>Нажатие средней кнопки мыши по иконке колониста активирует движение камеры за колонистом</FollowMe.MiddleClick>
+  <FollowMe.MiddleClick>Нажатие средней кнопки мыши по иконке поселенца активирует движение камеры за поселенцем</FollowMe.MiddleClick>
   <FollowMe.RejectMultiple>Не может следовать, выбрано несколько целей.</FollowMe.RejectMultiple>
   <FollowMe.RejectNoSelection>Не может следовать, не выбрана цель.</FollowMe.RejectNoSelection>
   <FollowMe.RejectNotAThing>Не может следовать, не подходящая цель.</FollowMe.RejectNotAThing>
-  <PSI.Disabled>Иконки состояния колонистов отключены. Нажмите F11, чтобы включить</PSI.Disabled>
-  <PSI.Enabled>Иконки состояния колонистов включены</PSI.Enabled>
+  <FollowMe.StartFollow>Следовать за поселенцем™</FollowMe.StartFollow>
+  <FollowMe.StopFollow>Прекратить слежение™</FollowMe.StopFollow>
+  <PSI.Disabled>Иконки состояния поселенцев отключены. Нажмите F11, чтобы включить</PSI.Disabled>
+  <PSI.DiseaseProgress>Заболевание</PSI.DiseaseProgress>
+  <PSI.Efficiency>Работоспособность</PSI.Efficiency>
+  <PSI.Enabled>Иконки состояния поселенцев включены</PSI.Enabled>
   <PSI.Settings.Advanced>Дополнительно</PSI.Settings.Advanced>
-  <PSI.Settings.Arrangement.ColonistsPerColumn>Максимум столбцов/строк для колонистов: </PSI.Settings.Arrangement.ColonistsPerColumn>
+  <PSI.Settings.Arrangement.ColonistsPerColumn>Максимум столбцов/строк для поселенцев: </PSI.Settings.Arrangement.ColonistsPerColumn>
   <PSI.Settings.Arrangement.Header>Размер и расположение</PSI.Settings.Arrangement.Header>
   <PSI.Settings.Arrangement.Horizontal>Расположить по горизонтали</PSI.Settings.Arrangement.Horizontal>
   <PSI.Settings.Arrangement.IconOffset>Расстояние между: </PSI.Settings.Arrangement.IconOffset>
@@ -61,7 +65,7 @@
   <PSI.Settings.Arrangement.IconsPerColumn>Иконок в столбце/строке: </PSI.Settings.Arrangement.IconsPerColumn>
   <PSI.Settings.Arrangement.ScreenScale>Масштабировать иконки при приближении/отдалении камеры</PSI.Settings.Arrangement.ScreenScale>
   <PSI.Settings.ArrangementButton>Размер и расположение</PSI.Settings.ArrangementButton>
-  <PSI.Settings.IconButton>Иконки состояния колонистов™</PSI.Settings.IconButton>
+  <PSI.Settings.IconButton>Иконки состояния поселенцев™</PSI.Settings.IconButton>
   <PSI.Settings.IconOpacityAndColor.Opacity>Прозрачность иконок: </PSI.Settings.IconOpacityAndColor.Opacity>
   <PSI.Settings.IconOpacityAndColor.OpacityCritical>Минимальная прозрачность при критическом оповещении: </PSI.Settings.IconOpacityAndColor.OpacityCritical>
   <PSI.Settings.IconOpacityAndColor.UseColoredTarget>Подсвечивать точку</PSI.Settings.IconOpacityAndColor.UseColoredTarget>
@@ -90,6 +94,7 @@
   <PSI.Settings.Sensitivity.Rest>Усталость &lt; </PSI.Settings.Sensitivity.Rest>
   <PSI.Settings.Sensitivity.Temperature>Диапазон превышения температуры: </PSI.Settings.Sensitivity.Temperature>
   <PSI.Settings.SensitivityButton>Чувствительность</PSI.Settings.SensitivityButton>
+  <PSI.Settings.ShowRelationsOnStrangers>Показывать иконку здоровья™ на незнакомцах с отношениями</PSI.Settings.ShowRelationsOnStrangers>
   <PSI.Settings.SizeLabel.0>чуть-чуть видны</PSI.Settings.SizeLabel.0>
   <PSI.Settings.SizeLabel.1>крошечные</PSI.Settings.SizeLabel.1>
   <PSI.Settings.SizeLabel.2>очень маленькие</PSI.Settings.SizeLabel.2>
@@ -99,18 +104,20 @@
   <PSI.Settings.SizeLabel.6>большие</PSI.Settings.SizeLabel.6>
   <PSI.Settings.SizeLabel.7>очень большие</PSI.Settings.SizeLabel.7>
   <PSI.Settings.SizeLabel.8>огромные</PSI.Settings.SizeLabel.8>
-  <PSI.Settings.Title>Настройки иконок состояния колонистов™</PSI.Settings.Title>
-  <PSI.Settings.UsePSI>Показывать иконки состояния™ на колонистах</PSI.Settings.UsePSI>
-  <PSI.Settings.UsePSIOnPrisoner>Показывать иконки состояния™ на заключенных</PSI.Settings.UsePSIOnPrisoner>
+  <PSI.Settings.Title>Настройки иконок состояния поселенцев™</PSI.Settings.Title>
+  <PSI.Settings.UsePSI>Показывать иконки состояния™ на поселенцах</PSI.Settings.UsePSI>
+  <PSI.Settings.UsePsiOnAnimals>Показывать иконки состояния™ на животных</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnPrisoner>Показывать иконки состояния™ на пленниках</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Агрессивный</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>В лохмотьях</PSI.Settings.Visibility.ApparelHealth>
   <PSI.Settings.Visibility.Bedroom>Спальня</PSI.Settings.Visibility.Bedroom>
   <PSI.Settings.Visibility.Bloodloss>Кровотечение</PSI.Settings.Visibility.Bloodloss>
   <PSI.Settings.Visibility.CabinFever>Отшельник</PSI.Settings.Visibility.CabinFever>
   <PSI.Settings.Visibility.Dazed>Ошарашен</PSI.Settings.Visibility.Dazed>
-  <PSI.Settings.Visibility.DeadColonists>Мертвые колонисты</PSI.Settings.Visibility.DeadColonists>
+  <PSI.Settings.Visibility.DeadColonists>Мертвые поселенцы</PSI.Settings.Visibility.DeadColonists>
   <PSI.Settings.Visibility.Disease>Болезнь</PSI.Settings.Visibility.Disease>
   <PSI.Settings.Visibility.Draft>Боевой режим</PSI.Settings.Visibility.Draft>
+  <PSI.Settings.Visibility.Drunk>Наркозависимость и нестабильные поселенцы</PSI.Settings.Visibility.Drunk>
   <PSI.Settings.Visibility.Greedy>Жадность</PSI.Settings.Visibility.Greedy>
   <PSI.Settings.Visibility.Header>Видимость</PSI.Settings.Visibility.Header>
   <PSI.Settings.Visibility.Health>Здоровье</PSI.Settings.Visibility.Health>
@@ -119,7 +126,7 @@
   <PSI.Settings.Visibility.Injury>Травмы</PSI.Settings.Visibility.Injury>
   <PSI.Settings.Visibility.Jealous>Зависть</PSI.Settings.Visibility.Jealous>
   <PSI.Settings.Visibility.Leave>Убегает</PSI.Settings.Visibility.Leave>
-  <PSI.Settings.Visibility.LeftUnburied>Не похороненный колонист</PSI.Settings.Visibility.LeftUnburied>
+  <PSI.Settings.Visibility.LeftUnburied>Не похороненный поселенец</PSI.Settings.Visibility.LeftUnburied>
   <PSI.Settings.Visibility.Lovers>Любовь</PSI.Settings.Visibility.Lovers>
   <PSI.Settings.Visibility.Marriage>Свадьба</PSI.Settings.Visibility.Marriage>
   <PSI.Settings.Visibility.MedicalAttention>Медицинская помощь</PSI.Settings.Visibility.MedicalAttention>
@@ -141,13 +148,11 @@
   <PSI.Settings.Visibility.Unarmed>Безоружный</PSI.Settings.Visibility.Unarmed>
   <PSI.Settings.VisibilityButton>Видимый</PSI.Settings.VisibilityButton>
 
-  <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
-  <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
-  <PSI.Efficiency>Efficiency</PSI.Efficiency>
-	<PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
-  <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
-
-  <!-- + August updates-->
-  <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
-
+  <!--New - August 2017-->
+  <CBKF.Settings.Grouping>Группировка</CBKF.Settings.Grouping>
+  <CBKF.Settings.UseGrouping>Свернуть группы</CBKF.Settings.UseGrouping>
+  <CBKF.Settings.UseGroupColors>Цветовой код групп поселенцев</CBKF.Settings.UseGroupColors>
+  <CBKF.Settings.ChoicesForPawn>Выбор {0} с {1}  ►</CBKF.Settings.ChoicesForPawn>
+  <!--Crashing, not used-->
+  <CBKF.Settings.AllStatsSortingOptions>Сортировать по всем характеристикам  ►</CBKF.Settings.AllStatsSortingOptions>
 </LanguageData>
