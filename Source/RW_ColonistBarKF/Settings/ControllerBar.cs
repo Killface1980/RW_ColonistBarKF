@@ -42,17 +42,17 @@
         // internal static SettingsColonistBar LoadBarSettings([NotNull] string path = "ColonistBar_KF.xml")
         // {
         //     string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-        //     SettingsColonistBar result =
+        //     SettingsColonistBar __result =
         //         DirectXmlLoader.ItemFromXmlFile<SettingsColonistBar>(configFolder + "/" + path);
-        //     return result;
+        //     return __result;
         // }
         //
         // [NotNull]
         // internal static SettingsPSI LoadPsiSettings([NotNull] string path = "ColonistBar_PSIKF.xml")
         // {
         //     string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-        //     SettingsPSI result = DirectXmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
-        //     return result;
+        //     SettingsPSI __result = DirectXmlLoader.ItemFromXmlFile<SettingsPSI>(configFolder + "/" + path);
+        //     return __result;
         // }
     }
 }

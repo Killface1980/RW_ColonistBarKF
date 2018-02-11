@@ -1,9 +1,8 @@
-﻿namespace ColonistBarKF
+﻿using JetBrains.Annotations;
+using RimWorld;
+
+namespace ColonistBarKF
 {
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
     [DefOf]
     public static class ThoughtDefOf
     {

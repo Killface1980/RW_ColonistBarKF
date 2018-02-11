@@ -1,14 +1,11 @@
-﻿namespace ColonistBarKF
+﻿using System;
+using System.Linq;
+using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace ColonistBarKF
 {
-    using System;
-    using System.Linq;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class Materials
     {
         [NotNull]
@@ -19,11 +16,11 @@
 
         public Materials(string matLib = "default")
         {
-            this._matLibName = matLib;
+            _matLibName = matLib;
         }
 
         [CanBeNull]
-        public Material this[Icon icon] => this._data[(int)icon];
+        public Material this[Icon icon] => _data[(int)icon];
 
         public void ReloadTextures(bool smooth = false)
         {
@@ -34,8 +31,8 @@
                     case Icon.None:
                     case Icon.Length: continue;
                     default:
-                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
-                        this._data[(int)icons] = this.LoadIconMat(path, smooth);
+                        string path = _matLibName + "/" + Enum.GetName(typeof(Icon), icons);
+                        _data[(int)icons] = LoadIconMat(path, smooth);
                         continue;
                 }
             }

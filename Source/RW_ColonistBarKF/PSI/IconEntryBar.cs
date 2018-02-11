@@ -1,26 +1,25 @@
-﻿namespace ColonistBarKF.PSI
+﻿using JetBrains.Annotations;
+using UnityEngine;
+
+namespace ColonistBarKF.PSI
 {
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
     public struct IconEntryBar
     {
-        public Icon icon;
+        public Icon Icon;
 
-        public Color color;
+        public Color Color;
 
-        public int priority;
+        public int Priority;
 
         [CanBeNull]
-        public string tooltip;
+        public string Tooltip;
 
         public IconEntryBar(Icon icon, Color color, [CanBeNull] string tooltip, int priority = 10)
         {
-            this.icon = icon;
-            this.color = color;
-            this.tooltip = tooltip;
-            this.priority = priority;
+            this.Icon = icon;
+            this.Color = color;
+            this.Tooltip = tooltip;
+            this.Priority = priority;
         }
     }
 }

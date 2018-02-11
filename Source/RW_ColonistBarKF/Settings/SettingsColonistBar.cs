@@ -1,9 +1,5 @@
-﻿namespace ColonistBarKF
+﻿namespace ColonistBarKF.Settings
 {
-    using JetBrains.Annotations;
-
-    using Verse;
-
     public class SettingsColonistBar
     {
         public float BaseIconSize = 48f;
@@ -22,7 +18,6 @@
         public bool IconsHorizontal;
 
         public int IconsInColumn = 3;
-
         public float LimitBleedMult = 3f;
 
         // public float LimitMoodLess = 0.25f;
@@ -40,7 +35,7 @@
 
         public float moodRectScale = 0.3f;
 
-        public float PawnTextureCameraHorizontalOffset = 0f;
+        public float PawnTextureCameraHorizontalOffset;
 
         public float PawnTextureCameraVerticalOffset = 0.3f;
 
@@ -101,7 +96,7 @@
 
         public bool ShowPyromaniac = true;
 
-        public bool ShowSad = false;
+        public bool ShowSad;
 
         public bool ShowTired = true;
 
@@ -115,14 +110,14 @@
 
         public SortByWhat SortBy;
 
-        public bool UseCustomIconSize = false;
+        public bool UseCustomIconSize;
 
         // public static bool useCustomScale = false;
-        public bool UseCustomMarginTop = false;
+        public bool UseCustomMarginTop;
 
-        public bool UseCustomPawnTextureCameraOffsets = false;
+        public bool UseCustomPawnTextureCameraOffsets;
 
-        public bool UseCustomRowCount = false;
+        public bool UseCustomRowCount;
 
         public bool UseExternalMoodBar = true;
 
@@ -138,11 +133,11 @@
 
         public bool UseWeaponIcons = true;
 
-        public bool useZoomToMouse = false;
+        public bool useZoomToMouse;
 
         public bool useFollowMessage = true;
 
-        public float VerticalOffset = 0f;
+        public float VerticalOffset;
 
         public enum SortByWhat
         {

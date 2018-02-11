@@ -1,27 +1,26 @@
-﻿namespace ColonistBarKF
+﻿using JetBrains.Annotations;
+using Verse;
+
+namespace ColonistBarKF
 {
-    using JetBrains.Annotations;
-
-    using Verse;
-
-    public struct EntryKF
+    public struct EntryKf
     {
         [CanBeNull]
-        public Pawn pawn;
+        public Pawn Pawn;
 
         [CanBeNull]
-        public Map map;
+        public Map Map;
 
-        public int group;
+        public int Group;
 
-        public int groupCount;
+        public int GroupCount;
 
-        public EntryKF([CanBeNull] Pawn pawn, [CanBeNull] Map map, int group, int groupCount)
+        public EntryKf([CanBeNull] Pawn pawn, [CanBeNull] Map map, int group, int groupCount)
         {
-            this.pawn = pawn;
-            this.map = map;
-            this.group = group;
-            this.groupCount = groupCount;
+            this.Pawn = pawn;
+            this.Map = map;
+            this.Group = group;
+            this.GroupCount = groupCount;
         }
     }
 }

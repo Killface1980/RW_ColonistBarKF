@@ -1,11 +1,9 @@
-﻿namespace ColonistBarKF.Bar
+﻿using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace ColonistBarKF.Bar
 {
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     [StaticConstructorOnStartup]
     internal static class Textures
     {

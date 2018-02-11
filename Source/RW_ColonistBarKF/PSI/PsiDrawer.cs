@@ -1,25 +1,19 @@
-﻿using static ColonistBarKF.PSI.GameComponentPSI;
+﻿using JetBrains.Annotations;
+using RimWorld.Planet;
+using UnityEngine;
+using Verse;
+using static ColonistBarKF.PSI.GameComponentPSI;
 
 namespace ColonistBarKF.PSI
 {
-    using ColonistBarKF.Bar;
-
-    using JetBrains.Annotations;
-
-    using RimWorld.Planet;
-
-    using UnityEngine;
-
-    using Verse;
-
-    public class PSIDrawer
+    public static class PSIDrawer
     {
         [NotNull]
         public static Vector3[] IconPosVectorsPSI;
 
         public static void RecalcIconPositionsPSI()
         {
-            SettingsPSI psiSettings = Settings.psiSettings;
+            SettingsPSI psiSettings = Settings.Settings.PSISettings;
 
             // _iconPosVectors = new Vector3[18];
             IconPosVectorsPSI = new Vector3[40];
@@ -59,7 +53,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.psiSettings.IconsScreenScale)
+            if (Settings.Settings.PSISettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -71,14 +65,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.psiSettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.Settings.PSISettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.psiSettings.IconSize,
-                num2 * Settings.psiSettings.IconSize);
+                num2 * Settings.Settings.PSISettings.IconSize,
+                num2 * Settings.Settings.PSISettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -96,7 +90,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Material material = GameComponentPSI.PSIMaterials[entryPSI.icon];
+            Material material = PSIMaterials[entryPSI.Icon];
             if (material == null)
             {
                 Debug.LogError("Material = null.");
@@ -105,14 +99,14 @@ namespace ColonistBarKF.PSI
 
             Vector3 posOffset = IconPosVectorsPSI[entryCount];
 
-            entryPSI.color.a = entryPSI.opacity;
-            material.color = entryPSI.color;
+            entryPSI.Color.a = entryPSI.Opacity;
+            material.color = entryPSI.Color;
             Color guiColor = GUI.color;
-            GUI.color = entryPSI.color;
+            GUI.color = entryPSI.Color;
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.psiSettings.IconsScreenScale)
+            if (Settings.Settings.PSISettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -124,14 +118,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.psiSettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.Settings.PSISettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.psiSettings.IconSize,
-                num2 * Settings.psiSettings.IconSize);
+                num2 * Settings.Settings.PSISettings.IconSize,
+                num2 * Settings.Settings.PSISettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -146,7 +140,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            Material material = GameComponentPSI.PSIMaterials[icon];
+            Material material = PSIMaterials[icon];
             if (material == null)
             {
                 // Debug.LogError("Material = null.");

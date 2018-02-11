@@ -1,21 +1,19 @@
-﻿namespace ColonistBarKF
+﻿using ColonistBarKF.Bar;
+using JetBrains.Annotations;
+using UnityEngine;
+
+namespace ColonistBarKF
 {
-    using ColonistBarKF.Bar;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
     public static class Statics
     {
         [NotNull]
-        public static Gradient gradient4 = new Gradient();
+        public static Gradient Gradient4 = new Gradient();
 
         [NotNull]
-        public static Gradient gradientRedAlertToNeutral = new Gradient();
+        public static Gradient GradientRedAlertToNeutral = new Gradient();
 
         [NotNull]
-        private static readonly Gradient gradient4Mood = new Gradient();
+        private static readonly Gradient Gradient4Mood = new Gradient();
 
         static Statics()
         {
@@ -36,7 +34,7 @@
             gak[1].time = 0.1625f;
             gak[2].alpha = 1.0f;
             gak[2].time = 1.0f;
-            gradient4.SetKeys(gck, gak);
+            Gradient4.SetKeys(gck, gak);
 
             gck = new GradientColorKey[5];
             gck[0].color = Textures.ColVermillion;
@@ -58,7 +56,7 @@
             gak[2].time = 0.625f;
             gak[3].alpha = 1.0f;
             gak[3].time = 0.75f;
-            gradient4Mood.SetKeys(gck, gak);
+            Gradient4Mood.SetKeys(gck, gak);
 
             gck = new GradientColorKey[2];
             gck[0].color = Textures.ColVermillion;
@@ -72,12 +70,12 @@
             gak[1].time = 0.75f;
             gak[2].alpha = 0.8f;
             gak[2].time = 1.0f;
-            gradientRedAlertToNeutral.SetKeys(gck, gak);
+            GradientRedAlertToNeutral.SetKeys(gck, gak);
         }
 
         public static Color MoodOffsetColor(this float moodOffset)
         {
-            return gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
+            return Gradient4Mood.Evaluate(Mathf.InverseLerp(-25f, 15f, moodOffset));
         }
     }
 }

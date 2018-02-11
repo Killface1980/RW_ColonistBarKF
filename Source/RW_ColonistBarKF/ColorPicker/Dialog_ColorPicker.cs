@@ -753,7 +753,7 @@ namespace ColonistBarKF.ColorPicker
         {
             #region Fields
 
-            // share 'presets' across instances.
+            // share 'presets' across __instances.
             private static List<Color> _presets = new List<Color>();
 
             private float _minimumBoxSize = 10f;

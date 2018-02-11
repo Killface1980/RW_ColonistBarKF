@@ -1,21 +1,18 @@
+using System.Collections.Generic;
+using ColonistBarKF.Bar;
+using ColonistBarKF.Settings;
+using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
 namespace ColonistBarKF.PSI
 {
-    using System.Collections.Generic;
-
-    using ColonistBarKF.Bar;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     public static class BarIconDrawer
     {
         #region Private Fields
 
         [NotNull]
-        private static Vector3[] iconPosRectsBar;
+        private static Vector3[] _iconPosRectsBar;
 
         #endregion Private Fields
 
@@ -27,18 +24,18 @@ namespace ColonistBarKF.PSI
 
             if (pawn.Dead || !pawn.Spawned || pawn.holdingOwner == null || pawn.Map == null)
             {
-                pawnStats.thisColCount = 0;
+                pawnStats.ThisColCount = 0;
                 return;
             }
 
-            SettingsColonistBar colBarSettings = Settings.barSettings;
+            SettingsColonistBar colBarSettings = Settings.Settings.BarSettings;
             int barIconNum = 0;
-            int rowCount = pawnStats.thisColCount;
+            int rowCount = pawnStats.ThisColCount;
 
             // Drafted
             if (colBarSettings.ShowDraft && pawn.Drafted)
             {
-                if (pawnStats.isPacifist)
+                if (pawnStats.IsPacifist)
                 {
                     DrawIconOnBar(psiRect, ref barIconNum, Icon.Draft, Textures.ColYellow, rectAlpha, rowCount);
                 }
@@ -52,12 +49,12 @@ namespace ColonistBarKF.PSI
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
                 int maxIconCount = Mathf.Min(
-                    Settings.barSettings.IconsInColumn * 2,
+                    Settings.Settings.BarSettings.IconsInColumn * 2,
                     drawIconEntries.Count + barIconNum);
                 for (int index = 0; index < maxIconCount - barIconNum; index++)
                 {
                     IconEntryBar iconEntryBar = drawIconEntries[index];
-                    iconEntryBar.color.a *= rectAlpha;
+                    iconEntryBar.Color.a *= rectAlpha;
                     DrawIconOnBar(psiRect, iconEntryBar, index + barIconNum, rowCount);
                 }
 
@@ -65,16 +62,16 @@ namespace ColonistBarKF.PSI
             }
 
             // Idle - bar icon already included - vanilla
-            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.barSettings.IconsInColumn);
+            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.Settings.BarSettings.IconsInColumn);
 
-            pawnStats.thisColCount = colCount;
+            pawnStats.ThisColCount = colCount;
         }
 
         public static void RecalcBarPositionAndSize()
         {
-            SettingsColonistBar settings = Settings.barSettings;
-            iconPosRectsBar = new Vector3[40];
-            for (int index = 0; index < iconPosRectsBar.Length; ++index)
+            SettingsColonistBar settings = Settings.Settings.BarSettings;
+            _iconPosRectsBar = new Vector3[40];
+            for (int index = 0; index < _iconPosRectsBar.Length; ++index)
             {
                 int num1;
                 int num2;
@@ -90,7 +87,7 @@ namespace ColonistBarKF.PSI
                     // num1 = index % ColBarSettings.IconsInColumn;
                 }
 
-                iconPosRectsBar[index] = new Vector3(-num1, 3f, num2);
+                _iconPosRectsBar[index] = new Vector3(-num1, 3f, num2);
             }
         }
 
@@ -109,9 +106,9 @@ namespace ColonistBarKF.PSI
         {
             // Widgets.DrawBoxSolid(rect, Color.cyan);
             color.a *= rectAlpha;
-            Color GuiColor = GUI.color;
-            GuiColor.a = rectAlpha;
-            GUI.color = GuiColor;
+            Color guiColor = GUI.color;
+            guiColor.a = rectAlpha;
+            GUI.color = guiColor;
 
             material.color = color;
 
@@ -121,7 +118,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.barSettings.ColBarPsiIconPos)
+            switch (Settings.Settings.BarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = rect.xMax - size;
@@ -144,8 +141,8 @@ namespace ColonistBarKF.PSI
 
             // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.barSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.barSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += Settings.Settings.BarSettings.IconOffsetX * posOffset.x * size;
+            iconRect.y -= Settings.Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
 
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
@@ -159,7 +156,7 @@ namespace ColonistBarKF.PSI
             iconRect.height *= 0.8f;
 
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = GuiColor;
+            GUI.color = guiColor;
 
             if (tooltip != null)
             {
@@ -177,7 +174,7 @@ namespace ColonistBarKF.PSI
             [CanBeNull] string tooltip = null)
         {
             // only two columns visible
-            if (num == Settings.barSettings.IconsInColumn * 2)
+            if (num == Settings.Settings.BarSettings.IconsInColumn * 2)
             {
                 return;
             }
@@ -189,27 +186,27 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            DrawIcon_onBar(psiRect, iconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
+            DrawIcon_onBar(psiRect, _iconPosRectsBar[num], material, color, rectAlpha, rowCount, tooltip);
 
             num++;
         }
 
         private static void DrawIconOnBar(Rect psiRect, IconEntryBar iconEntryBar, int entry, int rowCount)
         {
-            Material material = GameComponentPSI.PSIMaterials[iconEntryBar.icon];
+            Material material = GameComponentPSI.PSIMaterials[iconEntryBar.Icon];
 
             if (material == null)
             {
                 return;
             }
 
-            Vector3 posOffset = iconPosRectsBar[entry];
+            Vector3 posOffset = _iconPosRectsBar[entry];
 
-            Color GuiColor = GUI.color;
-            GuiColor.a = iconEntryBar.color.a;
-            GUI.color = GuiColor;
+            Color guiColor = GUI.color;
+            guiColor.a = iconEntryBar.Color.a;
+            GUI.color = guiColor;
 
-            material.color = iconEntryBar.color;
+            material.color = iconEntryBar.Color;
 
             Rect iconRect = new Rect(psiRect);
 
@@ -217,7 +214,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.barSettings.ColBarPsiIconPos)
+            switch (Settings.Settings.BarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = psiRect.xMax - size;
@@ -240,14 +237,14 @@ namespace ColonistBarKF.PSI
 
             // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.barSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.barSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += Settings.Settings.BarSettings.IconOffsetX * posOffset.x * size;
+            iconRect.y -= Settings.Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
 
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
             // iconRect.y -= iconRect.height * 0.5f;
             GUI.DrawTexture(iconRect, Textures.BgTexIconPSI);
-            GUI.color = iconEntryBar.color;
+            GUI.color = iconEntryBar.Color;
 
             iconRect.x += size * 0.1f;
             iconRect.y += iconRect.height * 0.1f;
@@ -255,11 +252,11 @@ namespace ColonistBarKF.PSI
             iconRect.height *= 0.8f;
 
             GUI.DrawTexture(iconRect, material.mainTexture, ScaleMode.ScaleToFit, true);
-            GUI.color = GuiColor;
+            GUI.color = guiColor;
 
-            if (iconEntryBar.tooltip != null)
+            if (iconEntryBar.Tooltip != null)
             {
-                TooltipHandler.TipRegion(iconRect, iconEntryBar.tooltip);
+                TooltipHandler.TipRegion(iconRect, iconEntryBar.Tooltip);
             }
         }
 

@@ -1,23 +1,23 @@
-﻿namespace ColonistBarKF.PSI
-{
-    using UnityEngine;
+﻿using UnityEngine;
 
+namespace ColonistBarKF.PSI
+{
     public struct IconEntryPSI
     {
-        public Icon icon;
+        public Icon Icon;
 
-        public Color color;
+        public Color Color;
 
-        public float opacity;
+        public float Opacity;
 
-        public int priority;
+        public int Priority;
 
         public IconEntryPSI(Icon icon, Color color, float opacity, int priority = 10)
         {
-            this.icon = icon;
-            this.color = color;
-            this.opacity = opacity;
-            this.priority = priority;
+            this.Icon = icon;
+            this.Color = color;
+            this.Opacity = opacity;
+            this.Priority = priority;
         }
     }
 }

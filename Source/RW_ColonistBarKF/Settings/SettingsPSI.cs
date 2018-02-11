@@ -1,13 +1,11 @@
-﻿namespace ColonistBarKF
+﻿using JetBrains.Annotations;
+
+namespace ColonistBarKF
 {
-    using JetBrains.Annotations;
-
-    using Verse;
-
     public class SettingsPSI
     {
         // PSI settings
-        public int IconAlignment = 0;
+        public int IconAlignment;
 
         public float IconMarginX = 1f;
 
@@ -62,7 +60,7 @@
 
         public bool ShowDazed = true;
 
-        public bool ShowDeadColonists = false;
+        public bool ShowDeadColonists;
 
         public bool ShowDraft = true;
 
