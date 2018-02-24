@@ -1,5 +1,9 @@
-﻿namespace ColonistBarKF.Settings
+﻿namespace ColonistBarKF
 {
+    using JetBrains.Annotations;
+
+    using Verse;
+
     public class SettingsColonistBar
     {
         public float BaseIconSize = 48f;
@@ -18,6 +22,7 @@
         public bool IconsHorizontal;
 
         public int IconsInColumn = 3;
+
         public float LimitBleedMult = 3f;
 
         // public float LimitMoodLess = 0.25f;
@@ -35,7 +40,7 @@
 
         public float moodRectScale = 0.3f;
 
-        public float PawnTextureCameraHorizontalOffset;
+        public float PawnTextureCameraHorizontalOffset = 0f;
 
         public float PawnTextureCameraVerticalOffset = 0.3f;
 
@@ -96,7 +101,7 @@
 
         public bool ShowPyromaniac = true;
 
-        public bool ShowSad;
+        public bool ShowSad = false;
 
         public bool ShowTired = true;
 
@@ -110,14 +115,14 @@
 
         public SortByWhat SortBy;
 
-        public bool UseCustomIconSize;
+        public bool UseCustomIconSize = false;
 
         // public static bool useCustomScale = false;
-        public bool UseCustomMarginTop;
+        public bool UseCustomMarginTop = false;
 
-        public bool UseCustomPawnTextureCameraOffsets;
+        public bool UseCustomPawnTextureCameraOffsets = false;
 
-        public bool UseCustomRowCount;
+        public bool UseCustomRowCount = false;
 
         public bool UseExternalMoodBar = true;
 
@@ -133,11 +138,11 @@
 
         public bool UseWeaponIcons = true;
 
-        public bool useZoomToMouse;
+        public bool useZoomToMouse = false;
 
         public bool useFollowMessage = true;
 
-        public float VerticalOffset;
+        public float VerticalOffset = 0f;
 
         public enum SortByWhat
         {
@@ -161,7 +166,12 @@
             byName,
 
             diplomacy,
-            tradePrice
+            tradePrice,
+
+            shootingAccuracy,
+
+            shootingSkill,
+
         }
     }
 }
