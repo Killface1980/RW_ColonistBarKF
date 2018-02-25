@@ -46,7 +46,7 @@ namespace ColonistBarKF.Bar
         private readonly List<Vector2> _cachedDrawLocs = new List<Vector2>();
 
         [NotNull]
-        private readonly List<EntryKf> _cachedEntries = new List<EntryKf>();
+        private readonly List<EntryKF> _cachedEntries = new List<EntryKF>();
 
         [NotNull]
         private readonly List<Map> _tmpMaps = new List<Map>();
@@ -61,7 +61,7 @@ namespace ColonistBarKF.Bar
         public List<Vector2> DrawLocs => _cachedDrawLocs;
 
         [NotNull]
-        public List<EntryKf> Entries
+        public List<EntryKF> Entries
         {
             get
             {
@@ -74,7 +74,7 @@ namespace ColonistBarKF.Bar
         {
             get
             {
-                List<EntryKf> entries = Entries;
+                List<EntryKF> entries = Entries;
                 int num = -1;
                 for (int i = 0; i < entries.Count; i++)
                 {
@@ -91,7 +91,7 @@ namespace ColonistBarKF.Bar
 
         public bool AnyBarEntryAt(Vector2 pos)
         {
-            if (!TryGetEntryAt(pos, out EntryKf entry))
+            if (!TryGetEntryAt(pos, out EntryKF entry))
             {
                 return false;
             }
@@ -104,10 +104,10 @@ namespace ColonistBarKF.Bar
             Scribe_Values.Look(ref DisplayGroupForBar, "displayGroupForBar");
         }
 
-        public bool TryGetEntryAt(Vector2 pos, out EntryKf entry)
+        public bool TryGetEntryAt(Vector2 pos, out EntryKF entry)
         {
             List<Vector2> drawLocs = _cachedDrawLocs;
-            List<EntryKf> entries = Entries;
+            List<EntryKF> entries = Entries;
             Vector2 size = ColonistBar_Kf.FullSize;
             for (int i = 0; i < drawLocs.Count; i++)
             {
@@ -119,7 +119,7 @@ namespace ColonistBarKF.Bar
                 }
             }
 
-            entry = default(EntryKf);
+            entry = default(EntryKF);
             return false;
         }
 
@@ -306,13 +306,13 @@ namespace ColonistBarKF.Bar
                     SortCachedColonists(ref _tmpPawns);
                     foreach (Pawn tempPawn in _tmpPawns)
                     {
-                        _cachedEntries.Add(new EntryKf(tempPawn, tempMap, groupInt, _tmpPawns.Count));
+                        _cachedEntries.Add(new EntryKF(tempPawn, tempMap, groupInt, _tmpPawns.Count));
 
                         if (Settings.Settings.BarSettings.UseGrouping && groupInt != DisplayGroupForBar)
                         {
                             if (_cachedEntries.FindAll(x => x.Group == groupInt).Count > 2)
                             {
-                                _cachedEntries.Add(new EntryKf(null, tempMap, groupInt, _tmpPawns.Count));
+                                _cachedEntries.Add(new EntryKF(null, tempMap, groupInt, _tmpPawns.Count));
                                 break;
                             }
                         }
@@ -320,7 +320,7 @@ namespace ColonistBarKF.Bar
 
                     if (!_tmpPawns.Any())
                     {
-                        _cachedEntries.Add(new EntryKf(null, tempMap, groupInt, 0));
+                        _cachedEntries.Add(new EntryKF(null, tempMap, groupInt, 0));
                     }
 
                     groupInt++;
@@ -339,14 +339,14 @@ namespace ColonistBarKF.Bar
                     foreach (Pawn tempPawn in _tmpPawns.Where(tempPawn => tempPawn.IsColonist))
                     {
                         _cachedEntries.Add(
-                            new EntryKf(tempPawn, null, groupInt, _tmpPawns.FindAll(x => x.IsColonist).Count));
+                            new EntryKF(tempPawn, null, groupInt, _tmpPawns.FindAll(x => x.IsColonist).Count));
 
                         if (Settings.Settings.BarSettings.UseGrouping && groupInt != DisplayGroupForBar)
                         {
                             if (_cachedEntries.FindAll(x => x.Group == groupInt).Count > 2)
                             {
                                 _cachedEntries.Add(
-                                    new EntryKf(null, null, groupInt, _tmpPawns.FindAll(x => x.IsColonist).Count));
+                                    new EntryKF(null, null, groupInt, _tmpPawns.FindAll(x => x.IsColonist).Count));
                                 break;
                             }
                         }

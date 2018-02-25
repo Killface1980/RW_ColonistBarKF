@@ -3,7 +3,7 @@ using Verse;
 
 namespace ColonistBarKF
 {
-    public struct EntryKf
+    public struct EntryKF
     {
         [CanBeNull]
         public Pawn Pawn;
@@ -15,7 +15,7 @@ namespace ColonistBarKF
 
         public int GroupCount;
 
-        public EntryKf([CanBeNull] Pawn pawn, [CanBeNull] Map map, int group, int groupCount)
+        public EntryKF([CanBeNull] Pawn pawn, [CanBeNull] Map map, int group, int groupCount)
         {
             this.Pawn = pawn;
             this.Map = map;

@@ -256,7 +256,7 @@ namespace ColonistBarKF
                 return false;
             }
 
-            if (!ColonistBar_Kf.BarHelperKf.TryGetEntryAt(pos, out EntryKf entry))
+            if (!ColonistBar_Kf.BarHelperKf.TryGetEntryAt(pos, out EntryKF entry))
             {
                 __result = null;
                 return false;
@@ -305,7 +305,7 @@ namespace ColonistBarKF
 
         private static bool GetColonistsInOrder_Prefix([NotNull] ref List<Pawn> __result)
         {
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             ColonistBar_Kf.BarHelperKf.TmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {

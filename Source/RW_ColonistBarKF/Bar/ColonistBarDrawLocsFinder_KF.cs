@@ -132,7 +132,7 @@ namespace ColonistBarKF.Bar
         private void CalculateColonistsInGroup()
         {
             _entriesInGroup.Clear();
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             int num = CalculateGroupsCount();
             for (int i = 0; i < num; i++)
             {
@@ -166,7 +166,7 @@ namespace ColonistBarKF.Bar
             }
 
             int groupsCount = CalculateGroupsCount();
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             int index = -1;
             int numInGroup = -1;
 
@@ -205,7 +205,7 @@ namespace ColonistBarKF.Bar
 
         private int CalculateGroupsCount()
         {
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             int num = -1;
             int num2 = 0;
             for (int i = 0; i < entries.Count; i++)
@@ -225,7 +225,7 @@ namespace ColonistBarKF.Bar
         private float FindBestScale(out bool onlyOneRow, out int maxPerGlobalRow)
         {
             float bestScale = 1f;
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             int groupsCount = CalculateGroupsCount();
             while (true)
             {

@@ -229,7 +229,7 @@ namespace ColonistBarKF.Bar
         public void DrawGroupFrame(int group)
         {
             Rect position = GroupFrameRect(group);
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             Map map = entries.Find(x => x.Group == group).Map;
             float num;
             Color color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
@@ -534,7 +534,7 @@ namespace ColonistBarKF.Bar
                 && Event.current.clickCount == 1)
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                EntryKf entry = ColonistBar_Kf.BarHelperKf.Entries.Find(x => x.Group == group);
+                EntryKF entry = ColonistBar_Kf.BarHelperKf.Entries.Find(x => x.Group == group);
                 Map map = entry.Map;
 
                 if (!ColonistBar_Kf.BarHelperKf.AnyBarEntryAt(UI.MousePositionOnUIInverted))
@@ -1286,7 +1286,7 @@ namespace ColonistBarKF.Bar
             float posY = 21f;
             float num2 = 0f;
             float height = 0f;
-            List<EntryKf> entries = ColonistBar_Kf.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_Kf.BarHelperKf.Entries;
             List<Vector2> drawLocs = ColonistBar_Kf.BarHelperKf.DrawLocs;
             for (int i = 0; i < entries.Count; i++)
             {

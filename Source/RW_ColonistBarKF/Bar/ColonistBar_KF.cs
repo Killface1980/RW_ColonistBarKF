@@ -102,7 +102,7 @@ namespace ColonistBarKF.Bar
 
             if (Event.current.type != EventType.Layout)
             {
-                List<EntryKf> entries = BarHelperKf.Entries;
+                List<EntryKF> entries = BarHelperKf.Entries;
                 int num = -1;
                 bool showGroupFrames = BarHelperKf.ShowGroupFrames;
                 for (int i = 0; i < BarHelperKf.DrawLocs.Count; i++)
@@ -112,7 +112,7 @@ namespace ColonistBarKF.Bar
                         BarHelperKf.DrawLocs[i].y,
                         FullSize.x,
                         FullSize.y + SpacingLabel);
-                    EntryKf entry = entries[i];
+                    EntryKF entry = entries[i];
                     bool flag = num != entry.Group;
                     num = entry.Group;
                     if (entry.GroupCount > 0)
@@ -144,7 +144,7 @@ namespace ColonistBarKF.Bar
                 {
                     for (int j = 0; j < BarHelperKf.DrawLocs.Count; j++)
                     {
-                        EntryKf entry2 = entries[j];
+                        EntryKF entry2 = entries[j];
                         bool flag2 = num != entry2.Group;
                         num = entry2.Group;
                         if (flag2)
@@ -162,7 +162,7 @@ namespace ColonistBarKF.Bar
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
             List<Vector2> drawLocs = BarHelperKf.DrawLocs;
-            List<EntryKf> entries = BarHelperKf.Entries;
+            List<EntryKF> entries = BarHelperKf.Entries;
             Vector2 size = FullSize;
             BarHelperKf.TmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
