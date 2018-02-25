@@ -53,7 +53,7 @@ namespace ColonistBarKF.Fluffy
                 return;
             }
 
-            if (!Settings.Settings.BarSettings.useZoomToMouse)
+            if (!Settings.BarSettings.useZoomToMouse)
             {
                 return;
             }

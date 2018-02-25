@@ -13,7 +13,7 @@ namespace ColonistBarKF.PSI
 
         public static void RecalcIconPositionsPSI()
         {
-            SettingsPSI psiSettings = Settings.Settings.PSISettings;
+            SettingsPSI psiSettings = Settings.PSISettings;
 
             // _iconPosVectors = new Vector3[18];
             IconPosVectorsPSI = new Vector3[40];
@@ -53,7 +53,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.Settings.PSISettings.IconsScreenScale)
+            if (Settings.PSISettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -65,14 +65,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.Settings.PSISettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.PSISettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.Settings.PSISettings.IconSize,
-                num2 * Settings.Settings.PSISettings.IconSize);
+                num2 * Settings.PSISettings.IconSize,
+                num2 * Settings.PSISettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 
@@ -106,7 +106,7 @@ namespace ColonistBarKF.PSI
             Vector2 vectorAtBody;
 
             float worldScale = WorldScale;
-            if (Settings.Settings.PSISettings.IconsScreenScale)
+            if (Settings.PSISettings.IconsScreenScale)
             {
                 worldScale = 45f;
                 vectorAtBody = bodyPos.MapToUIPosition();
@@ -118,14 +118,14 @@ namespace ColonistBarKF.PSI
                 vectorAtBody = (bodyPos + posOffset).MapToUIPosition();
             }
 
-            float num2 = worldScale * (Settings.Settings.PSISettings.IconSizeMult * 0.5f);
+            float num2 = worldScale * (Settings.PSISettings.IconSizeMult * 0.5f);
 
             // On Colonist
             Rect position = new Rect(
                 vectorAtBody.x,
                 vectorAtBody.y,
-                num2 * Settings.Settings.PSISettings.IconSize,
-                num2 * Settings.Settings.PSISettings.IconSize);
+                num2 * Settings.PSISettings.IconSize,
+                num2 * Settings.PSISettings.IconSize);
             position.x -= position.width * 0.5f;
             position.y -= position.height * 0.5f;
 

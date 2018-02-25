@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using ColonistBarKF.Bar;
 using ColonistBarKF.PSI;
-using ColonistBarKF.Settings;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using static ColonistBarKF.Settings;
 
 namespace ColonistBarKF
 {
@@ -447,8 +447,8 @@ namespace ColonistBarKF
         {
             List<IconEntryPSI> psiIconList = new List<IconEntryPSI>();
             List<IconEntryBar> barIconList = new List<IconEntryBar>();
-            SettingsColonistBar barSettings = Settings.Settings.BarSettings;
-            SettingsPSI psiSettings = Settings.Settings.PSISettings;
+            SettingsColonistBar barSettings = Settings.BarSettings;
+            SettingsPSI psiSettings = Settings.PSISettings;
 
             if (barSettings == null || psiSettings == null)
             {
@@ -491,7 +491,7 @@ namespace ColonistBarKF
             // target
             CheckJobs();
             float viewOpacity = psiSettings.IconOpacity;
-            float viewOpacityCrit = Settings.Settings.ViewOpacityCrit;
+            float viewOpacityCrit = Settings.ViewOpacityCrit;
 
             // Mental Breaker for MoodBars
             if (needs != null)
@@ -501,11 +501,11 @@ namespace ColonistBarKF
                 // Hungry
                 if (needs.food != null)
                 {
-                    if ((double)needs.food?.CurLevel < Settings.Settings.PSISettings.LimitFoodLess)
+                    if ((double)needs.food?.CurLevel < Settings.PSISettings.LimitFoodLess)
                     {
                         Color color =
                             Statics.GradientRedAlertToNeutral.Evaluate(
-                                needs.food.CurLevel / Settings.Settings.PSISettings.LimitFoodLess);
+                                needs.food.CurLevel / Settings.PSISettings.LimitFoodLess);
                         if (barSettings.ShowHungry)
                         {
                             string tooltip = needs.food.GetTipString();
@@ -523,11 +523,11 @@ namespace ColonistBarKF
                 // Tired
                 if (needs.rest != null)
                 {
-                    if (needs.rest.CurLevel < (double)Settings.Settings.PSISettings.LimitRestLess)
+                    if (needs.rest.CurLevel < (double)Settings.PSISettings.LimitRestLess)
                     {
                         Color color =
                             Statics.GradientRedAlertToNeutral.Evaluate(
-                                needs.rest.CurLevel / Settings.Settings.PSISettings.LimitRestLess);
+                                needs.rest.CurLevel / Settings.PSISettings.LimitRestLess);
 
                         if (barSettings.ShowTired)
                         {
@@ -623,10 +623,10 @@ namespace ColonistBarKF
             float temperatureForCell = GenTemperature.GetTemperatureForCell(Pawn.Position, Pawn.Map);
 
             _tooCold = (float)((Pawn.ComfortableTemperatureRange().min
-                                    - (double)Settings.Settings.PSISettings.LimitTempComfortOffset - temperatureForCell) / 10f);
+                                    - (double)Settings.PSISettings.LimitTempComfortOffset - temperatureForCell) / 10f);
 
             _tooHot = (float)((temperatureForCell - (double)Pawn.ComfortableTemperatureRange().max
-                                   - Settings.Settings.PSISettings.LimitTempComfortOffset) / 10f);
+                                   - Settings.PSISettings.LimitTempComfortOffset) / 10f);
 
             _tooCold = Mathf.Clamp(_tooCold, 0f, 2f);
 
@@ -779,7 +779,7 @@ namespace ColonistBarKF
                 {
                     Color color =
                         Statics.GradientRedAlertToNeutral.Evaluate(
-                            efficiencyTotal / Settings.Settings.PSISettings.LimitEfficiencyLess);
+                            efficiencyTotal / Settings.PSISettings.LimitEfficiencyLess);
 
                     if (barSettings.ShowEffectiveness)
                     {
@@ -801,7 +801,7 @@ namespace ColonistBarKF
 
                     // Bleed rate
                     _bleedRate = Mathf.Clamp01(
-                        health.hediffSet.BleedRateTotal * Settings.Settings.PSISettings.LimitBleedMult);
+                        health.hediffSet.BleedRateTotal * Settings.PSISettings.LimitBleedMult);
 
                     if (_bleedRate > 0.0f)
                     {
@@ -959,7 +959,7 @@ namespace ColonistBarKF
                             }
                         }
 
-                        if (_diseaseDisappearance < Settings.Settings.PSISettings.LimitDiseaseLess)
+                        if (_diseaseDisappearance < Settings.PSISettings.LimitDiseaseLess)
                         {
                             string tooltip = _sickTip + "\n" + _healthTip + "\n" + "Immunity".Translate()
                                              + " / " + "PSI.DiseaseProgress".Translate() + ": \n"

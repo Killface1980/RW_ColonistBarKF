@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 
-namespace ColonistBarKF.Settings
+namespace ColonistBarKF
 {
     public static class Settings
     {

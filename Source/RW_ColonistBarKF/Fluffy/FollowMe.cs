@@ -103,7 +103,7 @@ namespace ColonistBarKF
 #if DEBUG
             Log.Message($"FollowMe :: Stopped following {FollowedLabel} :: {reason}");
 #endif
-            if (Settings.Settings.BarSettings.useFollowMessage)
+            if (Settings.BarSettings.useFollowMessage)
             {
                 Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageTypeDefOf.NegativeEvent);
             }
@@ -244,7 +244,7 @@ namespace ColonistBarKF
             FollowedThing = thing;
             CurrentlyFollowing = true;
 
-            if (Settings.Settings.BarSettings.useFollowMessage)
+            if (Settings.BarSettings.useFollowMessage)
             {
                 Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageTypeDefOf.PositiveEvent);
             }

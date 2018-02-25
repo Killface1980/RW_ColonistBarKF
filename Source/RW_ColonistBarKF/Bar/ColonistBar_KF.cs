@@ -8,36 +8,36 @@ using Verse;
 namespace ColonistBarKF.Bar
 {
     [StaticConstructorOnStartup]
-    public static class ColonistBar_Kf
+    public static class ColonistBar_KF
     {
         public const float SpacingLabel = 15f;
 
         public static ColBarHelper_KF BarHelperKf = new ColBarHelper_KF();
 
         [NotNull]
-        public static ColonistBarColonistDrawer_Kf Drawer = new ColonistBarColonistDrawer_Kf();
+        public static ColonistBarColonistDrawer_KF Drawer = new ColonistBarColonistDrawer_KF();
 
         [NotNull]
         public static ColonistBarDrawLocsFinder_Kf DrawLocsFinder = new ColonistBarDrawLocsFinder_Kf();
 
         public static Vector2 BaseSize => new Vector2(
-            Settings.Settings.BarSettings.BaseIconSize,
-            Settings.Settings.BarSettings.BaseIconSize);
+            Settings.BarSettings.BaseIconSize,
+            Settings.BarSettings.BaseIconSize);
 
         public static Vector2 FullSize => new Vector2(
-                                              Settings.Settings.BarSettings.BaseIconSize + WidthMoodBarHorizontal
+                                              Settings.BarSettings.BaseIconSize + WidthMoodBarHorizontal
                                               + WidthPSIHorizontal,
-                                              Settings.Settings.BarSettings.BaseIconSize + HeightMoodBarVertical
+                                              Settings.BarSettings.BaseIconSize + HeightMoodBarVertical
                                               + HeightPSIVertical) * Scale;
 
         public static float HeightPSIVertical { get; private set; }
 
-        public static float HeightSpacingVertical => Settings.Settings.BarSettings.BaseSpacingVertical + HeightMoodBarVertical
+        public static float HeightSpacingVertical => Settings.BarSettings.BaseSpacingVertical + HeightMoodBarVertical
                                                      + HeightPSIVertical;
 
         public static Vector2 PawnSize => new Vector2(
-                                              Settings.Settings.BarSettings.BaseIconSize,
-                                              Settings.Settings.BarSettings.BaseIconSize) * Scale;
+                                              Settings.BarSettings.BaseIconSize,
+                                              Settings.BarSettings.BaseIconSize) * Scale;
 
         public static int PsiRowsOnBar
         {
@@ -56,13 +56,13 @@ namespace ColonistBarKF.Bar
         }
 
         // public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static float Scale => BarHelperKf.CachedScale;
+        public static float Scale => BarHelperKf.cachedScale;
 
         public static bool Visible => UI.screenWidth >= 800 && UI.screenHeight >= 500;
 
         public static float WidthPSIHorizontal { get; private set; }
 
-        public static float WidthSpacingHorizontal => Settings.Settings.BarSettings.BaseSpacingHorizontal
+        public static float WidthSpacingHorizontal => Settings.BarSettings.BaseSpacingHorizontal
                                                       + WidthMoodBarHorizontal + WidthPSIHorizontal;
 
         private static float HeightMoodBarVertical { get; set; }
@@ -74,10 +74,10 @@ namespace ColonistBarKF.Bar
         [NotNull]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
-            BarHelperKf.TmpCaravanPawns.Clear();
+            BarHelperKf.tmpCaravanPawns.Clear();
             if (!Visible)
             {
-                return BarHelperKf.TmpCaravanPawns;
+                return BarHelperKf.tmpCaravanPawns;
             }
 
             List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
@@ -86,11 +86,11 @@ namespace ColonistBarKF.Bar
                 Pawn pawn = list[i] as Pawn;
                 if (pawn != null && pawn.IsCaravanMember())
                 {
-                    BarHelperKf.TmpCaravanPawns.Add(pawn);
+                    BarHelperKf.tmpCaravanPawns.Add(pawn);
                 }
             }
 
-            return BarHelperKf.TmpCaravanPawns;
+            return BarHelperKf.tmpCaravanPawns;
         }
 
         public static bool ColonistBarOnGUI_Prefix()
@@ -164,7 +164,7 @@ namespace ColonistBarKF.Bar
             List<Vector2> drawLocs = BarHelperKf.DrawLocs;
             List<EntryKF> entries = BarHelperKf.Entries;
             Vector2 size = FullSize;
-            BarHelperKf.TmpColonistsWithMap.Clear();
+            BarHelperKf.tmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
             {
                 if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
@@ -182,7 +182,7 @@ namespace ColonistBarKF.Bar
                             first = pawn;
                         }
 
-                        BarHelperKf.TmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].Map));
+                        BarHelperKf.tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].Map));
                     }
                 }
             }
@@ -191,29 +191,29 @@ namespace ColonistBarKF.Bar
 
             if (WorldRendererUtility.WorldRenderedNow)
             {
-                if (BarHelperKf.TmpColonistsWithMap.Any(x => x.Second == null))
+                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == null))
                 {
-                    BarHelperKf.TmpColonistsWithMap.RemoveAll(x => x.Second != null);
+                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != null);
                     flag = false;
                 }
             }
 
             if (flag)
             {
-                if (BarHelperKf.TmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
                 {
-                    BarHelperKf.TmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
                 }
             }
 
-            BarHelperKf.TmpColonists.Clear();
-            for (int j = 0; j < BarHelperKf.TmpColonistsWithMap.Count; j++)
+            BarHelperKf.tmpColonists.Clear();
+            for (int j = 0; j < BarHelperKf.tmpColonistsWithMap.Count; j++)
             {
-                BarHelperKf.TmpColonists.Add(BarHelperKf.TmpColonistsWithMap[j].First);
+                BarHelperKf.tmpColonists.Add(BarHelperKf.tmpColonistsWithMap[j].First);
             }
 
-            BarHelperKf.TmpColonistsWithMap.Clear();
-            return BarHelperKf.TmpColonists;
+            BarHelperKf.tmpColonistsWithMap.Clear();
+            return BarHelperKf.tmpColonists;
         }
 
         public static float GetEntryRectAlpha(Rect rect)
@@ -236,38 +236,38 @@ namespace ColonistBarKF.Bar
 
             HeightPSIVertical = 0f;
 
-            if (Settings.Settings.BarSettings.UseExternalMoodBar)
+            if (Settings.BarSettings.UseExternalMoodBar)
             {
-                switch (Settings.Settings.BarSettings.MoodBarPos)
+                switch (Settings.BarSettings.MoodBarPos)
                 {
                     case Position.Alignment.Left:
                     case Position.Alignment.Right:
-                        WidthMoodBarHorizontal = Settings.Settings.BarSettings.BaseIconSize / 4;
+                        WidthMoodBarHorizontal = Settings.BarSettings.BaseIconSize / 4;
                         break;
 
                     case Position.Alignment.Top:
                     case Position.Alignment.Bottom:
-                        HeightMoodBarVertical = Settings.Settings.BarSettings.BaseIconSize / 4;
+                        HeightMoodBarVertical = Settings.BarSettings.BaseIconSize / 4;
                         break;
 
                     default: break;
                 }
             }
 
-            if (Settings.Settings.BarSettings.UsePsi)
+            if (Settings.BarSettings.UsePsi)
             {
-                switch (Settings.Settings.BarSettings.ColBarPsiIconPos)
+                switch (Settings.BarSettings.ColBarPsiIconPos)
                 {
                     case Position.Alignment.Left:
                     case Position.Alignment.Right:
-                        WidthPSIHorizontal = Settings.Settings.BarSettings.BaseIconSize
-                                             / Settings.Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
+                        WidthPSIHorizontal = Settings.BarSettings.BaseIconSize
+                                             / Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
                         break;
 
                     case Position.Alignment.Top:
                     case Position.Alignment.Bottom:
-                        HeightPSIVertical = Settings.Settings.BarSettings.BaseIconSize
-                                            / Settings.Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
+                        HeightPSIVertical = Settings.BarSettings.BaseIconSize
+                                            / Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
                         break;
 
                     default: break;

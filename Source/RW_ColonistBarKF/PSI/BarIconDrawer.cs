@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ColonistBarKF.Bar;
-using ColonistBarKF.Settings;
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -28,7 +27,7 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
-            SettingsColonistBar colBarSettings = Settings.Settings.BarSettings;
+            SettingsColonistBar colBarSettings = Settings.BarSettings;
             int barIconNum = 0;
             int rowCount = pawnStats.ThisColCount;
 
@@ -49,7 +48,7 @@ namespace ColonistBarKF.PSI
             if (!pawnStats.BarIconList.NullOrEmpty())
             {
                 int maxIconCount = Mathf.Min(
-                    Settings.Settings.BarSettings.IconsInColumn * 2,
+                    Settings.BarSettings.IconsInColumn * 2,
                     drawIconEntries.Count + barIconNum);
                 for (int index = 0; index < maxIconCount - barIconNum; index++)
                 {
@@ -62,14 +61,14 @@ namespace ColonistBarKF.PSI
             }
 
             // Idle - bar icon already included - vanilla
-            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.Settings.BarSettings.IconsInColumn);
+            int colCount = Mathf.CeilToInt((float)barIconNum / Settings.BarSettings.IconsInColumn);
 
             pawnStats.ThisColCount = colCount;
         }
 
         public static void RecalcBarPositionAndSize()
         {
-            SettingsColonistBar settings = Settings.Settings.BarSettings;
+            SettingsColonistBar settings = Settings.BarSettings;
             _iconPosRectsBar = new Vector3[40];
             for (int index = 0; index < _iconPosRectsBar.Length; ++index)
             {
@@ -118,7 +117,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.Settings.BarSettings.ColBarPsiIconPos)
+            switch (Settings.BarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = rect.xMax - size;
@@ -141,8 +140,8 @@ namespace ColonistBarKF.PSI
 
             // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.Settings.BarSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += Settings.BarSettings.IconOffsetX * posOffset.x * size;
+            iconRect.y -= Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
 
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
@@ -174,7 +173,7 @@ namespace ColonistBarKF.PSI
             [CanBeNull] string tooltip = null)
         {
             // only two columns visible
-            if (num == Settings.Settings.BarSettings.IconsInColumn * 2)
+            if (num == Settings.BarSettings.IconsInColumn * 2)
             {
                 return;
             }
@@ -214,7 +213,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.Settings.BarSettings.ColBarPsiIconPos)
+            switch (Settings.BarSettings.ColBarPsiIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = psiRect.xMax - size;
@@ -237,8 +236,8 @@ namespace ColonistBarKF.PSI
 
             // iconRect.x += (-0.5f * CBKF.ColBarSettings.IconMarginX - 0.5f  * CBKF.ColBarSettings.IconOffsetX) * iconRect.width;
             // iconRect.y -= (-0.5f * CBKF.ColBarSettings.IconDistanceY + 0.5f  * CBKF.ColBarSettings.IconOffsetY) * iconRect.height;
-            iconRect.x += Settings.Settings.BarSettings.IconOffsetX * posOffset.x * size;
-            iconRect.y -= Settings.Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
+            iconRect.x += Settings.BarSettings.IconOffsetX * posOffset.x * size;
+            iconRect.y -= Settings.BarSettings.IconOffsetY * posOffset.z * iconRect.height;
 
             // On Colonist
             // iconRect.x -= iconRect.width * 0.5f;
