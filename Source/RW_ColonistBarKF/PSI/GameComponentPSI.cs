@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
@@ -19,6 +20,7 @@ namespace ColonistBarKF.PSI
         public static Materials PSIMaterials = new Materials();
 
         private CellRect _viewRect;
+        private bool hidePSIOnGUI;
 
         public GameComponentPSI()
         {
@@ -46,7 +48,7 @@ namespace ColonistBarKF.PSI
             if (reloadSettings)
             {
                 Settings.BarSettings = Settings.LoadBarSettings();
-                Settings.PSISettings = Settings.LoadPsiSettings();
+                Settings.PSISettings = Settings.LoadPSISettings();
                 HarmonyPatches.MarkColonistsDirty_Postfix();
             }
 
@@ -65,7 +67,7 @@ namespace ColonistBarKF.PSI
 
                             // PSISettings SettingsPSI =
                             // XmlLoader.ItemFromXmlFile<PSISettings>(GenFilePaths.CoreModsFolderPath + "/RW_PawnStateIcons/Textures/UI/Overlays/PawnStateIcons/" + PSI.SettingsPSI.IconSet + "/iconset.cfg");
-                            // PSI.PsiSettings.IconSizeMult = SettingsPSI.IconSizeMult;
+                            // PSI.PSISettings.IconSizeMult = SettingsPSI.IconSizeMult;
                             PSIMaterials.ReloadTextures(true);
 
                             SkinMat = PSIMaterials[Icon.TargetSkin];
@@ -90,24 +92,30 @@ namespace ColonistBarKF.PSI
                 return;
             }
 
+            if (this.hidePSIOnGUI)
+            {
+                return;
+
+            }
+
             if (WorldRendererUtility.WorldRenderedNow)
             {
                 return;
             }
 
-            if (!Settings.PSISettings.UsePsi && !Settings.PSISettings.UsePsiOnPrisoner
+            if (!Settings.PSISettings.UsePSI && !Settings.PSISettings.UsePSIOnPrisoner
                 && !Settings.PSISettings.ShowRelationsOnStrangers)
             {
                 return;
             }
 
-            _viewRect = Find.CameraDriver.CurrentViewRect;
-            _viewRect = _viewRect.ExpandedBy(5);
+            this._viewRect = Find.CameraDriver.CurrentViewRect;
+            this._viewRect = this._viewRect.ExpandedBy(5);
             Map map = Find.VisibleMap;
 
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
-                if (!_viewRect.Contains(pawn.Position))
+                if (!this._viewRect.Contains(pawn.Position))
                 {
                     continue;
                 }
@@ -120,7 +128,7 @@ namespace ColonistBarKF.PSI
                 // if (useGUILayout)
                 if (pawn.RaceProps.Animal)
                 {
-                    if (Settings.PSISettings.UsePsiOnAnimals)
+                    if (Settings.PSISettings.UsePSIOnAnimals)
                     {
                         DrawAnimalIcons(pawn);
                     }
@@ -129,14 +137,14 @@ namespace ColonistBarKF.PSI
                 {
                     if (pawn.IsColonist)
                     {
-                        if (Settings.PSISettings.UsePsi)
+                        if (Settings.PSISettings.UsePSI)
                         {
                             DrawColonistIconsPSI(pawn);
                         }
                     }
                     else
                     {
-                        if (pawn.IsPrisoner && Settings.PSISettings.UsePsiOnPrisoner)
+                        if (pawn.IsPrisoner && Settings.PSISettings.UsePSIOnPrisoner)
                         {
                             DrawColonistIconsPSI(pawn);
                         }
@@ -156,7 +164,7 @@ namespace ColonistBarKF.PSI
         // {
         // return;
         // }
-        // if (!Settings.ColBarSettings.UsePsi && !Settings.PsiSettings.UsePsi)
+        // if (!Settings.ColBarSettings.UsePSI && !Settings.PSISettings.UsePSI)
         // {
         // return;
         // }
@@ -167,15 +175,12 @@ namespace ColonistBarKF.PSI
         // }
         // this._fDelta = 0.0;
         // }
+
         public override void GameComponentUpdate()
         {
-            if (Input.GetKeyUp(KeyCode.F11))
-            {
-                Settings.PSISettings.UsePsi = !Settings.PSISettings.UsePsi;
-                Settings.BarSettings.UsePsi = !Settings.BarSettings.UsePsi;
-                Messages.Message(
-                    Settings.PSISettings.UsePsi ? "PSI.Enabled".Translate() : "PSI.Disabled".Translate(),
-                    MessageTypeDefOf.NeutralEvent);
+                if (Input.GetKeyUp(KeyBindingDefOf.ToggleScreenshotMode.MainKey))
+                {
+                    this.hidePSIOnGUI  =!this.hidePSIOnGUI;
             }
 
             WorldScale = UI.screenHeight / (2f * Camera.current.orthographicSize);

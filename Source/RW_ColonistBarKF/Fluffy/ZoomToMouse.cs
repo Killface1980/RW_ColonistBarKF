@@ -37,14 +37,14 @@ namespace ColonistBarKF.Fluffy
 
         private Vector3 CurrentMouseMapPosition => UI.MouseMapPosition();
 
-        private Vector3 CurrentRealPosition => (Vector3)_curPos.Invoke(Current.CameraDriver, null);
+        private Vector3 CurrentRealPosition => (Vector3) this._curPos.Invoke(Current.CameraDriver, null);
 
         // reflection helpers
-        private float CurrentSize => (float)_curSizeFi.GetValue(Current.CameraDriver);
+        private float CurrentSize => (float) this._curSizeFi.GetValue(Current.CameraDriver);
 
-        private float DesiredSize => (float)_desSizeFi.GetValue(Current.CameraDriver);
+        private float DesiredSize => (float) this._desSizeFi.GetValue(Current.CameraDriver);
 
-        private Vector3 MouseMapOffset => _lastMouseMapPosition - CurrentMouseMapPosition;
+        private Vector3 MouseMapOffset => this._lastMouseMapPosition - this.CurrentMouseMapPosition;
 
         public override void GameComponentOnGUI()
         {
@@ -64,17 +64,17 @@ namespace ColonistBarKF.Fluffy
             }
 
             // determine zoom action
-            float action = CurrentSize - DesiredSize;
+            float action = this.CurrentSize - this.DesiredSize;
 
             // zoom action has taken place
-            if (action > _tolerance)
+            if (action > this._tolerance)
             {
-                Current.CameraDriver.JumpToVisibleMapLoc(CurrentRealPosition + MouseMapOffset);
+                Current.CameraDriver.JumpToVisibleMapLoc(this.CurrentRealPosition + this.MouseMapOffset);
             }
             else
             {
                 // update last known location.
-                _lastMouseMapPosition = CurrentMouseMapPosition;
+                this._lastMouseMapPosition = this.CurrentMouseMapPosition;
             }
 
             // NOTE: Ideally, we'ld like to do this within the zooming code. I've been unable to get access without causing errors (detours + loads of reflection).

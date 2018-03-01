@@ -36,7 +36,7 @@
   <CBKF.Settings.useGender>Use background color by gender</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Left</CBKF.Settings.useLeft>
   <CBKF.Settings.UseNewMood>Use new MoodBars™</CBKF.Settings.UseNewMood>
-  <CBKF.Settings.UsePsiOnBar>Show Pawn State Icons™ on Bar</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePSIOnBar>Show Pawn State Icons™ on Bar</CBKF.Settings.UsePSIOnBar>
   <CBKF.Settings.useRight>Right</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Top</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Use Weapon Icons</CBKF.Settings.UseWeaponIcons>
@@ -106,7 +106,7 @@
   <PSI.Settings.SizeLabel.8>enormous</PSI.Settings.SizeLabel.8>
   <PSI.Settings.Title>Pawn State Icons™ Settings</PSI.Settings.Title>
   <PSI.Settings.UsePSI>Show Pawn State Icons™ on Colonist</PSI.Settings.UsePSI>
-  <PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePSIOnAnimals>
   <PSI.Settings.UsePSIOnPrisoner>Show Pawn State Icons™ on Prisoner</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Aggressive</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>Tatters</PSI.Settings.Visibility.ApparelHealth>

@@ -203,7 +203,7 @@ namespace ColonistBarKF
         public static void MarkColonistsDirty_Postfix()
         {
             ColonistBar_KF.RecalcSizes();
-            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
+            ColonistBar_KF.BarHelperKF.EntriesDirty = true;
 
             // Log.Message("Colonists marked dirty.01");
         }
@@ -231,20 +231,20 @@ namespace ColonistBarKF
 
         private static bool CaravanMembersCaravansInScreenRect_Prefix([NotNull] ref List<Caravan> __result, Rect rect)
         {
-            ColonistBar_KF.BarHelperKf.tmpCaravans.Clear();
+            ColonistBar_KF.BarHelperKF.TmpCaravans.Clear();
             if (!ColonistBar_KF.Visible)
             {
-                __result = ColonistBar_KF.BarHelperKf.tmpCaravans;
+                __result = ColonistBar_KF.BarHelperKF.TmpCaravans;
                 return false;
             }
 
             List<Pawn> list = ColonistBar_KF.CaravanMembersInScreenRect(rect);
             for (int i = 0; i < list.Count; i++)
             {
-                ColonistBar_KF.BarHelperKf.tmpCaravans.Add(list[i].GetCaravan());
+                ColonistBar_KF.BarHelperKF.TmpCaravans.Add(list[i].GetCaravan());
             }
 
-            __result = ColonistBar_KF.BarHelperKf.tmpCaravans;
+            __result = ColonistBar_KF.BarHelperKF.TmpCaravans;
             return false;
         }
 
@@ -256,7 +256,7 @@ namespace ColonistBarKF
                 return false;
             }
 
-            if (!ColonistBar_KF.BarHelperKf.TryGetEntryAt(pos, out EntryKF entry))
+            if (!ColonistBar_KF.BarHelperKF.TryGetEntryAt(pos, out EntryKF entry))
             {
                 __result = null;
                 return false;
@@ -300,22 +300,22 @@ namespace ColonistBarKF
 
         private static void EntriesDirty_Postfix()
         {
-            ColonistBar_KF.BarHelperKf.EntriesDirty = true;
+            ColonistBar_KF.BarHelperKF.EntriesDirty = true;
         }
 
         private static bool GetColonistsInOrder_Prefix([NotNull] ref List<Pawn> __result)
         {
-            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
-            ColonistBar_KF.BarHelperKf.tmpColonistsInOrder.Clear();
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKF.Entries;
+            ColonistBar_KF.BarHelperKF.TmpColonistsInOrder.Clear();
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].Pawn != null)
                 {
-                    ColonistBar_KF.BarHelperKf.tmpColonistsInOrder.Add(entries[i].Pawn);
+                    ColonistBar_KF.BarHelperKF.TmpColonistsInOrder.Add(entries[i].Pawn);
                 }
             }
 
-            __result = ColonistBar_KF.BarHelperKf.tmpColonistsInOrder;
+            __result = ColonistBar_KF.BarHelperKF.TmpColonistsInOrder;
             return false;
         }
 
@@ -337,10 +337,10 @@ namespace ColonistBarKF
 
         private static bool MapColonistsOrCorpsesInScreenRect_Prefix(ref List<Thing> __result, Rect rect)
         {
-            ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Clear();
+            ColonistBar_KF.BarHelperKF.TmpMapColonistsOrCorpsesInScreenRect.Clear();
             if (!ColonistBar_KF.Visible)
             {
-                __result = ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
+                __result = ColonistBar_KF.BarHelperKF.TmpMapColonistsOrCorpsesInScreenRect;
                 return false;
             }
 
@@ -349,11 +349,11 @@ namespace ColonistBarKF
             {
                 if (list[i].Spawned)
                 {
-                    ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
+                    ColonistBar_KF.BarHelperKF.TmpMapColonistsOrCorpsesInScreenRect.Add(list[i]);
                 }
             }
 
-            __result = ColonistBar_KF.BarHelperKf.tmpMapColonistsOrCorpsesInScreenRect;
+            __result = ColonistBar_KF.BarHelperKF.TmpMapColonistsOrCorpsesInScreenRect;
             return false;
         }
 

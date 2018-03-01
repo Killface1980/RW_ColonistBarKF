@@ -36,7 +36,7 @@
   <CBKF.Settings.useLeft>A Gauche</CBKF.Settings.useLeft>
   <CBKF.Settings.UseNewMood>Utiliser les Nouvelles Barres d'Humeur™</CBKF.Settings.UseNewMood>
   <CBKF.Settings.UseExternalMoodBar>Utiliser les Barres d'Humeur™ extérieures : </CBKF.Settings.UseExternalMoodBar>
-  <CBKF.Settings.UsePsiOnBar>Montrer les Icônes d'Etat des Colons sur la Barre</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePSIOnBar>Montrer les Icônes d'Etat des Colons sur la Barre</CBKF.Settings.UsePSIOnBar>
   <CBKF.Settings.useRight>A Droite</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>En Haut</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Utiliser les Icônes d'Armes</CBKF.Settings.UseWeaponIcons>
@@ -149,6 +149,6 @@
   <PSI.MedicalTendQuality>Qualité des Soins Médicaux</PSI.MedicalTendQuality>
   <PSI.MedicalSurgerySuccessChance>Chance de succès de chirurgie</PSI.MedicalSurgerySuccessChance>
 
-  <PSI.Settings.UsePsiOnAnimals>Faire apparaître les Icônes d'Etat des Colons™ sur les Animaux</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Faire apparaître les Icônes d'Etat des Colons™ sur les Animaux</PSI.Settings.UsePSIOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Faire apparaître les Icônes de Santé des Colons™ sur les Etrangers qui ont des relations</PSI.Settings.ShowRelationsOnStrangers>
 </LanguageData>

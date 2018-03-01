@@ -35,7 +35,7 @@
   <CBKF.Settings.useGender>Usar color de fondo por genero</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Izquierda</CBKF.Settings.useLeft>
   <CBKF.Settings.UseNewMood>Usar nuevas barras de Humor "MoodBars™"</CBKF.Settings.UseNewMood>
-  <CBKF.Settings.UsePsiOnBar>Mostrar Iconos de Estado de Peón "Icons™" en la Barra</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePSIOnBar>Mostrar Iconos de Estado de Peón "Icons™" en la Barra</CBKF.Settings.UsePSIOnBar>
   <CBKF.Settings.useRight>Derecha</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Arriba</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Usar Iconos de Armas</CBKF.Settings.UseWeaponIcons>
@@ -105,7 +105,7 @@
   <PSI.Settings.SizeLabel.8>enorme</PSI.Settings.SizeLabel.8>
   <PSI.Settings.Title>Configuración de "Pawn State Icons™"</PSI.Settings.Title>
   <PSI.Settings.UsePSI>Mostrar Iconos de Estado de Peón "Pawn State Icons™" en los Colonos</PSI.Settings.UsePSI>
-  <PSI.Settings.UsePsiOnAnimals>Mostrar Iconos de Estado de Peones "Icons™" en Animales</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Mostrar Iconos de Estado de Peones "Icons™" en Animales</PSI.Settings.UsePSIOnAnimals>
   <PSI.Settings.UsePSIOnPrisoner>Mostrar Iconos de Estado de Peón "Pawn State Icons™" en los Prisioneros</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Agresivo</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>Andrajos</PSI.Settings.Visibility.ApparelHealth>

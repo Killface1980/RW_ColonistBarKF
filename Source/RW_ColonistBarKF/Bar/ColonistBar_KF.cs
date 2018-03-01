@@ -12,7 +12,7 @@ namespace ColonistBarKF.Bar
     {
         public const float SpacingLabel = 15f;
 
-        public static ColBarHelper_KF BarHelperKf = new ColBarHelper_KF();
+        public static ColBarHelper_KF BarHelperKF = new ColBarHelper_KF();
 
         [NotNull]
         public static ColonistBarColonistDrawer_KF Drawer = new ColonistBarColonistDrawer_KF();
@@ -39,7 +39,7 @@ namespace ColonistBarKF.Bar
                                               Settings.BarSettings.BaseIconSize,
                                               Settings.BarSettings.BaseIconSize) * Scale;
 
-        public static int PsiRowsOnBar
+        public static int PSIRowsOnBar
         {
             get
             {
@@ -56,7 +56,7 @@ namespace ColonistBarKF.Bar
         }
 
         // public static readonly Vector2 PawnTextureSize = new Vector2(BaseSize.x - 2f, 75f);
-        public static float Scale => BarHelperKf.cachedScale;
+        public static float Scale => BarHelperKF.CachedScale;
 
         public static bool Visible => UI.screenWidth >= 800 && UI.screenHeight >= 500;
 
@@ -74,10 +74,10 @@ namespace ColonistBarKF.Bar
         [NotNull]
         public static List<Pawn> CaravanMembersInScreenRect(Rect rect)
         {
-            BarHelperKf.tmpCaravanPawns.Clear();
+            BarHelperKF.TmpCaravanPawns.Clear();
             if (!Visible)
             {
-                return BarHelperKf.tmpCaravanPawns;
+                return BarHelperKF.TmpCaravanPawns;
             }
 
             List<Thing> list = ColonistsOrCorpsesInScreenRect(rect);
@@ -86,11 +86,11 @@ namespace ColonistBarKF.Bar
                 Pawn pawn = list[i] as Pawn;
                 if (pawn != null && pawn.IsCaravanMember())
                 {
-                    BarHelperKf.tmpCaravanPawns.Add(pawn);
+                    BarHelperKF.TmpCaravanPawns.Add(pawn);
                 }
             }
 
-            return BarHelperKf.tmpCaravanPawns;
+            return BarHelperKF.TmpCaravanPawns;
         }
 
         public static bool ColonistBarOnGUI_Prefix()
@@ -102,14 +102,14 @@ namespace ColonistBarKF.Bar
 
             if (Event.current.type != EventType.Layout)
             {
-                List<EntryKF> entries = BarHelperKf.Entries;
+                List<EntryKF> entries = BarHelperKF.Entries;
                 int num = -1;
-                bool showGroupFrames = BarHelperKf.ShowGroupFrames;
-                for (int i = 0; i < BarHelperKf.DrawLocs.Count; i++)
+                bool showGroupFrames = BarHelperKF.ShowGroupFrames;
+                for (int i = 0; i < BarHelperKF.DrawLocs.Count; i++)
                 {
                     Rect rect = new Rect(
-                        BarHelperKf.DrawLocs[i].x,
-                        BarHelperKf.DrawLocs[i].y,
+                        BarHelperKF.DrawLocs[i].x,
+                        BarHelperKF.DrawLocs[i].y,
                         FullSize.x,
                         FullSize.y + SpacingLabel);
                     EntryKF entry = entries[i];
@@ -142,7 +142,7 @@ namespace ColonistBarKF.Bar
                 num = -1;
                 if (showGroupFrames)
                 {
-                    for (int j = 0; j < BarHelperKf.DrawLocs.Count; j++)
+                    for (int j = 0; j < BarHelperKF.DrawLocs.Count; j++)
                     {
                         EntryKF entry2 = entries[j];
                         bool flag2 = num != entry2.Group;
@@ -161,10 +161,10 @@ namespace ColonistBarKF.Bar
         [NotNull]
         public static List<Thing> ColonistsOrCorpsesInScreenRect(Rect rect)
         {
-            List<Vector2> drawLocs = BarHelperKf.DrawLocs;
-            List<EntryKF> entries = BarHelperKf.Entries;
+            List<Vector2> drawLocs = BarHelperKF.DrawLocs;
+            List<EntryKF> entries = BarHelperKF.Entries;
             Vector2 size = FullSize;
-            BarHelperKf.tmpColonistsWithMap.Clear();
+            BarHelperKF.TmpColonistsWithMap.Clear();
             for (int i = 0; i < drawLocs.Count; i++)
             {
                 if (rect.Overlaps(new Rect(drawLocs[i].x, drawLocs[i].y, size.x, size.y)))
@@ -182,7 +182,7 @@ namespace ColonistBarKF.Bar
                             first = pawn;
                         }
 
-                        BarHelperKf.tmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].Map));
+                        BarHelperKF.TmpColonistsWithMap.Add(new Pair<Thing, Map>(first, entries[i].Map));
                     }
                 }
             }
@@ -191,29 +191,29 @@ namespace ColonistBarKF.Bar
 
             if (WorldRendererUtility.WorldRenderedNow)
             {
-                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == null))
+                if (BarHelperKF.TmpColonistsWithMap.Any(x => x.Second == null))
                 {
-                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != null);
+                    BarHelperKF.TmpColonistsWithMap.RemoveAll(x => x.Second != null);
                     flag = false;
                 }
             }
 
             if (flag)
             {
-                if (BarHelperKf.tmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+                if (BarHelperKF.TmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
                 {
-                    BarHelperKf.tmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                    BarHelperKF.TmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
                 }
             }
 
-            BarHelperKf.tmpColonists.Clear();
-            for (int j = 0; j < BarHelperKf.tmpColonistsWithMap.Count; j++)
+            BarHelperKF.TmpColonists.Clear();
+            for (int j = 0; j < BarHelperKF.TmpColonistsWithMap.Count; j++)
             {
-                BarHelperKf.tmpColonists.Add(BarHelperKf.tmpColonistsWithMap[j].First);
+                BarHelperKF.TmpColonists.Add(BarHelperKF.TmpColonistsWithMap[j].First);
             }
 
-            BarHelperKf.tmpColonistsWithMap.Clear();
-            return BarHelperKf.tmpColonists;
+            BarHelperKF.TmpColonistsWithMap.Clear();
+            return BarHelperKF.TmpColonists;
         }
 
         public static float GetEntryRectAlpha(Rect rect)
@@ -254,20 +254,20 @@ namespace ColonistBarKF.Bar
                 }
             }
 
-            if (Settings.BarSettings.UsePsi)
+            if (Settings.BarSettings.UsePSI)
             {
-                switch (Settings.BarSettings.ColBarPsiIconPos)
+                switch (Settings.BarSettings.ColBarPSIIconPos)
                 {
                     case Position.Alignment.Left:
                     case Position.Alignment.Right:
                         WidthPSIHorizontal = Settings.BarSettings.BaseIconSize
-                                             / Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
+                                             / Settings.BarSettings.IconsInColumn * PSIRowsOnBar;
                         break;
 
                     case Position.Alignment.Top:
                     case Position.Alignment.Bottom:
                         HeightPSIVertical = Settings.BarSettings.BaseIconSize
-                                            / Settings.BarSettings.IconsInColumn * PsiRowsOnBar;
+                                            / Settings.BarSettings.IconsInColumn * PSIRowsOnBar;
                         break;
 
                     default: break;

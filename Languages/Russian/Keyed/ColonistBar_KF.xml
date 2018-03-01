@@ -36,7 +36,7 @@
   <CBKF.Settings.useGender>Использовать цвет фона по полу поселенца</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>Слева</CBKF.Settings.useLeft>
   <CBKF.Settings.UseNewMood>Использовать панель настроения за поселенцем™</CBKF.Settings.UseNewMood>
-  <CBKF.Settings.UsePsiOnBar>Показывать иконки состояния на панели поселенцев</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePSIOnBar>Показывать иконки состояния на панели поселенцев</CBKF.Settings.UsePSIOnBar>
   <CBKF.Settings.useRight>Справа</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>Сверху</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>Показывать иконки оружия на панели поселенцев</CBKF.Settings.UseWeaponIcons>
@@ -106,7 +106,7 @@
   <PSI.Settings.SizeLabel.8>огромные</PSI.Settings.SizeLabel.8>
   <PSI.Settings.Title>Настройки иконок состояния поселенцев™</PSI.Settings.Title>
   <PSI.Settings.UsePSI>Показывать иконки состояния™ на поселенцах</PSI.Settings.UsePSI>
-  <PSI.Settings.UsePsiOnAnimals>Показывать иконки состояния™ на животных</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Показывать иконки состояния™ на животных</PSI.Settings.UsePSIOnAnimals>
   <PSI.Settings.UsePSIOnPrisoner>Показывать иконки состояния™ на пленниках</PSI.Settings.UsePSIOnPrisoner>
   <PSI.Settings.Visibility.Aggressive>Агрессивный</PSI.Settings.Visibility.Aggressive>
   <PSI.Settings.Visibility.ApparelHealth>В лохмотьях</PSI.Settings.Visibility.ApparelHealth>

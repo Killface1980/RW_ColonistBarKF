@@ -13,7 +13,7 @@
         public float BaseSpacingVertical = 32f;
 
         // public Position.Alignment ColBarPos = Position.Alignment.Top;
-        public Position.Alignment ColBarPsiIconPos = Position.Alignment.Left;
+        public Position.Alignment ColBarPSIIconPos = Position.Alignment.Left;
 
         public float IconOffsetX = 1f;
 
@@ -134,7 +134,7 @@
 
         public bool UseNewMood = true;
 
-        public bool UsePsi = true;
+        public bool UsePSI = true;
 
         public bool UseWeaponIcons = true;
 

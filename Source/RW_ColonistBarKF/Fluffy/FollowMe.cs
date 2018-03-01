@@ -178,14 +178,14 @@ namespace ColonistBarKF
                         return;
                     }
 
-                    CheckKeyScroll();
-                    CheckScreenEdgeScroll();
-                    CheckCameraJump();
+                    this.CheckKeyScroll();
+                    this.CheckScreenEdgeScroll();
+                    this.CheckCameraJump();
                     CheckDolly();
                 }
 
                 // start/stop following thing on key press
-                if (_followKey.KeyDownEvent)
+                if (this._followKey.KeyDownEvent)
                 {
                     TryStartFollow(Find.Selector.SingleSelectedObject as Thing);
                 }
@@ -328,7 +328,7 @@ namespace ColonistBarKF
 
         private void CheckKeyScroll()
         {
-            if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
+            if (this._followBreakingKeyBindingDefs.Any(key => key.IsDown))
             {
                 StopFollow("moved map (key)");
             }

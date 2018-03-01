@@ -34,7 +34,7 @@
   <CBKF.Settings.useGender>按性別使用背景顏色</CBKF.Settings.useGender>
   <CBKF.Settings.useLeft>左側</CBKF.Settings.useLeft>
   <CBKF.Settings.UseMoodColors>使用心情欄™: </CBKF.Settings.UseMoodColors>
-  <CBKF.Settings.UsePsiOnBar>展示人物狀態圖標™ 在頭像上</CBKF.Settings.UsePsiOnBar>
+  <CBKF.Settings.UsePSIOnBar>展示人物狀態圖標™ 在頭像上</CBKF.Settings.UsePSIOnBar>
   <CBKF.Settings.useRight>右側</CBKF.Settings.useRight>
   <CBKF.Settings.useTop>頂部</CBKF.Settings.useTop>
   <CBKF.Settings.UseWeaponIcons>使用武器圖標</CBKF.Settings.UseWeaponIcons>
@@ -144,7 +144,7 @@
   <PSI.Settings.Visibility.Drunk>Drug addictions and unstable pawns</PSI.Settings.Visibility.Drunk>
   <PSI.DiseaseProgress>Disease</PSI.DiseaseProgress>
   <PSI.Efficiency>Efficiency</PSI.Efficiency>
-  <PSI.Settings.UsePsiOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Show Pawn State Icons™ on Animals</PSI.Settings.UsePSIOnAnimals>
   <PSI.Settings.ShowRelationsOnStrangers>Show Pawn Health Icon™ on Strangers with relations</PSI.Settings.ShowRelationsOnStrangers>
   <CBKF.Settings.useFollowMessage>Use FollowMe notification</CBKF.Settings.useFollowMessage>
 

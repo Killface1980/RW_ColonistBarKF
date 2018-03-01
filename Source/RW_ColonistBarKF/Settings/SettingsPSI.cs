@@ -121,11 +121,11 @@ namespace ColonistBarKF
 
         public bool UseColoredTarget = true;
 
-        public bool UsePsi = true;
+        public bool UsePSI = true;
 
-        public bool UsePsiOnAnimals = true;
+        public bool UsePSIOnAnimals = true;
 
-        public bool UsePsiOnPrisoner = true;
+        public bool UsePSIOnPrisoner = true;
 
     }
 }

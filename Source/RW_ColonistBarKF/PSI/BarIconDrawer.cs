@@ -117,7 +117,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.BarSettings.ColBarPsiIconPos)
+            switch (Settings.BarSettings.ColBarPSIIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = rect.xMax - size;
@@ -213,7 +213,7 @@ namespace ColonistBarKF.PSI
 
             iconRect.height = iconRect.width = size;
 
-            switch (Settings.BarSettings.ColBarPsiIconPos)
+            switch (Settings.BarSettings.ColBarPSIIconPos)
             {
                 case Position.Alignment.Left:
                     iconRect.x = psiRect.xMax - size;

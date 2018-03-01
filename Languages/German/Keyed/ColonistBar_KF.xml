@@ -2,7 +2,7 @@
 <LanguageData>
   <CBKF.Settings.MaxColonistBarWidth>Maximale Leistenbreite</CBKF.Settings.MaxColonistBarWidth>
   <PSI.Settings.ShowRelationsOnStrangers>Zeige Pawn Health Icon™ on Fremden mit Verwandschaft</PSI.Settings.ShowRelationsOnStrangers>
-  <PSI.Settings.UsePsiOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePsiOnAnimals>
+  <PSI.Settings.UsePSIOnAnimals>Zeige Pawn State Icons™ auf Tieren</PSI.Settings.UsePSIOnAnimals>
 	<CBKF.Settings.Advanced>Erweiterte Einstellungen</CBKF.Settings.Advanced>
 	<CBKF.Settings.BarPosition>Colonist Bar Einstellungen</CBKF.Settings.BarPosition>
 	<CBKF.Settings.BaseSpacingHorizontal>Horizontaler Abstand: </CBKF.Settings.BaseSpacingHorizontal>
@@ -39,7 +39,7 @@
 	<CBKF.Settings.useGender>Hintergrundfarbe nach Geschlecht</CBKF.Settings.useGender>
 	<CBKF.Settings.useLeft>Links</CBKF.Settings.useLeft>
 	<CBKF.Settings.UseNewMood>Benutze neue Launeleiste™</CBKF.Settings.UseNewMood>
-	<CBKF.Settings.UsePsiOnBar>Zeige Pawn State Icons auf Leiste</CBKF.Settings.UsePsiOnBar>
+	<CBKF.Settings.UsePSIOnBar>Zeige Pawn State Icons auf Leiste</CBKF.Settings.UsePSIOnBar>
 	<CBKF.Settings.useRight>Rechts</CBKF.Settings.useRight>
 	<CBKF.Settings.useTop>Oben</CBKF.Settings.useTop>
 	<CBKF.Settings.UseWeaponIcons>Benutze Icons für Waffen</CBKF.Settings.UseWeaponIcons>

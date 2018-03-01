@@ -6,7 +6,7 @@ namespace ColonistBarKF.Bar
     using System.Collections.Generic;
     using System.Linq;
 
-    using ColonistBarKF.PSI;
+    using PSI;
 
     using JetBrains.Annotations;
 
@@ -116,7 +116,7 @@ namespace ColonistBarKF.Bar
                 }
 
                 // PSI
-                if (Settings.BarSettings.UsePsi)
+                if (Settings.BarSettings.UsePSI)
                 {
                     colonist.DrawColonistIconsBar(psiRect, entryRectAlpha);
                 }
@@ -223,7 +223,7 @@ namespace ColonistBarKF.Bar
         public void DrawGroupFrame(int group)
         {
             Rect position = this.GroupFrameRect(group);
-            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKF.Entries;
             Map map = entries.Find(x => x.Group == group).Map;
             float num;
             Color color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
@@ -339,7 +339,7 @@ namespace ColonistBarKF.Bar
                                 {
                                     // use event so it doesn't bubble through
                                     Event.current.Use();
-                                    ColonistBar_KF.BarHelperKf.displayGroupForBar = showThisMap;
+                                    ColonistBar_KF.BarHelperKF.DisplayGroupForBar = showThisMap;
                                     HarmonyPatches.MarkColonistsDirty_Postfix();
                                 }
                             }
@@ -469,11 +469,11 @@ namespace ColonistBarKF.Bar
                         if (!choicesList.NullOrEmpty())
                         {
                             labeledSortingActions.Add(
-                                "CBKF.Settings.ChoicesForPawn".Translate(SelPawn, colonist),
+                                "CBKF.Settings.ChoicesForPawn".Translate(SelPawn, colonist) + Tools.NestedString,
                                 choicesList);
                         }
 
-                        labeledSortingActions.Add("CBKF.Settings.OrderingOptions".Translate(), sortList);
+                        labeledSortingActions.Add("CBKF.Settings.OrderingOptions".Translate() + Tools.NestedString, sortList);
 
                         // labeledSortingActions.Add("CBKF.Settings.AllStatsSortingOptions".Translate(), extraSortList);
                         labeledSortingActions.Add("CBKF.Settings.SettingsColonistBar".Translate(), floatOptionList);
@@ -522,10 +522,10 @@ namespace ColonistBarKF.Bar
                 && Event.current.clickCount == 1)
             {
                 bool worldRenderedNow = WorldRendererUtility.WorldRenderedNow;
-                EntryKF entry = ColonistBar_KF.BarHelperKf.Entries.Find(x => x.Group == group);
+                EntryKF entry = ColonistBar_KF.BarHelperKF.Entries.Find(x => x.Group == group);
                 Map map = entry.Map;
 
-                if (!ColonistBar_KF.BarHelperKf.AnyBarEntryAt(UI.MousePositionOnUIInverted))
+                if (!ColonistBar_KF.BarHelperKF.AnyBarEntryAt(UI.MousePositionOnUIInverted))
                 {
                     if (!worldRenderedNow && !Find.Selector.dragBox.IsValidAndActive
                         || worldRenderedNow && !Find.WorldSelector.dragBox.IsValidAndActive)
@@ -560,7 +560,7 @@ namespace ColonistBarKF.Bar
 
             // if (Event.current.button == 1 && Widgets.ButtonInvisible(rect, false))
             // {
-            // ColonistBar.Entry entry2 = ColonistBar_KF.BarHelperKf.Entries.Find((ColonistBar.Entry x) => x.group == group);
+            // ColonistBar.Entry entry2 = ColonistBar_KF.BarHelperKF.Entries.Find((ColonistBar.Entry x) => x.group == group);
             // if (entry2.map != null)
             // {
             // CameraJumper.TryJumpAndSelect(CameraJumper.GetWorldTargetOfMap(entry2.map));
@@ -589,35 +589,35 @@ namespace ColonistBarKF.Bar
 
             float modifier = 1;
 
-            bool psiHorizontal = Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Left
-                                 || Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Right;
+            bool psiHorizontal = Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Left
+                                 || Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Right;
 
             bool moodHorizontal = Settings.BarSettings.MoodBarPos == Position.Alignment.Left
                                   || Settings.BarSettings.MoodBarPos == Position.Alignment.Right;
 
-            float widthPsiFloat;
-            float heightPsiFloat;
-            float heightFullPsiFloat;
+            float widthPSIFloat;
+            float heightPSIFloat;
+            float heightFullPSIFloat;
 
             if (psiHorizontal)
             {
-                widthPsiFloat = ColonistBar_KF.WidthPSIHorizontal * ColonistBar_KF.Scale;
-                heightPsiFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
-                heightFullPsiFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
+                widthPSIFloat = ColonistBar_KF.WidthPSIHorizontal * ColonistBar_KF.Scale;
+                heightPSIFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
+                heightFullPSIFloat = outerRect.height - ColonistBar_KF.SpacingLabel;
             }
             else
             {
-                widthPsiFloat = outerRect.width;
-                heightPsiFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
-                heightFullPsiFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
+                widthPSIFloat = outerRect.width;
+                heightPSIFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
+                heightFullPSIFloat = ColonistBar_KF.HeightPSIVertical * ColonistBar_KF.Scale;
             }
 
-            if (Settings.BarSettings.UsePsi)
+            if (Settings.BarSettings.UsePSI)
             {
                 // If lesser rows, move the rect
-                if (thisColCount < ColonistBar_KF.PsiRowsOnBar)
+                if (thisColCount < ColonistBar_KF.PSIRowsOnBar)
                 {
-                    CalculateSizePSI(thisColCount, modifier, psiHorizontal, ref widthPsiFloat, ref heightPsiFloat);
+                    CalculateSizePSI(thisColCount, modifier, psiHorizontal, ref widthPSIFloat, ref heightPSIFloat);
                 }
             }
 
@@ -633,13 +633,13 @@ namespace ColonistBarKF.Bar
                 }
             }
 
-            psiRect = new Rect(outerRect.x, outerRect.y, widthPsiFloat, heightPsiFloat);
+            psiRect = new Rect(outerRect.x, outerRect.y, widthPSIFloat, heightPSIFloat);
 
             // Widgets.DrawBoxSolid(psiRect, new Color(0.5f, 0.5f, 0.5f, 0.5f));
-            switch (Settings.BarSettings.ColBarPsiIconPos)
+            switch (Settings.BarSettings.ColBarPSIIconPos)
             {
                 case Position.Alignment.Left:
-                    pawnRect.x += widthPsiFloat;
+                    pawnRect.x += widthPSIFloat;
                     break;
 
                 case Position.Alignment.Right:
@@ -647,8 +647,8 @@ namespace ColonistBarKF.Bar
                     break;
 
                 case Position.Alignment.Top:
-                    pawnRect.y += heightFullPsiFloat;
-                    psiRect.y += heightFullPsiFloat - heightPsiFloat;
+                    pawnRect.y += heightFullPSIFloat;
+                    psiRect.y += heightFullPSIFloat - heightPSIFloat;
                     break;
 
                 case Position.Alignment.Bottom:
@@ -666,7 +666,7 @@ namespace ColonistBarKF.Bar
                 {
                     case Position.Alignment.Left:
                         pawnRect.x += widthMoodFloat;
-                        if (Settings.BarSettings.ColBarPsiIconPos != Position.Alignment.Left)
+                        if (Settings.BarSettings.ColBarPSIIconPos != Position.Alignment.Left)
                         {
                             psiRect.x += widthMoodFloat;
                         }
@@ -680,21 +680,21 @@ namespace ColonistBarKF.Bar
 
                     case Position.Alignment.Right:
                         moodRect.x = pawnRect.xMax;
-                        psiRect.x += Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Right
+                        psiRect.x += Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Right
                                          ? widthMoodFloat
                                          : 0f;
                         break;
 
                     case Position.Alignment.Top:
                         pawnRect.y += heightMoodFloat;
-                        psiRect.y += Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                        psiRect.y += Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Bottom
                                          ? heightMoodFloat
                                          : 0f;
                         break;
 
                     case Position.Alignment.Bottom:
                         moodRect.y = pawnRect.yMax + ColonistBar_KF.SpacingLabel;
-                        psiRect.y += Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                        psiRect.y += Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Bottom
                                          ? heightMoodFloat
                                          : 0f;
                         if (psiHorizontal)
@@ -721,7 +721,7 @@ namespace ColonistBarKF.Bar
             outerRect.x += offsetX;
             outerRect.width -= offsetX * 2;
             outerRect.yMax =
-                Settings.BarSettings.ColBarPsiIconPos == Position.Alignment.Bottom
+                Settings.BarSettings.ColBarPSIIconPos == Position.Alignment.Bottom
                 || Settings.BarSettings.MoodBarPos == Position.Alignment.Bottom
                     ? height
                     : height + ColonistBar_KF.SpacingLabel;
@@ -731,8 +731,8 @@ namespace ColonistBarKF.Bar
             int thisColCount,
             float modifier,
             bool psiHorizontal,
-            ref float widthPsiFloat,
-            ref float heightPsiFloat)
+            ref float widthPSIFloat,
+            ref float heightPSIFloat)
         {
             switch (thisColCount)
             {
@@ -749,11 +749,11 @@ namespace ColonistBarKF.Bar
 
             if (psiHorizontal)
             {
-                widthPsiFloat *= modifier;
+                widthPSIFloat *= modifier;
             }
             else
             {
-                heightPsiFloat *= modifier;
+                heightPSIFloat *= modifier;
             }
         }
 
@@ -1122,7 +1122,7 @@ namespace ColonistBarKF.Bar
                         thing.Graphic.ExtractInnerGraphicFor(thing).MatSingle.mainTexture as Texture2D;
                 }
 
-                Color weaponColor = new Color();
+                Color weaponColor;
 
                 // color labe by thing
                 if (thing.def.IsMeleeWeapon)
@@ -1131,8 +1131,7 @@ namespace ColonistBarKF.Bar
                     weaponColor.a = entryRectAlpha;
                     GUI.color = weaponColor;
                 }
-
-                if (thing.def.IsRangedWeapon)
+                else if (thing.def.IsRangedWeapon)
                 {
                     weaponColor = Textures.ColBlue;
                     weaponColor.a = entryRectAlpha;
@@ -1297,8 +1296,8 @@ namespace ColonistBarKF.Bar
             float posY = 21f;
             float num2 = 0f;
             float height = 0f;
-            List<EntryKF> entries = ColonistBar_KF.BarHelperKf.Entries;
-            List<Vector2> drawLocs = ColonistBar_KF.BarHelperKf.DrawLocs;
+            List<EntryKF> entries = ColonistBar_KF.BarHelperKF.Entries;
+            List<Vector2> drawLocs = ColonistBar_KF.BarHelperKF.DrawLocs;
             for (int i = 0; i < entries.Count; i++)
             {
                 if (entries[i].Group == group)

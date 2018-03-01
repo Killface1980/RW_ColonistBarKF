@@ -16,11 +16,11 @@ namespace ColonistBarKF
 
         public Materials(string matLib = "default")
         {
-            _matLibName = matLib;
+            this._matLibName = matLib;
         }
 
         [CanBeNull]
-        public Material this[Icon icon] => _data[(int)icon];
+        public Material this[Icon icon] => this._data[(int)icon];
 
         public void ReloadTextures(bool smooth = false)
         {
@@ -31,8 +31,8 @@ namespace ColonistBarKF
                     case Icon.None:
                     case Icon.Length: continue;
                     default:
-                        string path = _matLibName + "/" + Enum.GetName(typeof(Icon), icons);
-                        _data[(int)icons] = LoadIconMat(path, smooth);
+                        string path = this._matLibName + "/" + Enum.GetName(typeof(Icon), icons);
+                        this._data[(int)icons] = this.LoadIconMat(path, smooth);
                         continue;
                 }
             }

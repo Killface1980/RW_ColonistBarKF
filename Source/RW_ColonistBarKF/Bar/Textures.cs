@@ -8,9 +8,6 @@ namespace ColonistBarKF.Bar
     internal static class Textures
     {
         [NotNull]
-        public static readonly Texture2D BgTex = Command.BGTex;
-
-        [NotNull]
         public static readonly Texture2D BgTexGrey = ContentFinder<Texture2D>.Get("UI/Widgets/CBKF/DesButBG_grey");
 
         [NotNull]

@@ -64,7 +64,7 @@
         // public override void MapComponentTick()
         // {
         // base.MapComponentTick();
-        // if (!Settings.PsiSettings.UsePsi)
+        // if (!Settings.PSISettings.UsePSI)
         // {
         // foreach (PawnStats pawnStats in _pawnCache)
         // {
