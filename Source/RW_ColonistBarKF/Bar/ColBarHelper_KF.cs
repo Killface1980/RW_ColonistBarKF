@@ -290,33 +290,33 @@
                 this._tmpMaps.AddRange(Find.Maps);
                 this._tmpMaps.SortBy(x => !x.IsPlayerHome, x => x.uniqueID);
                 int groupInt = 0;
-                for (int index = 0; index < this._tmpMaps.Count; index++)
+                foreach (Map tempMap in this._tmpMaps)
                 {
-                    Map tempMap = this._tmpMaps[index];
                     this._tmpPawns.Clear();
                     this._tmpPawns.AddRange(tempMap.mapPawns.FreeColonists);
                     List<Thing> list = tempMap.listerThings.ThingsInGroup(ThingRequestGroup.Corpse);
-                    for (int i = 0; i < list.Count; i++)
+                    foreach (Thing thing in list)
                     {
-                        Thing thing = list[i];
-                        if (!thing.IsDessicated())
+                        if (thing.IsDessicated())
                         {
-                            Pawn innerPawn = ((Corpse)thing).InnerPawn;
-                            if (innerPawn == null)
-                            {
-                                continue;
-                            }
-                            if (innerPawn.IsColonist)
-                            {
-                                this._tmpPawns.Add(innerPawn);
-                            }
+                            continue;
+                        }
+
+                        Pawn innerPawn = ((Corpse)thing).InnerPawn;
+                        if (innerPawn == null)
+                        {
+                            continue;
+                        }
+                        if (innerPawn.IsColonist)
+                        {
+                            this._tmpPawns.Add(innerPawn);
                         }
                     }
 
                     List<Pawn> allPawnsSpawned = tempMap.mapPawns.AllPawnsSpawned;
                     foreach (Corpse corpse in allPawnsSpawned
-                        .Select(spawnedPawn => spawnedPawn.carryTracker.CarriedThing as Corpse).Where(
-                            corpse => corpse != null && !corpse.IsDessicated() && corpse.InnerPawn.IsColonist))
+                                             .Select(spawnedPawn => spawnedPawn.carryTracker.CarriedThing as Corpse).Where(
+                                                                                                                           corpse => corpse != null && !corpse.IsDessicated() && corpse.InnerPawn.IsColonist))
                     {
                         this._tmpPawns.Add(corpse.InnerPawn);
                     }

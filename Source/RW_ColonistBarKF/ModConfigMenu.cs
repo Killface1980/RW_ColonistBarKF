@@ -825,7 +825,7 @@ namespace ColonistBarKF
                 + (Settings.BarSettings.UseCustomRowCount ? Settings.BarSettings.MaxRowsCustom : 3));
             if (Settings.BarSettings.UseCustomRowCount)
             {
-                Settings.BarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(Settings.BarSettings.MaxRowsCustom, 1f, 5f);
+                Settings.BarSettings.MaxRowsCustom = (int)GUILayout.HorizontalSlider(Settings.BarSettings.MaxRowsCustom, 1f, 11f);
             }
 
             GUILayout.EndVertical();

@@ -145,11 +145,12 @@ namespace ColonistBarKF.Bar
                     for (int j = 0; j < BarHelperKF.DrawLocs.Count; j++)
                     {
                         EntryKF entry2 = entries[j];
-                        bool flag2 = num != entry2.Group;
-                        num = entry2.Group;
+                        int entry2Group = entry2.Group;
+                        bool flag2 = num != entry2Group;
+                        num = entry2Group;
                         if (flag2)
                         {
-                            Drawer.HandleGroupFrameClicks(entry2.Group);
+                            Drawer.HandleGroupFrameClicks(entry2Group);
                         }
                     }
                 }

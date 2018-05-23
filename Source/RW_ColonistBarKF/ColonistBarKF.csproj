@@ -86,7 +86,6 @@
     <Compile Include="Bar\ColonistBarColonistDrawer_KF.cs" />
     <Compile Include="Bar\ColonistBarDrawLocsFinder_KF.cs" />
     <Compile Include="Bar\ColBarHelper_KF.cs" />
-    <None Include="Coloniistbar_KF_ModBase.cs" />
     <None Include="Mod.cs" />
     <Compile Include="Settings\SettingsPSI.cs" />
     <Compile Include="PSIMaterials.cs" />

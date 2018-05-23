@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 0.18.0</name>
+  <name>Colonist Bar KF 0.18.0.1</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
   <targetVersion>0.18.0</targetVersion>
@@ -13,10 +13,12 @@
 
     Includes icon stats based on 'Pawn State Icons™' by Dan Sadler
     Includes 'FollowMe™' functionality by Fluffy with updated code by alexschrod
-    Includes 'ZoomToMouse™' functionality by Fluffy
+    (Needed for more mouse button options. Please deactivate Fluffy's original version in case of any conflicts.)
+    Includes 'ZoomToMouse™' functionality by Fluffy (cause I like it and it wasn't updated a few RW alphas back)
 
-    Chinese (simplified & traditional) translation by duduluu
+    Chinese translation (simplified & traditional) by duduluu
     French translation by Gorgious
+    German translation by me
     Russian translation by dragomano
     Spanish translation by Ninnetyer]]>
   </description>

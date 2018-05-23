@@ -37,83 +37,9 @@ namespace ColonistBarKF.Bar
         {
             if (Settings.BarSettings.UseCustomRowCount)
             {
-                switch (Settings.BarSettings.MaxRowsCustom)
-                {
-                    case 1:
-                        {
-                            return 1;
-                        }
+                int maxRowsCustom = Settings.BarSettings.MaxRowsCustom;
 
-                    case 2:
-                        {
-                            if (scale > 0.54f)
-                            {
-                                return 1;
-                            }
-
-                            return 2;
-                        }
-
-                    case 3:
-                        {
-                            if (scale > 0.66f)
-                            {
-                                return 1;
-                            }
-
-                            if (scale > 0.54f)
-                            {
-                                return 2;
-                            }
-
-                            return 3;
-                        }
-
-                    case 4:
-                        {
-                            if (scale > 0.78f)
-                            {
-                                return 1;
-                            }
-
-                            if (scale > 0.66f)
-                            {
-                                return 2;
-                            }
-
-                            if (scale > 0.54f)
-                            {
-                                return 3;
-                            }
-
-                            return 4;
-                        }
-
-                    case 5:
-                        {
-                            if (scale > 0.9f)
-                            {
-                                return 1;
-                            }
-
-                            if (scale > 0.78f)
-                            {
-                                return 2;
-                            }
-
-                            if (scale > 0.66f)
-                            {
-                                return 3;
-                            }
-
-                            if (scale > 0.54f)
-                            {
-                                return 4;
-                            }
-
-                            return 5;
-                        }
-                }
+                return Mathf.RoundToInt(Mathf.Lerp(maxRowsCustom, 1f, scale));
             }
 
             if (scale > 0.58f)
@@ -246,7 +172,7 @@ namespace ColonistBarKF.Bar
                         {
                             mapNum = entries[i].Group;
                             int rows = Mathf.CeilToInt(this._entriesInGroup[entries[i].Group]
-                                / (float) this._horizontalSlotsPerGroup[entries[i].Group]);
+                                / (float)this._horizontalSlotsPerGroup[entries[i].Group]);
                             if (rows > 1)
                             {
                                 onlyOneRow = false;
@@ -266,7 +192,7 @@ namespace ColonistBarKF.Bar
                     }
                 }
 
-                bestScale -= 0.01f;
+                bestScale -= 0.03f;
             }
 
             return bestScale;
@@ -302,7 +228,7 @@ namespace ColonistBarKF.Bar
             }
 
             GenMath.DHondtDistribution(this._horizontalSlotsPerGroup,
-                i => (float) this._entriesInGroup[i],
+                i => (float)this._entriesInGroup[i],
                 maxPerGlobalRow);
             for (int j = 0; j < this._horizontalSlotsPerGroup.Count; j++)
             {
