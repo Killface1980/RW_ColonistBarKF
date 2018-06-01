@@ -90,7 +90,7 @@ namespace ColonistBarKF
 
         private static float SpacingHorizontalPSI()
         {
-            if (ColBarSettings.UsePsi)
+            if (ColBarSettings.UsePSI)
                 if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Left || ColBarSettings.ColBarPsiIconPos == Position.Alignment.Right)
                 {
 
@@ -101,7 +101,7 @@ namespace ColonistBarKF
 
         private static float SpacingVerticalPSIAssumingScale(float scale)
         {
-            if (ColBarSettings.UsePsi)
+            if (ColBarSettings.UsePSI)
                 if (ColBarSettings.ColBarPsiIconPos == Position.Alignment.Bottom || ColBarSettings.ColBarPsiIconPos == Position.Alignment.Top)
                 {
                     return ColBarSettings.BaseSizeFloat / ColBarSettings.IconsInColumn * scale * PsiRowsOnBar;
