@@ -1328,6 +1328,15 @@ namespace ColonistBarKF.Bar
                                                                           HarmonyPatches.MarkColonistsDirty_Postfix();
                                                                       });
 
+
+            FloatMenuOption sortByMoveSpeed = new FloatMenuOption(
+                                                                      StatDefOf.MoveSpeed.LabelCap,
+                                                                      delegate
+                                                                      {
+                                                                          Settings.BarSettings.SortBy =
+                                                                          SettingsColonistBar.SortByWhat.moveSpeed;
+                                                                          HarmonyPatches.MarkColonistsDirty_Postfix();
+                                                                      });
             sortList.Add(sortByVanilla);
             sortList.Add(sortByWeapons);
             sortList.Add(sortByName);
@@ -1345,6 +1354,7 @@ namespace ColonistBarKF.Bar
             sortList.Add(sortByTrade);
             sortList.Add(sortByShootingAccuracy);
             sortList.Add(sortByShootingSkill);
+            sortList.Add(sortByMoveSpeed);
             
         }
 

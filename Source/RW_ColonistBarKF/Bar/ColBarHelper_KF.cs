@@ -251,6 +251,10 @@
                         break;
                     }
 
+                case SettingsColonistBar.SortByWhat.moveSpeed:
+                    {
+                        tmpColonists.SortByDescending(x => x.GetStatValue(StatDefOf.MoveSpeed));
+                        break;
                     }
                 default:
                     {
