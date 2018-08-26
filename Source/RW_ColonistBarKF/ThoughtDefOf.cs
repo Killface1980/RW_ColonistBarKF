@@ -11,7 +11,7 @@ namespace ColonistBarKF
         public static ThoughtDef ApparelDamaged;
 
         [NotNull]
-        public static ThoughtDef CabinFever;
+        public static ThoughtDef NeedOutdoors;
 
         [NotNull]
         public static ThoughtDef ColonistLeftUnburied;

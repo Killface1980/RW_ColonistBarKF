@@ -201,9 +201,9 @@ namespace ColonistBarKF.Bar
 
             if (flag)
             {
-                if (BarHelperKF.TmpColonistsWithMap.Any(x => x.Second == Find.VisibleMap))
+                if (BarHelperKF.TmpColonistsWithMap.Any(x => x.Second == Find.CurrentMap))
                 {
-                    BarHelperKF.TmpColonistsWithMap.RemoveAll(x => x.Second != Find.VisibleMap);
+                    BarHelperKF.TmpColonistsWithMap.RemoveAll(x => x.Second != Find.CurrentMap);
                 }
             }
 

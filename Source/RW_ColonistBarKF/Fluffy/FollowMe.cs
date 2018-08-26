@@ -33,8 +33,8 @@ namespace ColonistBarKF
         [NotNull]
         private readonly KeyBindingDef[] _followBreakingKeyBindingDefs =
             {
-                KeyBindingDefOf.MapDollyDown, KeyBindingDefOf.MapDollyUp, KeyBindingDefOf.MapDollyRight,
-                KeyBindingDefOf.MapDollyLeft
+                KeyBindingDefOf.MapDolly_Down, KeyBindingDefOf.MapDolly_Up, KeyBindingDefOf.MapDolly_Right,
+                KeyBindingDefOf.MapDolly_Left
             };
 
         [NotNull]
@@ -88,7 +88,7 @@ namespace ColonistBarKF
                 Pawn pawn = FollowedThing as Pawn;
                 if (pawn != null)
                 {
-                    return pawn.NameStringShort;
+                    return pawn.LabelShort;
                 }
 
                 return FollowedThing.LabelCap;
@@ -172,7 +172,7 @@ namespace ColonistBarKF
             {
                 if (CurrentlyFollowing)
                 {
-                    if (Find.VisibleMap == null)
+                    if (Find.CurrentMap == null)
                     {
                         StopFollow("Map null");
                         return;
@@ -287,16 +287,16 @@ namespace ColonistBarKF
             if (mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds(mapHeld))
             {
                 bool flag = CameraJumper.TryHideWorld();
-                if (Current.Game.VisibleMap != mapHeld)
+                if (Current.Game.CurrentMap != mapHeld)
                 {
-                    Current.Game.VisibleMap = mapHeld;
+                    Current.Game.CurrentMap = mapHeld;
                     if (!flag)
                     {
                         SoundDefOf.MapSelected.PlayOneShotOnCamera();
                     }
                 }
 
-                Find.CameraDriver.JumpToVisibleMapLoc(thing.DrawPos); // <---
+                Find.CameraDriver.JumpToCurrentMapLoc(thing.DrawPos); // <---
             }
             else
             {
