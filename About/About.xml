@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 0.18.0.1</name>
+  <name>Colonist Bar KF 0.19.0.0</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
-  <targetVersion>0.18.0</targetVersion>
+  <targetVersion>0.19.0</targetVersion>
   <description>
     <![CDATA[More options for the Colonist Bar, including new status icons and a mood bar.
 
@@ -20,6 +20,8 @@
     French translation by Gorgious
     German translation by me
     Russian translation by dragomano
-    Spanish translation by Ninnetyer]]>
+    Spanish translation by Ninnetyer
+    
+    Updated for RW 1.0 by azelion]]>
   </description>
 </ModMetaData>

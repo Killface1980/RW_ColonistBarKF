@@ -206,7 +206,7 @@
                         sort = tmpColonists.Where(x => !x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? false).ToList();
                         others = tmpColonists.Where(x => x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? true).ToList();
 
-                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.DiplomacyPower));
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.NegotiationAbility));
                         others.SortBy(x => x.LabelCap);
 
                         sort.AddRange(others);
@@ -235,7 +235,7 @@
                         sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? false).ToList();
                         others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? true).ToList();
 
-                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.ShootingAccuracy));
+                        sort.SortByDescending(b => b.GetStatValue(StatDefOf.ShootingAccuracyPawn));
                         others.SortBy(x => x.LabelCap);
 
                         sort.AddRange(others);
@@ -251,6 +251,11 @@
                         break;
                     }
 
+                case SettingsColonistBar.SortByWhat.moveSpeed:
+                    {
+                        tmpColonists.SortByDescending(x => x.GetStatValue(StatDefOf.MoveSpeed));
+                        break;
+                    }
                 default:
                     {
                         tmpColonists.SortBy(x => x.thingIDNumber);

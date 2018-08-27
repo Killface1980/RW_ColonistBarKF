@@ -1,6 +1,5 @@
 ﻿namespace KillfaceTools.FMO
 {
-    using Harmony;
     using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
@@ -58,7 +57,7 @@
                                                                                int i = 0;
                                                                                List<FloatMenuOption> actions =
                                                                                new List<FloatMenuOption>();
-                                                                               fmo.Do(
+                                                                               fmo.ForEach(
                                                                                       menuOption =>
                                                                                       {
                                                                                           FloatMenuOption

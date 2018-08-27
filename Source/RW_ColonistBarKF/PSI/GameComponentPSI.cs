@@ -111,7 +111,7 @@ namespace ColonistBarKF.PSI
 
             this._viewRect = Find.CameraDriver.CurrentViewRect;
             this._viewRect = this._viewRect.ExpandedBy(5);
-            Map map = Find.VisibleMap;
+            Map map = Find.CurrentMap;
 
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
