@@ -69,7 +69,7 @@ namespace ColonistBarKF.Fluffy
             // zoom action has taken place
             if (action > this._tolerance)
             {
-                Current.CameraDriver.JumpToVisibleMapLoc(this.CurrentRealPosition + this.MouseMapOffset);
+                Current.CameraDriver.JumpToCurrentMapLoc(this.CurrentRealPosition + this.MouseMapOffset);
             }
             else
             {

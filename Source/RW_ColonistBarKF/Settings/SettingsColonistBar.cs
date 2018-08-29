@@ -172,6 +172,8 @@
 
             shootingSkill,
 
+            moveSpeed,
+
         }
     }
 }

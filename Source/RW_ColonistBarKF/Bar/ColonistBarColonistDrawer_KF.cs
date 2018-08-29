@@ -247,7 +247,7 @@ namespace ColonistBarKF.Bar
             else
             {
                 // other pawns, on map
-                if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+                if (map != Find.CurrentMap || WorldRendererUtility.WorldRenderedNow)
                 {
                     num = 0.75f;
                 }
@@ -584,12 +584,12 @@ namespace ColonistBarKF.Bar
                         }
                         else
                         {
-                            if (!CameraJumper.TryHideWorld() && Current.Game.VisibleMap != map)
+                            if (!CameraJumper.TryHideWorld() && Current.Game.CurrentMap != map)
                             {
                                 SoundDefOf.MapSelected.PlayOneShotOnCamera();
                             }
 
-                            Current.Game.VisibleMap = map;
+                            Current.Game.CurrentMap = map;
                         }
                     }
                 }
@@ -1000,7 +1000,7 @@ namespace ColonistBarKF.Bar
                     alpha = Mathf.Min(alpha, flag ? 1f : 0.4f);
                 }
             }
-            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow)
+            else if (map != Find.CurrentMap || WorldRendererUtility.WorldRenderedNow)
             {
                 alpha = Mathf.Min(alpha, flag ? 1f : 0.4f);
             }
@@ -1048,7 +1048,7 @@ namespace ColonistBarKF.Bar
                 {
                     attacking = true;
                 }
-                else if (def == JobDefOf.WaitCombat)
+                else if (def == JobDefOf.Wait_Combat)
                 {
                     Stance_Busy stanceBusy = colonist.stances.curStance as Stance_Busy;
                     if (stanceBusy != null && stanceBusy.focusTarg.IsValid)
@@ -1290,7 +1290,7 @@ namespace ColonistBarKF.Bar
                                                                });
 
             FloatMenuOption sortByDiplomacy = new FloatMenuOption(
-                                                                  StatDefOf.DiplomacyPower.LabelCap,
+                                                                  StatDefOf.NegotiationAbility.LabelCap,
                                                                   delegate
                                                                   {
                                                                       Settings.BarSettings.SortBy =
@@ -1309,7 +1309,7 @@ namespace ColonistBarKF.Bar
 
 
             FloatMenuOption sortByShootingAccuracy = new FloatMenuOption(
-                                                                         StatDefOf.ShootingAccuracy.LabelCap,
+                                                                         StatDefOf.ShootingAccuracyPawn.LabelCap,
                                                                          delegate
                                                                          {
                                                                              Settings.BarSettings.SortBy =
@@ -1328,6 +1328,15 @@ namespace ColonistBarKF.Bar
                                                                           HarmonyPatches.MarkColonistsDirty_Postfix();
                                                                       });
 
+
+            FloatMenuOption sortByMoveSpeed = new FloatMenuOption(
+                                                                      StatDefOf.MoveSpeed.LabelCap,
+                                                                      delegate
+                                                                      {
+                                                                          Settings.BarSettings.SortBy =
+                                                                          SettingsColonistBar.SortByWhat.moveSpeed;
+                                                                          HarmonyPatches.MarkColonistsDirty_Postfix();
+                                                                      });
             sortList.Add(sortByVanilla);
             sortList.Add(sortByWeapons);
             sortList.Add(sortByName);
@@ -1345,6 +1354,8 @@ namespace ColonistBarKF.Bar
             sortList.Add(sortByTrade);
             sortList.Add(sortByShootingAccuracy);
             sortList.Add(sortByShootingSkill);
+            sortList.Add(sortByMoveSpeed);
+            
         }
 
         // RimWorld.ColonistBarColonistDrawer

@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using Harmony;
-
     using JetBrains.Annotations;
 
     using UnityEngine;
@@ -22,7 +20,7 @@
 
         public override void DoWindowContents(Rect rect)
         {
-            this.options.Do(
+            this.options.ForEach(
                 o =>
                     {
                         // FloatMenuOptionSorting option = o as FloatMenuOptionSorting;

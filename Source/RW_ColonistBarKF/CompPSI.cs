@@ -48,11 +48,11 @@ namespace ColonistBarKF
 
         private float _bleedRate = -1f;
 
-        private int _cabinFeverMoodLevel;
+        private int _needOutdoorsMoodLevel;
 
-        private float _cabinFeverMoodOffset;
+        private float _needOutdoorsMoodOffset;
 
-        private string _cabinFeverTip;
+        private string _needOutdoorsTip;
 
         private float _diseaseDisappearance = 1f;
 
@@ -398,12 +398,12 @@ namespace ColonistBarKF
                     this._isPyromaniac = this.Pawn.story.traits.HasTrait(TraitDefOf.Pyromaniac);
 
                     // Prostho
-                    if (this.Pawn.story.traits.HasTrait(TraitDefOf.Prosthophobe))
+                    if (this.Pawn.story.traits.HasTrait(TraitDefOf.BodyPurist))
                     {
                         this._prostho = -1;
                     }
 
-                    if (this.Pawn.story.traits.HasTrait(TraitDef.Named("Prosthophile")))
+                    if (this.Pawn.story.traits.HasTrait(TraitDefOf.Transhumanist))
                     {
                         this._prostho = 1;
                     }
@@ -561,7 +561,7 @@ namespace ColonistBarKF
                         new IconEntryBar(
                             Icon.Pacific,
                             Textures.ColBlueishGreen,
-                            "IsIncapableOfViolence".Translate(this.Pawn.NameStringShort)));
+                            "IsIncapableOfViolence".Translate(this.Pawn.LabelShort)));
                 }
 
                 if (psiSettings.ShowPacific)
@@ -707,7 +707,7 @@ namespace ColonistBarKF
                     }
 
                     // Daze Wander
-                    if (this._mentalSanity == MentalStateDefOf.WanderSad)
+                    if (this._mentalSanity == MentalStateDefOf.Wander_Sad)
                     {
                         if (barSettings.ShowDazed)
                         {
@@ -820,7 +820,7 @@ namespace ColonistBarKF
                         }
                     }
 
-                    if (HealthAIUtility.ShouldBeTendedNowUrgent(this.Pawn))
+                    if (HealthAIUtility.ShouldBeTendedNowByPlayerUrgent(this.Pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
@@ -837,7 +837,7 @@ namespace ColonistBarKF
                                 new IconEntryPSI(Icon.MedicalAttention, Textures.ColVermillion, viewOpacityCrit));
                         }
                     }
-                    else if (HealthAIUtility.ShouldBeTendedNow(this.Pawn))
+                    else if (HealthAIUtility.ShouldBeTendedNowByPlayer(this.Pawn))
                     {
                         if (barSettings.ShowMedicalAttention)
                         {
@@ -882,7 +882,7 @@ namespace ColonistBarKF
                             this._immunity = 0f;
                             foreach (Hediff hediff in hediffs)
                             {
-                                if (!hediff.Visible || hediff.IsOld() || !hediff.def.makesSickThought
+                                if (!hediff.Visible /*|| hediff.IsOld()*/ || !hediff.def.makesSickThought
                                     || hediff.LabelCap.NullOrEmpty() || hediff.SeverityLabel.NullOrEmpty())
                                 {
                                     continue;
@@ -1148,15 +1148,15 @@ namespace ColonistBarKF
 
             // Cabin Fever
             if (GetThought(
-                ThoughtDefOf.CabinFever,
-                out this._cabinFeverMoodLevel,
-                out this._cabinFeverTip,
-                out this._cabinFeverMoodOffset))
+                ThoughtDefOf.NeedOutdoors,
+                out this._needOutdoorsMoodLevel,
+                out this._needOutdoorsTip,
+                out this._needOutdoorsMoodOffset))
             {
-                Color moodOffset = this._cabinFeverMoodOffset.MoodOffsetColor();
+                Color moodOffset = this._needOutdoorsMoodOffset.MoodOffsetColor();
                 if (barSettings.ShowCabinFever)
                 {
-                    string tooltip = this._cabinFeverTip;
+                    string tooltip = this._needOutdoorsTip;
                     barIconList.Add(new IconEntryBar(Icon.CabinFever, moodOffset, tooltip));
                 }
 

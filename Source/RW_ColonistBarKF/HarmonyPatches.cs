@@ -130,7 +130,7 @@ namespace ColonistBarKF
 
             // NOT WORKING, FollowMe immediatly cancels if this is active
             // harmony.Patch(
-            // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToVisibleMapLoc), new[] { typeof(Vector3) }),
+            // AccessTools.Method(typeof(CameraDriver), nameof(CameraDriver.JumpToCurrentMapLoc), new[] { typeof(Vector3) }),
             // new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix)),
             // null);
             harmony.Patch(
@@ -160,7 +160,7 @@ namespace ColonistBarKF
             harmony.Patch(
                           AccessTools.Method(
                                              typeof(CameraDriver),
-                                             nameof(CameraDriver.JumpToVisibleMapLoc),
+                                             nameof(CameraDriver.JumpToCurrentMapLoc),
                                              new[] {typeof(Vector3)}),
                           new HarmonyMethod(typeof(HarmonyPatches), nameof(StopFollow_Prefix_Vector3)),
                           null);
