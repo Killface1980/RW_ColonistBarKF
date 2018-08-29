@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 0.18.0.1</name>
+  <name>Colonist Bar KF 1.0</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228264#msg228264</url>
-  <targetVersion>0.18.0</targetVersion>
+  <targetVersion>0.19</targetVersion>
   <description>
     <![CDATA[More options for the Colonist Bar, including new status icons and a mood bar.
 
-    Allows custom placement of the bar, as well as advanced scaling and sorting functionality.
+    Allows custom scaling and sorting functionality.
     All options available with Right Mouse Button click on any colonist portrait.
     FollowMe™ functionality via Middle Mouse Button click.
 
