@@ -164,8 +164,8 @@
                 case SettingsColonistBar.SortByWhat.weapons:
                     {
                         orderedEnumerable = tmpColonists
-                        .OrderByDescending(a => a?.equipment?.Primary?.def?.IsRangedWeapon).ThenByDescending(
-                            b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting))
+                        .OrderByDescending(a => a?.equipment?.Primary?.def?.IsRangedWeapon)
+                        .ThenByDescending(b => b?.skills?.GetSkill(SkillDefOf.Shooting).Level)
                         .ThenByDescending(c => c?.equipment?.Primary?.def?.IsMeleeWeapon == true).ToList();
                         tmpColonists = orderedEnumerable;
                         break;
@@ -246,7 +246,10 @@
                 //sort by shotting skill
                 case SettingsColonistBar.SortByWhat.shootingSkill:
                     {
-                        orderedEnumerable = tmpColonists.OrderByDescending(b => b?.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf.Hunting)).ToList();
+                        orderedEnumerable = tmpColonists
+                        .OrderByDescending(a => a?.skills?.GetSkill(SkillDefOf.Shooting)?.Level)
+                        .ThenBy(b => b?.skills?.GetSkill(SkillDefOf.Shooting)?.TotallyDisabled).ToList();
+
                         tmpColonists = orderedEnumerable;
                         break;
                     }
