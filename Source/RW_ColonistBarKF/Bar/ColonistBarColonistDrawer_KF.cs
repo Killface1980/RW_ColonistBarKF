@@ -133,8 +133,7 @@ namespace ColonistBarKF.Bar
                 {
                     Color col = Textures.ColBlueishGreen;
 
-                    Pawn follow = FollowMe.FollowedThing as Pawn;
-                    if (follow != null)
+                    if (FollowMe.FollowedThing is Pawn follow)
                     {
                         if (follow == colonist)
                         {
@@ -1050,8 +1049,7 @@ namespace ColonistBarKF.Bar
                 }
                 else if (def == JobDefOf.Wait_Combat)
                 {
-                    Stance_Busy stanceBusy = colonist.stances.curStance as Stance_Busy;
-                    if (stanceBusy != null && stanceBusy.focusTarg.IsValid)
+                    if (colonist.stances.curStance is Stance_Busy stanceBusy && stanceBusy.focusTarg.IsValid)
                     {
                         attacking = true;
                     }
