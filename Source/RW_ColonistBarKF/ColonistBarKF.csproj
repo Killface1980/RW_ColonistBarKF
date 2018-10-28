@@ -71,7 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alignment.cs" />
-    <None Include="Class1.cs" />
     <Compile Include="EntryKF.cs" />
     <None Include="ColonistBarKF.ruleset" />
     <None Include="Settings\ControllerBar.cs" />
