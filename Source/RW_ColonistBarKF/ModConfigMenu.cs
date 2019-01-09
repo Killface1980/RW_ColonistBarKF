@@ -11,7 +11,7 @@ namespace ColonistBarKF
 {
     public class ColonistBarKfSettings : Window
     {
-        private static readonly string Cbkfversion = "Colonist Bar KF 0.18.0";
+        private static readonly string Cbkfversion = "Colonist Bar KF 1.0";
 
         private static int _iconLimit;
 
