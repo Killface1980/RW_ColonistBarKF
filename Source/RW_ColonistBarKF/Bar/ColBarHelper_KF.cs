@@ -174,8 +174,8 @@
 
                 case SettingsColonistBar.SortByWhat.medicTendQuality:
                     {
-                        sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false).ToList();
-                        others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? true).ToList();
+                        sort = tmpColonists.Where(x => !x?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalTendQuality));
                         others.SortBy(x => x.LabelCap);
@@ -189,8 +189,8 @@
                 case SettingsColonistBar.SortByWhat.medicSurgerySuccess:
                     {
 
-                        sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false).ToList();
-                        others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? true).ToList();
+                        sort = tmpColonists.Where(x => !x?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.MedicalSurgerySuccessChance));
                         others.SortBy(x => x.LabelCap);
@@ -203,8 +203,8 @@
 
                 case SettingsColonistBar.SortByWhat.diplomacy:
                     {
-                        sort = tmpColonists.Where(x => !x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? false).ToList();
-                        others = tmpColonists.Where(x => x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? true).ToList();
+                        sort = tmpColonists.Where(x => !x?.WorkTagIsDisabled(WorkTags.Social) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.WorkTagIsDisabled(WorkTags.Social) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.NegotiationAbility));
                         others.SortBy(x => x.LabelCap);
@@ -217,8 +217,8 @@
 
                 case SettingsColonistBar.SortByWhat.tradePrice:
                     {
-                        sort = tmpColonists.Where(x => !x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? false).ToList();
-                        others = tmpColonists.Where(x => x?.story?.WorkTagIsDisabled(WorkTags.Social) ?? true).ToList();
+                        sort = tmpColonists.Where(x => !x?.WorkTagIsDisabled(WorkTags.Social) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.WorkTagIsDisabled(WorkTags.Social) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.TradePriceImprovement));
                         others.SortBy(x => x.LabelCap);
@@ -232,8 +232,8 @@
                 case SettingsColonistBar.SortByWhat.shootingAccuracy:
                     {
 
-                        sort = tmpColonists.Where(x => !x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? false).ToList();
-                        others = tmpColonists.Where(x => x?.story?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? true).ToList();
+                        sort = tmpColonists.Where(x => !x?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? false).ToList();
+                        others = tmpColonists.Where(x => x?.WorkTypeIsDisabled(WorkTypeDefOf.Hunting) ?? true).ToList();
 
                         sort.SortByDescending(b => b.GetStatValue(StatDefOf.ShootingAccuracyPawn));
                         others.SortBy(x => x.LabelCap);

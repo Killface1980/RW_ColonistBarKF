@@ -532,7 +532,7 @@ namespace ColonistBarKF.Bar
                 }
 
                 // Middle Mouse Button
-                if (Event.current.type == EventType.mouseUp && Event.current.button == 2)
+                if (Event.current.type == EventType.MouseUp && Event.current.button == 2)
                 {
                     // start following
                     if (FollowMe.CurrentlyFollowing)
@@ -801,7 +801,7 @@ namespace ColonistBarKF.Bar
             Lord   lord           = colonist.GetLord();
             if (lord?.LordJob != null)
             {
-                jobDescription = lord.LordJob.GetReport();
+                jobDescription = lord.LordJob.GetReport(colonist);
             }
 
             if (colonist.jobs.curJob != null)

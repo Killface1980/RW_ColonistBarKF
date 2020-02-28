@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using ColonistBarKF.Bar;
-using Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
@@ -34,7 +34,7 @@ namespace ColonistBarKF
             patchLog += injected ? string.Empty : "\nNo pawns found for PSI :(";
             Log.Message(patchLog);
 
-            HarmonyInstance harmony = HarmonyInstance.Create("com.colonistbarkf.rimworld.mod");
+            var harmony = new HarmonyLib.Harmony("com.colonistbarkf.rimworld.mod");
 
             harmony.Patch(
                           AccessTools.Method(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI)),

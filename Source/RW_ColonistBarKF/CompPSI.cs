@@ -392,7 +392,7 @@ namespace ColonistBarKF
                     this._painThought = ThoughtDef.Named(this.Pawn.story.traits.HasTrait(TraitDef.Named("Masochist")) ? "MasochistPain" : "Pain");
 
                     // Pacifist
-                    this.IsPacifist = this.Pawn.story.WorkTagIsDisabled(WorkTags.Violent);
+                    this.IsPacifist = Pawn.WorkTagIsDisabled(WorkTags.Violent);
 
                     // Pyromaniac
                     this._isPyromaniac = this.Pawn.story.traits.HasTrait(TraitDefOf.Pyromaniac);

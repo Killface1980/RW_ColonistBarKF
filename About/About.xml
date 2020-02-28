@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Colonist Bar KF 1.0</name>
+  <name>Colonist Bar KF 1.1</name>
   <author>Killface</author>
-  <targetVersion>1.0.2957</targetVersion>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>killface.colonistbarkf</packageId>
   <description>
     <![CDATA[More options for the Colonist Bar, including new status icons and a mood bar.
 
